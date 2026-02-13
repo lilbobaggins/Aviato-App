@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  MapPin, Calendar, Users, ChevronDown, ChevronLeft, ChevronRight,
-  ArrowLeftRight, ArrowRight, Plane, X, Check, Search, Clock,
-  Wifi, Coffee, Wine, Heart, Globe, ExternalLink, Sun, Moon
+  ChevronLeft, ChevronRight,
+  ArrowLeftRight, Plane, X, Check, Search, Clock,
+  Globe, Sun, Moon
 } from 'lucide-react';
 
 import { C, AIRLINE_STYLE } from '../data/constants';
@@ -24,13 +24,11 @@ const T = (dark: boolean) => ({
   bgAlt: dark ? '#1A1A1A' : '#FAFAF7',
   card: dark ? '#1A1A1A' : '#FFFFFF',
   cardBorder: dark ? '#2A2A2A' : '#E5E5E0',
-  text: dark ? '#F5F0E1' : '#000000',
+  text: dark ? '#F5F0E1' : '#1A1A1A',
   textSec: dark ? '#9B9B93' : '#6B6B63',
   textMuted: dark ? '#6B6B63' : '#9B9B93',
-  inputBg: dark ? '#252525' : '#FFFFFF',
-  inputBorder: dark ? '#333' : '#E5E5E0',
   searchBg: dark ? 'rgba(26,26,26,0.95)' : 'rgba(255,255,255,0.97)',
-  heroBg: dark ? '#000' : '#000',
+  divider: dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
 });
 
 // Hero images
@@ -43,8 +41,8 @@ const HERO_IMAGES = [
   { src: '/images/hero-skibar.jpeg' },
 ];
 
-// Airport Input (Hopper-style clean)
-const DesktopAirportInput = ({ value, onChange, placeholder, excludeCode, filterByFrom, label }: {
+// Hopper-style airport input — compact: label on top, value below
+const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom, label }: {
   value: string; onChange: (code: string) => void; placeholder: string;
   excludeCode?: string; filterByFrom?: string; label: string;
 }) => {
@@ -83,8 +81,8 @@ const DesktopAirportInput = ({ value, onChange, placeholder, excludeCode, filter
   };
 
   return (
-    <div style={{ position: 'relative', flex: 1, minWidth: 0 }}>
-      <label style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, display: 'block', marginBottom: '6px' }}>{label}</label>
+    <div style={{ position: 'relative' }}>
+      <div style={{ fontSize: '12px', fontWeight: 500, color: t.textMuted, marginBottom: '1px' }}>{label}</div>
       <input
         type="text"
         placeholder={placeholder}
@@ -93,16 +91,17 @@ const DesktopAirportInput = ({ value, onChange, placeholder, excludeCode, filter
         onChange={(e) => setQuery(e.target.value)}
         onBlur={() => setTimeout(() => setIsOpen(false), 200)}
         style={{
-          width: '100%', padding: '14px 16px', border: 'none', borderRadius: 0, fontSize: '15px',
-          fontFamily: 'inherit', outline: 'none', backgroundColor: 'transparent', color: t.text, boxSizing: 'border-box',
-          fontWeight: 600,
+          width: '100%', padding: 0, border: 'none', fontSize: '16px',
+          fontFamily: 'inherit', outline: 'none', backgroundColor: 'transparent',
+          color: displayValue && !isOpen ? t.text : t.textMuted, fontWeight: 500,
         }}
       />
       {isOpen && (
         <div style={{
-          position: 'absolute', top: '100%', left: -1, right: -1, marginTop: '2px', backgroundColor: t.card,
-          border: `1px solid ${t.cardBorder}`, borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.15)',
-          zIndex: 50, maxHeight: '320px', overflowY: 'auto',
+          position: 'absolute', top: 'calc(100% + 12px)', left: -20, right: -20,
+          backgroundColor: dark ? '#1A1A1A' : '#fff',
+          borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.2)',
+          zIndex: 50, maxHeight: '320px', overflowY: 'auto', overflow: 'hidden',
         }}>
           {getFiltered().length === 0 ? (
             <div style={{ padding: '16px', textAlign: 'center', color: t.textMuted, fontSize: '13px' }}>No routes available</div>
@@ -111,7 +110,7 @@ const DesktopAirportInput = ({ value, onChange, placeholder, excludeCode, filter
               style={{
                 width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px',
                 border: 'none', backgroundColor: 'transparent', cursor: 'pointer', textAlign: 'left', fontSize: '14px',
-                borderBottom: `1px solid ${t.cardBorder}`,
+                borderBottom: `1px solid ${t.divider}`,
               }}>
               {loc.type === 'metro' ? (
                 <>
@@ -134,7 +133,7 @@ const DesktopAirportInput = ({ value, onChange, placeholder, excludeCode, filter
   );
 };
 
-// Desktop Calendar (same logic, themed)
+// Desktop Calendar
 const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, onSelectDepart, onSelectReturn, fromCode, toCode, selectingReturn, setSelectingReturn }: {
   isOpen: boolean; onClose: () => void; tripType: string; departDate: string; returnDate: string;
   onSelectDepart: (d: string) => void; onSelectReturn: (d: string) => void;
@@ -229,7 +228,7 @@ const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, on
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={(e) => { if (e.target === e.currentTarget) { setSelectingReturn(false); onClose(); } }}>
-      <div style={{ backgroundColor: t.card, borderRadius: '20px', padding: '28px', width: '680px', maxHeight: '85vh', overflowY: 'auto', boxShadow: '0 25px 80px rgba(0,0,0,0.25)' }}>
+      <div style={{ backgroundColor: dark ? '#1A1A1A' : '#fff', borderRadius: '20px', padding: '28px', width: '680px', maxHeight: '85vh', overflowY: 'auto', boxShadow: '0 25px 80px rgba(0,0,0,0.25)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <div>
             <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 800, color: t.text }}>{departDate && returnDate ? `${tripDays} night trip` : selectingReturn ? 'Select return date' : 'Select departure'}</h3>
@@ -318,33 +317,17 @@ export default function DesktopPage() {
 
   return (
     <ThemeContext.Provider value={{ dark, toggle: () => setDark(!dark) }}>
-      <div style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg, transition: 'background-color 0.3s ease, color 0.3s ease' }}>
+      <div style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg, transition: 'background-color 0.3s ease' }}>
 
-        {/* Nav bar */}
-        <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 150, padding: '16px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'transparent' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5px' }}>
-              <div style={{ width: '16px', height: '7px', backgroundColor: C.darkGreen, borderRadius: '1.5px' }} />
-              <div style={{ width: '16px', height: '7px', backgroundColor: C.pink, borderRadius: '1.5px' }} />
-              <div style={{ width: '16px', height: '7px', backgroundColor: C.cream, borderRadius: '1.5px' }} />
-            </div>
-            <span style={{ fontSize: '22px', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>Aviato</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <button onClick={() => setDark(!dark)} style={{ width: '40px', height: '40px', borderRadius: '50%', border: 'none', backgroundColor: 'rgba(255,255,255,0.15)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
-              {dark ? <Sun style={{ width: '18px', height: '18px', color: C.cream }} /> : <Moon style={{ width: '18px', height: '18px', color: '#fff' }} />}
-            </button>
-          </div>
-        </nav>
+        {/* ========== HERO — full viewport like Hopper ========== */}
+        <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
 
-        {/* Hero with rotating images — Hopper style */}
-        <div style={{ position: 'relative', height: '92vh', minHeight: '600px', overflow: 'hidden' }}>
-          {/* Image layers */}
+          {/* Rotating background images */}
           {HERO_IMAGES.map((img, i) => (
             <div key={i} style={{
               position: 'absolute', inset: 0,
               backgroundImage: heroLoaded[i] ? `url(${img.src})` : undefined,
-              backgroundColor: '#1a1a1a',
+              backgroundColor: '#111',
               backgroundSize: 'cover', backgroundPosition: 'center',
               opacity: heroIndex === i ? 1 : 0,
               transition: 'opacity 1.2s ease-in-out',
@@ -353,83 +336,100 @@ export default function DesktopPage() {
               <img src={img.src} alt="" style={{ display: 'none' }} onLoad={() => setHeroLoaded(prev => ({ ...prev, [i]: true }))} />
             </div>
           ))}
-          {/* Subtle gradient — just enough for text readability */}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 35%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.45) 100%)' }} />
 
-          {/* Hero content — search bar positioned in lower half like Hopper */}
-          <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', padding: '0 48px 15vh' }}>
+          {/* Gradient — subtle, mainly at top for nav readability and bottom for search bar */}
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.35) 100%)' }} />
 
-            {/* Hopper-style search bar — minimal, no labels, just placeholders */}
+          {/* Nav bar — floating over hero */}
+          <nav style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 20, padding: '20px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5px' }}>
+                <div style={{ width: '14px', height: '6px', backgroundColor: C.darkGreen, borderRadius: '1.5px' }} />
+                <div style={{ width: '14px', height: '6px', backgroundColor: C.pink, borderRadius: '1.5px' }} />
+                <div style={{ width: '14px', height: '6px', backgroundColor: C.cream, borderRadius: '1.5px' }} />
+              </div>
+              <span style={{ fontSize: '20px', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>Aviato</span>
+            </div>
+            <button onClick={() => setDark(!dark)} style={{ width: '38px', height: '38px', borderRadius: '50%', border: 'none', backgroundColor: 'rgba(255,255,255,0.12)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
+              {dark ? <Sun style={{ width: '16px', height: '16px', color: C.cream }} /> : <Moon style={{ width: '16px', height: '16px', color: '#fff' }} />}
+            </button>
+          </nav>
+
+          {/* Search bar — centered like Hopper */}
+          <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '40px' }}>
             <div style={{
-              backgroundColor: t.searchBg, borderRadius: '16px', display: 'flex', alignItems: 'center',
-              boxShadow: '0 8px 40px rgba(0,0,0,0.2)', width: '100%', maxWidth: '740px',
-              backdropFilter: 'blur(20px)', overflow: 'visible', position: 'relative', height: '64px',
+              backgroundColor: t.searchBg,
+              borderRadius: '14px',
+              display: 'flex',
+              alignItems: 'center',
+              width: '720px',
+              height: '68px',
+              boxShadow: '0 4px 30px rgba(0,0,0,0.12)',
+              backdropFilter: 'blur(24px)',
+              overflow: 'visible',
             }}>
 
-              {/* From */}
-              <div style={{ flex: 1, padding: '0 20px', borderRight: `1px solid ${t.cardBorder}`, position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <DesktopAirportInput label="Where from" value={fromCode} onChange={(c) => { setFromCode(c); setToCode(''); }} placeholder="City or airport" excludeCode={toCode} />
+              {/* Where from */}
+              <div style={{ flex: 1, padding: '12px 24px', borderRight: `1px solid ${t.divider}`, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
+                <AirportField label="Where from" value={fromCode} onChange={(c) => { setFromCode(c); setToCode(''); }} placeholder="City or airport" excludeCode={toCode} />
               </div>
 
-              {/* Swap button */}
-              <div style={{ display: 'flex', alignItems: 'center', margin: '0 -14px', zIndex: 5 }}>
+              {/* Swap */}
+              <div style={{ margin: '0 -14px', zIndex: 5, display: 'flex', alignItems: 'center' }}>
                 <button onClick={() => { const tmp = fromCode; setFromCode(toCode); setToCode(tmp); }}
-                  style={{ width: '28px', height: '28px', borderRadius: '50%', border: `2px solid ${t.cardBorder}`, backgroundColor: t.card, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <ArrowLeftRight style={{ width: '12px', height: '12px', color: t.textSec }} />
+                  style={{ width: '28px', height: '28px', borderRadius: '50%', border: `1.5px solid ${t.divider}`, backgroundColor: t.searchBg, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <ArrowLeftRight style={{ width: '11px', height: '11px', color: t.textMuted }} />
                 </button>
               </div>
 
-              {/* To */}
-              <div style={{ flex: 1, padding: '0 20px', borderRight: `1px solid ${t.cardBorder}`, position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <DesktopAirportInput label="Where to" value={toCode} onChange={setToCode} placeholder="Search destination" excludeCode={fromCode} filterByFrom={fromCode} />
+              {/* Where to */}
+              <div style={{ flex: 1, padding: '12px 24px', borderRight: `1px solid ${t.divider}`, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
+                <AirportField label="Where to" value={toCode} onChange={setToCode} placeholder="Search destination" excludeCode={fromCode} filterByFrom={fromCode} />
               </div>
 
               {/* Dates */}
-              <div style={{ width: '180px', padding: '0 20px', borderRight: `1px solid ${t.cardBorder}`, cursor: 'pointer', flexShrink: 0, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+              <div style={{ padding: '12px 24px', borderRight: `1px solid ${t.divider}`, cursor: 'pointer', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: '140px' }}
                 onClick={() => { setSelectingReturn(!!departDate && !returnDate && tripType === 'roundtrip'); setCalOpen(true); }}>
-                <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px' }}>Dates</div>
-                <div style={{ fontSize: '15px', fontWeight: 600, color: departDate ? t.text : t.textMuted }}>
+                <div style={{ fontSize: '12px', fontWeight: 500, color: t.textMuted, marginBottom: '1px' }}>Dates</div>
+                <div style={{ fontSize: '16px', fontWeight: 500, color: departDate ? t.text : t.textMuted }}>
                   {departDate ? `${fmtDate(departDate)}${tripType === 'roundtrip' && returnDate ? ` – ${fmtDate(returnDate)}` : ''}` : 'Add dates'}
                 </div>
               </div>
 
               {/* Guests */}
-              <div style={{ width: '110px', padding: '0 16px', flexShrink: 0, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px' }}>Guests</div>
+              <div style={{ padding: '12px 20px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: '100px' }}>
+                <div style={{ fontSize: '12px', fontWeight: 500, color: t.textMuted, marginBottom: '1px' }}>Guests</div>
                 <select value={passengers} onChange={e => setPassengers(Number(e.target.value))}
-                  style={{ border: 'none', fontSize: '15px', fontWeight: 600, fontFamily: 'inherit', outline: 'none', appearance: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: t.text, padding: 0 }}>
+                  style={{ border: 'none', fontSize: '16px', fontWeight: 500, fontFamily: 'inherit', outline: 'none', appearance: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: t.text, padding: 0 }}>
                   {[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n} guest{n > 1 ? 's' : ''}</option>)}
                 </select>
               </div>
 
-              {/* Search button */}
-              <div style={{ display: 'flex', alignItems: 'center', padding: '0 10px 0 0' }}>
+              {/* Search button — Hopper uses blue circle, we use Aviato green */}
+              <div style={{ padding: '0 10px 0 0', display: 'flex', alignItems: 'center' }}>
                 <button onClick={handleSearch} disabled={!fromCode || !toCode || !departDate}
                   style={{
-                    width: '48px', height: '48px', borderRadius: '50%', border: 'none',
-                    backgroundColor: !fromCode || !toCode || !departDate ? C.g300 : C.darkGreen,
-                    cursor: !fromCode || !toCode || !departDate ? 'not-allowed' : 'pointer',
+                    width: '50px', height: '50px', borderRadius: '50%', border: 'none',
+                    backgroundColor: !fromCode || !toCode || !departDate ? 'rgba(150,150,150,0.4)' : C.darkGreen,
+                    cursor: !fromCode || !toCode || !departDate ? 'default' : 'pointer',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     transition: 'background-color 0.2s ease',
                   }}>
-                  <Search style={{ width: '18px', height: '18px', color: '#fff' }} />
+                  <Search style={{ width: '20px', height: '20px', color: '#fff' }} />
                 </button>
               </div>
             </div>
+          </div>
 
-            {/* Trip type toggle below search bar */}
-            <div style={{ display: 'flex', gap: '6px', marginTop: '14px' }}>
-              {['roundtrip', 'oneway'].map(tp => (
-                <button key={tp} onClick={() => { setTripType(tp); if (tp === 'oneway') setReturnDate(''); }}
-                  style={{ padding: '6px 16px', border: 'none', borderRadius: '100px', fontSize: '12px', fontWeight: 600, cursor: 'pointer', backgroundColor: tripType === tp ? 'rgba(255,255,255,0.2)' : 'transparent', color: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(8px)', transition: 'background-color 0.2s ease' }}>
-                  {tp === 'roundtrip' ? 'Round Trip' : 'One Way'}
-                </button>
-              ))}
-            </div>
+          {/* Dots indicator — bottom right like Hopper */}
+          <div style={{ position: 'absolute', bottom: '24px', right: '48px', zIndex: 10, display: 'flex', gap: '6px', alignItems: 'center' }}>
+            {HERO_IMAGES.map((_, i) => (
+              <button key={i} onClick={() => setHeroIndex(i)} style={{ width: i === heroIndex ? '18px' : '6px', height: '6px', borderRadius: '3px', border: 'none', backgroundColor: i === heroIndex ? '#fff' : 'rgba(255,255,255,0.4)', cursor: 'pointer', transition: 'all 0.3s ease', padding: 0 }} />
+            ))}
           </div>
         </div>
 
-        {/* Popular Routes */}
+        {/* ========== Popular Routes ========== */}
         <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '56px 48px 40px' }}>
           <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px' }}>Popular Routes</h2>
           <p style={{ fontSize: '14px', color: t.textMuted, margin: '0 0 28px' }}>The most-booked semi-private flights</p>
@@ -454,7 +454,7 @@ export default function DesktopPage() {
           </div>
         </div>
 
-        {/* Events - Horizontal Slider */}
+        {/* ========== Events Slider ========== */}
         <div style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '48px 48px 52px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
@@ -480,7 +480,7 @@ export default function DesktopPage() {
                 document.addEventListener('mousemove', move); document.addEventListener('mouseup', up);
               }}>
               {EVENTS.map(ev => (
-                <div key={ev.id} style={{ minWidth: '340px', maxWidth: '340px', borderRadius: '16px', overflow: 'hidden', border: `1px solid ${t.cardBorder}`, backgroundColor: t.card, scrollSnapAlign: 'start', flexShrink: 0, transition: 'box-shadow 0.2s' }}>
+                <div key={ev.id} style={{ minWidth: '340px', maxWidth: '340px', borderRadius: '16px', overflow: 'hidden', border: `1px solid ${t.cardBorder}`, backgroundColor: t.card, scrollSnapAlign: 'start', flexShrink: 0 }}>
                   <div style={{ background: `linear-gradient(135deg, ${C.black} 0%, ${C.darkGreen} 100%)`, padding: '24px', display: 'flex', alignItems: 'center', gap: '14px', minHeight: '90px' }}>
                     <div style={{ fontSize: '40px' }}>{ev.img}</div>
                     <div>
@@ -511,7 +511,7 @@ export default function DesktopPage() {
           </div>
         </div>
 
-        {/* Footer */}
+        {/* ========== Footer ========== */}
         <div style={{ background: dark ? '#0A0A0A' : C.black, padding: '40px 48px', textAlign: 'center' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
