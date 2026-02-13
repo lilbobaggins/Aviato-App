@@ -37,6 +37,7 @@ export interface EventItem {
   from?: string;
   price: number;
   img: string;
+  photo?: string;
   cat: string;
   desc: string;
 }

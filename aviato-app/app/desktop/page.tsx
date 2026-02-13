@@ -584,27 +584,61 @@ export default function DesktopPage() {
                 document.addEventListener('mousemove', move); document.addEventListener('mouseup', up);
               }}>
               {EVENTS.map(ev => (
-                <div key={ev.id} style={{ minWidth: '340px', maxWidth: '340px', borderRadius: '16px', overflow: 'hidden', border: `1px solid ${t.cardBorder}`, backgroundColor: t.card, scrollSnapAlign: 'start', flexShrink: 0 }}>
-                  <div style={{ background: `linear-gradient(135deg, ${C.black} 0%, ${C.darkGreen} 100%)`, padding: '24px', display: 'flex', alignItems: 'center', gap: '14px', minHeight: '90px' }}>
-                    <div style={{ fontSize: '40px' }}>{ev.img}</div>
-                    <div>
-                      <div style={{ fontSize: '16px', fontWeight: 800, color: '#fff' }}>{ev.title}</div>
-                      <div style={{ fontSize: '12px', color: C.cream, opacity: 0.8, marginTop: '3px' }}>{ev.city}, {ev.state} · {ev.date}</div>
+                <div key={ev.id} style={{
+                  minWidth: '320px', maxWidth: '320px', borderRadius: '16px', overflow: 'hidden',
+                  border: `1px solid ${t.cardBorder}`, backgroundColor: t.card,
+                  scrollSnapAlign: 'start', flexShrink: 0, cursor: 'pointer',
+                  transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+                }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 32px ${dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.1)'}` ; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
+                  onClick={() => {
+                    if (ev.from) setFromCode(ev.from);
+                    setToCode(ev.dest); setTripType('roundtrip');
+                    setDepartDate(shiftDate(ev.start, -1)); setReturnDate(shiftDate(ev.end, 1));
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  {/* Photo */}
+                  <div style={{
+                    height: '180px', position: 'relative',
+                    backgroundImage: ev.photo ? `url(${ev.photo})` : `linear-gradient(135deg, ${C.black} 0%, ${C.darkGreen} 100%)`,
+                    backgroundSize: 'cover', backgroundPosition: 'center',
+                  }}>
+                    {/* Category badge */}
+                    <div style={{
+                      position: 'absolute', top: '12px', left: '12px',
+                      padding: '4px 10px', borderRadius: '8px',
+                      backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(6px)',
+                      fontSize: '11px', fontWeight: 700, color: '#fff', letterSpacing: '0.02em',
+                    }}>
+                      {ev.cat}
                     </div>
+                    {/* Price badge */}
+                    <div style={{
+                      position: 'absolute', bottom: '12px', right: '12px',
+                      padding: '4px 10px', borderRadius: '8px',
+                      backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(6px)',
+                      fontSize: '13px', fontWeight: 800, color: '#fff',
+                    }}>
+                      From ${ev.price}
+                    </div>
+                    {!ev.photo && <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', fontSize: '48px' }}>{ev.img}</div>}
                   </div>
-                  <div style={{ padding: '18px 20px' }}>
-                    <p style={{ fontSize: '13px', color: t.textSec, margin: '0 0 16px', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{ev.desc}</p>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <div>
-                        <div style={{ fontSize: '10px', color: t.textMuted, fontWeight: 600 }}>FLIGHTS FROM</div>
-                        <div style={{ fontSize: '22px', fontWeight: 800, color: dark ? C.pink : C.darkGreen }}>${ev.price}</div>
-                      </div>
-                      <button onClick={() => {
-                        if (ev.from) setFromCode(ev.from);
-                        setToCode(ev.dest); setTripType('roundtrip');
-                        setDepartDate(shiftDate(ev.start, -1)); setReturnDate(shiftDate(ev.end, 1));
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }} style={{ padding: '10px 18px', border: 'none', borderRadius: '10px', backgroundColor: dark ? C.darkGreen : C.black, color: C.cream, fontWeight: 700, fontSize: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  {/* Info */}
+                  <div style={{ padding: '16px 18px' }}>
+                    <div style={{ fontSize: '15px', fontWeight: 800, color: t.text, marginBottom: '4px', lineHeight: 1.3 }}>{ev.title}</div>
+                    <div style={{ fontSize: '12px', color: dark ? C.pink : C.darkGreen, fontWeight: 600, marginBottom: '8px' }}>
+                      {ev.city}, {ev.state} · {ev.date}
+                    </div>
+                    <p style={{ fontSize: '13px', color: t.textSec, margin: '0 0 14px', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{ev.desc}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <button onClick={(e) => { e.stopPropagation(); }} style={{
+                        flex: 1, padding: '10px', border: 'none', borderRadius: '10px',
+                        backgroundColor: dark ? C.pink : C.black, color: '#fff',
+                        fontWeight: 700, fontSize: '12px', cursor: 'pointer',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+                      }}>
                         <Plane style={{ width: '13px', height: '13px' }} /> Search Flights
                       </button>
                     </div>
