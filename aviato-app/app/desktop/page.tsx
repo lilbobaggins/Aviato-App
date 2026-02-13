@@ -360,37 +360,36 @@ export default function DesktopPage() {
         .aviato-desktop, .aviato-desktop *, .aviato-desktop *::before, .aviato-desktop *::after {
           transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease !important;
         }
-        .aviato-desktop img, .aviato-desktop [data-hero-bg] {
-          transition: opacity 1.2s ease-in-out !important;
+        .aviato-desktop img {
+          transition: none !important;
+        }
+        .aviato-desktop [data-hero-slide] {
+          transition: opacity 1.8s ease-in-out !important;
         }
       `}</style>
       <div className="aviato-desktop" style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg, scrollBehavior: 'smooth' }}>
 
-        {/* ========== FLOATING LOGO — fixed cutout top-left ========== */}
+        {/* ========== FLOATING LOGO — fixed, no background ========== */}
         <div style={{
-          position: 'fixed', top: '18px', left: '24px', zIndex: 50,
+          position: 'fixed', top: '20px', left: '28px', zIndex: 50,
           display: 'flex', alignItems: 'center', gap: '10px',
-          backgroundColor: dark ? 'rgba(22,22,22,0.85)' : 'rgba(255,252,242,0.85)',
-          backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
-          padding: '8px 14px', borderRadius: '12px',
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5px' }}>
             <div style={{ width: '14px', height: '6px', backgroundColor: C.darkGreen, borderRadius: '1.5px' }} />
             <div style={{ width: '14px', height: '6px', backgroundColor: C.pink, borderRadius: '1.5px' }} />
             <div style={{ width: '14px', height: '6px', backgroundColor: C.cream, borderRadius: '1.5px' }} />
           </div>
-          <span style={{ fontSize: '20px', fontWeight: 900, color: t.text, letterSpacing: '-0.02em' }}>Aviato</span>
+          <span style={{ fontSize: '20px', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}>Aviato</span>
         </div>
 
-        {/* ========== FLOATING THEME TOGGLE — fixed cutout top-right ========== */}
+        {/* ========== FLOATING THEME TOGGLE — fixed, no background ========== */}
         <button onClick={() => setDark(!dark)} style={{
-          position: 'fixed', top: '18px', right: '24px', zIndex: 50,
-          width: '40px', height: '40px', borderRadius: '12px', border: 'none',
-          backgroundColor: dark ? 'rgba(22,22,22,0.85)' : 'rgba(255,252,242,0.85)',
-          backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
+          position: 'fixed', top: '20px', right: '28px', zIndex: 50,
+          width: '38px', height: '38px', borderRadius: '50%', border: 'none',
+          background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
           cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          {dark ? <Sun style={{ width: '16px', height: '16px', color: C.cream }} /> : <Moon style={{ width: '16px', height: '16px', color: t.textSec }} />}
+          {dark ? <Sun style={{ width: '16px', height: '16px', color: '#fff' }} /> : <Moon style={{ width: '16px', height: '16px', color: '#fff' }} />}
         </button>
 
         {/* ========== HERO — inset rounded card like Hopper ========== */}
@@ -399,13 +398,12 @@ export default function DesktopPage() {
 
             {/* Rotating background images */}
             {HERO_IMAGES.map((img, i) => (
-              <div key={i} style={{
+              <div key={i} data-hero-slide="true" style={{
                 position: 'absolute', inset: 0,
                 backgroundImage: heroLoaded[i] ? `url(${img.src})` : undefined,
                 backgroundColor: '#111',
                 backgroundSize: 'cover', backgroundPosition: 'center',
                 opacity: heroIndex === i ? 1 : 0,
-                transition: 'opacity 1.2s ease-in-out',
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={img.src} alt="" style={{ display: 'none' }} onLoad={() => setHeroLoaded(prev => ({ ...prev, [i]: true }))} />
