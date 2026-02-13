@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
+import React, { useState, useEffect, useRef, createContext, useContext, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   ChevronLeft, ChevronRight,
@@ -27,7 +27,7 @@ const T = (dark: boolean) => ({
   text: dark ? '#F5F0E1' : '#1A1A1A',
   textSec: dark ? '#9B9B93' : '#6B6B63',
   textMuted: dark ? '#6B6B63' : '#9B9B93',
-  searchBg: dark ? 'rgba(26,26,26,0.95)' : 'rgba(255,255,255,0.97)',
+  searchBg: dark ? 'rgba(26,26,26,0.97)' : 'rgba(255,255,255,0.98)',
   divider: dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
 });
 
@@ -41,7 +41,10 @@ const HERO_IMAGES = [
   { src: '/images/hero-skibar.jpeg' },
 ];
 
-// Hopper-style airport input — compact: label on top, value below
+/* ────────────────────────────────────────────
+   Airport Field — full-featured with typing,
+   live dropdown, clear button
+   ──────────────────────────────────────────── */
 const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom, label }: {
   value: string; onChange: (code: string) => void; placeholder: string;
   excludeCode?: string; filterByFrom?: string; label: string;
@@ -51,6 +54,8 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [displayValue, setDisplayValue] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (value) {
@@ -80,49 +85,77 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
     }).slice(0, 20);
   };
 
+  const clearValue = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onChange('');
+    setQuery('');
+    setDisplayValue('');
+    setIsOpen(false);
+  };
+
   return (
-    <div style={{ position: 'relative' }}>
-      <div style={{ fontSize: '12px', fontWeight: 500, color: t.textMuted, marginBottom: '1px' }}>{label}</div>
-      <input
-        type="text"
-        placeholder={placeholder}
-        value={isOpen ? query : displayValue}
-        onFocus={() => { setIsOpen(true); setQuery(''); }}
-        onChange={(e) => setQuery(e.target.value)}
-        onBlur={() => setTimeout(() => setIsOpen(false), 200)}
-        style={{
-          width: '100%', padding: 0, border: 'none', fontSize: '16px',
-          fontFamily: 'inherit', outline: 'none', backgroundColor: 'transparent',
-          color: displayValue && !isOpen ? t.text : t.textMuted, fontWeight: 500,
-        }}
-      />
+    <div ref={wrapRef} style={{ position: 'relative', flex: 1 }}>
+      <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px', letterSpacing: '0.02em' }}>{label}</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder={placeholder}
+          value={isOpen ? query : displayValue}
+          onFocus={() => { setIsOpen(true); setQuery(''); }}
+          onChange={(e) => setQuery(e.target.value)}
+          onBlur={() => setTimeout(() => setIsOpen(false), 200)}
+          style={{
+            flex: 1, width: '100%', padding: 0, border: 'none', fontSize: '15px',
+            fontFamily: 'inherit', outline: 'none', backgroundColor: 'transparent',
+            color: displayValue && !isOpen ? t.text : t.textSec, fontWeight: 500,
+          }}
+        />
+        {value && !isOpen && (
+          <button onClick={clearValue} style={{
+            width: '20px', height: '20px', borderRadius: '50%', border: 'none',
+            backgroundColor: dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)',
+            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0, padding: 0,
+          }}>
+            <X style={{ width: '11px', height: '11px', color: t.textMuted }} />
+          </button>
+        )}
+      </div>
+
       {isOpen && (
         <div style={{
-          position: 'absolute', top: 'calc(100% + 12px)', left: -20, right: -20,
+          position: 'absolute', top: 'calc(100% + 16px)', left: -24, width: '340px',
           backgroundColor: dark ? '#1A1A1A' : '#fff',
-          borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.2)',
-          zIndex: 50, maxHeight: '320px', overflowY: 'auto', overflow: 'hidden',
+          borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.18)',
+          zIndex: 50, maxHeight: '360px', overflowY: 'auto',
+          border: `1px solid ${dark ? '#2A2A2A' : '#E5E5E0'}`,
         }}>
           {getFiltered().length === 0 ? (
-            <div style={{ padding: '16px', textAlign: 'center', color: t.textMuted, fontSize: '13px' }}>No routes available</div>
+            <div style={{ padding: '20px', textAlign: 'center', color: t.textMuted, fontSize: '13px' }}>
+              {query ? 'No matching locations' : 'No routes available'}
+            </div>
           ) : getFiltered().map(loc => (
             <button key={loc.code} onMouseDown={(e) => { e.preventDefault(); onChange(loc.code); setIsOpen(false); setQuery(''); }}
               style={{
                 width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px',
                 border: 'none', backgroundColor: 'transparent', cursor: 'pointer', textAlign: 'left', fontSize: '14px',
-                borderBottom: `1px solid ${t.divider}`,
-              }}>
+                borderBottom: `1px solid ${t.divider}`, transition: 'background-color 0.1s ease',
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = dark ? '#252525' : '#F7F7F5'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; }}
+            >
               {loc.type === 'metro' ? (
                 <>
                   <div style={{ width: '36px', height: '36px', background: `linear-gradient(135deg, ${C.darkGreen}, ${C.black})`, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Globe style={{ width: '16px', height: '16px', color: C.cream }} />
                   </div>
-                  <div><div style={{ fontWeight: 700, color: t.text }}>{loc.city}</div><div style={{ fontSize: '11px', color: t.textMuted }}>{loc.sub}</div></div>
+                  <div><div style={{ fontWeight: 700, color: t.text }}>{loc.city}</div><div style={{ fontSize: '11px', color: t.textMuted, marginTop: '1px' }}>{loc.sub}</div></div>
                 </>
               ) : (
                 <>
                   <div style={{ width: '36px', height: '36px', backgroundColor: dark ? '#252525' : C.cream, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '11px', color: C.darkGreen, flexShrink: 0 }}>{loc.code}</div>
-                  <div><div style={{ fontWeight: 600, color: t.text }}>{loc.city}, {loc.state}</div><div style={{ fontSize: '11px', color: t.textMuted }}>{loc.name}{loc.metro ? ` · ${findLoc(loc.metro).city}` : ''}</div></div>
+                  <div><div style={{ fontWeight: 600, color: t.text }}>{loc.city}, {loc.state}</div><div style={{ fontSize: '11px', color: t.textMuted, marginTop: '1px' }}>{loc.name}{loc.metro ? ` · ${findLoc(loc.metro).city}` : ''}</div></div>
                 </>
               )}
             </button>
@@ -133,7 +166,9 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
   );
 };
 
-// Desktop Calendar
+/* ────────────────────────────────────────────
+   Desktop Calendar
+   ──────────────────────────────────────────── */
 const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, onSelectDepart, onSelectReturn, fromCode, toCode, selectingReturn, setSelectingReturn }: {
   isOpen: boolean; onClose: () => void; tripType: string; departDate: string; returnDate: string;
   onSelectDepart: (d: string) => void; onSelectReturn: (d: string) => void;
@@ -270,7 +305,9 @@ const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, on
 };
 
 
-// Main Desktop Page
+/* ════════════════════════════════════════════
+   Main Desktop Page
+   ════════════════════════════════════════════ */
 export default function DesktopPage() {
   const router = useRouter();
   const [fromCode, setFromCode] = useState('');
@@ -317,9 +354,9 @@ export default function DesktopPage() {
 
   return (
     <ThemeContext.Provider value={{ dark, toggle: () => setDark(!dark) }}>
-      <div style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg, transition: 'background-color 0.3s ease' }}>
+      <div style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg, transition: 'background-color 0.3s ease', scrollBehavior: 'smooth' }}>
 
-        {/* ========== HERO — full viewport like Hopper ========== */}
+        {/* ========== HERO — full viewport ========== */}
         <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
 
           {/* Rotating background images */}
@@ -337,8 +374,8 @@ export default function DesktopPage() {
             </div>
           ))}
 
-          {/* Gradient — subtle, mainly at top for nav readability and bottom for search bar */}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.35) 100%)' }} />
+          {/* Gradient overlay — darken top for nav, darken bottom for text readability */}
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.45) 100%)', zIndex: 1 }} />
 
           {/* Nav bar — floating over hero */}
           <nav style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 20, padding: '20px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -355,82 +392,137 @@ export default function DesktopPage() {
             </button>
           </nav>
 
-          {/* Search bar — centered like Hopper */}
-          <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '40px' }}>
+          {/* ─── Hero content: tagline + search ─── */}
+          <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '20px' }}>
+
+            {/* Tagline text */}
+            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+              <h1 style={{
+                fontSize: '44px', fontWeight: 800, color: '#fff', margin: '0 0 10px',
+                textShadow: '0 2px 20px rgba(0,0,0,0.3)', letterSpacing: '-0.02em', lineHeight: 1.15,
+              }}>
+                Rediscover what flying<br />is all about.
+              </h1>
+              <p style={{
+                fontSize: '17px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', margin: 0,
+                textShadow: '0 1px 12px rgba(0,0,0,0.25)',
+              }}>
+                Compare semi-private flights across every carrier.
+              </p>
+            </div>
+
+            {/* Trip type toggle — Round Trip / One Way */}
+            <div style={{
+              display: 'flex', gap: '4px', marginBottom: '12px',
+              backgroundColor: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '3px',
+              backdropFilter: 'blur(12px)',
+            }}>
+              {[{ key: 'roundtrip', label: 'Round trip' }, { key: 'oneway', label: 'One way' }].map(opt => (
+                <button key={opt.key}
+                  onClick={() => { setTripType(opt.key); if (opt.key === 'oneway') setReturnDate(''); }}
+                  style={{
+                    padding: '8px 20px', border: 'none', borderRadius: '8px', fontSize: '13px',
+                    fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s ease',
+                    backgroundColor: tripType === opt.key ? 'rgba(255,255,255,0.95)' : 'transparent',
+                    color: tripType === opt.key ? '#1A1A1A' : 'rgba(255,255,255,0.8)',
+                  }}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Search bar */}
             <div style={{
               backgroundColor: t.searchBg,
-              borderRadius: '14px',
+              borderRadius: '16px',
               display: 'flex',
               alignItems: 'center',
-              width: '720px',
-              height: '68px',
-              boxShadow: '0 4px 30px rgba(0,0,0,0.12)',
+              width: '860px',
+              maxWidth: '92vw',
+              minHeight: '76px',
+              boxShadow: '0 8px 40px rgba(0,0,0,0.15)',
               backdropFilter: 'blur(24px)',
               overflow: 'visible',
+              position: 'relative',
             }}>
 
               {/* Where from */}
-              <div style={{ flex: 1, padding: '12px 24px', borderRight: `1px solid ${t.divider}`, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
+              <div style={{ flex: 1.2, padding: '14px 24px', borderRight: `1px solid ${t.divider}`, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
                 <AirportField label="Where from" value={fromCode} onChange={(c) => { setFromCode(c); setToCode(''); }} placeholder="City or airport" excludeCode={toCode} />
               </div>
 
-              {/* Swap */}
+              {/* Swap button */}
               <div style={{ margin: '0 -14px', zIndex: 5, display: 'flex', alignItems: 'center' }}>
                 <button onClick={() => { const tmp = fromCode; setFromCode(toCode); setToCode(tmp); }}
-                  style={{ width: '28px', height: '28px', borderRadius: '50%', border: `1.5px solid ${t.divider}`, backgroundColor: t.searchBg, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <ArrowLeftRight style={{ width: '11px', height: '11px', color: t.textMuted }} />
+                  style={{ width: '30px', height: '30px', borderRadius: '50%', border: `1.5px solid ${t.divider}`, backgroundColor: t.searchBg, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.2s ease' }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'rotate(180deg)'; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'rotate(0deg)'; }}
+                >
+                  <ArrowLeftRight style={{ width: '12px', height: '12px', color: t.textMuted }} />
                 </button>
               </div>
 
               {/* Where to */}
-              <div style={{ flex: 1, padding: '12px 24px', borderRight: `1px solid ${t.divider}`, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
+              <div style={{ flex: 1.2, padding: '14px 24px', borderRight: `1px solid ${t.divider}`, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
                 <AirportField label="Where to" value={toCode} onChange={setToCode} placeholder="Search destination" excludeCode={fromCode} filterByFrom={fromCode} />
               </div>
 
               {/* Dates */}
-              <div style={{ padding: '12px 24px', borderRight: `1px solid ${t.divider}`, cursor: 'pointer', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: '140px' }}
+              <div style={{ padding: '14px 20px', borderRight: `1px solid ${t.divider}`, cursor: 'pointer', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: '150px' }}
                 onClick={() => { setSelectingReturn(!!departDate && !returnDate && tripType === 'roundtrip'); setCalOpen(true); }}>
-                <div style={{ fontSize: '12px', fontWeight: 500, color: t.textMuted, marginBottom: '1px' }}>Dates</div>
-                <div style={{ fontSize: '16px', fontWeight: 500, color: departDate ? t.text : t.textMuted }}>
+                <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px', letterSpacing: '0.02em' }}>Dates</div>
+                <div style={{ fontSize: '15px', fontWeight: 500, color: departDate ? t.text : t.textSec }}>
                   {departDate ? `${fmtDate(departDate)}${tripType === 'roundtrip' && returnDate ? ` – ${fmtDate(returnDate)}` : ''}` : 'Add dates'}
                 </div>
               </div>
 
               {/* Guests */}
-              <div style={{ padding: '12px 20px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: '100px' }}>
-                <div style={{ fontSize: '12px', fontWeight: 500, color: t.textMuted, marginBottom: '1px' }}>Guests</div>
+              <div style={{ padding: '14px 20px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: '110px' }}>
+                <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px', letterSpacing: '0.02em' }}>Guests</div>
                 <select value={passengers} onChange={e => setPassengers(Number(e.target.value))}
-                  style={{ border: 'none', fontSize: '16px', fontWeight: 500, fontFamily: 'inherit', outline: 'none', appearance: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: t.text, padding: 0 }}>
+                  style={{ border: 'none', fontSize: '15px', fontWeight: 500, fontFamily: 'inherit', outline: 'none', appearance: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: t.text, padding: 0 }}>
                   {[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n} guest{n > 1 ? 's' : ''}</option>)}
                 </select>
               </div>
 
-              {/* Search button — Hopper uses blue circle, we use Aviato green */}
-              <div style={{ padding: '0 10px 0 0', display: 'flex', alignItems: 'center' }}>
+              {/* Search button */}
+              <div style={{ padding: '0 12px 0 0', display: 'flex', alignItems: 'center' }}>
                 <button onClick={handleSearch} disabled={!fromCode || !toCode || !departDate}
                   style={{
-                    width: '50px', height: '50px', borderRadius: '50%', border: 'none',
+                    width: '52px', height: '52px', borderRadius: '50%', border: 'none',
                     backgroundColor: !fromCode || !toCode || !departDate ? 'rgba(150,150,150,0.4)' : C.darkGreen,
                     cursor: !fromCode || !toCode || !departDate ? 'default' : 'pointer',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    transition: 'background-color 0.2s ease',
-                  }}>
+                    transition: 'all 0.2s ease',
+                    boxShadow: fromCode && toCode && departDate ? '0 4px 16px rgba(10,61,46,0.35)' : 'none',
+                  }}
+                  onMouseEnter={(e) => { if (fromCode && toCode && departDate) (e.currentTarget as HTMLElement).style.transform = 'scale(1.06)'; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
+                >
                   <Search style={{ width: '20px', height: '20px', color: '#fff' }} />
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Dots indicator — bottom right like Hopper */}
-          <div style={{ position: 'absolute', bottom: '24px', right: '48px', zIndex: 10, display: 'flex', gap: '6px', alignItems: 'center' }}>
+          {/* Dots indicator — bottom right */}
+          <div style={{ position: 'absolute', bottom: '60px', right: '48px', zIndex: 10, display: 'flex', gap: '6px', alignItems: 'center' }}>
             {HERO_IMAGES.map((_, i) => (
               <button key={i} onClick={() => setHeroIndex(i)} style={{ width: i === heroIndex ? '18px' : '6px', height: '6px', borderRadius: '3px', border: 'none', backgroundColor: i === heroIndex ? '#fff' : 'rgba(255,255,255,0.4)', cursor: 'pointer', transition: 'all 0.3s ease', padding: 0 }} />
             ))}
           </div>
+
+          {/* ─── Curved bottom cutout — Hopper style white bleed ─── */}
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 5 }}>
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '80px' }}>
+              <path d="M0,120 L0,60 Q720,0 1440,60 L1440,120 Z" fill={t.bg} />
+            </svg>
+          </div>
         </div>
 
         {/* ========== Popular Routes ========== */}
-        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '56px 48px 40px' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 48px 40px' }}>
           <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px' }}>Popular Routes</h2>
           <p style={{ fontSize: '14px', color: t.textMuted, margin: '0 0 28px' }}>The most-booked semi-private flights</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
