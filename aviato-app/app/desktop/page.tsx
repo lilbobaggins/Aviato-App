@@ -323,6 +323,16 @@ export default function DesktopPage() {
   const [heroIndex, setHeroIndex] = useState(0);
   // heroLoaded removed — images load directly via backgroundImage
   const eventsRef = useRef<HTMLDivElement>(null);
+  const [eventCat, setEventCat] = useState('All');
+
+  // Unique event categories
+  const EVENT_CATS = ['All', ...Array.from(new Set(EVENTS.map(ev => ev.cat)))];
+  const filteredEvents = eventCat === 'All' ? EVENTS : EVENTS.filter(ev => ev.cat === eventCat);
+
+  // Reset scroll when category changes
+  useEffect(() => {
+    if (eventsRef.current) eventsRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+  }, [eventCat]);
 
   // Auto-rotate hero
   useEffect(() => {
@@ -350,7 +360,16 @@ export default function DesktopPage() {
   ];
 
   const scrollEvents = (dir: number) => {
-    if (eventsRef.current) eventsRef.current.scrollBy({ left: dir * 380, behavior: 'smooth' });
+    const el = eventsRef.current;
+    if (!el) return;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    if (dir === 1 && el.scrollLeft >= maxScroll - 10) {
+      el.scrollTo({ left: 0, behavior: 'smooth' });
+    } else if (dir === -1 && el.scrollLeft <= 10) {
+      el.scrollTo({ left: maxScroll, behavior: 'smooth' });
+    } else {
+      el.scrollBy({ left: dir * 380, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -576,6 +595,21 @@ export default function DesktopPage() {
               </div>
             </div>
 
+            {/* Category filter pills */}
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
+              {EVENT_CATS.map(cat => (
+                <button key={cat} onClick={() => setEventCat(cat)} style={{
+                  padding: '8px 18px', borderRadius: '20px', border: `1.5px solid ${eventCat === cat ? (dark ? C.pink : C.darkGreen) : t.cardBorder}`,
+                  backgroundColor: eventCat === cat ? (dark ? C.pink : C.darkGreen) : 'transparent',
+                  color: eventCat === cat ? '#fff' : t.textSec,
+                  fontSize: '13px', fontWeight: 600, cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}>
+                  {cat}
+                </button>
+              ))}
+            </div>
+
             <div ref={eventsRef} style={{ display: 'flex', gap: '16px', overflowX: 'auto', scrollSnapType: 'x mandatory', paddingBottom: '8px', scrollbarWidth: 'none' }}
               onMouseDown={(e) => {
                 const el = e.currentTarget; let startX = e.pageX; let scrollL = el.scrollLeft;
@@ -583,7 +617,7 @@ export default function DesktopPage() {
                 const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); };
                 document.addEventListener('mousemove', move); document.addEventListener('mouseup', up);
               }}>
-              {EVENTS.map(ev => (
+              {filteredEvents.map(ev => (
                 <div key={ev.id} style={{
                   minWidth: '320px', maxWidth: '320px', borderRadius: '16px', overflow: 'hidden',
                   border: `1px solid ${t.cardBorder}`, backgroundColor: t.card,
@@ -633,7 +667,13 @@ export default function DesktopPage() {
                     </div>
                     <p style={{ fontSize: '13px', color: t.textSec, margin: '0 0 14px', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{ev.desc}</p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <button onClick={(e) => { e.stopPropagation(); }} style={{
+                      <button onClick={(e) => {
+                        e.stopPropagation();
+                        if (ev.from) setFromCode(ev.from);
+                        setToCode(ev.dest); setTripType('roundtrip');
+                        setDepartDate(shiftDate(ev.start, -1)); setReturnDate(shiftDate(ev.end, 1));
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }} style={{
                         flex: 1, padding: '10px', border: 'none', borderRadius: '10px',
                         backgroundColor: dark ? C.pink : C.black, color: '#fff',
                         fontWeight: 700, fontSize: '12px', cursor: 'pointer',
