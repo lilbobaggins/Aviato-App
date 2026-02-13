@@ -20,7 +20,7 @@ const useTheme = () => useContext(ThemeContext);
 
 // Theme colors
 const T = (dark: boolean) => ({
-  bg: dark ? '#161616' : '#F9F9F7',
+  bg: dark ? '#161616' : '#FFFCF2',
   bgAlt: dark ? '#1E1E1E' : '#FFFFFF',
   card: dark ? '#1E1E1E' : '#FFFFFF',
   cardBorder: dark ? '#2D2D2D' : '#E5E5E0',
@@ -355,10 +355,20 @@ export default function DesktopPage() {
 
   return (
     <ThemeContext.Provider value={{ dark, toggle: () => setDark(!dark) }}>
-      <div style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg, transition: 'background-color 0.3s ease', scrollBehavior: 'smooth' }}>
+      <div style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg, scrollBehavior: 'smooth' }}>
+        {/* Global smooth theme transition */}
+        <style>{`
+          .aviato-desktop *, .aviato-desktop *::before, .aviato-desktop *::after {
+            transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease !important;
+          }
+          .aviato-desktop img, .aviato-desktop [data-no-transition] {
+            transition: none !important;
+          }
+        `}</style>
+        <div className="aviato-desktop" style={{ minHeight: '100vh' }}>
 
         {/* ========== NAV BAR — sits on the white page above hero ========== */}
-        <nav style={{ padding: '16px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: t.bg }}>
+        <nav style={{ padding: '16px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: t.bg, transition: 'background-color 0.5s ease' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5px' }}>
               <div style={{ width: '14px', height: '6px', backgroundColor: C.darkGreen, borderRadius: '1.5px' }} />
@@ -614,6 +624,7 @@ export default function DesktopPage() {
         </div>
 
         <DesktopCalendar isOpen={calOpen} onClose={() => setCalOpen(false)} tripType={tripType} departDate={departDate} returnDate={returnDate} onSelectDepart={setDepartDate} onSelectReturn={setReturnDate} fromCode={fromCode} toCode={toCode} selectingReturn={selectingReturn} setSelectingReturn={setSelectingReturn} />
+        </div>
       </div>
     </ThemeContext.Provider>
   );

@@ -16,7 +16,7 @@ import type { Flight } from '../../data/types';
 
 // Theme colors (same as landing page)
 const T = (dark: boolean) => ({
-  bg: dark ? '#161616' : '#F9F9F7',
+  bg: dark ? '#161616' : '#FFFCF2',
   bgAlt: dark ? '#1E1E1E' : '#FFFFFF',
   card: dark ? '#1E1E1E' : '#FFFFFF',
   cardBorder: dark ? '#2D2D2D' : '#E5E5E0',
@@ -293,7 +293,17 @@ function ResultsContent() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg, transition: 'background-color 0.3s ease, color 0.3s ease' }}>
+    <div style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg }}>
+      {/* Global smooth theme transition */}
+      <style>{`
+        .aviato-results *, .aviato-results *::before, .aviato-results *::after {
+          transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease !important;
+        }
+        .aviato-results img, .aviato-results [data-no-transition] {
+          transition: none !important;
+        }
+      `}</style>
+      <div className="aviato-results" style={{ minHeight: '100vh' }}>
       {/* Top bar */}
       <div style={{ background: t.topBar, padding: '16px 40px', display: 'flex', alignItems: 'center', gap: '20px' }}>
         <button onClick={goBack} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: C.white, fontSize: '14px', fontWeight: 700, padding: 0 }}>
@@ -527,6 +537,7 @@ function ResultsContent() {
           <DetailPanel fl={selectedFlight} onClose={() => setSelectedFlight(null)} />
         </>
       )}
+      </div>
     </div>
   );
 }
