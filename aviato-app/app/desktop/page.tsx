@@ -417,16 +417,16 @@ export default function DesktopPage() {
               {/* Tagline text */}
               <div style={{ textAlign: 'center', marginBottom: '28px' }}>
                 <h1 style={{
-                  fontSize: '48px', fontWeight: 800, color: '#fff', margin: '0 0 8px',
+                  fontSize: '48px', fontWeight: 800, color: '#fff', margin: '0 0 16px',
                   letterSpacing: '-0.02em', lineHeight: 1.2,
-                  textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                  textShadow: '0 2px 10px rgba(0,0,0,0.4)',
                 }}>
                   Rediscover what flying is all about.
                 </h1>
                 <p style={{
                   fontSize: '21px', fontWeight: 600, color: 'rgba(255,255,255,0.95)', margin: 0,
-                  letterSpacing: '0.01em',
-                  textShadow: '0 1px 6px rgba(0,0,0,0.3)',
+                  letterSpacing: '0.02em',
+                  textShadow: '0 1px 8px rgba(0,0,0,0.4)',
                 }}>
                   Compare semi-private flights across every carrier.
                 </p>
