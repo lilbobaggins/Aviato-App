@@ -321,7 +321,7 @@ export default function DesktopPage() {
   const [selectingReturn, setSelectingReturn] = useState(false);
   const [dark, setDark] = useState(false);
   const [heroIndex, setHeroIndex] = useState(0);
-  const [heroLoaded, setHeroLoaded] = useState<Record<number, boolean>>({});
+  // heroLoaded removed — images load directly via backgroundImage
   const eventsRef = useRef<HTMLDivElement>(null);
 
   // Auto-rotate hero
@@ -369,45 +369,42 @@ export default function DesktopPage() {
       `}</style>
       <div className="aviato-desktop" style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg, scrollBehavior: 'smooth' }}>
 
-        {/* ========== FLOATING LOGO — fixed, no background ========== */}
-        <div style={{
-          position: 'fixed', top: '20px', left: '28px', zIndex: 50,
-          display: 'flex', alignItems: 'center', gap: '10px',
-        }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5px' }}>
-            <div style={{ width: '14px', height: '6px', backgroundColor: C.darkGreen, borderRadius: '1.5px' }} />
-            <div style={{ width: '14px', height: '6px', backgroundColor: C.pink, borderRadius: '1.5px' }} />
-            <div style={{ width: '14px', height: '6px', backgroundColor: C.cream, borderRadius: '1.5px' }} />
-          </div>
-          <span style={{ fontSize: '20px', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}>Aviato</span>
-        </div>
-
-        {/* ========== FLOATING THEME TOGGLE — fixed, no background ========== */}
-        <button onClick={() => setDark(!dark)} style={{
-          position: 'fixed', top: '20px', right: '28px', zIndex: 50,
-          width: '38px', height: '38px', borderRadius: '50%', border: 'none',
-          background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
-          cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          {dark ? <Sun style={{ width: '16px', height: '16px', color: '#fff' }} /> : <Moon style={{ width: '16px', height: '16px', color: '#fff' }} />}
-        </button>
-
         {/* ========== HERO — inset rounded card like Hopper ========== */}
         <div style={{ padding: '16px 16px 0 16px' }}>
           <div style={{ position: 'relative', height: 'calc(100vh - 32px)', borderRadius: '20px', overflow: 'hidden' }}>
+
+            {/* ── Logo — inside hero frame, top-left ── */}
+            <div style={{
+              position: 'absolute', top: '28px', left: '32px', zIndex: 20,
+              display: 'flex', alignItems: 'center', gap: '12px',
+            }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                <div style={{ width: '18px', height: '7px', backgroundColor: C.darkGreen, borderRadius: '2px' }} />
+                <div style={{ width: '18px', height: '7px', backgroundColor: C.pink, borderRadius: '2px' }} />
+                <div style={{ width: '18px', height: '7px', backgroundColor: C.cream, borderRadius: '2px' }} />
+              </div>
+              <span style={{ fontSize: '26px', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>Aviato</span>
+            </div>
+
+            {/* ── Theme toggle — inside hero frame, top-right ── */}
+            <button onClick={() => setDark(!dark)} style={{
+              position: 'absolute', top: '28px', right: '32px', zIndex: 20,
+              width: '44px', height: '44px', borderRadius: '50%', border: 'none',
+              background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
+              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              {dark ? <Sun style={{ width: '20px', height: '20px', color: '#fff' }} /> : <Moon style={{ width: '20px', height: '20px', color: '#fff' }} />}
+            </button>
 
             {/* Rotating background images */}
             {HERO_IMAGES.map((img, i) => (
               <div key={i} data-hero-slide="true" style={{
                 position: 'absolute', inset: 0,
-                backgroundImage: heroLoaded[i] ? `url(${img.src})` : undefined,
+                backgroundImage: `url(${img.src})`,
                 backgroundColor: '#111',
                 backgroundSize: 'cover', backgroundPosition: 'center',
                 opacity: heroIndex === i ? 1 : 0,
-              }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={img.src} alt="" style={{ display: 'none' }} onLoad={() => setHeroLoaded(prev => ({ ...prev, [i]: true }))} />
-              </div>
+              }} />
             ))}
 
             {/* Subtle gradient at bottom only for text readability */}
