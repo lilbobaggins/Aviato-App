@@ -367,8 +367,12 @@ export default function DesktopPage() {
         `}</style>
         <div className="aviato-desktop" style={{ minHeight: '100vh' }}>
 
-        {/* ========== NAV BAR — sits on the white page above hero ========== */}
-        <nav style={{ padding: '16px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: t.bg, transition: 'background-color 0.5s ease' }}>
+        {/* ========== STICKY NAV BAR — logo + theme toggle fixed on scroll ========== */}
+        <nav style={{
+          position: 'sticky', top: 0, zIndex: 50,
+          padding: '16px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          backgroundColor: t.bg, transition: 'background-color 0.5s ease',
+        }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5px' }}>
               <div style={{ width: '14px', height: '6px', backgroundColor: C.darkGreen, borderRadius: '1.5px' }} />
