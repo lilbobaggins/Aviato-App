@@ -407,8 +407,8 @@ export default function DesktopPage() {
               }} />
             ))}
 
-            {/* Subtle gradient at bottom only for text readability */}
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 40%, transparent 70%)', zIndex: 1 }} />
+            {/* Bottom-heavy gradient scrim for text readability */}
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.05) 25%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.55) 75%, rgba(0,0,0,0.65) 100%)', zIndex: 1 }} />
 
             {/* ─── Hero content: tagline + search ─── */}
             <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingBottom: '40px' }}>
@@ -418,12 +418,14 @@ export default function DesktopPage() {
                 <h1 style={{
                   fontSize: '48px', fontWeight: 800, color: '#fff', margin: '0 0 8px',
                   letterSpacing: '-0.02em', lineHeight: 1.2,
+                  textShadow: '0 2px 8px rgba(0,0,0,0.3)',
                 }}>
                   Rediscover what flying is all about.
                 </h1>
                 <p style={{
-                  fontSize: '21px', fontWeight: 600, color: 'rgba(255,255,255,0.9)', margin: 0,
+                  fontSize: '21px', fontWeight: 600, color: 'rgba(255,255,255,0.95)', margin: 0,
                   letterSpacing: '0.01em',
+                  textShadow: '0 1px 6px rgba(0,0,0,0.3)',
                 }}>
                   Compare semi-private flights across every carrier.
                 </p>
