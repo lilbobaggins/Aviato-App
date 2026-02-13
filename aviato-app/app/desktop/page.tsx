@@ -407,17 +407,14 @@ export default function DesktopPage() {
               }} />
             ))}
 
-            {/* No full-page overlay — text backdrop handled inline below */}
+            {/* Full-hero soft vignette — darkest at center where text sits, eases out to edges */}
+            <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 120% 100% at 50% 55%, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.35) 25%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.05) 70%, transparent 100%)', zIndex: 1 }} />
 
             {/* ─── Hero content: tagline + search ─── */}
             <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingBottom: '40px' }}>
 
               {/* Tagline text with soft radial backdrop */}
-              <div style={{
-                textAlign: 'center', marginBottom: '28px', position: 'relative',
-                padding: '40px 80px', borderRadius: '40px',
-                background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 50%, transparent 80%)',
-              }}>
+              <div style={{ textAlign: 'center', marginBottom: '28px' }}>
                 <h1 style={{
                   fontSize: '48px', fontWeight: 800, color: '#fff', margin: '0 0 16px',
                   letterSpacing: '-0.02em', lineHeight: 1.2,
