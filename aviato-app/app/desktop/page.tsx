@@ -407,8 +407,9 @@ export default function DesktopPage() {
               }} />
             ))}
 
-            {/* Bottom-heavy gradient scrim for text readability */}
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.05) 25%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.55) 75%, rgba(0,0,0,0.65) 100%)', zIndex: 1 }} />
+            {/* Light uniform overlay + bottom gradient for text readability */}
+            <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.25)', zIndex: 1 }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 0%, transparent 40%, rgba(0,0,0,0.2) 70%, rgba(0,0,0,0.35) 100%)', zIndex: 1 }} />
 
             {/* ─── Hero content: tagline + search ─── */}
             <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingBottom: '40px' }}>
