@@ -123,12 +123,13 @@ function ResultsContent() {
     return new Date(year, month, 1).getDay();
   };
 
-  const getAvailableDates = () => {
+  const getAvailableDates = (): Set<string> | null => {
     try {
       const dates = getRouteDates(viewingReturn ? toCode : fromCode, viewingReturn ? fromCode : toCode);
+      if (dates === null) return null; // null means daily route — all dates available
       return new Set(dates);
     } catch {
-      return new Set();
+      return null; // on error, allow all dates
     }
   };
 
@@ -364,7 +365,7 @@ function ResultsContent() {
                       }
                       for (let day = 1; day <= daysInMonth; day++) {
                         const dateStr = `${pickerYear}-${String(pickerMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                        const isAvailable = availableDates.has(dateStr);
+                        const isAvailable = availableDates === null ? true : availableDates.has(dateStr);
                         const isSelected = dateStr === (viewingReturn ? returnDate : departDate);
                         days.push(
                           <button
