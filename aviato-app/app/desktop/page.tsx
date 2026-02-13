@@ -20,10 +20,11 @@ const useTheme = () => useContext(ThemeContext);
 
 // Theme colors
 const T = (dark: boolean) => ({
-  bg: dark ? '#0D0D0D' : '#FFFFFF',
-  bgAlt: dark ? '#1A1A1A' : '#FAFAF7',
-  card: dark ? '#1A1A1A' : '#FFFFFF',
-  cardBorder: dark ? '#2A2A2A' : '#E5E5E0',
+  bg: dark ? '#161616' : '#F9F9F7',
+  bgAlt: dark ? '#1E1E1E' : '#FFFFFF',
+  card: dark ? '#1E1E1E' : '#FFFFFF',
+  cardBorder: dark ? '#2D2D2D' : '#E5E5E0',
+  accent: dark ? '#E8576D' : '#0A3D2E',
   text: dark ? '#F5F0E1' : '#1A1A1A',
   textSec: dark ? '#9B9B93' : '#6B6B63',
   textMuted: dark ? '#6B6B63' : '#9B9B93',
@@ -245,9 +246,9 @@ const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, on
             const dis = past || isBefore(ds) || noFl;
             return (
               <button key={ds} onClick={() => !dis && handleDate(ds)} disabled={dis}
-                style={{ padding: '3px 1px', border: 'none', borderRadius: dep ? '8px 0 0 8px' : ret ? '0 8px 8px 0' : inR ? '0' : '8px', backgroundColor: sel ? C.darkGreen : inR ? (dark ? '#1A3A2E' : '#E0F2E1') : 'transparent', cursor: dis ? 'default' : 'pointer', opacity: dis ? 0.25 : 1, textAlign: 'center', minHeight: '48px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px' }}>
+                style={{ padding: '3px 1px', border: 'none', borderRadius: dep ? '8px 0 0 8px' : ret ? '0 8px 8px 0' : inR ? '0' : '8px', backgroundColor: sel ? (dark ? C.pink : C.darkGreen) : inR ? (dark ? '#3D1520' : '#E0F2E1') : 'transparent', cursor: dis ? 'default' : 'pointer', opacity: dis ? 0.25 : 1, textAlign: 'center', minHeight: '48px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px' }}>
                 <span style={{ fontSize: '13px', fontWeight: sel ? 800 : 600, color: sel ? '#fff' : t.text }}>{day}</span>
-                {price && !dis && <span style={{ fontSize: '9px', fontWeight: 700, color: sel ? C.cream : C.darkGreen, backgroundColor: sel ? 'rgba(255,255,255,0.15)' : getPriceColor(price), borderRadius: '3px', padding: '1px 4px' }}>${price}</span>}
+                {price && !dis && <span style={{ fontSize: '9px', fontWeight: 700, color: sel ? C.cream : (dark ? C.pink : C.darkGreen), backgroundColor: sel ? 'rgba(255,255,255,0.15)' : getPriceColor(price), borderRadius: '3px', padding: '1px 4px' }}>${price}</span>}
               </button>
             );
           })}
@@ -267,17 +268,17 @@ const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, on
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <div>
             <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 800, color: t.text }}>{departDate && returnDate ? `${tripDays} night trip` : selectingReturn ? 'Select return date' : 'Select departure'}</h3>
-            {tripType === 'roundtrip' && <p style={{ margin: '2px 0 0', fontSize: '12px', color: departDate && returnDate ? C.darkGreen : t.textMuted }}>{departDate && returnDate ? 'Click Done when ready.' : selectingReturn ? 'Pick a date after departure' : 'Pick your departure date'}</p>}
+            {tripType === 'roundtrip' && <p style={{ margin: '2px 0 0', fontSize: '12px', color: departDate && returnDate ? (dark ? C.pink : C.darkGreen) : t.textMuted }}>{departDate && returnDate ? 'Click Done when ready.' : selectingReturn ? 'Pick a date after departure' : 'Pick your departure date'}</p>}
           </div>
           <button onClick={() => { setSelectingReturn(false); onClose(); }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px', borderRadius: '50%', backgroundColor: t.bgAlt }}><X style={{ width: '18px', height: '18px', color: t.textSec }} /></button>
         </div>
         <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-          <div style={{ flex: 1, padding: '10px 14px', borderRadius: '12px', backgroundColor: departDate ? (dark ? '#1A3A2E' : C.cream) : t.bgAlt, border: `2px solid ${!selectingReturn ? C.darkGreen : 'transparent'}` }}>
+          <div style={{ flex: 1, padding: '10px 14px', borderRadius: '12px', backgroundColor: departDate ? (dark ? '#1A3A2E' : C.cream) : t.bgAlt, border: `2px solid ${!selectingReturn ? (dark ? C.pink : C.darkGreen) : 'transparent'}` }}>
             <div style={{ fontSize: '9px', fontWeight: 700, color: t.textMuted, letterSpacing: '0.08em', marginBottom: '2px' }}>DEPART</div>
             <div style={{ fontSize: '14px', fontWeight: 800, color: t.text }}>{departDate ? new Date(departDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', weekday: 'short' }) : '—'}</div>
           </div>
           {tripType === 'roundtrip' && (
-            <div style={{ flex: 1, padding: '10px 14px', borderRadius: '12px', backgroundColor: returnDate ? (dark ? '#1A3A2E' : C.cream) : t.bgAlt, border: `2px solid ${selectingReturn ? C.darkGreen : 'transparent'}` }}>
+            <div style={{ flex: 1, padding: '10px 14px', borderRadius: '12px', backgroundColor: returnDate ? (dark ? '#1A3A2E' : C.cream) : t.bgAlt, border: `2px solid ${selectingReturn ? (dark ? C.pink : C.darkGreen) : 'transparent'}` }}>
               <div style={{ fontSize: '9px', fontWeight: 700, color: t.textMuted, letterSpacing: '0.08em', marginBottom: '2px' }}>RETURN</div>
               <div style={{ fontSize: '14px', fontWeight: 800, color: t.text }}>{returnDate ? new Date(returnDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', weekday: 'short' }) : '—'}</div>
             </div>
@@ -297,7 +298,7 @@ const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, on
           ))}
         </div>
         {departDate && returnDate && tripType === 'roundtrip' && (
-          <button onClick={() => { setSelectingReturn(false); onClose(); }} style={{ width: '100%', marginTop: '16px', padding: '14px', border: 'none', borderRadius: '12px', backgroundColor: C.darkGreen, cursor: 'pointer', fontSize: '14px', fontWeight: 700, color: C.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}><Check style={{ width: '15px', height: '15px' }} /> Done</button>
+          <button onClick={() => { setSelectingReturn(false); onClose(); }} style={{ width: '100%', marginTop: '16px', padding: '14px', border: 'none', borderRadius: '12px', backgroundColor: dark ? C.pink : C.darkGreen, cursor: 'pointer', fontSize: '14px', fontWeight: 700, color: C.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}><Check style={{ width: '15px', height: '15px' }} /> Done</button>
         )}
       </div>
     </div>
@@ -405,8 +406,8 @@ export default function DesktopPage() {
                   Rediscover what flying<br />is all about.
                 </h1>
                 <p style={{
-                  fontSize: '17px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', margin: 0,
-                  textShadow: '0 1px 12px rgba(0,0,0,0.25)',
+                  fontSize: '17px', fontWeight: 600, color: '#E8576D', margin: 0,
+                  textShadow: '0 2px 16px rgba(0,0,0,0.5)',
                 }}>
                   Compare semi-private flights across every carrier.
                 </p>
@@ -492,7 +493,7 @@ export default function DesktopPage() {
                   <button onClick={handleSearch} disabled={!fromCode || !toCode || !departDate}
                     style={{
                       width: '52px', height: '52px', borderRadius: '50%', border: 'none',
-                      backgroundColor: !fromCode || !toCode || !departDate ? 'rgba(150,150,150,0.4)' : C.darkGreen,
+                      backgroundColor: !fromCode || !toCode || !departDate ? 'rgba(150,150,150,0.4)' : (dark ? C.pink : C.darkGreen),
                       cursor: !fromCode || !toCode || !departDate ? 'default' : 'pointer',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       transition: 'all 0.2s ease',
@@ -535,7 +536,7 @@ export default function DesktopPage() {
                   <div style={{ fontWeight: 700, color: t.text, fontSize: '14px' }}>{r.label}</div>
                   <div style={{ fontSize: '12px', color: t.textMuted, marginTop: '3px' }}>{r.sub}</div>
                 </div>
-                <div style={{ fontWeight: 800, color: C.darkGreen, fontSize: '17px' }}>${r.price}</div>
+                <div style={{ fontWeight: 800, color: dark ? C.pink : C.darkGreen, fontSize: '17px' }}>${r.price}</div>
               </button>
             ))}
           </div>
@@ -580,7 +581,7 @@ export default function DesktopPage() {
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <div>
                         <div style={{ fontSize: '10px', color: t.textMuted, fontWeight: 600 }}>FLIGHTS FROM</div>
-                        <div style={{ fontSize: '22px', fontWeight: 800, color: C.darkGreen }}>${ev.price}</div>
+                        <div style={{ fontSize: '22px', fontWeight: 800, color: dark ? C.pink : C.darkGreen }}>${ev.price}</div>
                       </div>
                       <button onClick={() => {
                         if (ev.from) setFromCode(ev.from);

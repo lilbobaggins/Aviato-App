@@ -3,28 +3,28 @@
 import React, { useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {
-  ChevronLeft, Plane, Clock, Wifi, Coffee, Wine, Heart, Shield,
+  ChevronLeft, ChevronRight, Plane, Clock, Wifi, Coffee, Wine, Heart, Shield,
   ExternalLink, X, Search, Users, Building2, Timer, Briefcase, Sparkles,
   ArrowRight, Sun, Moon
 } from 'lucide-react';
 
 import { C, AIRLINE_STYLE, AIRLINE_BOOKING, WING_RATINGS, BADGE_CONFIG, WING_COLORS } from '../../data/constants';
 import { findLoc } from '../../data/locations';
-import { getMetroAreaFlights } from '../../data/flights';
+import { getMetroAreaFlights, getRouteDates } from '../../data/flights';
 import { generateDeepLink, getDeepLinkNote } from '../../data/deeplinks';
 import type { Flight } from '../../data/types';
 
 // Theme colors (same as landing page)
 const T = (dark: boolean) => ({
-  bg: dark ? '#0D0D0D' : '#FAFAF7',
-  bgAlt: dark ? '#1A1A1A' : '#FFFFFF',
-  card: dark ? '#1A1A1A' : '#FFFFFF',
-  cardBorder: dark ? '#2A2A2A' : '#E5E5E0',
+  bg: dark ? '#161616' : '#F9F9F7',
+  bgAlt: dark ? '#1E1E1E' : '#FFFFFF',
+  card: dark ? '#1E1E1E' : '#FFFFFF',
+  cardBorder: dark ? '#2D2D2D' : '#E5E5E0',
   text: dark ? '#F5F0E1' : '#000000',
   textSec: dark ? '#9B9B93' : '#6B6B63',
   textMuted: dark ? '#6B6B63' : '#9B9B93',
   sectionBg: dark ? '#151515' : '#F5F0E1',
-  panelBg: dark ? '#1A1A1A' : '#FFFFFF',
+  panelBg: dark ? '#1E1E1E' : '#FFFFFF',
   panelSection: dark ? '#252525' : '#FAFAF7',
   filterActive: dark ? C.cream : C.black,
   filterActiveText: dark ? C.black : C.white,
@@ -35,6 +35,7 @@ const T = (dark: boolean) => ({
   disclaimerText: dark ? '#FFD54F' : '#6D5D00',
   topBar: dark ? '#000000' : C.black,
   hoverShadow: dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.08)',
+  accent: dark ? '#E8576D' : '#0A3D2E',
 });
 
 const WingIcon = ({ size = 14, color = '#0A3D2E' }: { size?: number; color?: string }) => (
@@ -73,6 +74,9 @@ function ResultsContent() {
   const [filter, setFilter] = useState('all');
   const [viewingReturn, setViewingReturn] = useState(false);
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
+  const [pickerMonth, setPickerMonth] = useState(() => { const d = departDate ? new Date(departDate + 'T12:00:00') : new Date(); return d.getMonth(); });
+  const [pickerYear, setPickerYear] = useState(() => { const d = departDate ? new Date(departDate + 'T12:00:00') : new Date(); return d.getFullYear(); });
 
   const t = T(dark);
   const fmtDate = (d: string) => d ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', weekday: 'short' }) : '';
@@ -93,6 +97,39 @@ function ResultsContent() {
   const goBack = () => {
     const params = new URLSearchParams({ from: fromCode, to: toCode, theme: dark ? 'dark' : 'light' });
     router.push(`/desktop?${params.toString()}`);
+  };
+
+  const handleDateSelect = (day: number) => {
+    const dateStr = `${pickerYear}-${String(pickerMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const currentDateParam = viewingReturn ? 'return' : 'depart';
+    const params = new URLSearchParams({
+      from: fromCode,
+      to: toCode,
+      depart: viewingReturn ? departDate : dateStr,
+      ...(returnDate && { return: viewingReturn ? dateStr : returnDate }),
+      pax: passengers.toString(),
+      trip: tripType,
+      theme: dark ? 'dark' : 'light',
+    });
+    router.push(`/desktop/results?${params.toString()}`);
+    setDatePickerOpen(false);
+  };
+
+  const getDaysInMonth = (month: number, year: number) => {
+    return new Date(year, month + 1, 0).getDate();
+  };
+
+  const getFirstDayOfMonth = (month: number, year: number) => {
+    return new Date(year, month, 1).getDay();
+  };
+
+  const getAvailableDates = () => {
+    try {
+      const dates = getRouteDates(viewingReturn ? toCode : fromCode, viewingReturn ? fromCode : toCode);
+      return new Set(dates);
+    } catch {
+      return new Set();
+    }
   };
 
   // Detail panel
@@ -151,9 +188,9 @@ function ResultsContent() {
                 <div style={{ fontSize: '12px', color: t.textSec }}>{findLoc(fl.ac).name || findLoc(fl.ac).city} ({fl.ac})</div>
               </div>
             </div>
-            <div style={{ alignSelf: 'center', padding: '8px 12px', backgroundColor: dark ? '#1A3A2E' : C.cream, borderRadius: '10px', textAlign: 'center' }}>
-              <Clock style={{ width: '13px', height: '13px', color: dark ? C.cream : C.darkGreen, margin: '0 auto 2px' }} />
-              <div style={{ fontSize: '11px', fontWeight: 700, color: dark ? C.cream : C.darkGreen }}>{fl.dur}</div>
+            <div style={{ alignSelf: 'center', padding: '8px 12px', backgroundColor: dark ? '#3D1520' : C.cream, borderRadius: '10px', textAlign: 'center' }}>
+              <Clock style={{ width: '13px', height: '13px', color: dark ? C.pink : C.darkGreen, margin: '0 auto 2px' }} />
+              <div style={{ fontSize: '11px', fontWeight: 700, color: dark ? C.pink : C.darkGreen }}>{fl.dur}</div>
             </div>
           </div>
         </div>
@@ -164,7 +201,7 @@ function ResultsContent() {
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}><span style={{ color: t.textSec }}>Base fare × {passengers}</span><span style={{ fontWeight: 600, color: t.text }}>${fl.price * passengers}</span></div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}><span style={{ color: t.textSec }}>Taxes & fees</span><span style={{ fontWeight: 600, color: t.text }}>${taxes * passengers}</span></div>
           <div style={{ borderTop: `2px solid ${t.cardBorder}`, paddingTop: '10px', display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ fontWeight: 800, color: t.text }}>Total</span><span style={{ fontWeight: 800, fontSize: '18px', color: dark ? C.cream : C.darkGreen }}>${total}</span>
+            <span style={{ fontWeight: 800, color: t.text }}>Total</span><span style={{ fontWeight: 800, fontSize: '18px', color: dark ? C.pink : C.darkGreen }}>${total}</span>
           </div>
         </div>
 
@@ -222,7 +259,7 @@ function ResultsContent() {
           <h3 style={{ fontSize: '12px', fontWeight: 700, color: t.text, margin: '0 0 10px' }}>Included Amenities</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
             {fl.amen.map((a, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '6px 12px', backgroundColor: dark ? '#1A3A2E' : C.cream, borderRadius: '8px', fontSize: '11px', fontWeight: 600, color: dark ? C.cream : C.darkGreen }}>
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '6px 12px', backgroundColor: dark ? '#3D1520' : C.cream, borderRadius: '8px', fontSize: '11px', fontWeight: 600, color: dark ? C.pink : C.darkGreen }}>
                 {a.includes('WiFi') && <Wifi style={{ width: '12px', height: '12px' }} />}
                 {(a.includes('Snack') || a.includes('Catering')) && <Coffee style={{ width: '12px', height: '12px' }} />}
                 {(a.includes('Champagne') || a.includes('Cocktail') || a.includes('Wine')) && <Wine style={{ width: '12px', height: '12px' }} />}
@@ -242,7 +279,7 @@ function ResultsContent() {
           <a href={deepLinkUrl} target="_blank" rel="noopener noreferrer"
             style={{
               width: '100%', padding: '14px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700,
-              cursor: 'pointer', color: C.cream, backgroundColor: dark ? C.darkGreen : C.black, display: 'flex', alignItems: 'center',
+              cursor: 'pointer', color: C.cream, backgroundColor: dark ? C.pink : C.black, display: 'flex', alignItems: 'center',
               justifyContent: 'center', gap: '8px', textDecoration: 'none', boxSizing: 'border-box',
             }}>
             <ExternalLink style={{ width: '15px', height: '15px' }} /> Book on {fl.airline}
@@ -276,7 +313,77 @@ function ResultsContent() {
           <ArrowRight style={{ width: '14px', height: '14px', color: C.g400 }} />
           <span style={{ fontWeight: 700 }}>{findLoc(toCode).city}</span>
           <span style={{ color: C.g400 }}>·</span>
-          <span>{fmtDate(departDate)}{isRT ? ` – ${fmtDate(returnDate)}` : ''}</span>
+          <div style={{ position: 'relative', display: 'inline-block' }}>
+            <span onClick={() => setDatePickerOpen(!datePickerOpen)} style={{ cursor: 'pointer', borderBottom: `2px solid ${dark ? C.pink : C.darkGreen}`, paddingBottom: '2px' }}>{fmtDate(viewingReturn ? returnDate : departDate)}{isRT ? ` – ${fmtDate(viewingReturn ? departDate : returnDate)}` : ''}</span>
+            {datePickerOpen && (
+              <>
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 48 }} onClick={() => setDatePickerOpen(false)} />
+                <div style={{ position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)', marginTop: '8px', backgroundColor: dark ? '#1E1E1E' : '#fff', borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.2)', padding: '16px', width: '280px', zIndex: 50 }} onClick={(e) => e.stopPropagation()}>
+                  {/* Month navigation */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                    <button onClick={() => {
+                      setPickerMonth(pickerMonth === 0 ? 11 : pickerMonth - 1);
+                      setPickerYear(pickerMonth === 0 ? pickerYear - 1 : pickerYear);
+                    }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <ChevronLeft style={{ width: '18px', height: '18px', color: dark ? C.cream : C.black }} />
+                    </button>
+                    <div style={{ fontSize: '14px', fontWeight: 700, color: dark ? C.cream : C.black }}>
+                      {new Date(pickerYear, pickerMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    </div>
+                    <button onClick={() => {
+                      setPickerMonth(pickerMonth === 11 ? 0 : pickerMonth + 1);
+                      setPickerYear(pickerMonth === 11 ? pickerYear + 1 : pickerYear);
+                    }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <ChevronRight style={{ width: '18px', height: '18px', color: dark ? C.cream : C.black }} />
+                    </button>
+                  </div>
+                  {/* Day grid */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
+                    {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(day => (
+                      <div key={day} style={{ textAlign: 'center', fontSize: '11px', fontWeight: 700, color: dark ? '#9B9B93' : '#6B6B63', padding: '4px 0' }}>
+                        {day}
+                      </div>
+                    ))}
+                    {(() => {
+                      const daysInMonth = getDaysInMonth(pickerMonth, pickerYear);
+                      const firstDay = getFirstDayOfMonth(pickerMonth, pickerYear);
+                      const availableDates = getAvailableDates();
+                      const days = [];
+                      for (let i = 0; i < firstDay; i++) {
+                        days.push(<div key={`empty-${i}`} style={{ padding: '4px' }} />);
+                      }
+                      for (let day = 1; day <= daysInMonth; day++) {
+                        const dateStr = `${pickerYear}-${String(pickerMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                        const isAvailable = availableDates.has(dateStr);
+                        const isSelected = dateStr === (viewingReturn ? returnDate : departDate);
+                        days.push(
+                          <button
+                            key={day}
+                            onClick={() => handleDateSelect(day)}
+                            disabled={!isAvailable}
+                            style={{
+                              padding: '6px',
+                              border: 'none',
+                              borderRadius: '8px',
+                              backgroundColor: isSelected ? (dark ? C.pink : C.darkGreen) : isAvailable ? 'transparent' : (dark ? '#252525' : C.g100),
+                              color: isSelected ? C.white : (isAvailable ? (dark ? C.cream : C.black) : (dark ? '#6B6B63' : '#9B9B93')),
+                              cursor: isAvailable ? 'pointer' : 'not-allowed',
+                              fontSize: '12px',
+                              fontWeight: 600,
+                              opacity: isAvailable ? 1 : 0.5,
+                            }}
+                          >
+                            {day}
+                          </button>
+                        );
+                      }
+                      return days;
+                    })()}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
           <span style={{ color: C.g400 }}>·</span>
           <span>{passengers} pax</span>
         </div>
@@ -293,10 +400,10 @@ function ResultsContent() {
       {/* RT tabs */}
       {isRT && (
         <div style={{ display: 'flex', backgroundColor: t.bgAlt, borderBottom: `1px solid ${t.cardBorder}`, maxWidth: '800px', margin: '0 auto' }}>
-          <button onClick={() => setViewingReturn(false)} style={{ flex: 1, padding: '14px', border: 'none', borderBottom: !viewingReturn ? `3px solid ${C.darkGreen}` : '3px solid transparent', backgroundColor: 'transparent', cursor: 'pointer', fontWeight: 700, fontSize: '13px', color: !viewingReturn ? (dark ? C.cream : C.darkGreen) : t.textMuted }}>
+          <button onClick={() => setViewingReturn(false)} style={{ flex: 1, padding: '14px', border: 'none', borderBottom: !viewingReturn ? `3px solid ${dark ? C.pink : C.darkGreen}` : '3px solid transparent', backgroundColor: 'transparent', cursor: 'pointer', fontWeight: 700, fontSize: '13px', color: !viewingReturn ? (dark ? C.pink : C.darkGreen) : t.textMuted }}>
             Outbound · {fmtDate(departDate)}
           </button>
-          <button onClick={() => setViewingReturn(true)} style={{ flex: 1, padding: '14px', border: 'none', borderBottom: viewingReturn ? `3px solid ${C.darkGreen}` : '3px solid transparent', backgroundColor: 'transparent', cursor: 'pointer', fontWeight: 700, fontSize: '13px', color: viewingReturn ? (dark ? C.cream : C.darkGreen) : t.textMuted }}>
+          <button onClick={() => setViewingReturn(true)} style={{ flex: 1, padding: '14px', border: 'none', borderBottom: viewingReturn ? `3px solid ${dark ? C.pink : C.darkGreen}` : '3px solid transparent', backgroundColor: 'transparent', cursor: 'pointer', fontWeight: 700, fontSize: '13px', color: viewingReturn ? (dark ? C.pink : C.darkGreen) : t.textMuted }}>
             Return · {fmtDate(returnDate)}
           </button>
         </div>
@@ -332,7 +439,7 @@ function ResultsContent() {
             <Plane style={{ width: '48px', height: '48px', color: t.cardBorder, margin: '0 auto 16px' }} />
             <h3 style={{ fontSize: '22px', fontWeight: 800, color: t.text, margin: '0 0 6px' }}>No flights for these dates</h3>
             <p style={{ fontSize: '14px', color: t.textMuted, margin: '0 0 24px' }}>Try different dates or explore nearby airports.</p>
-            <button onClick={goBack} style={{ padding: '14px 32px', border: 'none', borderRadius: '12px', backgroundColor: dark ? C.darkGreen : C.black, color: C.cream, fontWeight: 700, fontSize: '14px', cursor: 'pointer' }}>
+            <button onClick={goBack} style={{ padding: '14px 32px', border: 'none', borderRadius: '12px', backgroundColor: dark ? C.pink : C.black, color: C.cream, fontWeight: 700, fontSize: '14px', cursor: 'pointer' }}>
               Back to Search
             </button>
           </div>
@@ -390,7 +497,7 @@ function ResultsContent() {
                   {/* Badges */}
                   <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', width: '120px', flexShrink: 0 }}>
                     {rating && rating.badges.slice(0, 2).map(b => (
-                      <span key={b} style={{ fontSize: '9px', padding: '2px 6px', borderRadius: '100px', backgroundColor: dark ? '#1A3A2E' : C.cream, color: dark ? C.cream : C.darkGreen, fontWeight: 600 }}>
+                      <span key={b} style={{ fontSize: '9px', padding: '2px 6px', borderRadius: '100px', backgroundColor: dark ? '#3D1520' : C.cream, color: dark ? C.pink : C.darkGreen, fontWeight: 600 }}>
                         {BADGE_CONFIG[b]?.label}
                       </span>
                     ))}
