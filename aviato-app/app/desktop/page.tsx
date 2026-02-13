@@ -391,23 +391,22 @@ export default function DesktopPage() {
               </div>
             ))}
 
-            {/* Gradient overlay */}
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.02) 30%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.4) 100%)', zIndex: 1 }} />
+            {/* Dark overlay on photos for text readability */}
+            <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.35)', zIndex: 1 }} />
 
             {/* ─── Hero content: tagline + search ─── */}
-            <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '0px' }}>
+            <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingBottom: '40px' }}>
 
               {/* Tagline text */}
-              <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+              <div style={{ textAlign: 'center', marginBottom: '28px' }}>
                 <h1 style={{
-                  fontSize: '44px', fontWeight: 800, color: '#fff', margin: '0 0 10px',
-                  textShadow: '0 2px 20px rgba(0,0,0,0.3)', letterSpacing: '-0.02em', lineHeight: 1.15,
+                  fontSize: '48px', fontWeight: 800, color: '#fff', margin: '0 0 8px',
+                  letterSpacing: '-0.02em', lineHeight: 1.2,
                 }}>
-                  Rediscover what flying<br />is all about.
+                  Rediscover what flying is all about.
                 </h1>
                 <p style={{
-                  fontSize: '20px', fontWeight: 700, color: '#E8576D', margin: 0,
-                  textShadow: '0 0 24px rgba(0,0,0,0.6), 0 0 8px rgba(0,0,0,0.4)',
+                  fontSize: '18px', fontWeight: 600, color: C.pink, margin: 0,
                   letterSpacing: '0.01em',
                 }}>
                   Compare semi-private flights across every carrier.
