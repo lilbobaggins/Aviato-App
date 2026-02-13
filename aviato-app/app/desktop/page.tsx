@@ -324,15 +324,41 @@ export default function DesktopPage() {
   // heroLoaded removed — images load directly via backgroundImage
   const eventsRef = useRef<HTMLDivElement>(null);
   const [eventCat, setEventCat] = useState('All');
+  const [dateFilter, setDateFilter] = useState<'all' | 'upcoming' | '3mo' | 'month'>('all');
 
   // Unique event categories
   const EVENT_CATS = ['All', ...Array.from(new Set(EVENTS.map(ev => ev.cat)))];
-  const filteredEvents = eventCat === 'All' ? EVENTS : EVENTS.filter(ev => ev.cat === eventCat);
 
-  // Reset scroll when category changes
+  // Date-filtered then category-filtered events
+  const filteredEvents = (() => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    let evs = EVENTS;
+
+    if (dateFilter !== 'all') {
+      const cutoff = new Date(now);
+      if (dateFilter === 'month') cutoff.setMonth(cutoff.getMonth() + 1);
+      else if (dateFilter === '3mo') cutoff.setMonth(cutoff.getMonth() + 3);
+      else cutoff.setMonth(cutoff.getMonth() + 6);
+
+      evs = evs.filter(ev => {
+        const start = new Date(ev.start + 'T12:00:00');
+        return start >= now && start <= cutoff;
+      });
+    }
+
+    if (eventCat !== 'All') evs = evs.filter(ev => ev.cat === eventCat);
+
+    // Sort by start date when filtering by time
+    if (dateFilter !== 'all') evs = [...evs].sort((a, b) => a.start.localeCompare(b.start));
+
+    return evs;
+  })();
+
+  // Reset scroll when filters change
   useEffect(() => {
     if (eventsRef.current) eventsRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-  }, [eventCat]);
+  }, [eventCat, dateFilter]);
 
   // Auto-rotate hero
   useEffect(() => {
@@ -595,14 +621,42 @@ export default function DesktopPage() {
               </div>
             </div>
 
+            {/* Date filter pills */}
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', alignItems: 'center' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: t.textMuted, marginRight: '4px', letterSpacing: '0.04em' }}>WHEN</span>
+              {([
+                { key: 'all', label: 'All Dates' },
+                { key: 'month', label: 'This Month' },
+                { key: '3mo', label: 'Next 3 Months' },
+                { key: 'upcoming', label: 'Next 6 Months' },
+              ] as { key: typeof dateFilter; label: string }[]).map(opt => (
+                <button key={opt.key} onClick={() => setDateFilter(opt.key)} style={{
+                  padding: '7px 16px', borderRadius: '20px',
+                  border: `1.5px solid ${dateFilter === opt.key ? (dark ? C.pink : C.darkGreen) : t.cardBorder}`,
+                  backgroundColor: dateFilter === opt.key ? (dark ? 'rgba(232,87,109,0.12)' : 'rgba(10,61,46,0.08)') : 'transparent',
+                  color: dateFilter === opt.key ? (dark ? C.pink : C.darkGreen) : t.textSec,
+                  fontSize: '12px', fontWeight: 600, cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}>
+                  {opt.label}
+                </button>
+              ))}
+              {filteredEvents.length > 0 && (
+                <span style={{ fontSize: '12px', color: t.textMuted, marginLeft: '8px' }}>
+                  {filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''}
+                </span>
+              )}
+            </div>
+
             {/* Category filter pills */}
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: t.textMuted, marginRight: '4px', letterSpacing: '0.04em' }}>TYPE</span>
               {EVENT_CATS.map(cat => (
                 <button key={cat} onClick={() => setEventCat(cat)} style={{
-                  padding: '8px 18px', borderRadius: '20px', border: `1.5px solid ${eventCat === cat ? (dark ? C.pink : C.darkGreen) : t.cardBorder}`,
+                  padding: '7px 16px', borderRadius: '20px', border: `1.5px solid ${eventCat === cat ? (dark ? C.pink : C.darkGreen) : t.cardBorder}`,
                   backgroundColor: eventCat === cat ? (dark ? C.pink : C.darkGreen) : 'transparent',
                   color: eventCat === cat ? '#fff' : t.textSec,
-                  fontSize: '13px', fontWeight: 600, cursor: 'pointer',
+                  fontSize: '12px', fontWeight: 600, cursor: 'pointer',
                   transition: 'all 0.2s ease',
                 }}>
                   {cat}
@@ -610,7 +664,14 @@ export default function DesktopPage() {
               ))}
             </div>
 
-            <div ref={eventsRef} style={{ display: 'flex', gap: '16px', overflowX: 'auto', scrollSnapType: 'x mandatory', paddingBottom: '8px', scrollbarWidth: 'none' }}
+            {filteredEvents.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '48px 24px', color: t.textMuted }}>
+                <Clock style={{ width: '36px', height: '36px', marginBottom: '12px', opacity: 0.4 }} />
+                <p style={{ fontSize: '15px', fontWeight: 600, margin: '0 0 4px', color: t.textSec }}>No events found</p>
+                <p style={{ fontSize: '13px', margin: 0 }}>Try adjusting your date or category filters.</p>
+              </div>
+            ) : null}
+            <div ref={eventsRef} style={{ display: filteredEvents.length === 0 ? 'none' : 'flex', gap: '16px', overflowX: 'auto', scrollSnapType: 'x mandatory', paddingBottom: '8px', scrollbarWidth: 'none' }}
               onMouseDown={(e) => {
                 const el = e.currentTarget; let startX = e.pageX; let scrollL = el.scrollLeft;
                 const move = (ev: MouseEvent) => { el.scrollLeft = scrollL - (ev.pageX - startX); };
