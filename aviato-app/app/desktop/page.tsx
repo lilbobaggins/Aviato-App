@@ -406,8 +406,9 @@ export default function DesktopPage() {
                   Rediscover what flying<br />is all about.
                 </h1>
                 <p style={{
-                  fontSize: '17px', fontWeight: 600, color: '#E8576D', margin: 0,
-                  textShadow: '0 2px 16px rgba(0,0,0,0.5)',
+                  fontSize: '20px', fontWeight: 700, color: '#E8576D', margin: 0,
+                  textShadow: '0 0 24px rgba(0,0,0,0.6), 0 0 8px rgba(0,0,0,0.4)',
+                  letterSpacing: '0.01em',
                 }}>
                   Compare semi-private flights across every carrier.
                 </p>
