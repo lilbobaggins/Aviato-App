@@ -407,25 +407,26 @@ export default function DesktopPage() {
               }} />
             ))}
 
-            {/* Gradient scrim — starts at text area, keeps top of photo clean */}
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 0%, transparent 30%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.6) 100%)', zIndex: 1 }} />
+            {/* No full-page overlay — text backdrop handled inline below */}
 
             {/* ─── Hero content: tagline + search ─── */}
             <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingBottom: '40px' }}>
 
-              {/* Tagline text */}
-              <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+              {/* Tagline text with soft radial backdrop */}
+              <div style={{
+                textAlign: 'center', marginBottom: '28px', position: 'relative',
+                padding: '40px 80px', borderRadius: '40px',
+                background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 50%, transparent 80%)',
+              }}>
                 <h1 style={{
                   fontSize: '48px', fontWeight: 800, color: '#fff', margin: '0 0 16px',
                   letterSpacing: '-0.02em', lineHeight: 1.2,
-                  textShadow: '0 2px 10px rgba(0,0,0,0.4)',
                 }}>
                   Rediscover what flying is all about.
                 </h1>
                 <p style={{
                   fontSize: '21px', fontWeight: 600, color: 'rgba(255,255,255,0.95)', margin: 0,
                   letterSpacing: '0.02em',
-                  textShadow: '0 1px 8px rgba(0,0,0,0.4)',
                 }}>
                   Compare semi-private flights across every carrier.
                 </p>
