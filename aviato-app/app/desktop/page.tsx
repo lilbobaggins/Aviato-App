@@ -391,8 +391,8 @@ export default function DesktopPage() {
               </div>
             ))}
 
-            {/* Dark overlay on photos for text readability */}
-            <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.35)', zIndex: 1 }} />
+            {/* Subtle gradient at bottom only for text readability */}
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 40%, transparent 70%)', zIndex: 1 }} />
 
             {/* ─── Hero content: tagline + search ─── */}
             <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingBottom: '40px' }}>
@@ -406,7 +406,7 @@ export default function DesktopPage() {
                   Rediscover what flying is all about.
                 </h1>
                 <p style={{
-                  fontSize: '18px', fontWeight: 600, color: C.pink, margin: 0,
+                  fontSize: '21px', fontWeight: 600, color: 'rgba(255,255,255,0.9)', margin: 0,
                   letterSpacing: '0.01em',
                 }}>
                   Compare semi-private flights across every carrier.
