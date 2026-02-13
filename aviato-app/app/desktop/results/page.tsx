@@ -293,17 +293,17 @@ function ResultsContent() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg }}>
+    <>
       {/* Global smooth theme transition */}
       <style>{`
-        .aviato-results *, .aviato-results *::before, .aviato-results *::after {
+        .aviato-results, .aviato-results *, .aviato-results *::before, .aviato-results *::after {
           transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease !important;
         }
-        .aviato-results img, .aviato-results [data-no-transition] {
+        .aviato-results img {
           transition: none !important;
         }
       `}</style>
-      <div className="aviato-results" style={{ minHeight: '100vh' }}>
+      <div className="aviato-results" style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg }}>
       {/* Top bar */}
       <div style={{ background: t.topBar, padding: '16px 40px', display: 'flex', alignItems: 'center', gap: '20px' }}>
         <button onClick={goBack} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: C.white, fontSize: '14px', fontWeight: 700, padding: 0 }}>
@@ -538,7 +538,7 @@ function ResultsContent() {
         </>
       )}
       </div>
-    </div>
+    </>
   );
 }
 
