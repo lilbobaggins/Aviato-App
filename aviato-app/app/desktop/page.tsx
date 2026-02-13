@@ -373,27 +373,27 @@ export default function DesktopPage() {
         <div style={{ padding: '16px 16px 0 16px' }}>
           <div style={{ position: 'relative', height: 'calc(100vh - 32px)', borderRadius: '20px', overflow: 'hidden' }}>
 
-            {/* ── Logo — inside hero frame, top-left ── */}
+            {/* ── Logo — inside hero frame, top-left (Hopper-sized) ── */}
             <div style={{
-              position: 'absolute', top: '28px', left: '32px', zIndex: 20,
-              display: 'flex', alignItems: 'center', gap: '12px',
+              position: 'absolute', top: '36px', left: '40px', zIndex: 20,
+              display: 'flex', alignItems: 'center', gap: '14px',
             }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                <div style={{ width: '18px', height: '7px', backgroundColor: C.darkGreen, borderRadius: '2px' }} />
-                <div style={{ width: '18px', height: '7px', backgroundColor: C.pink, borderRadius: '2px' }} />
-                <div style={{ width: '18px', height: '7px', backgroundColor: C.cream, borderRadius: '2px' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                <div style={{ width: '22px', height: '9px', backgroundColor: C.darkGreen, borderRadius: '2px' }} />
+                <div style={{ width: '22px', height: '9px', backgroundColor: C.pink, borderRadius: '2px' }} />
+                <div style={{ width: '22px', height: '9px', backgroundColor: C.cream, borderRadius: '2px' }} />
               </div>
-              <span style={{ fontSize: '26px', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>Aviato</span>
+              <span style={{ fontSize: '32px', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>Aviato</span>
             </div>
 
-            {/* ── Theme toggle — inside hero frame, top-right ── */}
+            {/* ── Theme toggle — inside hero frame, top-right (Hopper-sized) ── */}
             <button onClick={() => setDark(!dark)} style={{
-              position: 'absolute', top: '28px', right: '32px', zIndex: 20,
-              width: '44px', height: '44px', borderRadius: '50%', border: 'none',
+              position: 'absolute', top: '36px', right: '40px', zIndex: 20,
+              width: '48px', height: '48px', borderRadius: '50%', border: 'none',
               background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
               cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              {dark ? <Sun style={{ width: '20px', height: '20px', color: '#fff' }} /> : <Moon style={{ width: '20px', height: '20px', color: '#fff' }} />}
+              {dark ? <Sun style={{ width: '22px', height: '22px', color: '#fff' }} /> : <Moon style={{ width: '22px', height: '22px', color: '#fff' }} />}
             </button>
 
             {/* Rotating background images */}
