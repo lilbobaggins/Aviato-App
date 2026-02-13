@@ -356,168 +356,163 @@ export default function DesktopPage() {
     <ThemeContext.Provider value={{ dark, toggle: () => setDark(!dark) }}>
       <div style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg, transition: 'background-color 0.3s ease', scrollBehavior: 'smooth' }}>
 
-        {/* ========== HERO — full viewport ========== */}
-        <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-
-          {/* Rotating background images */}
-          {HERO_IMAGES.map((img, i) => (
-            <div key={i} style={{
-              position: 'absolute', inset: 0,
-              backgroundImage: heroLoaded[i] ? `url(${img.src})` : undefined,
-              backgroundColor: '#111',
-              backgroundSize: 'cover', backgroundPosition: 'center',
-              opacity: heroIndex === i ? 1 : 0,
-              transition: 'opacity 1.2s ease-in-out',
-            }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={img.src} alt="" style={{ display: 'none' }} onLoad={() => setHeroLoaded(prev => ({ ...prev, [i]: true }))} />
+        {/* ========== NAV BAR — sits on the white page above hero ========== */}
+        <nav style={{ padding: '16px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: t.bg }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5px' }}>
+              <div style={{ width: '14px', height: '6px', backgroundColor: C.darkGreen, borderRadius: '1.5px' }} />
+              <div style={{ width: '14px', height: '6px', backgroundColor: C.pink, borderRadius: '1.5px' }} />
+              <div style={{ width: '14px', height: '6px', backgroundColor: C.cream, borderRadius: '1.5px' }} />
             </div>
-          ))}
+            <span style={{ fontSize: '20px', fontWeight: 900, color: t.text, letterSpacing: '-0.02em' }}>Aviato</span>
+          </div>
+          <button onClick={() => setDark(!dark)} style={{ width: '38px', height: '38px', borderRadius: '50%', border: `1px solid ${t.cardBorder}`, backgroundColor: t.bg, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {dark ? <Sun style={{ width: '16px', height: '16px', color: C.cream }} /> : <Moon style={{ width: '16px', height: '16px', color: t.textSec }} />}
+          </button>
+        </nav>
 
-          {/* Gradient overlay — darken top for nav, darken bottom for text readability */}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.45) 100%)', zIndex: 1 }} />
+        {/* ========== HERO — inset rounded card like Hopper ========== */}
+        <div style={{ padding: '0 16px 0 16px' }}>
+          <div style={{ position: 'relative', height: 'calc(100vh - 86px)', borderRadius: '20px', overflow: 'hidden' }}>
 
-          {/* Nav bar — floating over hero */}
-          <nav style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 20, padding: '20px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5px' }}>
-                <div style={{ width: '14px', height: '6px', backgroundColor: C.darkGreen, borderRadius: '1.5px' }} />
-                <div style={{ width: '14px', height: '6px', backgroundColor: C.pink, borderRadius: '1.5px' }} />
-                <div style={{ width: '14px', height: '6px', backgroundColor: C.cream, borderRadius: '1.5px' }} />
-              </div>
-              <span style={{ fontSize: '20px', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>Aviato</span>
-            </div>
-            <button onClick={() => setDark(!dark)} style={{ width: '38px', height: '38px', borderRadius: '50%', border: 'none', backgroundColor: 'rgba(255,255,255,0.12)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
-              {dark ? <Sun style={{ width: '16px', height: '16px', color: C.cream }} /> : <Moon style={{ width: '16px', height: '16px', color: '#fff' }} />}
-            </button>
-          </nav>
-
-          {/* ─── Hero content: tagline + search ─── */}
-          <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '20px' }}>
-
-            {/* Tagline text */}
-            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-              <h1 style={{
-                fontSize: '44px', fontWeight: 800, color: '#fff', margin: '0 0 10px',
-                textShadow: '0 2px 20px rgba(0,0,0,0.3)', letterSpacing: '-0.02em', lineHeight: 1.15,
+            {/* Rotating background images */}
+            {HERO_IMAGES.map((img, i) => (
+              <div key={i} style={{
+                position: 'absolute', inset: 0,
+                backgroundImage: heroLoaded[i] ? `url(${img.src})` : undefined,
+                backgroundColor: '#111',
+                backgroundSize: 'cover', backgroundPosition: 'center',
+                opacity: heroIndex === i ? 1 : 0,
+                transition: 'opacity 1.2s ease-in-out',
               }}>
-                Rediscover what flying<br />is all about.
-              </h1>
-              <p style={{
-                fontSize: '17px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', margin: 0,
-                textShadow: '0 1px 12px rgba(0,0,0,0.25)',
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={img.src} alt="" style={{ display: 'none' }} onLoad={() => setHeroLoaded(prev => ({ ...prev, [i]: true }))} />
+              </div>
+            ))}
+
+            {/* Gradient overlay */}
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.02) 30%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.4) 100%)', zIndex: 1 }} />
+
+            {/* ─── Hero content: tagline + search ─── */}
+            <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '0px' }}>
+
+              {/* Tagline text */}
+              <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+                <h1 style={{
+                  fontSize: '44px', fontWeight: 800, color: '#fff', margin: '0 0 10px',
+                  textShadow: '0 2px 20px rgba(0,0,0,0.3)', letterSpacing: '-0.02em', lineHeight: 1.15,
+                }}>
+                  Rediscover what flying<br />is all about.
+                </h1>
+                <p style={{
+                  fontSize: '17px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', margin: 0,
+                  textShadow: '0 1px 12px rgba(0,0,0,0.25)',
+                }}>
+                  Compare semi-private flights across every carrier.
+                </p>
+              </div>
+
+              {/* Trip type toggle — Round Trip / One Way */}
+              <div style={{
+                display: 'flex', gap: '4px', marginBottom: '12px',
+                backgroundColor: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '3px',
+                backdropFilter: 'blur(12px)',
               }}>
-                Compare semi-private flights across every carrier.
-              </p>
-            </div>
-
-            {/* Trip type toggle — Round Trip / One Way */}
-            <div style={{
-              display: 'flex', gap: '4px', marginBottom: '12px',
-              backgroundColor: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '3px',
-              backdropFilter: 'blur(12px)',
-            }}>
-              {[{ key: 'roundtrip', label: 'Round trip' }, { key: 'oneway', label: 'One way' }].map(opt => (
-                <button key={opt.key}
-                  onClick={() => { setTripType(opt.key); if (opt.key === 'oneway') setReturnDate(''); }}
-                  style={{
-                    padding: '8px 20px', border: 'none', borderRadius: '8px', fontSize: '13px',
-                    fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s ease',
-                    backgroundColor: tripType === opt.key ? 'rgba(255,255,255,0.95)' : 'transparent',
-                    color: tripType === opt.key ? '#1A1A1A' : 'rgba(255,255,255,0.8)',
-                  }}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Search bar */}
-            <div style={{
-              backgroundColor: t.searchBg,
-              borderRadius: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              width: '860px',
-              maxWidth: '92vw',
-              minHeight: '76px',
-              boxShadow: '0 8px 40px rgba(0,0,0,0.15)',
-              backdropFilter: 'blur(24px)',
-              overflow: 'visible',
-              position: 'relative',
-            }}>
-
-              {/* Where from */}
-              <div style={{ flex: 1.2, padding: '14px 24px', borderRight: `1px solid ${t.divider}`, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
-                <AirportField label="Where from" value={fromCode} onChange={(c) => { setFromCode(c); setToCode(''); }} placeholder="City or airport" excludeCode={toCode} />
+                {[{ key: 'roundtrip', label: 'Round trip' }, { key: 'oneway', label: 'One way' }].map(opt => (
+                  <button key={opt.key}
+                    onClick={() => { setTripType(opt.key); if (opt.key === 'oneway') setReturnDate(''); }}
+                    style={{
+                      padding: '8px 20px', border: 'none', borderRadius: '8px', fontSize: '13px',
+                      fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s ease',
+                      backgroundColor: tripType === opt.key ? 'rgba(255,255,255,0.95)' : 'transparent',
+                      color: tripType === opt.key ? '#1A1A1A' : 'rgba(255,255,255,0.8)',
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
               </div>
 
-              {/* Swap button */}
-              <div style={{ margin: '0 -14px', zIndex: 5, display: 'flex', alignItems: 'center' }}>
-                <button onClick={() => { const tmp = fromCode; setFromCode(toCode); setToCode(tmp); }}
-                  style={{ width: '30px', height: '30px', borderRadius: '50%', border: `1.5px solid ${t.divider}`, backgroundColor: t.searchBg, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.2s ease' }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'rotate(180deg)'; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'rotate(0deg)'; }}
-                >
-                  <ArrowLeftRight style={{ width: '12px', height: '12px', color: t.textMuted }} />
-                </button>
-              </div>
+              {/* Search bar */}
+              <div style={{
+                backgroundColor: t.searchBg,
+                borderRadius: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                width: '860px',
+                maxWidth: '90vw',
+                minHeight: '76px',
+                boxShadow: '0 8px 40px rgba(0,0,0,0.15)',
+                backdropFilter: 'blur(24px)',
+                overflow: 'visible',
+                position: 'relative',
+              }}>
 
-              {/* Where to */}
-              <div style={{ flex: 1.2, padding: '14px 24px', borderRight: `1px solid ${t.divider}`, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
-                <AirportField label="Where to" value={toCode} onChange={setToCode} placeholder="Search destination" excludeCode={fromCode} filterByFrom={fromCode} />
-              </div>
+                {/* Where from */}
+                <div style={{ flex: 1.2, padding: '14px 24px', borderRight: `1px solid ${t.divider}`, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
+                  <AirportField label="Where from" value={fromCode} onChange={(c) => { setFromCode(c); setToCode(''); }} placeholder="City or airport" excludeCode={toCode} />
+                </div>
 
-              {/* Dates */}
-              <div style={{ padding: '14px 20px', borderRight: `1px solid ${t.divider}`, cursor: 'pointer', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: '150px' }}
-                onClick={() => { setSelectingReturn(!!departDate && !returnDate && tripType === 'roundtrip'); setCalOpen(true); }}>
-                <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px', letterSpacing: '0.02em' }}>Dates</div>
-                <div style={{ fontSize: '15px', fontWeight: 500, color: departDate ? t.text : t.textSec }}>
-                  {departDate ? `${fmtDate(departDate)}${tripType === 'roundtrip' && returnDate ? ` – ${fmtDate(returnDate)}` : ''}` : 'Add dates'}
+                {/* Swap button */}
+                <div style={{ margin: '0 -14px', zIndex: 5, display: 'flex', alignItems: 'center' }}>
+                  <button onClick={() => { const tmp = fromCode; setFromCode(toCode); setToCode(tmp); }}
+                    style={{ width: '30px', height: '30px', borderRadius: '50%', border: `1.5px solid ${t.divider}`, backgroundColor: t.searchBg, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.2s ease' }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'rotate(180deg)'; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'rotate(0deg)'; }}
+                  >
+                    <ArrowLeftRight style={{ width: '12px', height: '12px', color: t.textMuted }} />
+                  </button>
+                </div>
+
+                {/* Where to */}
+                <div style={{ flex: 1.2, padding: '14px 24px', borderRight: `1px solid ${t.divider}`, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
+                  <AirportField label="Where to" value={toCode} onChange={setToCode} placeholder="Search destination" excludeCode={fromCode} filterByFrom={fromCode} />
+                </div>
+
+                {/* Dates */}
+                <div style={{ padding: '14px 20px', borderRight: `1px solid ${t.divider}`, cursor: 'pointer', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: '150px' }}
+                  onClick={() => { setSelectingReturn(!!departDate && !returnDate && tripType === 'roundtrip'); setCalOpen(true); }}>
+                  <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px', letterSpacing: '0.02em' }}>Dates</div>
+                  <div style={{ fontSize: '15px', fontWeight: 500, color: departDate ? t.text : t.textSec }}>
+                    {departDate ? `${fmtDate(departDate)}${tripType === 'roundtrip' && returnDate ? ` – ${fmtDate(returnDate)}` : ''}` : 'Add dates'}
+                  </div>
+                </div>
+
+                {/* Guests */}
+                <div style={{ padding: '14px 20px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: '110px' }}>
+                  <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px', letterSpacing: '0.02em' }}>Guests</div>
+                  <select value={passengers} onChange={e => setPassengers(Number(e.target.value))}
+                    style={{ border: 'none', fontSize: '15px', fontWeight: 500, fontFamily: 'inherit', outline: 'none', appearance: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: t.text, padding: 0 }}>
+                    {[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n} guest{n > 1 ? 's' : ''}</option>)}
+                  </select>
+                </div>
+
+                {/* Search button */}
+                <div style={{ padding: '0 12px 0 0', display: 'flex', alignItems: 'center' }}>
+                  <button onClick={handleSearch} disabled={!fromCode || !toCode || !departDate}
+                    style={{
+                      width: '52px', height: '52px', borderRadius: '50%', border: 'none',
+                      backgroundColor: !fromCode || !toCode || !departDate ? 'rgba(150,150,150,0.4)' : C.darkGreen,
+                      cursor: !fromCode || !toCode || !departDate ? 'default' : 'pointer',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      transition: 'all 0.2s ease',
+                      boxShadow: fromCode && toCode && departDate ? '0 4px 16px rgba(10,61,46,0.35)' : 'none',
+                    }}
+                    onMouseEnter={(e) => { if (fromCode && toCode && departDate) (e.currentTarget as HTMLElement).style.transform = 'scale(1.06)'; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
+                  >
+                    <Search style={{ width: '20px', height: '20px', color: '#fff' }} />
+                  </button>
                 </div>
               </div>
-
-              {/* Guests */}
-              <div style={{ padding: '14px 20px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: '110px' }}>
-                <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px', letterSpacing: '0.02em' }}>Guests</div>
-                <select value={passengers} onChange={e => setPassengers(Number(e.target.value))}
-                  style={{ border: 'none', fontSize: '15px', fontWeight: 500, fontFamily: 'inherit', outline: 'none', appearance: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: t.text, padding: 0 }}>
-                  {[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n} guest{n > 1 ? 's' : ''}</option>)}
-                </select>
-              </div>
-
-              {/* Search button */}
-              <div style={{ padding: '0 12px 0 0', display: 'flex', alignItems: 'center' }}>
-                <button onClick={handleSearch} disabled={!fromCode || !toCode || !departDate}
-                  style={{
-                    width: '52px', height: '52px', borderRadius: '50%', border: 'none',
-                    backgroundColor: !fromCode || !toCode || !departDate ? 'rgba(150,150,150,0.4)' : C.darkGreen,
-                    cursor: !fromCode || !toCode || !departDate ? 'default' : 'pointer',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    transition: 'all 0.2s ease',
-                    boxShadow: fromCode && toCode && departDate ? '0 4px 16px rgba(10,61,46,0.35)' : 'none',
-                  }}
-                  onMouseEnter={(e) => { if (fromCode && toCode && departDate) (e.currentTarget as HTMLElement).style.transform = 'scale(1.06)'; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
-                >
-                  <Search style={{ width: '20px', height: '20px', color: '#fff' }} />
-                </button>
-              </div>
             </div>
-          </div>
 
-          {/* Dots indicator — bottom right */}
-          <div style={{ position: 'absolute', bottom: '60px', right: '48px', zIndex: 10, display: 'flex', gap: '6px', alignItems: 'center' }}>
-            {HERO_IMAGES.map((_, i) => (
-              <button key={i} onClick={() => setHeroIndex(i)} style={{ width: i === heroIndex ? '18px' : '6px', height: '6px', borderRadius: '3px', border: 'none', backgroundColor: i === heroIndex ? '#fff' : 'rgba(255,255,255,0.4)', cursor: 'pointer', transition: 'all 0.3s ease', padding: 0 }} />
-            ))}
-          </div>
-
-          {/* ─── Curved bottom cutout — Hopper style white bleed ─── */}
-          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 5 }}>
-            <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '80px' }}>
-              <path d="M0,120 L0,60 Q720,0 1440,60 L1440,120 Z" fill={t.bg} />
-            </svg>
+            {/* Dots indicator — bottom right */}
+            <div style={{ position: 'absolute', bottom: '24px', right: '32px', zIndex: 10, display: 'flex', gap: '6px', alignItems: 'center' }}>
+              {HERO_IMAGES.map((_, i) => (
+                <button key={i} onClick={() => setHeroIndex(i)} style={{ width: i === heroIndex ? '18px' : '6px', height: '6px', borderRadius: '3px', border: 'none', backgroundColor: i === heroIndex ? '#fff' : 'rgba(255,255,255,0.4)', cursor: 'pointer', transition: 'all 0.3s ease', padding: 0 }} />
+              ))}
+            </div>
           </div>
         </div>
 
