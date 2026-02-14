@@ -126,7 +126,7 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
 
       {isOpen && (
         <div style={{
-          position: 'absolute', top: 'calc(100% + 16px)', left: -24, width: '340px',
+          position: 'absolute', top: 'calc(100% + 16px)', left: -24, width: '340px', maxWidth: 'calc(100vw - 32px)',
           backgroundColor: dark ? '#1A1A1A' : '#fff',
           borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.18)',
           zIndex: 50, maxHeight: '360px', overflowY: 'auto',
@@ -180,6 +180,12 @@ const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, on
   const today = new Date();
   const [viewMonth, setViewMonth] = useState(today.getMonth());
   const [viewYear, setViewYear] = useState(today.getFullYear());
+  const [calMobile, setCalMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setCalMobile(window.innerWidth < 768);
+    check(); window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const routeFlights = (fromCode && toCode) ? getMetroAreaFlights(fromCode, toCode) : [];
   const routePrices = routeFlights.map(f => f.price);
@@ -264,7 +270,7 @@ const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, on
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={(e) => { if (e.target === e.currentTarget) { setSelectingReturn(false); onClose(); } }}>
-      <div style={{ backgroundColor: dark ? '#1A1A1A' : '#fff', borderRadius: '20px', padding: '28px', width: '680px', maxHeight: '85vh', overflowY: 'auto', boxShadow: '0 25px 80px rgba(0,0,0,0.25)' }}>
+      <div style={{ backgroundColor: dark ? '#1A1A1A' : '#fff', borderRadius: calMobile ? '20px 20px 0 0' : '20px', padding: calMobile ? '20px 16px' : '28px', width: calMobile ? '100%' : '680px', maxHeight: calMobile ? '90vh' : '85vh', overflowY: 'auto', boxShadow: '0 25px 80px rgba(0,0,0,0.25)', ...(calMobile ? { position: 'fixed' as const, bottom: 0, left: 0, right: 0 } : {}) }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <div>
             <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 800, color: t.text }}>{departDate && returnDate ? `${tripDays} night trip` : selectingReturn ? 'Select return date' : 'Select departure'}</h3>
@@ -289,7 +295,10 @@ const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, on
           <div style={{ flex: 1 }} />
           <button onClick={next} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px', borderRadius: '50%', backgroundColor: t.bgAlt }}><ChevronRight style={{ width: '18px', height: '18px', color: t.textSec }} /></button>
         </div>
-        <div style={{ display: 'flex', gap: '32px' }}>{renderMonth(viewMonth, viewYear)}{renderMonth(nM, nY)}</div>
+        <div style={{ display: 'flex', gap: calMobile ? '0px' : '32px' }}>
+          {renderMonth(viewMonth, viewYear)}
+          {!calMobile && renderMonth(nM, nY)}
+        </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '16px', paddingTop: '14px', borderTop: `1px solid ${t.cardBorder}` }}>
           {[{ color: '#D4EDDA', label: 'Low' }, { color: '#FFF3CD', label: 'Mid' }, { color: '#F8D7DA', label: 'High' }].map(l => (
             <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -321,6 +330,8 @@ export default function DesktopPage() {
   const [selectingReturn, setSelectingReturn] = useState(false);
   const [dark, setDark] = useState(false);
   const [heroIndex, setHeroIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
   // heroLoaded removed — images load directly via backgroundImage
   const eventsRef = useRef<HTMLDivElement>(null);
   const [eventCat, setEventCat] = useState('All');
@@ -360,6 +371,15 @@ export default function DesktopPage() {
     if (eventsRef.current) eventsRef.current.scrollTo({ left: 0, behavior: 'smooth' });
   }, [eventCat, dateFilter]);
 
+  // Detect mobile
+  useEffect(() => {
+    setMounted(true);
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
   // Auto-rotate hero
   useEffect(() => {
     const iv = setInterval(() => setHeroIndex(i => (i + 1) % HERO_IMAGES.length), 5000);
@@ -397,6 +417,297 @@ export default function DesktopPage() {
       el.scrollBy({ left: dir * 380, behavior: 'smooth' });
     }
   };
+
+  /* ════════════════════════════════════════════
+     MOBILE LAYOUT — early return for screens < 768px
+     ════════════════════════════════════════════ */
+  if (mounted && isMobile) {
+    return (
+      <ThemeContext.Provider value={{ dark, toggle: () => setDark(!dark) }}>
+        <style>{`
+          .aviato-mobile, .aviato-mobile *, .aviato-mobile *::before, .aviato-mobile *::after {
+            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease !important;
+          }
+          .aviato-mobile img { transition: none !important; }
+          .aviato-mobile [data-hero-slide] { transition: opacity 1.8s ease-in-out !important; }
+          .aviato-mobile ::-webkit-scrollbar { display: none; }
+        `}</style>
+        <div className="aviato-mobile" style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg }}>
+
+          {/* ── Mobile Hero ── */}
+          <div style={{ position: 'relative', height: '55vh', overflow: 'hidden' }}>
+            {/* Background images */}
+            {HERO_IMAGES.map((img, i) => (
+              <div key={i} data-hero-slide="true" style={{
+                position: 'absolute', inset: 0,
+                backgroundImage: `url(${img.src})`, backgroundColor: '#111',
+                backgroundSize: 'cover', backgroundPosition: 'center',
+                opacity: heroIndex === i ? 1 : 0,
+              }} />
+            ))}
+            {/* Vignette */}
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%)', zIndex: 1 }} />
+
+            {/* Logo + toggle bar */}
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                  <div style={{ width: '16px', height: '6px', backgroundColor: C.darkGreen, borderRadius: '1.5px' }} />
+                  <div style={{ width: '16px', height: '6px', backgroundColor: C.pink, borderRadius: '1.5px' }} />
+                  <div style={{ width: '16px', height: '6px', backgroundColor: C.cream, borderRadius: '1.5px' }} />
+                </div>
+                <span style={{ fontSize: '22px', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>Aviato</span>
+              </div>
+              <button onClick={() => setDark(!dark)} style={{
+                width: '38px', height: '38px', borderRadius: '50%', border: 'none',
+                background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)',
+                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                {dark ? <Sun style={{ width: '18px', height: '18px', color: '#fff' }} /> : <Moon style={{ width: '18px', height: '18px', color: '#fff' }} />}
+              </button>
+            </div>
+
+            {/* Hero text — bottom of hero */}
+            <div style={{ position: 'absolute', bottom: '28px', left: '20px', right: '20px', zIndex: 10 }}>
+              <h1 style={{ fontSize: '28px', fontWeight: 800, color: '#fff', margin: '0 0 8px', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
+                Rediscover what flying is all about.
+              </h1>
+              <p style={{ fontSize: '15px', fontWeight: 500, color: 'rgba(255,255,255,0.9)', margin: 0 }}>
+                Compare semi-private flights across every carrier.
+              </p>
+            </div>
+
+            {/* Dots — bottom right */}
+            <div style={{ position: 'absolute', bottom: '12px', right: '20px', zIndex: 10, display: 'flex', gap: '5px' }}>
+              {HERO_IMAGES.map((_, i) => (
+                <div key={i} style={{ width: i === heroIndex ? '14px' : '5px', height: '5px', borderRadius: '3px', backgroundColor: i === heroIndex ? '#fff' : 'rgba(255,255,255,0.4)', transition: 'all 0.3s ease' }} />
+              ))}
+            </div>
+          </div>
+
+          {/* ── Mobile Search Card ── */}
+          <div style={{ padding: '0 16px', marginTop: '-24px', position: 'relative', zIndex: 30 }}>
+            <div style={{
+              backgroundColor: t.card, borderRadius: '16px', padding: '16px',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.12)', border: `1px solid ${t.cardBorder}`,
+            }}>
+              {/* Trip type toggle */}
+              <div style={{ display: 'flex', gap: '4px', marginBottom: '14px', backgroundColor: dark ? '#252525' : '#F5F3ED', borderRadius: '10px', padding: '3px' }}>
+                {[{ key: 'roundtrip', label: 'Round trip' }, { key: 'oneway', label: 'One way' }].map(opt => (
+                  <button key={opt.key} onClick={() => { setTripType(opt.key); if (opt.key === 'oneway') setReturnDate(''); }}
+                    style={{
+                      flex: 1, padding: '8px', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
+                      backgroundColor: tripType === opt.key ? (dark ? '#333' : '#fff') : 'transparent',
+                      color: tripType === opt.key ? t.text : t.textMuted,
+                      boxShadow: tripType === opt.key ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
+                    }}
+                  >{opt.label}</button>
+                ))}
+              </div>
+
+              {/* From field */}
+              <div style={{ padding: '12px 14px', borderBottom: `1px solid ${t.divider}` }}>
+                <AirportField label="Where from" value={fromCode} onChange={(c) => { setFromCode(c); setToCode(''); }} placeholder="City or airport" excludeCode={toCode} />
+              </div>
+
+              {/* Swap button */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '-14px 14px -14px 0', position: 'relative', zIndex: 5 }}>
+                <button onClick={() => { const tmp = fromCode; setFromCode(toCode); setToCode(tmp); }}
+                  style={{ width: '28px', height: '28px', borderRadius: '50%', border: `1.5px solid ${t.divider}`, backgroundColor: t.card, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <ArrowLeftRight style={{ width: '11px', height: '11px', color: t.textMuted }} />
+                </button>
+              </div>
+
+              {/* To field */}
+              <div style={{ padding: '12px 14px', borderBottom: `1px solid ${t.divider}` }}>
+                <AirportField label="Where to" value={toCode} onChange={setToCode} placeholder="Search destination" excludeCode={fromCode} filterByFrom={fromCode} />
+              </div>
+
+              {/* Dates + Guests row */}
+              <div style={{ display: 'flex', borderBottom: `1px solid ${t.divider}` }}>
+                <div style={{ flex: 1, padding: '12px 14px', cursor: 'pointer', borderRight: `1px solid ${t.divider}` }}
+                  onClick={() => { setSelectingReturn(!!departDate && !returnDate && tripType === 'roundtrip'); setCalOpen(true); }}>
+                  <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px' }}>Dates</div>
+                  <div style={{ fontSize: '14px', fontWeight: 500, color: departDate ? t.text : t.textSec }}>
+                    {departDate ? `${fmtDate(departDate)}${tripType === 'roundtrip' && returnDate ? ` – ${fmtDate(returnDate)}` : ''}` : 'Add dates'}
+                  </div>
+                </div>
+                <div style={{ padding: '12px 14px', minWidth: '100px' }}>
+                  <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px' }}>Guests</div>
+                  <select value={passengers} onChange={e => setPassengers(Number(e.target.value))}
+                    style={{ border: 'none', fontSize: '14px', fontWeight: 500, fontFamily: 'inherit', outline: 'none', appearance: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: t.text, padding: 0 }}>
+                    {[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n} guest{n > 1 ? 's' : ''}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              {/* Search button */}
+              <button onClick={handleSearch} disabled={!fromCode || !toCode || !departDate}
+                style={{
+                  width: '100%', marginTop: '14px', padding: '14px', border: 'none', borderRadius: '12px',
+                  backgroundColor: !fromCode || !toCode || !departDate ? (dark ? '#333' : '#ccc') : (dark ? C.pink : C.darkGreen),
+                  cursor: !fromCode || !toCode || !departDate ? 'default' : 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                  fontSize: '15px', fontWeight: 700, color: '#fff',
+                }}>
+                <Search style={{ width: '17px', height: '17px' }} /> Search Flights
+              </button>
+            </div>
+          </div>
+
+          {/* ── Mobile Popular Routes ── */}
+          <div style={{ padding: '28px 16px 24px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 800, color: t.text, margin: '0 0 4px' }}>Popular Routes</h2>
+            <p style={{ fontSize: '13px', color: t.textMuted, margin: '0 0 16px' }}>The most-booked semi-private flights</p>
+            <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', scrollSnapType: 'x mandatory', paddingBottom: '4px', scrollbarWidth: 'none' }}>
+              {popularRoutes.map((r, i) => (
+                <button key={i} onClick={() => { setFromCode(r.from); setToCode(r.to); setDepartDate(''); setReturnDate(''); window.scrollTo({ top: 0, behavior: 'smooth' }); setTimeout(() => setCalOpen(true), 400); }}
+                  style={{
+                    minWidth: '240px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px',
+                    border: `1px solid ${t.cardBorder}`, borderRadius: '12px', backgroundColor: t.card, cursor: 'pointer',
+                    textAlign: 'left', flexShrink: 0, scrollSnapAlign: 'start',
+                  }}>
+                  <div>
+                    <div style={{ fontWeight: 700, color: t.text, fontSize: '13px' }}>{r.label}</div>
+                    <div style={{ fontSize: '11px', color: t.textMuted, marginTop: '2px' }}>{r.sub}</div>
+                  </div>
+                  <div style={{ fontWeight: 800, color: dark ? C.pink : C.darkGreen, fontSize: '15px', marginLeft: '12px', flexShrink: 0 }}>${r.price}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Mobile Events ── */}
+          <div style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
+            <div style={{ padding: '28px 16px 32px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                <div>
+                  <h2 style={{ fontSize: '20px', fontWeight: 800, color: t.text, margin: '0 0 4px' }}>Upcoming Events</h2>
+                  <p style={{ fontSize: '13px', color: t.textMuted, margin: 0 }}>Events worth flying for</p>
+                </div>
+                <div style={{ display: 'flex', gap: '6px' }}>
+                  <button onClick={() => scrollEvents(-1)} style={{ width: '34px', height: '34px', borderRadius: '50%', border: `1px solid ${t.cardBorder}`, backgroundColor: t.card, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <ChevronLeft style={{ width: '16px', height: '16px', color: t.textSec }} />
+                  </button>
+                  <button onClick={() => scrollEvents(1)} style={{ width: '34px', height: '34px', borderRadius: '50%', border: `1px solid ${t.cardBorder}`, backgroundColor: t.card, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <ChevronRight style={{ width: '16px', height: '16px', color: t.textSec }} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Date pills — horizontal scroll */}
+              <div style={{ display: 'flex', gap: '6px', marginBottom: '10px', overflowX: 'auto', scrollbarWidth: 'none', paddingBottom: '2px' }}>
+                <span style={{ fontSize: '11px', fontWeight: 700, color: t.textMuted, flexShrink: 0, alignSelf: 'center', marginRight: '2px' }}>WHEN</span>
+                {([
+                  { key: 'all' as const, label: 'All' },
+                  { key: 'month' as const, label: 'This Month' },
+                  { key: '3mo' as const, label: '3 Months' },
+                  { key: 'upcoming' as const, label: '6 Months' },
+                ]).map(opt => (
+                  <button key={opt.key} onClick={() => setDateFilter(opt.key)} style={{
+                    padding: '6px 12px', borderRadius: '16px', flexShrink: 0,
+                    border: `1.5px solid ${dateFilter === opt.key ? (dark ? C.pink : C.darkGreen) : t.cardBorder}`,
+                    backgroundColor: dateFilter === opt.key ? (dark ? 'rgba(232,87,109,0.12)' : 'rgba(10,61,46,0.08)') : 'transparent',
+                    color: dateFilter === opt.key ? (dark ? C.pink : C.darkGreen) : t.textSec,
+                    fontSize: '11px', fontWeight: 600, cursor: 'pointer',
+                  }}>{opt.label}</button>
+                ))}
+              </div>
+
+              {/* Category pills — horizontal scroll */}
+              <div style={{ display: 'flex', gap: '6px', marginBottom: '16px', overflowX: 'auto', scrollbarWidth: 'none', paddingBottom: '2px' }}>
+                <span style={{ fontSize: '11px', fontWeight: 700, color: t.textMuted, flexShrink: 0, alignSelf: 'center', marginRight: '2px' }}>TYPE</span>
+                {EVENT_CATS.map(cat => (
+                  <button key={cat} onClick={() => setEventCat(cat)} style={{
+                    padding: '6px 12px', borderRadius: '16px', flexShrink: 0,
+                    border: `1.5px solid ${eventCat === cat ? (dark ? C.pink : C.darkGreen) : t.cardBorder}`,
+                    backgroundColor: eventCat === cat ? (dark ? C.pink : C.darkGreen) : 'transparent',
+                    color: eventCat === cat ? '#fff' : t.textSec,
+                    fontSize: '11px', fontWeight: 600, cursor: 'pointer',
+                  }}>{cat}</button>
+                ))}
+              </div>
+
+              {/* Event cards — horizontal scroll */}
+              {filteredEvents.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '32px 16px', color: t.textMuted }}>
+                  <Clock style={{ width: '28px', height: '28px', marginBottom: '8px', opacity: 0.4 }} />
+                  <p style={{ fontSize: '14px', fontWeight: 600, margin: '0 0 4px', color: t.textSec }}>No events found</p>
+                  <p style={{ fontSize: '12px', margin: 0 }}>Try different filters.</p>
+                </div>
+              ) : (
+                <div ref={eventsRef} style={{ display: 'flex', gap: '12px', overflowX: 'auto', scrollSnapType: 'x mandatory', paddingBottom: '4px', scrollbarWidth: 'none' }}>
+                  {filteredEvents.map(ev => (
+                    <div key={ev.id} style={{
+                      minWidth: '260px', maxWidth: '260px', borderRadius: '14px', overflow: 'hidden',
+                      border: `1px solid ${t.cardBorder}`, backgroundColor: t.card,
+                      scrollSnapAlign: 'start', flexShrink: 0, cursor: 'pointer',
+                    }}
+                      onClick={() => {
+                        if (ev.from) setFromCode(ev.from);
+                        setToCode(ev.dest); setTripType('roundtrip');
+                        setDepartDate(shiftDate(ev.start, -1)); setReturnDate(shiftDate(ev.end, 1));
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                    >
+                      {/* Photo */}
+                      <div style={{
+                        height: '140px', position: 'relative',
+                        backgroundImage: ev.photo ? `url(${ev.photo})` : `linear-gradient(135deg, ${C.black} 0%, ${C.darkGreen} 100%)`,
+                        backgroundSize: 'cover', backgroundPosition: 'center',
+                      }}>
+                        <div style={{ position: 'absolute', top: '8px', left: '8px', padding: '3px 8px', borderRadius: '6px', backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(6px)', fontSize: '10px', fontWeight: 700, color: '#fff' }}>{ev.cat}</div>
+                        <div style={{ position: 'absolute', bottom: '8px', right: '8px', padding: '3px 8px', borderRadius: '6px', backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(6px)', fontSize: '12px', fontWeight: 800, color: '#fff' }}>From ${ev.price}</div>
+                      </div>
+                      {/* Info */}
+                      <div style={{ padding: '12px 14px' }}>
+                        <div style={{ fontSize: '14px', fontWeight: 800, color: t.text, marginBottom: '3px', lineHeight: 1.3 }}>{ev.title}</div>
+                        <div style={{ fontSize: '11px', color: dark ? C.pink : C.darkGreen, fontWeight: 600, marginBottom: '6px' }}>
+                          {ev.city}, {ev.state} · {ev.date}
+                        </div>
+                        <p style={{ fontSize: '12px', color: t.textSec, margin: '0 0 10px', lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{ev.desc}</p>
+                        <button onClick={(e) => {
+                          e.stopPropagation();
+                          if (ev.from) setFromCode(ev.from);
+                          setToCode(ev.dest); setTripType('roundtrip');
+                          setDepartDate(shiftDate(ev.start, -1)); setReturnDate(shiftDate(ev.end, 1));
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }} style={{
+                          width: '100%', padding: '9px', border: 'none', borderRadius: '8px',
+                          backgroundColor: dark ? C.pink : C.black, color: '#fff',
+                          fontWeight: 700, fontSize: '11px', cursor: 'pointer',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px',
+                        }}>
+                          <Plane style={{ width: '12px', height: '12px' }} /> Search Flights
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ── Mobile Footer ── */}
+          <div style={{ background: dark ? '#0A0A0A' : C.black, padding: '28px 20px', textAlign: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                <div style={{ width: '14px', height: '6px', backgroundColor: C.darkGreen, borderRadius: '1px' }} />
+                <div style={{ width: '14px', height: '6px', backgroundColor: C.pink, borderRadius: '1px' }} />
+                <div style={{ width: '14px', height: '6px', backgroundColor: C.cream, borderRadius: '1px' }} />
+              </div>
+            </div>
+            <div style={{ fontSize: '16px', fontWeight: 900, color: '#fff', marginBottom: '4px' }}>Aviato</div>
+            <p style={{ fontSize: '11px', color: C.g400, margin: '0 0 4px' }}>Compare semi-private flights across every carrier.</p>
+            <p style={{ fontSize: '10px', color: C.g600, margin: 0 }}>Prices & schedules are estimates.</p>
+          </div>
+
+          {/* Mobile Calendar — single month, full-screen */}
+          <DesktopCalendar isOpen={calOpen} onClose={() => setCalOpen(false)} tripType={tripType} departDate={departDate} returnDate={returnDate} onSelectDepart={setDepartDate} onSelectReturn={setReturnDate} fromCode={fromCode} toCode={toCode} selectingReturn={selectingReturn} setSelectingReturn={setSelectingReturn} />
+        </div>
+      </ThemeContext.Provider>
+    );
+  }
 
   return (
     <ThemeContext.Provider value={{ dark, toggle: () => setDark(!dark) }}>
