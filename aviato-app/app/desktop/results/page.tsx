@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {
   ChevronLeft, ChevronRight, Plane, Clock, Wifi, Coffee, Wine, Heart, Shield,
@@ -77,6 +77,14 @@ function ResultsContent() {
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [pickerMonth, setPickerMonth] = useState(() => { const d = departDate ? new Date(departDate + 'T12:00:00') : new Date(); return d.getMonth(); });
   const [pickerYear, setPickerYear] = useState(() => { const d = departDate ? new Date(departDate + 'T12:00:00') : new Date(); return d.getFullYear(); });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const t = T(dark);
   const fmtDate = (d: string) => d ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', weekday: 'short' }) : '';
@@ -143,7 +151,7 @@ function ResultsContent() {
     const deepLinkNote = getDeepLinkNote(fl.airline, fl.dc, fl.ac, tripType);
 
     return (
-      <div style={{ position: 'fixed', top: 0, right: 0, bottom: 0, width: '480px', backgroundColor: t.panelBg, boxShadow: `-8px 0 40px ${dark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.15)'}`, zIndex: 100, overflowY: 'auto', transition: 'background-color 0.3s ease' }}>
+      <div style={{ position: 'fixed', top: isMobile ? 0 : 0, right: isMobile ? 0 : 0, bottom: isMobile ? 0 : 0, left: isMobile ? 0 : 'auto', width: isMobile ? '100%' : '480px', backgroundColor: t.panelBg, boxShadow: isMobile ? 'none' : `-8px 0 40px ${dark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.15)'}`, zIndex: 100, overflowY: 'auto', transition: 'background-color 0.3s ease' }}>
         {/* Header */}
         <div style={{ background: style.bg || C.black, padding: '20px 24px', color: C.white }}>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: C.white, cursor: 'pointer', padding: '4px 0', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}>
@@ -306,106 +314,205 @@ function ResultsContent() {
       `}</style>
       <div className="aviato-results" style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg }}>
       {/* Top bar */}
-      <div style={{ background: t.topBar, padding: '16px 40px', display: 'flex', alignItems: 'center', gap: '20px' }}>
-        <button onClick={goBack} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: C.white, fontSize: '14px', fontWeight: 700, padding: 0 }}>
-          <ChevronLeft style={{ width: '18px', height: '18px' }} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5px' }}>
-              <div style={{ width: '12px', height: '5px', backgroundColor: C.darkGreen, borderRadius: '1px' }} />
-              <div style={{ width: '12px', height: '5px', backgroundColor: C.pink, borderRadius: '1px' }} />
-              <div style={{ width: '12px', height: '5px', backgroundColor: C.cream, borderRadius: '1px' }} />
+      <div style={{ background: t.topBar, padding: isMobile ? '16px 16px' : '16px 40px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', gap: isMobile ? '12px' : '20px' }}>
+        {/* First row: Logo/back button and dark mode toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: isMobile ? '100%' : 'auto', gap: '20px' }}>
+          <button onClick={goBack} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: C.white, fontSize: '14px', fontWeight: 700, padding: 0 }}>
+            <ChevronLeft style={{ width: '18px', height: '18px' }} />
+            <div style={{ display: isMobile ? 'none' : 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5px' }}>
+                <div style={{ width: '12px', height: '5px', backgroundColor: C.darkGreen, borderRadius: '1px' }} />
+                <div style={{ width: '12px', height: '5px', backgroundColor: C.pink, borderRadius: '1px' }} />
+                <div style={{ width: '12px', height: '5px', backgroundColor: C.cream, borderRadius: '1px' }} />
+              </div>
+              <span style={{ fontSize: '20px', fontWeight: 900 }}>Aviato</span>
             </div>
-            <span style={{ fontSize: '20px', fontWeight: 900 }}>Aviato</span>
-          </div>
-        </button>
-        <div style={{ flex: 1 }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: C.cream, fontSize: '13px' }}>
-          <span style={{ fontWeight: 700 }}>{findLoc(fromCode).city}</span>
-          <ArrowRight style={{ width: '14px', height: '14px', color: C.g400 }} />
-          <span style={{ fontWeight: 700 }}>{findLoc(toCode).city}</span>
-          <span style={{ color: C.g400 }}>·</span>
-          <div style={{ position: 'relative', display: 'inline-block' }}>
-            <span onClick={() => setDatePickerOpen(!datePickerOpen)} style={{ cursor: 'pointer', borderBottom: `2px solid ${dark ? C.pink : C.darkGreen}`, paddingBottom: '2px' }}>{fmtDate(viewingReturn ? returnDate : departDate)}{isRT ? ` – ${fmtDate(viewingReturn ? departDate : returnDate)}` : ''}</span>
-            {datePickerOpen && (
-              <>
-                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 48 }} onClick={() => setDatePickerOpen(false)} />
-                <div style={{ position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)', marginTop: '8px', backgroundColor: dark ? '#1E1E1E' : '#fff', borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.2)', padding: '16px', width: '280px', zIndex: 50 }} onClick={(e) => e.stopPropagation()}>
-                  {/* Month navigation */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                    <button onClick={() => {
-                      setPickerMonth(pickerMonth === 0 ? 11 : pickerMonth - 1);
-                      setPickerYear(pickerMonth === 0 ? pickerYear - 1 : pickerYear);
-                    }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <ChevronLeft style={{ width: '18px', height: '18px', color: dark ? C.cream : C.black }} />
-                    </button>
-                    <div style={{ fontSize: '14px', fontWeight: 700, color: dark ? C.cream : C.black }}>
-                      {new Date(pickerYear, pickerMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-                    </div>
-                    <button onClick={() => {
-                      setPickerMonth(pickerMonth === 11 ? 0 : pickerMonth + 1);
-                      setPickerYear(pickerMonth === 11 ? pickerYear + 1 : pickerYear);
-                    }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <ChevronRight style={{ width: '18px', height: '18px', color: dark ? C.cream : C.black }} />
-                    </button>
-                  </div>
-                  {/* Day grid */}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
-                    {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(day => (
-                      <div key={day} style={{ textAlign: 'center', fontSize: '11px', fontWeight: 700, color: dark ? '#9B9B93' : '#6B6B63', padding: '4px 0' }}>
-                        {day}
-                      </div>
-                    ))}
-                    {(() => {
-                      const daysInMonth = getDaysInMonth(pickerMonth, pickerYear);
-                      const firstDay = getFirstDayOfMonth(pickerMonth, pickerYear);
-                      const availableDates = getAvailableDates();
-                      const days = [];
-                      for (let i = 0; i < firstDay; i++) {
-                        days.push(<div key={`empty-${i}`} style={{ padding: '4px' }} />);
-                      }
-                      for (let day = 1; day <= daysInMonth; day++) {
-                        const dateStr = `${pickerYear}-${String(pickerMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                        const isAvailable = availableDates === null ? true : availableDates.has(dateStr);
-                        const isSelected = dateStr === (viewingReturn ? returnDate : departDate);
-                        days.push(
-                          <button
-                            key={day}
-                            onClick={() => handleDateSelect(day)}
-                            disabled={!isAvailable}
-                            style={{
-                              padding: '6px',
-                              border: 'none',
-                              borderRadius: '8px',
-                              backgroundColor: isSelected ? (dark ? C.pink : C.darkGreen) : isAvailable ? 'transparent' : (dark ? '#252525' : C.g100),
-                              color: isSelected ? C.white : (isAvailable ? (dark ? C.cream : C.black) : (dark ? '#6B6B63' : '#9B9B93')),
-                              cursor: isAvailable ? 'pointer' : 'not-allowed',
-                              fontSize: '12px',
-                              fontWeight: 600,
-                              opacity: isAvailable ? 1 : 0.5,
-                            }}
-                          >
-                            {day}
-                          </button>
-                        );
-                      }
-                      return days;
-                    })()}
-                  </div>
-                </div>
-              </>
+          </button>
+          {!isMobile && <div style={{ flex: 1 }} />}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button onClick={() => setDark(!dark)} style={{ width: '36px', height: '36px', borderRadius: '50%', border: 'none', backgroundColor: 'rgba(255,255,255,0.1)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {dark ? <Sun style={{ width: '16px', height: '16px', color: C.cream }} /> : <Moon style={{ width: '16px', height: '16px', color: '#fff' }} />}
+            </button>
+            {isMobile && (
+              <button onClick={goBack} style={{ padding: '8px', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', backgroundColor: 'transparent', color: C.cream, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Search style={{ width: '13px', height: '13px' }} />
+              </button>
             )}
           </div>
-          <span style={{ color: C.g400 }}>·</span>
-          <span>{passengers} pax</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <button onClick={() => setDark(!dark)} style={{ width: '36px', height: '36px', borderRadius: '50%', border: 'none', backgroundColor: 'rgba(255,255,255,0.1)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {dark ? <Sun style={{ width: '16px', height: '16px', color: C.cream }} /> : <Moon style={{ width: '16px', height: '16px', color: '#fff' }} />}
-          </button>
+
+        {/* Second row (mobile only): Route info */}
+        {isMobile && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: C.cream, fontSize: '11px', width: '100%', flexWrap: 'wrap' }}>
+            <span style={{ fontWeight: 700 }}>{findLoc(fromCode).city}</span>
+            <ArrowRight style={{ width: '12px', height: '12px', color: C.g400 }} />
+            <span style={{ fontWeight: 700 }}>{findLoc(toCode).city}</span>
+            <span style={{ color: C.g400 }}>·</span>
+            <div style={{ position: 'relative', display: 'inline-block' }}>
+              <span onClick={() => setDatePickerOpen(!datePickerOpen)} style={{ cursor: 'pointer', borderBottom: `2px solid ${dark ? C.pink : C.darkGreen}`, paddingBottom: '1px', fontSize: '11px' }}>{fmtDate(viewingReturn ? returnDate : departDate)}</span>
+              {datePickerOpen && (
+                <>
+                  <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 48 }} onClick={() => setDatePickerOpen(false)} />
+                  <div style={{ position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)', marginTop: '8px', backgroundColor: dark ? '#1E1E1E' : '#fff', borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.2)', padding: '16px', width: 'calc(100vw - 64px)', maxWidth: '280px', zIndex: 50 }} onClick={(e) => e.stopPropagation()}>
+                    {/* Month nav */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                      <button onClick={() => {
+                        setPickerMonth(pickerMonth === 0 ? 11 : pickerMonth - 1);
+                        setPickerYear(pickerMonth === 0 ? pickerYear - 1 : pickerYear);
+                      }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <ChevronLeft style={{ width: '18px', height: '18px', color: dark ? C.cream : C.black }} />
+                      </button>
+                      <div style={{ fontSize: '14px', fontWeight: 700, color: dark ? C.cream : C.black }}>
+                        {new Date(pickerYear, pickerMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                      </div>
+                      <button onClick={() => {
+                        setPickerMonth(pickerMonth === 11 ? 0 : pickerMonth + 1);
+                        setPickerYear(pickerMonth === 11 ? pickerYear + 1 : pickerYear);
+                      }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <ChevronRight style={{ width: '18px', height: '18px', color: dark ? C.cream : C.black }} />
+                      </button>
+                    </div>
+                    {/* Day grid */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
+                      {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(day => (
+                        <div key={day} style={{ textAlign: 'center', fontSize: '11px', fontWeight: 700, color: dark ? '#9B9B93' : '#6B6B63', padding: '4px 0' }}>
+                          {day}
+                        </div>
+                      ))}
+                      {(() => {
+                        const daysInMonth = getDaysInMonth(pickerMonth, pickerYear);
+                        const firstDay = getFirstDayOfMonth(pickerMonth, pickerYear);
+                        const availableDates = getAvailableDates();
+                        const days = [];
+                        for (let i = 0; i < firstDay; i++) {
+                          days.push(<div key={`empty-${i}`} style={{ padding: '4px' }} />);
+                        }
+                        for (let day = 1; day <= daysInMonth; day++) {
+                          const dateStr = `${pickerYear}-${String(pickerMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                          const isAvailable = availableDates === null ? true : availableDates.has(dateStr);
+                          const isSelected = dateStr === (viewingReturn ? returnDate : departDate);
+                          days.push(
+                            <button
+                              key={day}
+                              onClick={() => handleDateSelect(day)}
+                              disabled={!isAvailable}
+                              style={{
+                                padding: '6px',
+                                border: 'none',
+                                borderRadius: '8px',
+                                backgroundColor: isSelected ? (dark ? C.pink : C.darkGreen) : isAvailable ? 'transparent' : (dark ? '#252525' : C.g100),
+                                color: isSelected ? C.white : (isAvailable ? (dark ? C.cream : C.black) : (dark ? '#6B6B63' : '#9B9B93')),
+                                cursor: isAvailable ? 'pointer' : 'not-allowed',
+                                fontSize: '12px',
+                                fontWeight: 600,
+                                opacity: isAvailable ? 1 : 0.5,
+                              }}
+                            >
+                              {day}
+                            </button>
+                          );
+                        }
+                        return days;
+                      })()}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+            <span style={{ color: C.g400 }}>·</span>
+            <span style={{ fontSize: '11px' }}>{passengers} pax</span>
+          </div>
+        )}
+
+        {/* Desktop route info row */}
+        {!isMobile && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: C.cream, fontSize: '13px' }}>
+            <span style={{ fontWeight: 700 }}>{findLoc(fromCode).city}</span>
+            <ArrowRight style={{ width: '14px', height: '14px', color: C.g400 }} />
+            <span style={{ fontWeight: 700 }}>{findLoc(toCode).city}</span>
+            <span style={{ color: C.g400 }}>·</span>
+            <div style={{ position: 'relative', display: 'inline-block' }}>
+              <span onClick={() => setDatePickerOpen(!datePickerOpen)} style={{ cursor: 'pointer', borderBottom: `2px solid ${dark ? C.pink : C.darkGreen}`, paddingBottom: '2px' }}>{fmtDate(viewingReturn ? returnDate : departDate)}{isRT ? ` – ${fmtDate(viewingReturn ? departDate : returnDate)}` : ''}</span>
+              {datePickerOpen && (
+                <>
+                  <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 48 }} onClick={() => setDatePickerOpen(false)} />
+                  <div style={{ position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)', marginTop: '8px', backgroundColor: dark ? '#1E1E1E' : '#fff', borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.2)', padding: '16px', width: '280px', zIndex: 50 }} onClick={(e) => e.stopPropagation()}>
+                    {/* Month navigation */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                      <button onClick={() => {
+                        setPickerMonth(pickerMonth === 0 ? 11 : pickerMonth - 1);
+                        setPickerYear(pickerMonth === 0 ? pickerYear - 1 : pickerYear);
+                      }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <ChevronLeft style={{ width: '18px', height: '18px', color: dark ? C.cream : C.black }} />
+                      </button>
+                      <div style={{ fontSize: '14px', fontWeight: 700, color: dark ? C.cream : C.black }}>
+                        {new Date(pickerYear, pickerMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                      </div>
+                      <button onClick={() => {
+                        setPickerMonth(pickerMonth === 11 ? 0 : pickerMonth + 1);
+                        setPickerYear(pickerMonth === 11 ? pickerYear + 1 : pickerYear);
+                      }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <ChevronRight style={{ width: '18px', height: '18px', color: dark ? C.cream : C.black }} />
+                      </button>
+                    </div>
+                    {/* Day grid */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
+                      {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(day => (
+                        <div key={day} style={{ textAlign: 'center', fontSize: '11px', fontWeight: 700, color: dark ? '#9B9B93' : '#6B6B63', padding: '4px 0' }}>
+                          {day}
+                        </div>
+                      ))}
+                      {(() => {
+                        const daysInMonth = getDaysInMonth(pickerMonth, pickerYear);
+                        const firstDay = getFirstDayOfMonth(pickerMonth, pickerYear);
+                        const availableDates = getAvailableDates();
+                        const days = [];
+                        for (let i = 0; i < firstDay; i++) {
+                          days.push(<div key={`empty-${i}`} style={{ padding: '4px' }} />);
+                        }
+                        for (let day = 1; day <= daysInMonth; day++) {
+                          const dateStr = `${pickerYear}-${String(pickerMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                          const isAvailable = availableDates === null ? true : availableDates.has(dateStr);
+                          const isSelected = dateStr === (viewingReturn ? returnDate : departDate);
+                          days.push(
+                            <button
+                              key={day}
+                              onClick={() => handleDateSelect(day)}
+                              disabled={!isAvailable}
+                              style={{
+                                padding: '6px',
+                                border: 'none',
+                                borderRadius: '8px',
+                                backgroundColor: isSelected ? (dark ? C.pink : C.darkGreen) : isAvailable ? 'transparent' : (dark ? '#252525' : C.g100),
+                                color: isSelected ? C.white : (isAvailable ? (dark ? C.cream : C.black) : (dark ? '#6B6B63' : '#9B9B93')),
+                                cursor: isAvailable ? 'pointer' : 'not-allowed',
+                                fontSize: '12px',
+                                fontWeight: 600,
+                                opacity: isAvailable ? 1 : 0.5,
+                              }}
+                            >
+                              {day}
+                            </button>
+                          );
+                        }
+                        return days;
+                      })()}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+            <span style={{ color: C.g400 }}>·</span>
+            <span>{passengers} pax</span>
+          </div>
+        )}
+
+        {/* Desktop New Search button */}
+        {!isMobile && (
           <button onClick={goBack} style={{ padding: '8px 16px', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', backgroundColor: 'transparent', color: C.cream, fontSize: '12px', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Search style={{ width: '13px', height: '13px' }} /> New Search
           </button>
-        </div>
+        )}
       </div>
 
       {/* RT tabs */}
@@ -421,7 +528,7 @@ function ResultsContent() {
       )}
 
       {/* Filters */}
-      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '16px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: isMobile ? '16px 16px' : '16px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', gap: '6px' }}>
           {['all', 'cheapest', 'fastest'].map(f => (
             <button key={f} onClick={() => setFilter(f)} style={{
@@ -437,14 +544,14 @@ function ResultsContent() {
       </div>
 
       {/* Disclaimer */}
-      <div style={{ maxWidth: '800px', margin: '0 auto 8px', padding: '0 40px' }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto 8px', padding: isMobile ? '0 16px' : '0 40px' }}>
         <div style={{ padding: '10px 14px', backgroundColor: t.disclaimerBg, borderRadius: '10px', border: `1px solid ${t.disclaimerBorder}`, fontSize: '11px', color: t.disclaimerText, lineHeight: 1.4 }}>
           Prices & schedules are estimates and may not reflect real-time availability. Always confirm details on the airline&apos;s website before booking.
         </div>
       </div>
 
       {/* Flight list */}
-      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '8px 40px 60px' }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: isMobile ? '8px 16px 60px' : '8px 40px 60px' }}>
         {flights.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px 20px', color: t.textMuted }}>
             <Plane style={{ width: '48px', height: '48px', color: t.cardBorder, margin: '0 auto 16px' }} />
@@ -463,19 +570,21 @@ function ResultsContent() {
               return (
                 <button key={fl.id} onClick={() => setSelectedFlight(fl)}
                   style={{
-                    width: '100%', backgroundColor: t.card, borderRadius: '14px', padding: '20px 24px',
+                    width: '100%', backgroundColor: t.card, borderRadius: '14px', padding: isMobile ? '14px 16px' : '20px 24px',
                     border: `1px solid ${t.cardBorder}`, cursor: 'pointer', textAlign: 'left',
-                    display: 'flex', alignItems: 'center', gap: '20px',
+                    display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? '12px' : '20px',
                     transition: 'box-shadow 0.2s ease, transform 0.15s ease',
                   }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 16px ${t.hoverShadow}`; (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = 'none'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
+                  onMouseEnter={(e) => { if (!isMobile) { (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 16px ${t.hoverShadow}`; (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; } }}
+                  onMouseLeave={(e) => { if (!isMobile) { (e.currentTarget as HTMLElement).style.boxShadow = 'none'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; } }}
                 >
                   {/* Airline badge */}
                   <div style={{ width: '44px', height: '44px', borderRadius: '10px', backgroundColor: style.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: style.text, fontSize: '12px', fontWeight: 900, flexShrink: 0 }}>{style.label}</div>
 
+                  {/* Airline + rating container */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '12px' : '0', flex: isMobile ? 1 : 'auto', width: isMobile ? '100%' : 'auto' }}>
                   {/* Airline + rating */}
-                  <div style={{ width: '100px', flexShrink: 0 }}>
+                  <div style={{ width: isMobile ? 'auto' : '100px', flexShrink: 0 }}>
                     <div style={{ fontWeight: 700, color: t.text, fontSize: '14px' }}>{fl.airline}</div>
                     {rating && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '3px', marginTop: '2px' }}>
@@ -487,8 +596,10 @@ function ResultsContent() {
                     <div style={{ fontSize: '10px', color: t.textMuted, marginTop: '2px' }}>{fl.craft}</div>
                   </div>
 
+                  </div>
+
                   {/* Times */}
-                  <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ flex: isMobile ? '1' : '1', display: 'flex', alignItems: 'center', gap: '12px', width: isMobile ? '100%' : 'auto' }}>
                     <div>
                       <div style={{ fontSize: '18px', fontWeight: 800, color: t.text }}>{fl.dep}</div>
                       <div style={{ fontSize: '11px', color: t.textMuted }}>{fl.dc}</div>
@@ -505,8 +616,8 @@ function ResultsContent() {
                     </div>
                   </div>
 
-                  {/* Badges */}
-                  <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', width: '120px', flexShrink: 0 }}>
+                  {/* Badges - hidden on mobile */}
+                  <div style={{ display: isMobile ? 'none' : 'flex', gap: '4px', flexWrap: 'wrap', width: '120px', flexShrink: 0 }}>
                     {rating && rating.badges.slice(0, 2).map(b => (
                       <span key={b} style={{ fontSize: '9px', padding: '2px 6px', borderRadius: '100px', backgroundColor: dark ? '#3D1520' : C.cream, color: dark ? C.pink : C.darkGreen, fontWeight: 600 }}>
                         {BADGE_CONFIG[b]?.label}
@@ -520,7 +631,7 @@ function ResultsContent() {
                   </div>
 
                   {/* Price + seats */}
-                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                  <div style={{ textAlign: isMobile ? 'left' : 'right', flexShrink: 0, width: isMobile ? '100%' : 'auto' }}>
                     <div style={{ fontSize: '22px', fontWeight: 800, color: t.text }}>${fl.price}</div>
                     <div style={{ fontSize: '10px', color: fl.seats <= 3 ? C.pink : t.textMuted, fontWeight: 600 }}>{fl.seats} seats left</div>
                   </div>
