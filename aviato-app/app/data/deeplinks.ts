@@ -101,7 +101,7 @@ export function generateDeepLink(
       if (departDate) aeroParams.departureDate = departDate;
       if (returnDate && tripType === 'roundtrip') aeroParams.returnDate = returnDate;
       const params = new URLSearchParams(aeroParams);
-      return `https://aero.com/flights?${params.toString()}`;
+      return `https://aero.com/checkout?${params.toString()}`;
     }
 
     case 'JSX': {
