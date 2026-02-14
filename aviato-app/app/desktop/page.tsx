@@ -109,7 +109,7 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
           onChange={(e) => setQuery(e.target.value)}
           onBlur={() => setTimeout(() => setIsOpen(false), 200)}
           style={{
-            flex: 1, width: '100%', padding: 0, border: 'none', fontSize: '15px',
+            flex: 1, width: '100%', padding: 0, border: 'none', fontSize: '16px',
             fontFamily: 'inherit', outline: 'none', backgroundColor: 'transparent',
             color: displayValue && !isOpen ? t.text : t.textSec, fontWeight: 500,
           }}
@@ -462,11 +462,11 @@ export default function DesktopPage() {
             </div>
 
             {/* Hero text — bottom of hero */}
-            <div style={{ position: 'absolute', bottom: '28px', left: '20px', right: '20px', zIndex: 10 }}>
-              <h1 style={{ fontSize: '28px', fontWeight: 800, color: '#fff', margin: '0 0 8px', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
+            <div style={{ position: 'absolute', bottom: '40px', left: '20px', right: '20px', zIndex: 10 }}>
+              <h1 style={{ fontSize: '28px', fontWeight: 800, color: '#fff', margin: '0 0 4px', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
                 Rediscover what flying is all about.
               </h1>
-              <p style={{ fontSize: '15px', fontWeight: 500, color: 'rgba(255,255,255,0.9)', margin: 0 }}>
+              <p style={{ fontSize: '14px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', margin: 0 }}>
                 Compare semi-private flights across every carrier.
               </p>
             </div>
@@ -529,7 +529,7 @@ export default function DesktopPage() {
                 <div style={{ padding: '12px 14px', minWidth: '100px' }}>
                   <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px' }}>Guests</div>
                   <select value={passengers} onChange={e => setPassengers(Number(e.target.value))}
-                    style={{ border: 'none', fontSize: '14px', fontWeight: 500, fontFamily: 'inherit', outline: 'none', appearance: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: t.text, padding: 0 }}>
+                    style={{ border: 'none', fontSize: '16px', fontWeight: 500, fontFamily: 'inherit', outline: 'none', appearance: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: t.text, padding: 0 }}>
                     {[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n} guest{n > 1 ? 's' : ''}</option>)}
                   </select>
                 </div>
