@@ -39,7 +39,7 @@ const HERO_IMAGES = [
   { src: '/images/hero-poolside.jpg' },
   { src: '/images/hero-plane.jpg' },
   { src: '/images/hero-diving.jpg' },
-  { src: '/images/hero-airport.jpg' },
+  { src: '/images/hero-beach.jpg' },
   { src: '/images/hero-amphicar.jpeg' },
   { src: '/images/hero-skibar.jpeg' },
 ];
