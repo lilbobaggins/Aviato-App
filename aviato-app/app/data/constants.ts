@@ -22,6 +22,7 @@ export const AIRLINE_STYLE: Record<string, AirlineStyle> = {
   'Tradewind': { bg: '#1A472A', text: '#FFF', label: 'TW', accent: '#87CEAB' },
   'Surf Air': { bg: '#003049', text: '#FFF', label: 'SA', accent: '#00B4D8' },
   'BARK Air': { bg: '#2C3E2D', text: '#FFF', label: 'BA', accent: '#8DB580' },
+  'Boutique Air': { bg: '#1C3A50', text: '#FFF', label: 'BQ', accent: '#6BAED6' },
 };
 
 export const AIRLINE_BOOKING: Record<string, AirlineBooking> = {
@@ -31,6 +32,7 @@ export const AIRLINE_BOOKING: Record<string, AirlineBooking> = {
   'Tradewind': { url: 'https://www.flytradewind.com/scheduled/', name: 'Tradewind Aviation', note: 'Book scheduled flights at flytradewind.com' },
   'Surf Air': { url: 'https://fly.surfair.com/explore/scheduled', name: 'Surf Air', note: 'Operated by Southern Airways Express. Book at fly.surfair.com' },
   'BARK Air': { url: 'https://air.bark.co/collections/bookings', name: 'BARK Air', note: 'Each ticket includes 1 dog + 1 human. Book at air.bark.co' },
+  'Boutique Air': { url: 'https://www.boutiqueair.com', name: 'Boutique Air', note: 'Fly private for the cost of commercial. Book at boutiqueair.com' },
 };
 
 export const WING_RATINGS: Record<string, WingRating> = {
@@ -40,6 +42,7 @@ export const WING_RATINGS: Record<string, WingRating> = {
   'Tradewind': { wings: 2, tier: 'Premium Semi-Private', score: 5, badges: ['terminal','arrival','density','baggage','amenities'], pets: true, petNote: 'Pets welcome onboard' },
   'Surf Air': { wings: 1, tier: 'Accessible Semi-Private', score: 3, badges: ['terminal','arrival','density'], pets: false },
   'BARK Air': { wings: 3, tier: 'Flagship Semi-Private', score: 6, badges: ['terminal','arrival','density','baggage','amenities','seating'], pets: true, petNote: '1 dog + 1 human per ticket' },
+  'Boutique Air': { wings: 1, tier: 'Accessible Semi-Private', score: 3, badges: ['density','baggage','seating'], pets: true, petNote: 'Pets allowed in cabin' },
 };
 
 export const BADGE_CONFIG: Record<string, BadgeConfig> = {

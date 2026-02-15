@@ -788,11 +788,15 @@ export const FLIGHTS: Record<string, Flight[]> = {
     { id:'surf-li1', airline:'Surf Air', dep:'8:00 AM', arr:'9:25 AM', dc:'LAX', ac:'IPL', dur:'1h 25m', price:109, craft:'Cessna Grand Caravan', seats:9, amen:['Snacks'], link:'surfair.com' },
     { id:'surf-li2', airline:'Surf Air', dep:'4:35 PM', arr:'6:00 PM', dc:'LAX', ac:'IPL', dur:'1h 25m', price:109, craft:'Cessna Grand Caravan', seats:9, amen:['Snacks'], link:'surfair.com' },
     { id:'surf-li3', airline:'Surf Air', dep:'8:45 PM', arr:'10:10 PM', dc:'LAX', ac:'IPL', dur:'1h 25m', price:109, craft:'Cessna Grand Caravan', seats:9, amen:['Snacks'], link:'surfair.com' },
+    { id:'bq-li1', airline:'Boutique Air', dep:'8:00 AM', arr:'9:10 AM', dc:'LAX', ac:'IPL', dur:'1h 10m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-li2', airline:'Boutique Air', dep:'4:00 PM', arr:'5:10 PM', dc:'LAX', ac:'IPL', dur:'1h 10m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
   ],
   'IPL-LAX': [
     { id:'surf-il1', airline:'Surf Air', dep:'6:00 AM', arr:'7:31 AM', dc:'IPL', ac:'LAX', dur:'1h 31m', price:109, craft:'Cessna Grand Caravan', seats:9, amen:['Snacks'], link:'surfair.com' },
     { id:'surf-il2', airline:'Surf Air', dep:'2:25 PM', arr:'3:56 PM', dc:'IPL', ac:'LAX', dur:'1h 31m', price:109, craft:'Cessna Grand Caravan', seats:9, amen:['Snacks'], link:'surfair.com' },
     { id:'surf-il3', airline:'Surf Air', dep:'6:30 PM', arr:'8:01 PM', dc:'IPL', ac:'LAX', dur:'1h 31m', price:109, craft:'Cessna Grand Caravan', seats:9, amen:['Snacks'], link:'surfair.com' },
+    { id:'bq-il1', airline:'Boutique Air', dep:'9:45 AM', arr:'10:55 AM', dc:'IPL', ac:'LAX', dur:'1h 10m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-il2', airline:'Boutique Air', dep:'5:45 PM', arr:'6:55 PM', dc:'IPL', ac:'LAX', dur:'1h 10m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
   ],
 
   // ═══ Tradewind: Caribbean & Bahamas ═══
@@ -851,6 +855,183 @@ export const FLIGHTS: Record<string, Flight[]> = {
   'ELH-FLL': [
     { id:'tw-ef1', airline:'Tradewind', dep:'7:30 AM', arr:'8:30 AM', dc:'ELH', ac:'FLL', dur:'1h 00m', price:249, craft:'Pilatus PC-12', seats:6, amen:['WiFi','Snacks'], link:'flytradewind.com' },
     { id:'tw-ef2', airline:'Tradewind', dep:'11:15 AM', arr:'12:15 PM', dc:'ELH', ac:'FLL', dur:'1h 00m', price:249, craft:'Pilatus PC-12', seats:5, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+  ],
+
+  // ──────────────────────────────────────────────────────────────────
+  // BOUTIQUE AIR — Pilatus PC-12 (8-9 seats), EAS routes
+  // Pricing from boutiqueair.com & Skyscanner. Up to 3 daily flights.
+  // ──────────────────────────────────────────────────────────────────
+
+  // WEST: Portland ↔ Pendleton (up to 3 daily, ~50min)
+  'PDX-PDT': [
+    { id:'bq-pp1', airline:'Boutique Air', dep:'7:00 AM', arr:'7:50 AM', dc:'PDX', ac:'PDT', dur:'0h 50m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-pp2', airline:'Boutique Air', dep:'12:30 PM', arr:'1:20 PM', dc:'PDX', ac:'PDT', dur:'0h 50m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-pp3', airline:'Boutique Air', dep:'5:30 PM', arr:'6:20 PM', dc:'PDX', ac:'PDT', dur:'0h 50m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'PDT-PDX': [
+    { id:'bq-pp4', airline:'Boutique Air', dep:'8:15 AM', arr:'9:05 AM', dc:'PDT', ac:'PDX', dur:'0h 50m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-pp5', airline:'Boutique Air', dep:'1:45 PM', arr:'2:35 PM', dc:'PDT', ac:'PDX', dur:'0h 50m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-pp6', airline:'Boutique Air', dep:'6:45 PM', arr:'7:35 PM', dc:'PDT', ac:'PDX', dur:'0h 50m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+
+  // WEST: Imperial ↔ Phoenix (~1h 20m)
+  'IPL-PHX': [
+    { id:'bq-ip1', airline:'Boutique Air', dep:'7:30 AM', arr:'8:50 AM', dc:'IPL', ac:'PHX', dur:'1h 20m', price:69, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'PHX-IPL': [
+    { id:'bq-pi1', airline:'Boutique Air', dep:'3:30 PM', arr:'4:50 PM', dc:'PHX', ac:'IPL', dur:'1h 20m', price:69, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+
+  // EAST: Boston ↔ Massena (daily, ~1h 20m)
+  'BOS-MSS': [
+    { id:'bq-bm1', airline:'Boutique Air', dep:'8:00 AM', arr:'9:20 AM', dc:'BOS', ac:'MSS', dur:'1h 20m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-bm2', airline:'Boutique Air', dep:'4:30 PM', arr:'5:50 PM', dc:'BOS', ac:'MSS', dur:'1h 20m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'MSS-BOS': [
+    { id:'bq-mb1', airline:'Boutique Air', dep:'10:00 AM', arr:'11:20 AM', dc:'MSS', ac:'BOS', dur:'1h 20m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-mb2', airline:'Boutique Air', dep:'6:30 PM', arr:'7:50 PM', dc:'MSS', ac:'BOS', dur:'1h 20m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+
+  // CENTRAL: Dallas/Ft Worth hub routes
+  'DFW-HRO': [
+    { id:'bq-dh1', airline:'Boutique Air', dep:'9:00 AM', arr:'10:10 AM', dc:'DFW', ac:'HRO', dur:'1h 10m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'HRO-DFW': [
+    { id:'bq-hd1', airline:'Boutique Air', dep:'11:00 AM', arr:'12:10 PM', dc:'HRO', ac:'DFW', dur:'1h 10m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'DFW-HOT': [
+    { id:'bq-dht1', airline:'Boutique Air', dep:'8:30 AM', arr:'9:45 AM', dc:'DFW', ac:'HOT', dur:'1h 15m', price:99, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'HOT-DFW': [
+    { id:'bq-htd1', airline:'Boutique Air', dep:'10:30 AM', arr:'11:45 AM', dc:'HOT', ac:'DFW', dur:'1h 15m', price:99, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+
+  // CENTRAL: Harrison/Branson ↔ Memphis / Nashville / Jonesboro
+  'HRO-MEM': [
+    { id:'bq-hm1', airline:'Boutique Air', dep:'7:30 AM', arr:'8:30 AM', dc:'HRO', ac:'MEM', dur:'1h 00m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'MEM-HRO': [
+    { id:'bq-mh1', airline:'Boutique Air', dep:'9:15 AM', arr:'10:15 AM', dc:'MEM', ac:'HRO', dur:'1h 00m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'HRO-BNA': [
+    { id:'bq-hbn1', airline:'Boutique Air', dep:'10:45 AM', arr:'12:00 PM', dc:'HRO', ac:'BNA', dur:'1h 15m', price:99, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'BNA-HRO': [
+    { id:'bq-bnh1', airline:'Boutique Air', dep:'12:45 PM', arr:'2:00 PM', dc:'BNA', ac:'HRO', dur:'1h 15m', price:99, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'JBR-MEM': [
+    { id:'bq-jm1', airline:'Boutique Air', dep:'7:00 AM', arr:'7:45 AM', dc:'JBR', ac:'MEM', dur:'0h 45m', price:69, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'MEM-JBR': [
+    { id:'bq-mj1', airline:'Boutique Air', dep:'8:30 AM', arr:'9:15 AM', dc:'MEM', ac:'JBR', dur:'0h 45m', price:69, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'HOT-MEM': [
+    { id:'bq-htm1', airline:'Boutique Air', dep:'8:00 AM', arr:'8:50 AM', dc:'HOT', ac:'MEM', dur:'0h 50m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'MEM-HOT': [
+    { id:'bq-mht1', airline:'Boutique Air', dep:'9:30 AM', arr:'10:20 AM', dc:'MEM', ac:'HOT', dur:'0h 50m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+
+  // CENTRAL: St. Louis ↔ Nashville / Memphis
+  'STL-BNA': [
+    { id:'bq-sb1', airline:'Boutique Air', dep:'9:00 AM', arr:'10:05 AM', dc:'STL', ac:'BNA', dur:'1h 05m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'BNA-STL': [
+    { id:'bq-bs1', airline:'Boutique Air', dep:'11:00 AM', arr:'12:05 PM', dc:'BNA', ac:'STL', dur:'1h 05m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'STL-MEM': [
+    { id:'bq-sm1', airline:'Boutique Air', dep:'8:00 AM', arr:'8:50 AM', dc:'STL', ac:'MEM', dur:'0h 50m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'MEM-STL': [
+    { id:'bq-ms1', airline:'Boutique Air', dep:'9:30 AM', arr:'10:20 AM', dc:'MEM', ac:'STL', dur:'0h 50m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+
+  // EAST: Pittsburgh hub → Pennsylvania regional
+  'PIT-BFD': [
+    { id:'bq-pb1', airline:'Boutique Air', dep:'8:00 AM', arr:'8:50 AM', dc:'PIT', ac:'BFD', dur:'0h 50m', price:69, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-pb2', airline:'Boutique Air', dep:'5:00 PM', arr:'5:50 PM', dc:'PIT', ac:'BFD', dur:'0h 50m', price:69, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'BFD-PIT': [
+    { id:'bq-bp1', airline:'Boutique Air', dep:'9:15 AM', arr:'10:05 AM', dc:'BFD', ac:'PIT', dur:'0h 50m', price:69, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-bp2', airline:'Boutique Air', dep:'6:15 PM', arr:'7:05 PM', dc:'BFD', ac:'PIT', dur:'0h 50m', price:69, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'PIT-DUJ': [
+    { id:'bq-pdu1', airline:'Boutique Air', dep:'8:30 AM', arr:'9:15 AM', dc:'PIT', ac:'DUJ', dur:'0h 45m', price:69, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'DUJ-PIT': [
+    { id:'bq-dup1', airline:'Boutique Air', dep:'9:45 AM', arr:'10:30 AM', dc:'DUJ', ac:'PIT', dur:'0h 45m', price:69, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'PIT-IPT': [
+    { id:'bq-pw1', airline:'Boutique Air', dep:'9:00 AM', arr:'9:50 AM', dc:'PIT', ac:'IPT', dur:'0h 50m', price:69, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'IPT-PIT': [
+    { id:'bq-wp1', airline:'Boutique Air', dep:'10:30 AM', arr:'11:20 AM', dc:'IPT', ac:'PIT', dur:'0h 50m', price:69, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'PIT-LNS': [
+    { id:'bq-pl1', airline:'Boutique Air', dep:'7:30 AM', arr:'8:25 AM', dc:'PIT', ac:'LNS', dur:'0h 55m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'LNS-PIT': [
+    { id:'bq-lp1', airline:'Boutique Air', dep:'9:00 AM', arr:'9:55 AM', dc:'LNS', ac:'PIT', dur:'0h 55m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+
+  // EAST: Washington Dulles connections
+  'IAD-LNS': [
+    { id:'bq-wl1', airline:'Boutique Air', dep:'10:00 AM', arr:'10:50 AM', dc:'IAD', ac:'LNS', dur:'0h 50m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'LNS-IAD': [
+    { id:'bq-lw1', airline:'Boutique Air', dep:'11:30 AM', arr:'12:20 PM', dc:'LNS', ac:'IAD', dur:'0h 50m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+
+  // HAWAII: Honolulu hub — inter-island (operated by Boutique Air / Mokulele partnership)
+  'HNL-OGG': [
+    { id:'bq-ho1', airline:'Boutique Air', dep:'7:00 AM', arr:'7:35 AM', dc:'HNL', ac:'OGG', dur:'0h 35m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-ho2', airline:'Boutique Air', dep:'11:30 AM', arr:'12:05 PM', dc:'HNL', ac:'OGG', dur:'0h 35m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-ho3', airline:'Boutique Air', dep:'4:00 PM', arr:'4:35 PM', dc:'HNL', ac:'OGG', dur:'0h 35m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'OGG-HNL': [
+    { id:'bq-oh1', airline:'Boutique Air', dep:'8:15 AM', arr:'8:50 AM', dc:'OGG', ac:'HNL', dur:'0h 35m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-oh2', airline:'Boutique Air', dep:'12:45 PM', arr:'1:20 PM', dc:'OGG', ac:'HNL', dur:'0h 35m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-oh3', airline:'Boutique Air', dep:'5:15 PM', arr:'5:50 PM', dc:'OGG', ac:'HNL', dur:'0h 35m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'HNL-KOA': [
+    { id:'bq-hk1', airline:'Boutique Air', dep:'7:30 AM', arr:'8:10 AM', dc:'HNL', ac:'KOA', dur:'0h 40m', price:99, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-hk2', airline:'Boutique Air', dep:'2:00 PM', arr:'2:40 PM', dc:'HNL', ac:'KOA', dur:'0h 40m', price:99, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'KOA-HNL': [
+    { id:'bq-kh1', airline:'Boutique Air', dep:'9:00 AM', arr:'9:40 AM', dc:'KOA', ac:'HNL', dur:'0h 40m', price:99, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-kh2', airline:'Boutique Air', dep:'3:30 PM', arr:'4:10 PM', dc:'KOA', ac:'HNL', dur:'0h 40m', price:99, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'HNL-JHM': [
+    { id:'bq-hjm1', airline:'Boutique Air', dep:'8:00 AM', arr:'8:35 AM', dc:'HNL', ac:'JHM', dur:'0h 35m', price:99, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'JHM-HNL': [
+    { id:'bq-jmh1', airline:'Boutique Air', dep:'9:15 AM', arr:'9:50 AM', dc:'JHM', ac:'HNL', dur:'0h 35m', price:99, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'HNL-LNY': [
+    { id:'bq-hln1', airline:'Boutique Air', dep:'10:00 AM', arr:'10:30 AM', dc:'HNL', ac:'LNY', dur:'0h 30m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'LNY-HNL': [
+    { id:'bq-lnh1', airline:'Boutique Air', dep:'11:15 AM', arr:'11:45 AM', dc:'LNY', ac:'HNL', dur:'0h 30m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'HNL-MKK': [
+    { id:'bq-hmk1', airline:'Boutique Air', dep:'9:00 AM', arr:'9:25 AM', dc:'HNL', ac:'MKK', dur:'0h 25m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-hmk2', airline:'Boutique Air', dep:'3:30 PM', arr:'3:55 PM', dc:'HNL', ac:'MKK', dur:'0h 25m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'MKK-HNL': [
+    { id:'bq-mkh1', airline:'Boutique Air', dep:'10:00 AM', arr:'10:25 AM', dc:'MKK', ac:'HNL', dur:'0h 25m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+    { id:'bq-mkh2', airline:'Boutique Air', dep:'4:30 PM', arr:'4:55 PM', dc:'MKK', ac:'HNL', dur:'0h 25m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'OGG-HNM': [
+    { id:'bq-ohan1', airline:'Boutique Air', dep:'8:00 AM', arr:'8:25 AM', dc:'OGG', ac:'HNM', dur:'0h 25m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'HNM-OGG': [
+    { id:'bq-hano1', airline:'Boutique Air', dep:'9:00 AM', arr:'9:25 AM', dc:'HNM', ac:'OGG', dur:'0h 25m', price:79, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'OGG-MUE': [
+    { id:'bq-omue1', airline:'Boutique Air', dep:'10:00 AM', arr:'10:35 AM', dc:'OGG', ac:'MUE', dur:'0h 35m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
+  ],
+  'MUE-OGG': [
+    { id:'bq-mueo1', airline:'Boutique Air', dep:'11:15 AM', arr:'11:50 AM', dc:'MUE', ac:'OGG', dur:'0h 35m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
   ],
 };
 

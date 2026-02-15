@@ -150,6 +150,10 @@ export function generateDeepLink(
       return 'https://fly.surfair.com/explore/scheduled';
     }
 
+    case 'Boutique Air': {
+      return 'https://www.boutiqueair.com';
+    }
+
     default:
       return '#';
   }
@@ -195,6 +199,9 @@ export function getDeepLinkNote(
 
     case 'Surf Air':
       return `Opens Surf Air's booking page. Search ${origin.city} → ${dest.city} to see available flights.`;
+
+    case 'Boutique Air':
+      return `Opens Boutique Air's booking page. Search ${origin.city} → ${dest.city} and pick your date to book.`;
 
     default:
       return `Complete your booking on ${airline}'s website.`;
