@@ -105,16 +105,22 @@ export function generateDeepLink(
     }
 
     case 'JSX': {
-      // Seasonal routes (e.g. Coachella) don't have permanent flights.jsx.com pages
-      // Fall back to JSX homepage which features seasonal destinations prominently
-      if (JSX_SEASONAL_CODES.has(originCode) || JSX_SEASONAL_CODES.has(destCode)) {
-        return 'https://www.jsx.com/';
+      // CONFIRMED: Full deep link to JSX booking/select page
+      // Pre-fills origin, destination, date, and passengers — user just picks a flight time
+      const jsxParams = new URLSearchParams({
+        o: originCode,
+        d: destCode,
+        dd: departDate,
+        adt: String(passengers),
+        chd: '0',
+        inf: '0',
+        curr: 'USD',
+      });
+      // Add return date for round-trip bookings
+      if (returnDate && tripType === 'roundtrip') {
+        jsxParams.set('rd', returnDate);
       }
-      // Route-specific landing pages on flights.jsx.com (same pages Google indexes)
-      // Format: flights.jsx.com/en/flights-from-{origin}-to-{dest}
-      const jsxOriginSlug = JSX_CITY_SLUGS[originCode] || getCitySlug(originCode);
-      const jsxDestSlug = JSX_CITY_SLUGS[destCode] || getCitySlug(destCode);
-      return `https://flights.jsx.com/en/flights-from-${jsxOriginSlug}-to-${jsxDestSlug}`;
+      return `https://www.jsx.com/booking/select?${jsxParams.toString()}`;
     }
 
     case 'Slate': {
@@ -174,10 +180,7 @@ export function getDeepLinkNote(
       return `Opens Aero with ${origin.city} → ${dest.city} pre-selected (${tripType === 'roundtrip' ? 'round trip' : 'one way'}). Each link resets the booking — your route is always fresh.`;
 
     case 'JSX':
-      if (JSX_SEASONAL_CODES.has(originCode) || JSX_SEASONAL_CODES.has(destCode)) {
-        return `Opens JSX's homepage — look for the ${dest.city} seasonal flights banner to book ${origin.city} → ${dest.city}.`;
-      }
-      return `Opens JSX's ${origin.city} → ${dest.city} route page with flight times, prices, and booking.`;
+      return `Opens JSX's booking page with ${origin.city} → ${dest.city} pre-selected (${tripType === 'roundtrip' ? 'round trip' : 'one way'}, ${passengers} passenger${passengers > 1 ? 's' : ''}). Just pick your flight time and check out!`;
 
     case 'Slate': {
       const hasSlateLink = SLATE_POINT_IDS[originCode] && SLATE_POINT_IDS[destCode];
