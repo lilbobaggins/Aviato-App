@@ -6172,6 +6172,8 @@ export const FLIGHTS: Record<string, Flight[]> = {
     { id:'jsx-ase-vny-1', airline:'JSX', dep:'8:00 AM', arr:'10:15 AM', dc:'ASE', ac:'VNY', dur:'2h 15m', price:485, craft:'ERJ-135', seats:6, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-12' },
     { id:'jsx-ase-vny-2', airline:'JSX', dep:'12:30 PM', arr:'2:45 PM', dc:'ASE', ac:'VNY', dur:'2h 15m', price:485, craft:'ERJ-135', seats:5, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-13' },
     { id:'jsx-ase-vny-3', airline:'JSX', dep:'4:00 PM', arr:'6:15 PM', dc:'ASE', ac:'VNY', dur:'2h 15m', price:450, craft:'ERJ-135', seats:4, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-15' },
+    { id:'aero-av1', airline:'Aero', dep:'11:30 AM', arr:'1:45 PM', dc:'ASE', ac:'VNY', dur:'2h 15m', price:1250, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
+    { id:'aero-av2', airline:'Aero', dep:'4:00 PM', arr:'6:15 PM', dc:'ASE', ac:'VNY', dur:'2h 15m', price:1250, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
   ],
   'AXA-SJU': [
     { id:'tw-as1', airline:'Tradewind', dep:'7:45 AM', arr:'8:40 AM', dc:'AXA', ac:'SJU', dur:'0h 55m', price:325, craft:'Pilatus PC-12', seats:6, amen:['WiFi','Snacks'], link:'flytradewind.com' },
@@ -6407,6 +6409,8 @@ export const FLIGHTS: Record<string, Flight[]> = {
   'LAS-VNY': [
     { id:'jsx-lv1', airline:'JSX', dep:'8:00 AM', arr:'10:15 AM', dc:'LAS', ac:'VNY', dur:'2h 15m', price:450, craft:'ERJ-135', seats:6, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-03-06' },
     { id:'jsx-lv2', airline:'JSX', dep:'2:30 PM', arr:'4:45 PM', dc:'LAS', ac:'VNY', dur:'2h 15m', price:450, craft:'ERJ-135', seats:5, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-03-08' },
+    { id:'aero-lv1', airline:'Aero', dep:'11:00 AM', arr:'12:00 PM', dc:'LAS', ac:'VNY', dur:'1h 00m', price:595, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
+    { id:'aero-lv2', airline:'Aero', dep:'7:00 PM', arr:'8:00 PM', dc:'LAS', ac:'VNY', dur:'1h 00m', price:595, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
   ],
   'LAX-IPL': [
     { id:'surf-li1', airline:'Surf Air', dep:'8:00 AM', arr:'9:25 AM', dc:'LAX', ac:'IPL', dur:'1h 25m', price:109, craft:'Cessna Grand Caravan', seats:9, amen:['Snacks'], link:'surfair.com' },
@@ -6534,6 +6538,7 @@ export const FLIGHTS: Record<string, Flight[]> = {
   'OGG-VNY': [
     { id:'jsx-ogv1', airline:'JSX', dep:'9:00 AM', arr:'11:30 AM', dc:'OGG', ac:'VNY', dur:'2h 30m', price:500, craft:'ERJ-135', seats:6, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-16' },
     { id:'jsx-ogv2', airline:'JSX', dep:'3:00 PM', arr:'5:30 PM', dc:'OGG', ac:'VNY', dur:'2h 30m', price:500, craft:'ERJ-135', seats:5, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-22' },
+    { id:'aero-ov1', airline:'Aero', dep:'2:00 PM', arr:'7:00 PM', dc:'OGG', ac:'VNY', dur:'5h 00m', price:2250, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
   ],
   'PDT-PDX': [
     { id:'bq-pp4', airline:'Boutique Air', dep:'8:15 AM', arr:'9:05 AM', dc:'PDT', ac:'PDX', dur:'0h 50m', price:89, craft:'Pilatus PC-12', seats:8, amen:['Leather Seats','Snacks'], link:'boutiqueair.com' },
@@ -6591,6 +6596,7 @@ export const FLIGHTS: Record<string, Flight[]> = {
   'SJD-VNY': [
     { id:'jsx-sjdv1', airline:'JSX', dep:'7:30 AM', arr:'10:00 AM', dc:'SJD', ac:'VNY', dur:'2h 30m', price:520, craft:'ERJ-135', seats:6, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-03-01' },
     { id:'jsx-sjdv2', airline:'JSX', dep:'1:00 PM', arr:'3:30 PM', dc:'SJD', ac:'VNY', dur:'2h 30m', price:520, craft:'ERJ-135', seats:5, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-03-02' },
+    { id:'aero-sjv1', airline:'Aero', dep:'1:00 PM', arr:'3:30 PM', dc:'SJD', ac:'VNY', dur:'2h 30m', price:1350, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
   ],
   'SJU-AXA': [
     { id:'tw-sa1', airline:'Tradewind', dep:'8:30 AM', arr:'9:25 AM', dc:'SJU', ac:'AXA', dur:'0h 55m', price:325, craft:'Pilatus PC-12', seats:6, amen:['WiFi','Snacks'], link:'flytradewind.com' },
@@ -6624,6 +6630,8 @@ export const FLIGHTS: Record<string, Flight[]> = {
   'SUN-VNY': [
     { id:'jsx-sunv1', airline:'JSX', dep:'8:15 AM', arr:'10:45 AM', dc:'SUN', ac:'VNY', dur:'2h 30m', price:485, craft:'ERJ-135', seats:6, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-12' },
     { id:'jsx-sunv2', airline:'JSX', dep:'2:45 PM', arr:'5:15 PM', dc:'SUN', ac:'VNY', dur:'2h 30m', price:485, craft:'ERJ-135', seats:5, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-16' },
+    { id:'aero-sv1', airline:'Aero', dep:'11:00 AM', arr:'1:00 PM', dc:'SUN', ac:'VNY', dur:'2h 00m', price:1175, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
+    { id:'aero-sv2', airline:'Aero', dep:'4:30 PM', arr:'6:30 PM', dc:'SUN', ac:'VNY', dur:'2h 00m', price:1175, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
   ],
   'TEB-FLL': [
     { id:'slate-tebfll-1', airline:'Slate', dep:'9:30 AM', arr:'12:30 PM', dc:'TEB', ac:'FLL', dur:'3h 00m', price:2460, craft:'CRJ-200', seats:9, amen:['WiFi','Catering','Champagne'], link:'flyslate.com', date:'2026-02-13' },
@@ -6729,6 +6737,8 @@ export const FLIGHTS: Record<string, Flight[]> = {
   'TEB-VNY': [
     { id:'jsx-tebv1', airline:'JSX', dep:'9:00 AM', arr:'12:00 PM', dc:'TEB', ac:'VNY', dur:'3h 00m', price:540, craft:'ERJ-135', seats:6, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-26' },
     { id:'jsx-tebv2', airline:'JSX', dep:'3:30 PM', arr:'6:30 PM', dc:'TEB', ac:'VNY', dur:'3h 00m', price:540, craft:'ERJ-135', seats:5, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-03-05' },
+    { id:'aero-tev1', airline:'Aero', dep:'8:00 AM', arr:'1:30 PM', dc:'TEB', ac:'VNY', dur:'5h 30m', price:3450, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
+    { id:'aero-tev2', airline:'Aero', dep:'3:00 PM', arr:'8:30 PM', dc:'TEB', ac:'VNY', dur:'5h 30m', price:3450, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
   ],
   'TRM-VNY': [
     { id:'aero-tv1', airline:'Aero', dep:'10:15 AM', arr:'11:05 AM', dc:'TRM', ac:'VNY', dur:'0h 50m', price:775, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
@@ -6744,10 +6754,14 @@ export const FLIGHTS: Record<string, Flight[]> = {
   'VNY-SUN': [
     { id:'jsx-vnysun1', airline:'JSX', dep:'8:00 AM', arr:'10:30 AM', dc:'VNY', ac:'SUN', dur:'2h 30m', price:485, craft:'ERJ-135', seats:6, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-12' },
     { id:'jsx-vnysun2', airline:'JSX', dep:'2:30 PM', arr:'5:00 PM', dc:'VNY', ac:'SUN', dur:'2h 30m', price:485, craft:'ERJ-135', seats:5, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-16' },
+    { id:'aero-vs1', airline:'Aero', dep:'8:00 AM', arr:'9:45 AM', dc:'VNY', ac:'SUN', dur:'1h 45m', price:1175, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
+    { id:'aero-vs2', airline:'Aero', dep:'1:30 PM', arr:'3:15 PM', dc:'VNY', ac:'SUN', dur:'1h 45m', price:1175, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
   ],
   'VNY-ASE': [
     { id:'jsx-vnyase1', airline:'JSX', dep:'7:00 AM', arr:'9:15 AM', dc:'VNY', ac:'ASE', dur:'2h 15m', price:485, craft:'ERJ-135', seats:6, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-12' },
     { id:'jsx-vnyase2', airline:'JSX', dep:'12:30 PM', arr:'2:45 PM', dc:'VNY', ac:'ASE', dur:'2h 15m', price:485, craft:'ERJ-135', seats:5, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-13' },
+    { id:'aero-va1', airline:'Aero', dep:'8:30 AM', arr:'10:30 AM', dc:'VNY', ac:'ASE', dur:'2h 00m', price:1250, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
+    { id:'aero-va2', airline:'Aero', dep:'1:00 PM', arr:'3:00 PM', dc:'VNY', ac:'ASE', dur:'2h 00m', price:1250, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
   ],
   'VNY-HPN': [
     { id:'bark-vh1', airline:'BARK Air', dep:'9:00 AM', arr:'5:30 PM', dc:'VNY', ac:'HPN', dur:'5h 30m', price:6000, craft:'Gulfstream GIV', seats:8, amen:['WiFi','Gourmet Catering','Champagne','Vet Tech On Board'], link:'air.bark.co' },
@@ -6758,14 +6772,30 @@ export const FLIGHTS: Record<string, Flight[]> = {
   'VNY-LAS': [
     { id:'jsx-vnylas1', airline:'JSX', dep:'8:00 AM', arr:'10:15 AM', dc:'VNY', ac:'LAS', dur:'2h 15m', price:450, craft:'ERJ-135', seats:6, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-03-06' },
     { id:'jsx-vnylas2', airline:'JSX', dep:'2:30 PM', arr:'4:45 PM', dc:'VNY', ac:'LAS', dur:'2h 15m', price:450, craft:'ERJ-135', seats:5, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-03-08' },
+    { id:'aero-vl1', airline:'Aero', dep:'9:00 AM', arr:'10:00 AM', dc:'VNY', ac:'LAS', dur:'1h 00m', price:595, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
+    { id:'aero-vl2', airline:'Aero', dep:'4:30 PM', arr:'5:30 PM', dc:'VNY', ac:'LAS', dur:'1h 00m', price:595, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
   ],
   'VNY-OGG': [
     { id:'jsx-vnyogg1', airline:'JSX', dep:'9:00 AM', arr:'11:30 AM', dc:'VNY', ac:'OGG', dur:'2h 30m', price:500, craft:'ERJ-135', seats:6, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-14' },
     { id:'jsx-vnyogg2', airline:'JSX', dep:'3:00 PM', arr:'5:30 PM', dc:'VNY', ac:'OGG', dur:'2h 30m', price:500, craft:'ERJ-135', seats:5, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-21' },
+    { id:'aero-vo1', airline:'Aero', dep:'8:00 AM', arr:'1:30 PM', dc:'VNY', ac:'OGG', dur:'5h 30m', price:2250, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
   ],
   'VNY-SJD': [
     { id:'jsx-vnysjd1', airline:'JSX', dep:'7:30 AM', arr:'10:00 AM', dc:'VNY', ac:'SJD', dur:'2h 30m', price:520, craft:'ERJ-135', seats:6, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-12' },
     { id:'jsx-vnysjd2', airline:'JSX', dep:'1:00 PM', arr:'3:30 PM', dc:'VNY', ac:'SJD', dur:'2h 30m', price:520, craft:'ERJ-135', seats:5, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-02-16' },
+    { id:'aero-vsjd1', airline:'Aero', dep:'9:00 AM', arr:'11:30 AM', dc:'VNY', ac:'SJD', dur:'2h 30m', price:1350, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
+  ],
+  'VNY-TRM': [
+    { id:'aero-vt1', airline:'Aero', dep:'8:00 AM', arr:'8:50 AM', dc:'VNY', ac:'TRM', dur:'0h 50m', price:775, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
+    { id:'aero-vt2', airline:'Aero', dep:'11:30 AM', arr:'12:20 PM', dc:'VNY', ac:'TRM', dur:'0h 50m', price:775, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
+    { id:'aero-vt3', airline:'Aero', dep:'5:00 PM', arr:'5:50 PM', dc:'VNY', ac:'TRM', dur:'0h 50m', price:775, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
+  ],
+  'VNY-TEB': [
+    { id:'aero-vte1', airline:'Aero', dep:'7:00 AM', arr:'12:00 PM', dc:'VNY', ac:'TEB', dur:'5h 00m', price:3450, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
+    { id:'aero-vte2', airline:'Aero', dep:'2:00 PM', arr:'7:00 PM', dc:'VNY', ac:'TEB', dur:'5h 00m', price:3450, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
+  ],
+  'VNY-APC': [
+    { id:'aero-vap1', airline:'Aero', dep:'8:30 AM', arr:'9:45 AM', dc:'VNY', ac:'APC', dur:'1h 15m', price:975, craft:'ERJ-135', seats:4, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com' },
   ],
 };
 
