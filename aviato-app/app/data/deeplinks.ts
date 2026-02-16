@@ -180,7 +180,7 @@ export function getDeepLinkNote(
       return `Opens Aero with ${origin.city} → ${dest.city} pre-selected (${tripType === 'roundtrip' ? 'round trip' : 'one way'}). Each link resets the booking — your route is always fresh.`;
 
     case 'JSX':
-      return `Opens JSX's booking page with ${origin.city} → ${dest.city} pre-selected (${tripType === 'roundtrip' ? 'round trip' : 'one way'}, ${passengers} passenger${passengers > 1 ? 's' : ''}). Just pick your flight time and check out!`;
+      return `Opens JSX's booking page with ${origin.city} → ${dest.city} pre-selected (${tripType === 'roundtrip' ? 'round trip' : 'one way'}). Just pick your flight time and check out!`;
 
     case 'Slate': {
       const hasSlateLink = SLATE_POINT_IDS[originCode] && SLATE_POINT_IDS[destCode];
