@@ -142,8 +142,8 @@ const CalendarPicker = ({ isOpen, onClose, tripType, departDate, returnDate, onS
   // Compute route-specific price range from actual flight data
   const routeFlights = (fromCode && toCode) ? getMetroAreaFlights(fromCode, toCode) : [];
   const routePrices = routeFlights.map(f => f.price);
-  const minRoutePrice = routePrices.length > 0 ? Math.min(...routePrices) : 0;
-  const maxRoutePrice = routePrices.length > 0 ? Math.max(...routePrices) : 0;
+  const minRoutePrice = routePrices.length > 0 ? routePrices.reduce((a, b) => a < b ? a : b) : 0;
+  const maxRoutePrice = routePrices.length > 0 ? routePrices.reduce((a, b) => a > b ? a : b) : 0;
   const priceRange = maxRoutePrice - minRoutePrice;
 
   // Check if this route only operates on specific dates (seasonal/event flights)
@@ -166,7 +166,7 @@ const CalendarPicker = ({ isOpen, onClose, tripType, departDate, returnDate, onS
     const dateFlights = getMetroAreaFlights(fromCode, toCode, dateStr);
     if (dateFlights.length === 0) return null;
     // Show the cheapest available flight for this date
-    return Math.min(...dateFlights.map(f => f.price));
+    return dateFlights.map(f => f.price).reduce((a, b) => a < b ? a : b);
   };
 
   const getPriceColor = (price: number | null) => {

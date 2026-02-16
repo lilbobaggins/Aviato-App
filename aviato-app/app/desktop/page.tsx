@@ -191,8 +191,8 @@ const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, on
 
   const routeFlights = (fromCode && toCode) ? getMetroAreaFlights(fromCode, toCode) : [];
   const routePrices = routeFlights.map(f => f.price);
-  const minP = routePrices.length > 0 ? Math.min(...routePrices) : 0;
-  const maxP = routePrices.length > 0 ? Math.max(...routePrices) : 0;
+  const minP = routePrices.length > 0 ? routePrices.reduce((a, b) => a < b ? a : b) : 0;
+  const maxP = routePrices.length > 0 ? routePrices.reduce((a, b) => a > b ? a : b) : 0;
   const range = maxP - minP;
   const routeDates = (fromCode && toCode) ? getRouteDates(fromCode, toCode) : null;
 
@@ -207,7 +207,7 @@ const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, on
     if (!fromCode || !toCode) return null;
     if (routeDates && !routeDates.includes(ds)) return null;
     const df = getMetroAreaFlights(fromCode, toCode, ds);
-    return df.length === 0 ? null : Math.min(...df.map(f => f.price));
+    return df.length === 0 ? null : df.map(f => f.price).reduce((a, b) => a < b ? a : b);
   };
   const getPriceColor = (p: number | null) => {
     if (!p) return 'transparent';
