@@ -5846,7 +5846,7 @@ export const FLIGHTS: Record<string, Flight[]> = {
     { id:'jsx-hpn-pbi-138', airline:'JSX', dep:'11:30 AM', arr:'2:25 PM', dc:'HPN', ac:'PBI', dur:'2h 55m', price:682, craft:'ERJ-135', seats:2, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-05-28' },
     { id:'jsx-hpn-pbi-139', airline:'JSX', dep:'11:30 AM', arr:'2:25 PM', dc:'HPN', ac:'PBI', dur:'2h 55m', price:682, craft:'ERJ-135', seats:2, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-05-29' },
     { id:'jsx-hpn-pbi-140', airline:'JSX', dep:'11:30 AM', arr:'2:25 PM', dc:'HPN', ac:'PBI', dur:'2h 55m', price:682, craft:'ERJ-135', seats:3, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-05-30' },
-    { id:'jsx-hpn-pbi-141', airline:'JSX', dep:'11:30 AM', arr:'2:25 PM', dc:'HPN', ac:'PBI', dur:'2h 55m', price:682, craft:'ERJ-135', seats:2, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-05-31' },,
+    { id:'jsx-hpn-pbi-141', airline:'JSX', dep:'11:30 AM', arr:'2:25 PM', dc:'HPN', ac:'PBI', dur:'2h 55m', price:682, craft:'ERJ-135', seats:2, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-05-31' },
 
       { id:'slate-hpnpbi-1', airline:'Slate', dep:'3:30 PM', arr:'6:30 PM', dc:'HPN', ac:'PBI', dur:'3h 00m', price:2480, craft:'CRJ-200', seats:9, amen:['WiFi','Catering','Champagne'], link:'flyslate.com', date:'2026-02-13' },
     { id:'slate-hpnpbi-2', airline:'Slate', dep:'9:30 AM', arr:'12:30 PM', dc:'HPN', ac:'PBI', dur:'3h 00m', price:2090, craft:'CRJ-200', seats:13, amen:['WiFi','Catering','Champagne'], link:'flyslate.com', date:'2026-02-17' },
@@ -6037,7 +6037,7 @@ export const FLIGHTS: Record<string, Flight[]> = {
     { id:'jsx-pbi-hpn-135', airline:'JSX', dep:'3:10 PM', arr:'6:10 PM', dc:'PBI', ac:'HPN', dur:'3h 00m', price:939, craft:'ERJ-135', seats:4, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-05-28' },
     { id:'jsx-pbi-hpn-136', airline:'JSX', dep:'3:10 PM', arr:'6:10 PM', dc:'PBI', ac:'HPN', dur:'3h 00m', price:682, craft:'ERJ-135', seats:2, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-05-29' },
     { id:'jsx-pbi-hpn-137', airline:'JSX', dep:'3:10 PM', arr:'6:10 PM', dc:'PBI', ac:'HPN', dur:'3h 00m', price:752, craft:'ERJ-135', seats:2, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-05-30' },
-    { id:'jsx-pbi-hpn-138', airline:'JSX', dep:'3:10 PM', arr:'6:10 PM', dc:'PBI', ac:'HPN', dur:'3h 00m', price:752, craft:'ERJ-135', seats:1, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-05-31' },,
+    { id:'jsx-pbi-hpn-138', airline:'JSX', dep:'3:10 PM', arr:'6:10 PM', dc:'PBI', ac:'HPN', dur:'3h 00m', price:752, craft:'ERJ-135', seats:1, amen:['WiFi','Snacks'], link:'jsx.com', date:'2026-05-31' },
 
       { id:'slate-pbihpn-1', airline:'Slate', dep:'10:30 AM', arr:'1:30 PM', dc:'PBI', ac:'HPN', dur:'3h 00m', price:2590, craft:'CRJ-200', seats:9, amen:['WiFi','Catering','Champagne'], link:'flyslate.com', date:'2026-02-13' },
     { id:'slate-pbihpn-2', airline:'Slate', dep:'3:30 PM', arr:'6:30 PM', dc:'PBI', ac:'HPN', dur:'3h 00m', price:3990, craft:'CRJ-200', seats:1, amen:['WiFi','Catering','Champagne'], link:'flyslate.com', date:'2026-02-16' },
