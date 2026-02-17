@@ -116,6 +116,14 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
     }
   }, []);
 
+  // Close dropdown on scroll so it doesn't float away
+  useEffect(() => {
+    if (!isOpen) return;
+    const onScroll = () => setIsOpen(false);
+    window.addEventListener('scroll', onScroll, true);
+    return () => window.removeEventListener('scroll', onScroll, true);
+  }, [isOpen]);
+
   useEffect(() => {
     if (value) {
       const loc = LOCATIONS.find(l => l.code === value);
@@ -713,14 +721,12 @@ export default function DesktopPage() {
     <ThemeContext.Provider value={{ dark, toggle: () => setDark(!dark) }}>
       {/* Global smooth theme transition — applied to root so EVERYTHING transitions together */}
       <style>{`
-        .aviato-desktop, .aviato-desktop *, .aviato-desktop *::before, .aviato-desktop *::after {
-          transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease !important;
-        }
-        .aviato-desktop img {
-          transition: none !important;
+        .aviato-desktop {
+          transition: background-color 0.5s ease, color 0.5s ease !important;
         }
         .aviato-desktop [data-hero-slide] {
           transition: opacity 1.8s ease-in-out !important;
+          will-change: opacity;
         }
       `}</style>
       <div className="aviato-desktop" style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg, scrollBehavior: 'smooth' }}>
