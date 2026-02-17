@@ -2,3 +2,8 @@ node_modules/
 .next/
 .next_old/
 .DS_Store
+
+# Scraper output (generated at runtime, not checked in)
+scrapers/*.json
+scrapers/*.csv
+scrapers/*_typescript.txt
