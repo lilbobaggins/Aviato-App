@@ -40,6 +40,16 @@ TRADEWIND_SEATS = 6
 TRADEWIND_AMEN = "['WiFi','Snacks']"
 TRADEWIND_LINK = "flytradewind.com"
 
+# ── Aero config ──────────────────────────────────────────────────────
+AERO_ROUTES = [
+    "VNY-LAS", "LAS-VNY", "VNY-ASE", "ASE-VNY", "VNY-SUN", "SUN-VNY",
+    "VNY-TRM", "TRM-VNY", "VNY-APC", "APC-VNY", "VNY-SJD", "SJD-VNY",
+    "VNY-OGG", "OGG-VNY", "VNY-TEB", "TEB-VNY",
+]
+AERO_CRAFT = "ERJ-135"
+AERO_AMEN = "['WiFi','Gourmet Catering','Champagne']"
+AERO_LINK = "aero.com"
+
 # ── BARK Air config ───────────────────────────────────────────────────
 BARK_ROUTES = [
     "HPN-VNY", "VNY-HPN", "HPN-SJC", "SJC-HPN", "VNY-KOA", "KOA-VNY",
@@ -193,6 +203,65 @@ def _calc_duration(dep_iso: str, arr_iso: str) -> str:
         return "1h 30m"
 
 
+def load_aero_flights(json_path: str) -> dict[str, list[dict]]:
+    """Load Aero JSON and group by route key."""
+    if not os.path.exists(json_path):
+        print(f"  [skip] {json_path} not found")
+        return {}
+
+    with open(json_path) as f:
+        data = json.load(f)
+
+    flights = data if isinstance(data, list) else data.get("flights", data)
+
+    routes: dict[str, list[dict]] = {}
+    for fl in flights:
+        origin = fl.get("origin_code", "")
+        dest = fl.get("destination_code", "")
+        key = f"{origin}-{dest}"
+        if key in AERO_ROUTES:
+            routes.setdefault(key, []).append(fl)
+
+    for key in routes:
+        routes[key].sort(key=lambda f: (f.get("date", ""), f.get("departure_time", "")))
+
+    return routes
+
+
+def aero_to_ts(route_key: str, flights: list[dict]) -> list[str]:
+    """Convert Aero flight dicts to TypeScript entry lines."""
+    fr, to = route_key.split("-")
+    prefix = f"aero-{fr.lower()}-{to.lower()}"
+    lines = []
+
+    for i, fl in enumerate(flights, 1):
+        dep = fl.get("departure_time", "")
+        arr = fl.get("arrival_time", "")
+        date = fl.get("date", "")
+        price = fl.get("price", 0)
+        seats = fl.get("available_seats", 4) or 4
+        dur_min = fl.get("duration_minutes", 0)
+
+        # Format duration
+        if dur_min and dur_min > 0:
+            dur = f"{dur_min // 60}h {dur_min % 60:02d}m"
+        else:
+            dur = "1h 30m"
+
+        price_str = str(int(price)) if isinstance(price, float) and price == int(price) else str(round(price))
+
+        line = (
+            f"    {{ id:'{prefix}-{i}', airline:'Aero', "
+            f"dep:'{dep}', arr:'{arr}', dc:'{fr}', ac:'{to}', "
+            f"dur:'{dur}', price:{price_str}, craft:'{AERO_CRAFT}', "
+            f"seats:{seats}, amen:{AERO_AMEN}, "
+            f"link:'{AERO_LINK}', date:'{date}' }},"
+        )
+        lines.append(line)
+
+    return lines
+
+
 def tradewind_to_ts(route_key: str, flights: list[dict]) -> list[str]:
     """Convert Tradewind flight dicts to TypeScript entry lines."""
     fr, to = route_key.split("-")
@@ -280,6 +349,7 @@ def _calc_arrival(takeoff: str, dur: str, origin: str, dest: str) -> str:
 
 def update_flights_ts(
     jsx_routes: dict[str, list[dict]],
+    aero_routes: dict[str, list[dict]],
     tradewind_routes: dict[str, list[dict]],
     bark_routes: dict[str, list[dict]],
 ):
@@ -294,6 +364,11 @@ def update_flights_ts(
         ts_lines = jsx_to_ts(route_key, flights)
         if ts_lines:
             replacements.append((route_key, "JSX", ts_lines))
+
+    for route_key, flights in aero_routes.items():
+        ts_lines = aero_to_ts(route_key, flights)
+        if ts_lines:
+            replacements.append((route_key, "Aero", ts_lines))
 
     for route_key, flights in tradewind_routes.items():
         ts_lines = tradewind_to_ts(route_key, flights)
@@ -407,12 +482,18 @@ def main():
     # Load scraped data
     script_dir = os.path.dirname(__file__)
     jsx_json = os.path.join(script_dir, "jsx_flights.json")
+    aero_json = os.path.join(script_dir, "aero_flights.json")
     tw_json = os.path.join(script_dir, "tradewind_flights.json")
     bark_json = os.path.join(script_dir, "bark_air_flights.json")
 
     print("\nLoading JSX data...")
     jsx_routes = load_jsx_flights(jsx_json)
     for route, flights in sorted(jsx_routes.items()):
+        print(f"  {route}: {len(flights)} flights")
+
+    print("\nLoading Aero data...")
+    aero_routes = load_aero_flights(aero_json)
+    for route, flights in sorted(aero_routes.items()):
         print(f"  {route}: {len(flights)} flights")
 
     print("\nLoading Tradewind data...")
@@ -425,16 +506,17 @@ def main():
     for route, flights in sorted(bark_routes.items()):
         print(f"  {route}: {len(flights)} flights")
 
-    if not jsx_routes and not tw_routes and not bark_routes:
+    if not jsx_routes and not aero_routes and not tw_routes and not bark_routes:
         print("\nNo data to update. Exiting.")
         sys.exit(0)
 
     print(f"\nUpdating {FLIGHTS_TS}...")
-    update_flights_ts(jsx_routes, tw_routes, bark_routes)
+    update_flights_ts(jsx_routes, aero_routes, tw_routes, bark_routes)
 
     # Count total entries written
-    total = sum(len(f) for f in jsx_routes.values()) + sum(len(f) for f in tw_routes.values()) + sum(len(f) for f in bark_routes.values())
-    n_routes = len(jsx_routes) + len(tw_routes) + len(bark_routes)
+    all_routes = [jsx_routes, aero_routes, tw_routes, bark_routes]
+    total = sum(len(f) for r in all_routes for f in r.values())
+    n_routes = sum(len(r) for r in all_routes)
     print(f"\nDone! Replaced {total} flight entries across {n_routes} routes.")
 
 

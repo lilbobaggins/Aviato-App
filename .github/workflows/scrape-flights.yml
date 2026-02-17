@@ -24,6 +24,9 @@ jobs:
       - name: Run JSX scraper
         run: cd aviato-app/scrapers && python jsx_scraper.py
 
+      - name: Run Aero scraper
+        run: cd aviato-app/scrapers && python aero_scraper.py
+
       - name: Run Tradewind scraper
         run: cd aviato-app/scrapers && python tradewind_scraper.py
 
