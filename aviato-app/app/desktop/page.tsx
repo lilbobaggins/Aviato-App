@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef, createContext, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useRef, createContext, useContext, useCallback, useLayoutEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import {
   ChevronLeft, ChevronRight,
@@ -48,6 +49,54 @@ const HERO_IMAGES = [
    Airport Field — full-featured with typing,
    live dropdown, clear button
    ──────────────────────────────────────────── */
+const AirportDropdown = ({ dark, t, filtered, onChange, setIsOpen, setQuery, pos }: {
+  dark: boolean; t: ReturnType<typeof T>; filtered: typeof LOCATIONS; onChange: (code: string) => void;
+  setIsOpen: (v: boolean) => void; setQuery: (v: string) => void; pos: { top: number; left: number };
+}) => {
+  if (typeof document === 'undefined') return null;
+  return createPortal(
+    <div style={{
+      position: 'fixed', top: pos.top, left: pos.left, width: '340px', maxWidth: 'calc(100vw - 32px)',
+      backgroundColor: dark ? '#1A1A1A' : '#fff',
+      borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.18)',
+      zIndex: 99999, maxHeight: '360px', overflowY: 'auto',
+      border: `1px solid ${dark ? '#2A2A2A' : '#E5E5E0'}`,
+      fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+    }}>
+      {filtered.length === 0 ? (
+        <div style={{ padding: '20px', textAlign: 'center', color: t.textMuted, fontSize: '13px' }}>
+          No matching locations
+        </div>
+      ) : filtered.map(loc => (
+        <button key={loc.code} onMouseDown={(e) => { e.preventDefault(); onChange(loc.code); setIsOpen(false); setQuery(''); }}
+          style={{
+            width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px',
+            border: 'none', backgroundColor: 'transparent', cursor: 'pointer', textAlign: 'left', fontSize: '14px',
+            borderBottom: `1px solid ${t.divider}`, transition: 'background-color 0.1s ease',
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = dark ? '#252525' : '#F7F7F5'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; }}
+        >
+          {loc.type === 'metro' ? (
+            <>
+              <div style={{ width: '36px', height: '36px', background: `linear-gradient(135deg, ${C.darkGreen}, ${C.black})`, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Globe style={{ width: '16px', height: '16px', color: C.cream }} />
+              </div>
+              <div><div style={{ fontWeight: 700, color: t.text }}>{loc.city}</div><div style={{ fontSize: '11px', color: t.textMuted, marginTop: '1px' }}>{loc.sub}</div></div>
+            </>
+          ) : (
+            <>
+              <div style={{ width: '36px', height: '36px', backgroundColor: dark ? '#252525' : C.cream, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '11px', color: C.darkGreen, flexShrink: 0 }}>{loc.code}</div>
+              <div><div style={{ fontWeight: 600, color: t.text }}>{loc.city}, {loc.state}</div><div style={{ fontSize: '11px', color: t.textMuted, marginTop: '1px' }}>{loc.name}{loc.metro ? ` · ${findLoc(loc.metro).city}` : ''}</div></div>
+            </>
+          )}
+        </button>
+      ))}
+    </div>,
+    document.body
+  );
+};
+
 const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom, label }: {
   value: string; onChange: (code: string) => void; placeholder: string;
   excludeCode?: string; filterByFrom?: string; label: string;
@@ -57,14 +106,15 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [displayValue, setDisplayValue] = useState('');
+  const [pos, setPos] = useState({ top: 0, left: 0 });
   const inputRef = useRef<HTMLInputElement>(null);
-  const wrapRef = useRef<HTMLDivElement>(null);
 
-  const getDropdownPos = () => {
-    if (!inputRef.current) return { top: 0, left: 0 };
-    const rect = inputRef.current.getBoundingClientRect();
-    return { top: rect.bottom + 12, left: rect.left - 16 };
-  };
+  const updatePos = useCallback(() => {
+    if (inputRef.current) {
+      const rect = inputRef.current.getBoundingClientRect();
+      setPos({ top: rect.bottom + 12, left: rect.left - 16 });
+    }
+  }, []);
 
   useEffect(() => {
     if (value) {
@@ -103,7 +153,7 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
   };
 
   return (
-    <div ref={wrapRef} style={{ position: 'relative', flex: 1 }}>
+    <div style={{ position: 'relative', flex: 1 }}>
       <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px', letterSpacing: '0.02em' }}>{label}</div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
         <input
@@ -111,7 +161,7 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
           type="text"
           placeholder={placeholder}
           value={isOpen ? query : displayValue}
-          onFocus={() => { setIsOpen(true); setQuery(''); }}
+          onFocus={() => { updatePos(); setIsOpen(true); setQuery(''); }}
           onChange={(e) => setQuery(e.target.value)}
           onBlur={() => setTimeout(() => setIsOpen(false), 200)}
           style={{
@@ -132,45 +182,7 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
         )}
       </div>
 
-      {isOpen && (
-        <div style={{
-          position: 'fixed', top: getDropdownPos().top, left: getDropdownPos().left, width: '340px', maxWidth: 'calc(100vw - 32px)',
-          backgroundColor: dark ? '#1A1A1A' : '#fff',
-          borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.18)',
-          zIndex: 9999, maxHeight: '360px', overflowY: 'auto',
-          border: `1px solid ${dark ? '#2A2A2A' : '#E5E5E0'}`,
-        }}>
-          {getFiltered().length === 0 ? (
-            <div style={{ padding: '20px', textAlign: 'center', color: t.textMuted, fontSize: '13px' }}>
-              {query ? 'No matching locations' : 'No routes available'}
-            </div>
-          ) : getFiltered().map(loc => (
-            <button key={loc.code} onMouseDown={(e) => { e.preventDefault(); onChange(loc.code); setIsOpen(false); setQuery(''); }}
-              style={{
-                width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px',
-                border: 'none', backgroundColor: 'transparent', cursor: 'pointer', textAlign: 'left', fontSize: '14px',
-                borderBottom: `1px solid ${t.divider}`, transition: 'background-color 0.1s ease',
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = dark ? '#252525' : '#F7F7F5'; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; }}
-            >
-              {loc.type === 'metro' ? (
-                <>
-                  <div style={{ width: '36px', height: '36px', background: `linear-gradient(135deg, ${C.darkGreen}, ${C.black})`, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Globe style={{ width: '16px', height: '16px', color: C.cream }} />
-                  </div>
-                  <div><div style={{ fontWeight: 700, color: t.text }}>{loc.city}</div><div style={{ fontSize: '11px', color: t.textMuted, marginTop: '1px' }}>{loc.sub}</div></div>
-                </>
-              ) : (
-                <>
-                  <div style={{ width: '36px', height: '36px', backgroundColor: dark ? '#252525' : C.cream, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '11px', color: C.darkGreen, flexShrink: 0 }}>{loc.code}</div>
-                  <div><div style={{ fontWeight: 600, color: t.text }}>{loc.city}, {loc.state}</div><div style={{ fontSize: '11px', color: t.textMuted, marginTop: '1px' }}>{loc.name}{loc.metro ? ` · ${findLoc(loc.metro).city}` : ''}</div></div>
-                </>
-              )}
-            </button>
-          ))}
-        </div>
-      )}
+      {isOpen && <AirportDropdown dark={dark} t={t} filtered={getFiltered()} onChange={onChange} setIsOpen={setIsOpen} setQuery={setQuery} pos={pos} />}
     </div>
   );
 };
