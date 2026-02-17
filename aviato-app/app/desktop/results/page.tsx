@@ -89,16 +89,25 @@ function ResultsContent() {
   const t = T(dark);
   const fmtDate = (d: string) => d ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', weekday: 'short' }) : '';
 
+  const [airlineFilter, setAirlineFilter] = useState<string | null>(null);
+
   const sortFlights = (flights: Flight[], f: string) => {
     if (f === 'cheapest') return [...flights].sort((a, b) => a.price - b.price);
     if (f === 'fastest') return [...flights].sort((a, b) => parseInt(a.dur) - parseInt(b.dur));
+    if (f === 'rated') return [...flights].sort((a, b) => (WING_RATINGS[b.airline]?.wings || 0) - (WING_RATINGS[a.airline]?.wings || 0));
     return flights;
   };
 
   const isRT = tripType === 'roundtrip' && !!returnDate;
-  const outFlights = sortFlights(getMetroAreaFlights(fromCode, toCode, departDate), filter);
-  const retFlights = isRT ? sortFlights(getMetroAreaFlights(toCode, fromCode, returnDate), filter) : [];
+  const rawOutFlights = getMetroAreaFlights(fromCode, toCode, departDate);
+  const rawRetFlights = isRT ? getMetroAreaFlights(toCode, fromCode, returnDate) : [];
+  const outFiltered = airlineFilter ? rawOutFlights.filter(f => f.airline === airlineFilter) : rawOutFlights;
+  const retFiltered = airlineFilter ? rawRetFlights.filter(f => f.airline === airlineFilter) : rawRetFlights;
+  const outFlights = sortFlights(outFiltered, filter);
+  const retFlights = sortFlights(retFiltered, filter);
   const flights = viewingReturn ? retFlights : outFlights;
+  const rawFlights = viewingReturn ? rawRetFlights : rawOutFlights;
+  const availableAirlines = [...new Set(rawFlights.map(f => f.airline))].sort();
 
   const currentDate = viewingReturn ? returnDate : departDate;
 
@@ -530,18 +539,37 @@ function ResultsContent() {
       {/* Filters */}
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: isMobile ? '16px 16px' : '16px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', gap: '6px' }}>
-          {['all', 'cheapest', 'fastest'].map(f => (
+          {['all', 'cheapest', 'fastest', 'rated'].map(f => (
             <button key={f} onClick={() => setFilter(f)} style={{
               padding: '8px 18px', borderRadius: '100px', border: 'none', fontSize: '12px', fontWeight: 600,
               cursor: 'pointer', backgroundColor: filter === f ? t.filterActive : t.filterInactive, color: filter === f ? t.filterActiveText : t.filterInactiveText,
               transition: 'background-color 0.2s ease, color 0.2s ease',
             }}>
-              {f === 'all' ? 'All Flights' : f === 'cheapest' ? 'Cheapest' : 'Fastest'}
+              {f === 'all' ? 'All Flights' : f === 'cheapest' ? 'Cheapest' : f === 'fastest' ? 'Fastest' : 'Highest Rated'}
             </button>
           ))}
         </div>
         <span style={{ fontSize: '13px', color: t.textMuted, fontWeight: 600 }}>{flights.length} flights found</span>
       </div>
+
+      {availableAirlines.length > 1 && (
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: isMobile ? '0 16px' : '0 40px' }}>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+            <button onClick={() => setAirlineFilter(null)} style={{ padding: '6px 14px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', border: airlineFilter === null ? `2px solid ${t.filterActive}` : `1.5px solid ${dark ? '#555' : '#ccc'}`, backgroundColor: airlineFilter === null ? t.filterActive : 'transparent', color: airlineFilter === null ? t.filterActiveText : t.filterInactiveText, transition: 'all 0.2s ease' }}>
+              All Airlines
+            </button>
+            {availableAirlines.map(a => {
+              const style = AIRLINE_STYLE[a];
+              const isActive = airlineFilter === a;
+              return (
+                <button key={a} onClick={() => setAirlineFilter(isActive ? null : a)} style={{ padding: '6px 14px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', border: isActive ? `2px solid ${style?.bg || t.filterActive}` : `1.5px solid ${dark ? '#555' : (style?.bg || '#ccc')}`, backgroundColor: isActive ? (style?.bg || t.filterActive) : 'transparent', color: isActive ? (style?.text || t.filterActiveText) : (dark ? style?.accent || t.filterInactiveText : style?.bg || t.filterInactiveText), transition: 'all 0.2s ease' }}>
+                  {a}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Disclaimer */}
       <div style={{ maxWidth: '800px', margin: '0 auto 8px', padding: isMobile ? '0 16px' : '0 40px' }}>

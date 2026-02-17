@@ -338,6 +338,7 @@ export default function AviatoApp() {
   const [selectedReturn, setSelectedReturn] = useState<Flight | null>(null);
   const [bookingRef, setBookingRef] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
+  const [airlineFilter, setAirlineFilter] = useState<string | null>(null);
   const [viewingReturn, setViewingReturn] = useState(false);
   const [calOpen, setCalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
@@ -350,6 +351,7 @@ export default function AviatoApp() {
   const sortFlights = (flights: Flight[], f: string) => {
     if (f === 'cheapest') return [...flights].sort((a, b) => a.price - b.price);
     if (f === 'fastest') return [...flights].sort((a, b) => parseInt(a.dur) - parseInt(b.dur));
+    if (f === 'rated') return [...flights].sort((a, b) => (WING_RATINGS[b.airline]?.wings || 0) - (WING_RATINGS[a.airline]?.wings || 0));
     return flights;
   };
 
@@ -440,7 +442,7 @@ export default function AviatoApp() {
           </div>
 
           <button
-            onClick={() => { if (fromCode && toCode && departDate) { setSelectedFlight(null); setViewingReturn(false); setSelectedReturn(null); setRedirectFlight(null); setScreen('results'); setActiveTab('home'); } }}
+            onClick={() => { if (fromCode && toCode && departDate) { setSelectedFlight(null); setViewingReturn(false); setSelectedReturn(null); setRedirectFlight(null); setAirlineFilter(null); setFilter('all'); setScreen('results'); setActiveTab('home'); } }}
             disabled={!fromCode || !toCode || !departDate}
             style={{ width: '100%', marginTop: '18px', padding: '16px', border: 'none', borderRadius: '14px', fontSize: '16px', fontWeight: 700, cursor: !fromCode || !toCode || !departDate ? 'not-allowed' : 'pointer', color: C.cream, backgroundColor: C.black, opacity: !fromCode || !toCode || !departDate ? 0.4 : 1 }}>
             Search Flights
@@ -468,10 +470,16 @@ export default function AviatoApp() {
 
   // RESULTS SCREEN
   const ResultsScreen = () => {
-    const outFlights = sortFlights(getMetroAreaFlights(fromCode, toCode, departDate), filter);
-    const retFlights = sortFlights(getMetroAreaFlights(toCode, fromCode, returnDate), filter);
+    const rawOutFlights = getMetroAreaFlights(fromCode, toCode, departDate);
+    const rawRetFlights = getMetroAreaFlights(toCode, fromCode, returnDate);
+    const outFiltered = airlineFilter ? rawOutFlights.filter(f => f.airline === airlineFilter) : rawOutFlights;
+    const retFiltered = airlineFilter ? rawRetFlights.filter(f => f.airline === airlineFilter) : rawRetFlights;
+    const outFlights = sortFlights(outFiltered, filter);
+    const retFlights = sortFlights(retFiltered, filter);
     const isRT = tripType === 'roundtrip' && !!returnDate;
     const flights = viewingReturn ? retFlights : outFlights;
+    const rawFlights = viewingReturn ? rawRetFlights : rawOutFlights;
+    const availableAirlines = [...new Set(rawFlights.map(f => f.airline))].sort();
 
     return (
       <div style={{ width: '100%', minHeight: '100%', backgroundColor: C.offWhite, paddingBottom: '80px' }}>
@@ -497,13 +505,30 @@ export default function AviatoApp() {
           </div>
         )}
 
-        <div style={{ backgroundColor: C.white, padding: '10px 24px', display: 'flex', gap: '6px', borderBottom: `1px solid ${C.g200}`, overflowX: 'auto' }}>
-          {['all', 'cheapest', 'fastest'].map(f => (
+        <div style={{ backgroundColor: C.white, padding: '10px 24px', display: 'flex', gap: '6px', borderBottom: availableAirlines.length > 1 ? 'none' : `1px solid ${C.g200}`, overflowX: 'auto' }}>
+          {['all', 'cheapest', 'fastest', 'rated'].map(f => (
             <button key={f} onClick={() => setFilter(f)} style={{ padding: '7px 16px', borderRadius: '100px', border: 'none', fontSize: '12px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', backgroundColor: filter === f ? C.black : C.g100, color: filter === f ? C.white : C.g600 }}>
-              {f === 'all' ? 'All' : f === 'cheapest' ? 'Cheapest' : 'Fastest'}
+              {f === 'all' ? 'All' : f === 'cheapest' ? 'Cheapest' : f === 'fastest' ? 'Fastest' : 'Highest Rated'}
             </button>
           ))}
         </div>
+
+        {availableAirlines.length > 1 && (
+          <div style={{ backgroundColor: C.white, padding: '6px 24px 10px', display: 'flex', gap: '6px', borderBottom: `1px solid ${C.g200}`, overflowX: 'auto' }}>
+            <button onClick={() => setAirlineFilter(null)} style={{ padding: '6px 14px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', border: airlineFilter === null ? '2px solid ' + C.black : '1.5px solid ' + C.g300, backgroundColor: airlineFilter === null ? C.black : 'transparent', color: airlineFilter === null ? C.white : C.g600 }}>
+              All Airlines
+            </button>
+            {availableAirlines.map(a => {
+              const style = AIRLINE_STYLE[a];
+              const isActive = airlineFilter === a;
+              return (
+                <button key={a} onClick={() => setAirlineFilter(isActive ? null : a)} style={{ padding: '6px 14px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', border: isActive ? `2px solid ${style?.bg || C.black}` : `1.5px solid ${style?.bg || C.g300}`, backgroundColor: isActive ? (style?.bg || C.black) : 'transparent', color: isActive ? (style?.text || C.white) : (style?.bg || C.g600) }}>
+                  {a}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         <div style={{ margin: '10px 24px 0', padding: '10px 14px', backgroundColor: '#FFF8E1', borderRadius: '10px', border: '1px solid #FFE082', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
           <span style={{ fontSize: '14px', lineHeight: '18px', flexShrink: 0 }}>*</span>
