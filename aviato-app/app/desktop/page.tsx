@@ -57,8 +57,16 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [displayValue, setDisplayValue] = useState('');
+  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isOpen && wrapRef.current) {
+      const rect = wrapRef.current.getBoundingClientRect();
+      setDropdownPos({ top: rect.bottom + 16, left: rect.left });
+    }
+  }, [isOpen, query]);
 
   useEffect(() => {
     if (value) {
@@ -126,12 +134,12 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
         )}
       </div>
 
-      {isOpen && (
+      {isOpen && dropdownPos && (
         <div style={{
-          position: 'absolute', top: 'calc(100% + 16px)', left: -24, width: '340px', maxWidth: 'calc(100vw - 32px)',
+          position: 'fixed', top: dropdownPos.top, left: dropdownPos.left, width: '340px', maxWidth: 'calc(100vw - 32px)',
           backgroundColor: dark ? '#1A1A1A' : '#fff',
           borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.18)',
-          zIndex: 50, maxHeight: '360px', overflowY: 'auto',
+          zIndex: 9999, maxHeight: '360px', overflowY: 'auto',
           border: `1px solid ${dark ? '#2A2A2A' : '#E5E5E0'}`,
         }}>
           {getFiltered().length === 0 ? (

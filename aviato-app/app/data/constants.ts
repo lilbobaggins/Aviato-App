@@ -38,7 +38,7 @@ export const AIRLINE_BOOKING: Record<string, AirlineBooking> = {
 export const WING_RATINGS: Record<string, WingRating> = {
   'Aero': { wings: 3, tier: 'Flagship Semi-Private', score: 6, badges: ['terminal','arrival','density','baggage','amenities','seating'], pets: true, petNote: 'Pets welcome onboard' },
   'JSX': { wings: 2, tier: 'Premium Semi-Private', score: 4, badges: ['terminal','arrival','baggage','amenities'], pets: true, petNote: 'Pets welcome onboard' },
-  'Slate': { wings: 2, tier: 'Premium Semi-Private', score: 5, badges: ['terminal','density','baggage','amenities','seating'], pets: true, petNote: 'Under 25 lbs free · Over 25 lbs requires extra seat' },
+  'Slate': { wings: 3, tier: 'Flagship Semi-Private', score: 5, badges: ['terminal','density','baggage','amenities','seating'], pets: true, petNote: 'Under 25 lbs free · Over 25 lbs requires extra seat' },
   'Tradewind': { wings: 2, tier: 'Premium Semi-Private', score: 5, badges: ['terminal','arrival','density','baggage','amenities'], pets: true, petNote: 'Pets welcome onboard' },
   'Surf Air': { wings: 1, tier: 'Accessible Semi-Private', score: 3, badges: ['terminal','arrival','density'], pets: false },
   'BARK Air': { wings: 3, tier: 'Flagship Semi-Private', score: 6, badges: ['terminal','arrival','density','baggage','amenities','seating'], pets: true, petNote: '1 dog + 1 human per ticket' },
