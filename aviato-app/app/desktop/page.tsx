@@ -61,9 +61,9 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
   const wrapRef = useRef<HTMLDivElement>(null);
 
   const getDropdownPos = () => {
-    if (!wrapRef.current) return { top: 0, left: 0 };
-    const rect = wrapRef.current.getBoundingClientRect();
-    return { top: rect.bottom + 16, left: rect.left };
+    if (!inputRef.current) return { top: 0, left: 0 };
+    const rect = inputRef.current.getBoundingClientRect();
+    return { top: rect.bottom + 12, left: rect.left - 16 };
   };
 
   useEffect(() => {
