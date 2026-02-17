@@ -84,24 +84,19 @@ export function generateDeepLink(
 ): string {
   switch (airline) {
     case 'Aero': {
-      // CONFIRMED: Full deep link with airport codes, passengers, trip type
-      // preventBookingFlowReset=true forces Aero to use URL params (overrides cached session)
-      const aeroParams: Record<string, string> = {
-        preventBookingFlowReset: 'true',
+      // CONFIRMED: Deep link to Aero flight picker with route, trip type, and guests pre-filled
+      // Note: No date param exists — user picks their date on the Aero page (2-3 clicks to checkout)
+      const aeroParams = new URLSearchParams({
+        origin: originCode,
+        destination: destCode,
+        type: tripType === 'roundtrip' ? 'roundtrip' : 'oneway',
         adults: String(passengers),
         infants: '0',
         petInSeat: '0',
         petUnderSeat: '0',
         serviceAnimal: '0',
-        origin: originCode,
-        destination: destCode,
-        type: tripType === 'roundtrip' ? 'roundtrip' : 'oneway',
-      };
-      // Try to pre-fill dates (Aero may or may not support these params)
-      if (departDate) aeroParams.departureDate = departDate;
-      if (returnDate && tripType === 'roundtrip') aeroParams.returnDate = returnDate;
-      const params = new URLSearchParams(aeroParams);
-      return `https://aero.com/checkout?${params.toString()}`;
+      });
+      return `https://aero.com/flights?${aeroParams.toString()}`;
     }
 
     case 'JSX': {
@@ -177,7 +172,7 @@ export function getDeepLinkNote(
 
   switch (airline) {
     case 'Aero':
-      return `Opens Aero with ${origin.city} → ${dest.city} pre-selected (${tripType === 'roundtrip' ? 'round trip' : 'one way'}). Each link resets the booking — your route is always fresh.`;
+      return `Opens Aero with ${origin.city} → ${dest.city} pre-selected. Just pick your date and confirm the fare!`;
 
     case 'JSX':
       return `Opens JSX's booking page with ${origin.city} → ${dest.city} pre-selected (${tripType === 'roundtrip' ? 'round trip' : 'one way'}). Just pick your flight time and check out!`;
