@@ -63,7 +63,7 @@ const SLATE_POINT_IDS: Record<string, number | undefined> = {
   // New York region
   HPN: 252, TEB: 252, FRG: 252,
   // South Florida region
-  FLL: 218, PBI: 218,
+  FLL: 218, PBI: 218, MIA: 218,
   // Nantucket — TODO: find this ID from Slate's site
   // ACK: ???,
 };
@@ -130,10 +130,38 @@ export function generateDeepLink(
     }
 
     case 'Tradewind': {
-      // Tradewind uses Videcom's VARS booking engine (ASP.NET WebForms).
-      // The requirementsBS.aspx page is the public entry point that creates a
-      // booking session and shows the flight calendar — no pre-existing session needed.
-      return 'https://booking.flytradewind.com/VARS/Public/CustomerPanels/requirementsBS.aspx';
+      // CONFIRMED: VARS deeplink pre-fills route, date, and passenger count
+      // Opens the flight calendar with the search already done — user just picks a flight time
+      const twDateDiv = departDate ? new Date(departDate + 'T12:00:00').toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '';
+      const twParams: Record<string, string> = {
+        way: 'one-way',
+        TripType: 'Single',
+        type: 'scheduled',
+        Slice1: '1', Slice2: '2', Slice3: '3', Slice4: '4',
+        Cabin1: 'Economy', Cabin2: 'Economy', Cabin3: 'Economy', Cabin4: 'Economy',
+        Carrier1: 'TJ', Carrier2: 'TJ', Carrier3: 'TJ', Carrier4: 'TJ',
+        BookingCode1: 'E', BookingCode2: 'E', BookingCode3: 'E', BookingCode4: 'E',
+        Adult: String(passengers),
+        InfantLap: '0',
+        Origin1: originCode,
+        Destination1: destCode,
+      };
+      if (departDate) {
+        twParams.DepartureDate1 = departDate;
+        twParams.DepartureDate1_div = twDateDiv;
+        twParams.DepartureDate1_time_div = '';
+      }
+      if (tripType === 'roundtrip' && returnDate) {
+        twParams.way = 'round-trip';
+        twParams.TripType = 'Return';
+        const twRetDiv = new Date(returnDate + 'T12:00:00').toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+        twParams.DepartureDate2 = returnDate;
+        twParams.DepartureDate2_div = twRetDiv;
+        twParams.DepartureDate2_time_div = '';
+        twParams.Origin2 = destCode;
+        twParams.Destination2 = originCode;
+      }
+      return `https://booking.flytradewind.com/VARS/Public/deeplink.aspx?${new URLSearchParams(twParams).toString()}`;
     }
 
     case 'BARK Air': {
@@ -152,7 +180,8 @@ export function generateDeepLink(
     }
 
     case 'Boutique Air': {
-      return 'https://www.boutiqueair.com';
+      // Boutique Air doesn't support deeplink params — link to their search page
+      return 'https://www.boutiqueair.com/flight_search/new';
     }
 
     default:
@@ -185,7 +214,7 @@ export function getDeepLinkNote(
     }
 
     case 'Tradewind': {
-      return `Opens Tradewind's booking calendar. Select ${origin.city} → ${dest.city} and pick your dates to book.`;
+      return `Opens Tradewind's flight calendar with ${origin.city} → ${dest.city} pre-selected. Just pick your flight time and check out!`;
     }
 
     case 'BARK Air': {

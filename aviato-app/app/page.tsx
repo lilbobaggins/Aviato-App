@@ -761,7 +761,7 @@ export default function AviatoApp() {
       : `Complete your booking on ${airline}'s website.`;
 
     // Check if this airline supports full deep linking (pre-filled route)
-    const hasFullDeepLink = airline === 'Aero' || airline === 'BARK Air' || (airline === 'Slate' && fl && deepLinkUrl.includes('search/points/'));
+    const hasFullDeepLink = airline === 'Aero' || airline === 'JSX' || airline === 'Tradewind' || airline === 'BARK Air' || (airline === 'Slate' && fl && deepLinkUrl.includes('search/points/'));
 
     return (
       <div style={{ width: '100%', minHeight: '100%', background: `linear-gradient(180deg, ${style.bg || C.black} 0%, ${C.offWhite} 45%)`, paddingBottom: '40px' }}>
