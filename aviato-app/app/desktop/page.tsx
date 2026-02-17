@@ -57,16 +57,14 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [displayValue, setDisplayValue] = useState('');
-  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (isOpen && wrapRef.current) {
-      const rect = wrapRef.current.getBoundingClientRect();
-      setDropdownPos({ top: rect.bottom + 16, left: rect.left });
-    }
-  }, [isOpen, query]);
+  const getDropdownPos = () => {
+    if (!wrapRef.current) return { top: 0, left: 0 };
+    const rect = wrapRef.current.getBoundingClientRect();
+    return { top: rect.bottom + 16, left: rect.left };
+  };
 
   useEffect(() => {
     if (value) {
@@ -134,9 +132,9 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
         )}
       </div>
 
-      {isOpen && dropdownPos && (
+      {isOpen && (
         <div style={{
-          position: 'fixed', top: dropdownPos.top, left: dropdownPos.left, width: '340px', maxWidth: 'calc(100vw - 32px)',
+          position: 'fixed', top: getDropdownPos().top, left: getDropdownPos().left, width: '340px', maxWidth: 'calc(100vw - 32px)',
           backgroundColor: dark ? '#1A1A1A' : '#fff',
           borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.18)',
           zIndex: 9999, maxHeight: '360px', overflowY: 'auto',
