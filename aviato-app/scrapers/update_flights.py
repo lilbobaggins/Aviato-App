@@ -310,15 +310,24 @@ def update_flights_ts(
         return
 
     # Process the file line by line
+    # IMPORTANT: Only process inside the FLIGHTS object, stop at '};'
+    # This avoids touching SEASONAL_DATES which has duplicate route keys
     lines = content.split("\n")
     new_lines = []
     i = 0
+    inside_flights = False
 
     while i < len(lines):
         line = lines[i]
 
-        # Check if this line starts a route array
-        route_match = re.match(r"^\s+'([A-Z]+-[A-Z]+)':\s*\[", line)
+        # Track when we enter/exit the FLIGHTS object
+        if "export const FLIGHTS" in line:
+            inside_flights = True
+        elif inside_flights and re.match(r"^\};", line):
+            inside_flights = False
+
+        # Only process route arrays inside the FLIGHTS object
+        route_match = re.match(r"^\s+'([A-Z]+-[A-Z]+)':\s*\[", line) if inside_flights else None
         if route_match:
             route_key = route_match.group(1)
 
