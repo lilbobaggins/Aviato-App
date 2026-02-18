@@ -13,7 +13,7 @@ import { C, AIRLINE_STYLE } from '../data/constants';
 import { LOCATIONS, expandCode, findLoc } from '../data/locations';
 import { getMetroAreaFlights, getRouteDates } from '../data/flights';
 import { EVENTS, shiftDate } from '../data/events';
-import { getValidDestinations } from '../data/helpers';
+import { getValidDestinations, getValidOrigins } from '../data/helpers';
 
 // Theme context
 const ThemeContext = createContext<{ dark: boolean; toggle: () => void }>({ dark: false, toggle: () => {} });
@@ -124,9 +124,9 @@ const AirportDropdown = ({ dark, t, filtered, onChange, setIsOpen, setQuery, pos
   );
 };
 
-const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom, label }: {
+const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom, filterByTo, label }: {
   value: string; onChange: (code: string) => void; placeholder: string;
-  excludeCode?: string; filterByFrom?: string; label: string;
+  excludeCode?: string; filterByFrom?: string; filterByTo?: string; label: string;
 }) => {
   const { dark } = useTheme();
   const t = T(dark);
@@ -164,7 +164,7 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
   }, [value]);
 
   const getFiltered = () => {
-    const pool = filterByFrom ? getValidDestinations(filterByFrom) : LOCATIONS;
+    const pool = filterByFrom ? getValidDestinations(filterByFrom) : filterByTo ? getValidOrigins(filterByTo) : LOCATIONS;
     return pool.filter(loc => {
       if (excludeCode) {
         if (loc.code === excludeCode) return false;
@@ -564,7 +564,7 @@ export default function DesktopPage() {
 
               {/* From field */}
               <div style={{ padding: '12px 14px', borderBottom: `1px solid ${t.divider}` }}>
-                <AirportField label="Where from" value={fromCode} onChange={(c) => { setFromCode(c); setToCode(''); }} placeholder="City or airport" excludeCode={toCode} />
+                <AirportField label="Where from" value={fromCode} onChange={setFromCode} placeholder="City or airport" excludeCode={toCode} filterByTo={toCode} />
               </div>
 
               {/* Swap button */}
@@ -866,7 +866,7 @@ export default function DesktopPage() {
 
                 {/* Where from */}
                 <div style={{ flex: 1.2, padding: '14px 24px', borderRight: `1px solid ${t.divider}`, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
-                  <AirportField label="Where from" value={fromCode} onChange={(c) => { setFromCode(c); setToCode(''); }} placeholder="City or airport" excludeCode={toCode} />
+                  <AirportField label="Where from" value={fromCode} onChange={setFromCode} placeholder="City or airport" excludeCode={toCode} filterByTo={toCode} />
                 </div>
 
                 {/* Swap button */}

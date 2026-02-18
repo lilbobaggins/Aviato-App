@@ -13,6 +13,28 @@ export const getReachableFrom = (fromCode: string): Set<string> => {
   return dests;
 };
 
+export const getReachableTo = (toCode: string): Set<string> => {
+  const toCodes = expandCode(toCode);
+  const origins = new Set<string>();
+  toCodes.forEach(tc => {
+    Object.keys(FLIGHTS).forEach(key => {
+      if (key.endsWith('-' + tc)) origins.add(key.split('-')[0]);
+    });
+  });
+  return origins;
+};
+
+export const getValidOrigins = (toCode: string): Location[] => {
+  if (!toCode) return LOCATIONS;
+  const reachable = getReachableTo(toCode);
+  const toAirports = new Set(expandCode(toCode));
+  return LOCATIONS.filter(loc => {
+    const locAirports = loc.type === 'metro' ? loc.airports! : [loc.code];
+    if (locAirports.some(a => toAirports.has(a))) return false;
+    return locAirports.some(a => reachable.has(a));
+  });
+};
+
 export const getValidDestinations = (fromCode: string): Location[] => {
   if (!fromCode) return LOCATIONS;
   const reachable = getReachableFrom(fromCode);

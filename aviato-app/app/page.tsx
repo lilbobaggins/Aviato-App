@@ -12,7 +12,7 @@ import { C, AIRLINE_STYLE, AIRLINE_BOOKING, WING_RATINGS, BADGE_CONFIG, WING_COL
 import { LOCATIONS, expandCode, findLoc } from './data/locations';
 import { FLIGHTS, getMetroAreaFlights, getRouteDates } from './data/flights';
 import { EVENTS, shiftDate } from './data/events';
-import { getValidDestinations } from './data/helpers';
+import { getValidDestinations, getValidOrigins } from './data/helpers';
 import { generateDeepLink, getDeepLinkNote } from './data/deeplinks';
 import type { Flight, Location } from './data/types';
 
@@ -39,9 +39,9 @@ const BadgeIcon = ({ type, size = 12 }: { type: string; size?: number }) => {
 };
 
 // Airport Input Component
-const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filterByFrom }: {
+const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filterByFrom, filterByTo }: {
   label: string; value: string; onChange: (code: string) => void; placeholder: string;
-  excludeCode?: string; filterByFrom?: string;
+  excludeCode?: string; filterByFrom?: string; filterByTo?: string;
 }) => {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -55,7 +55,7 @@ const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filter
   }, [value]);
 
   const getFilteredLocations = () => {
-    const pool = filterByFrom ? getValidDestinations(filterByFrom) : LOCATIONS;
+    const pool = filterByFrom ? getValidDestinations(filterByFrom) : filterByTo ? getValidOrigins(filterByTo) : LOCATIONS;
     return pool.filter(loc => {
       if (excludeCode) {
         if (loc.code === excludeCode) return false;
@@ -395,7 +395,7 @@ export default function AviatoApp() {
             ))}
           </div>
 
-          <AirportInput label="FROM" value={fromCode} onChange={(c) => { setFromCode(c); setToCode(''); }} placeholder="City or airport" excludeCode={toCode} />
+          <AirportInput label="FROM" value={fromCode} onChange={setFromCode} placeholder="City or airport" excludeCode={toCode} filterByTo={toCode} />
 
           <div style={{ display: 'flex', justifyContent: 'center', margin: '18px 0 2px' }}>
             <button onClick={() => { const t = fromCode; setFromCode(toCode); setToCode(t); }}
