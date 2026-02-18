@@ -55,7 +55,7 @@ const AirportDropdown = ({ dark, t, filtered, onChange, setIsOpen, setQuery, pos
 }) => {
   if (typeof document === 'undefined') return null;
   return createPortal(
-    <div style={{
+    <div data-airport-dropdown="true" style={{
       position: 'fixed', top: pos.top, left: pos.left, width: '340px', maxWidth: 'calc(100vw - 32px)',
       backgroundColor: dark ? '#1A1A1A' : '#fff',
       borderRadius: '16px', boxShadow: '0 16px 48px rgba(0,0,0,0.18)',
@@ -116,10 +116,15 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
     }
   }, []);
 
-  // Close dropdown on scroll so it doesn't float away
+  // Close dropdown only on main page scroll, not dropdown internal scroll
   useEffect(() => {
     if (!isOpen) return;
-    const onScroll = () => setIsOpen(false);
+    const onScroll = (e: Event) => {
+      const target = e.target as HTMLElement;
+      // Ignore scrolls inside the portal dropdown (zIndex 99999)
+      if (target && target.closest && target.closest('[data-airport-dropdown]')) return;
+      setIsOpen(false);
+    };
     window.addEventListener('scroll', onScroll, true);
     return () => window.removeEventListener('scroll', onScroll, true);
   }, [isOpen]);
