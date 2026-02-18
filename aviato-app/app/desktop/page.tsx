@@ -491,9 +491,10 @@ export default function DesktopPage() {
   const footerReveal = useScrollReveal(0.2);
   const statsReveal = useScrollReveal(0.2);
 
-  // Animated stat counters (real data: 84 routes, 5 airlines, 30 airports)
-  const statRoutes = useCountUp(84, 2000);
+  // Animated stat counters
+  const statFlights = useCountUp(8000, 2000);
   const statAirlines = useCountUp(5, 1500);
+  const statRoutes = useCountUp(84, 1800);
   const statAirports = useCountUp(30, 1800);
 
   const t = T(dark);
@@ -994,12 +995,13 @@ export default function DesktopPage() {
           ...revealStyle(statsReveal.isVisible, 0),
         }}>
           {[
-            { counter: statRoutes, suffix: '+', label: 'Routes Searched' },
-            { counter: statAirlines, suffix: '', label: 'Partner Airlines' },
-            { counter: statAirports, suffix: '+', label: 'Airports Covered' },
+            { counter: statFlights, suffix: '+', label: 'Flights Tracked', ref: statFlights.ref },
+            { counter: statAirlines, suffix: '', label: 'Partner Airlines', ref: statAirlines.ref },
+            { counter: statRoutes, suffix: '+', label: 'Routes Covered', ref: statRoutes.ref },
+            { counter: statAirports, suffix: '+', label: 'Airports', ref: statAirports.ref },
           ].map((stat, i) => (
             <div key={i} style={{ textAlign: 'center', ...revealStyle(statsReveal.isVisible, 0.1 + i * 0.12) }}>
-              <span ref={i === 0 ? statRoutes.ref : i === 1 ? statAirlines.ref : statAirports.ref} style={{
+              <span ref={stat.ref} style={{
                 fontSize: '42px', fontWeight: 900, letterSpacing: '-0.03em',
                 color: dark ? C.pink : C.darkGreen,
                 fontVariantNumeric: 'tabular-nums',
