@@ -209,8 +209,8 @@ export function getDeepLinkNote(
     case 'Slate': {
       const hasSlateLink = SLATE_POINT_IDS[originCode] && SLATE_POINT_IDS[destCode];
       return hasSlateLink
-        ? `Opens Slate with ${origin.city} → ${dest.city} pre-selected. Pick your date to book!`
-        : `Opens Slate's booking page. Search ${origin.city} → ${dest.city} to see available flights.`;
+        ? `Opens Slate with ${origin.city} → ${dest.city} pre-selected. Pick your date to book! Note: A Slate account is required to complete your booking.`
+        : `Opens Slate's booking page. Search ${origin.city} → ${dest.city} to see available flights. Note: A Slate account is required to complete your booking.`;
     }
 
     case 'Tradewind': {
