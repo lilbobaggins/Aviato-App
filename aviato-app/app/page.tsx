@@ -573,7 +573,7 @@ export default function AviatoApp() {
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '22px', fontWeight: 800, color: C.black }}>${fl.price}</div>
+                    <div style={{ fontSize: '22px', fontWeight: 800, color: C.black }}>${Math.round(fl.price)}</div>
                     <div style={{ fontSize: '10px', color: C.g400, fontWeight: 500 }}>per seat</div>
                   </div>
                 </div>
@@ -622,8 +622,9 @@ export default function AviatoApp() {
     const fl = viewingReturn ? selectedReturn : selectedFlight;
     if (!fl) return null;
     const style = AIRLINE_STYLE[fl.airline] || { bg: '#333', text: '#fff', label: '?', accent: '#999' };
-    const taxes = Math.round(fl.price * 0.12);
-    const total = (fl.price + taxes) * passengers;
+    const basePrice = Math.round(fl.price);
+    const taxes = Math.round(basePrice * 0.12);
+    const total = (basePrice + taxes) * passengers;
     const isRT = tripType === 'roundtrip' && !!returnDate;
     const rating = WING_RATINGS[fl.airline];
 
@@ -683,7 +684,7 @@ export default function AviatoApp() {
         {/* Price */}
         <div style={{ margin: '0 24px 14px', backgroundColor: C.white, borderRadius: '16px', padding: '20px', border: `1px solid ${C.g200}` }}>
           <h3 style={{ fontSize: '13px', fontWeight: 700, color: C.black, margin: '0 0 14px' }}>Price</h3>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '8px' }}><span style={{ color: C.g600 }}>Base fare × {passengers}</span><span style={{ fontWeight: 600 }}>${fl.price * passengers}</span></div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '8px' }}><span style={{ color: C.g600 }}>Base fare × {passengers}</span><span style={{ fontWeight: 600 }}>${basePrice * passengers}</span></div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '8px' }}><span style={{ color: C.g600 }}>Taxes & fees</span><span style={{ fontWeight: 600 }}>${taxes * passengers}</span></div>
           <div style={{ borderTop: `2px solid ${C.g100}`, paddingTop: '10px', display: 'flex', justifyContent: 'space-between' }}>
             <span style={{ fontWeight: 800 }}>Total</span><span style={{ fontWeight: 800, fontSize: '20px', color: C.darkGreen }}>${total}</span>

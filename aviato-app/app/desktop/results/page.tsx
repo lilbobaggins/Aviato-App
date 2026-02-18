@@ -140,6 +140,14 @@ function ResultsContent() {
     return new Date(year, month, 1).getDay();
   };
 
+  const getCheapestForDate = (dateStr: string): number | null => {
+    const fc = viewingReturn ? toCode : fromCode;
+    const tc = viewingReturn ? fromCode : toCode;
+    const flights = getMetroAreaFlights(fc, tc, dateStr);
+    if (flights.length === 0) return null;
+    return Math.round(Math.min(...flights.map(f => f.price)));
+  };
+
   const getAvailableDates = (): Set<string> | null => {
     try {
       const dates = getRouteDates(viewingReturn ? toCode : fromCode, viewingReturn ? fromCode : toCode);
@@ -153,8 +161,9 @@ function ResultsContent() {
   // Detail panel
   const DetailPanel = ({ fl, onClose }: { fl: Flight; onClose: () => void }) => {
     const style = AIRLINE_STYLE[fl.airline] || { bg: '#333', text: '#fff', label: '?', accent: '#999' };
-    const taxes = Math.round(fl.price * 0.12);
-    const total = (fl.price + taxes) * passengers;
+    const basePrice = Math.round(fl.price);
+    const taxes = Math.round(basePrice * 0.12);
+    const total = (basePrice + taxes) * passengers;
     const rating = WING_RATINGS[fl.airline];
     const deepLinkUrl = generateDeepLink(fl.airline, fl.dc, fl.ac, departDate, returnDate, passengers, tripType);
     const deepLinkNote = getDeepLinkNote(fl.airline, fl.dc, fl.ac, tripType);
@@ -216,7 +225,7 @@ function ResultsContent() {
         {/* Price */}
         <div style={{ margin: '0 24px 14px', backgroundColor: t.panelSection, borderRadius: '14px', padding: '18px' }}>
           <h3 style={{ fontSize: '12px', fontWeight: 700, color: t.text, margin: '0 0 12px' }}>Price</h3>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}><span style={{ color: t.textSec }}>Base fare × {passengers}</span><span style={{ fontWeight: 600, color: t.text }}>${fl.price * passengers}</span></div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}><span style={{ color: t.textSec }}>Base fare × {passengers}</span><span style={{ fontWeight: 600, color: t.text }}>${basePrice * passengers}</span></div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}><span style={{ color: t.textSec }}>Taxes & fees</span><span style={{ fontWeight: 600, color: t.text }}>${taxes * passengers}</span></div>
           <div style={{ borderTop: `2px solid ${t.cardBorder}`, paddingTop: '10px', display: 'flex', justifyContent: 'space-between' }}>
             <span style={{ fontWeight: 800, color: t.text }}>Total</span><span style={{ fontWeight: 800, fontSize: '18px', color: dark ? C.pink : C.darkGreen }}>${total}</span>
@@ -400,13 +409,14 @@ function ResultsContent() {
                           const dateStr = `${pickerYear}-${String(pickerMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                           const isAvailable = availableDates === null ? true : availableDates.has(dateStr);
                           const isSelected = dateStr === (viewingReturn ? returnDate : departDate);
+                          const cheapest = isAvailable ? getCheapestForDate(dateStr) : null;
                           days.push(
                             <button
                               key={day}
                               onClick={() => handleDateSelect(day)}
                               disabled={!isAvailable}
                               style={{
-                                padding: '6px',
+                                padding: '4px 2px',
                                 border: 'none',
                                 borderRadius: '8px',
                                 backgroundColor: isSelected ? (dark ? C.pink : C.darkGreen) : isAvailable ? 'transparent' : (dark ? '#252525' : C.g100),
@@ -415,9 +425,11 @@ function ResultsContent() {
                                 fontSize: '12px',
                                 fontWeight: 600,
                                 opacity: isAvailable ? 1 : 0.5,
+                                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1px',
                               }}
                             >
-                              {day}
+                              <span>{day}</span>
+                              {cheapest && <span style={{ fontSize: '8px', fontWeight: 700, color: isSelected ? 'rgba(255,255,255,0.8)' : (dark ? '#87CEAB' : '#0A3D2E'), lineHeight: 1 }}>${cheapest}</span>}
                             </button>
                           );
                         }
@@ -483,13 +495,14 @@ function ResultsContent() {
                           const dateStr = `${pickerYear}-${String(pickerMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                           const isAvailable = availableDates === null ? true : availableDates.has(dateStr);
                           const isSelected = dateStr === (viewingReturn ? returnDate : departDate);
+                          const cheapest = isAvailable ? getCheapestForDate(dateStr) : null;
                           days.push(
                             <button
                               key={day}
                               onClick={() => handleDateSelect(day)}
                               disabled={!isAvailable}
                               style={{
-                                padding: '6px',
+                                padding: '4px 2px',
                                 border: 'none',
                                 borderRadius: '8px',
                                 backgroundColor: isSelected ? (dark ? C.pink : C.darkGreen) : isAvailable ? 'transparent' : (dark ? '#252525' : C.g100),
@@ -498,9 +511,11 @@ function ResultsContent() {
                                 fontSize: '12px',
                                 fontWeight: 600,
                                 opacity: isAvailable ? 1 : 0.5,
+                                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1px',
                               }}
                             >
-                              {day}
+                              <span>{day}</span>
+                              {cheapest && <span style={{ fontSize: '8px', fontWeight: 700, color: isSelected ? 'rgba(255,255,255,0.8)' : (dark ? '#87CEAB' : '#0A3D2E'), lineHeight: 1 }}>${cheapest}</span>}
                             </button>
                           );
                         }
@@ -660,7 +675,7 @@ function ResultsContent() {
 
                   {/* Price + seats */}
                   <div style={{ textAlign: isMobile ? 'left' : 'right', flexShrink: 0, width: isMobile ? '100%' : 'auto' }}>
-                    <div style={{ fontSize: '22px', fontWeight: 800, color: t.text }}>${fl.price}</div>
+                    <div style={{ fontSize: '22px', fontWeight: 800, color: t.text }}>${Math.round(fl.price)}</div>
                     <div style={{ fontSize: '10px', color: fl.seats <= 3 ? C.pink : t.textMuted, fontWeight: 600 }}>{fl.seats} seats left</div>
                   </div>
                 </button>

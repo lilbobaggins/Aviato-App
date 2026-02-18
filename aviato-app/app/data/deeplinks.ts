@@ -201,7 +201,7 @@ export function getDeepLinkNote(
 
   switch (airline) {
     case 'Aero':
-      return `Opens Aero with ${origin.city} → ${dest.city} pre-selected. Just pick your date and confirm the fare!`;
+      return `Opens Aero with ${origin.city} → ${dest.city} pre-selected. Select your date on the calendar to see fares.`;
 
     case 'JSX':
       return `Opens JSX's booking page with ${origin.city} → ${dest.city} pre-selected (${tripType === 'roundtrip' ? 'round trip' : 'one way'}). Just pick your flight time and check out!`;

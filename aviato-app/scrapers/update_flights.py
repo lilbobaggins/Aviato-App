@@ -171,7 +171,7 @@ def jsx_to_ts(route_key: str, flights: list[dict]) -> list[str]:
         # Calculate duration from ISO times if available
         dur = _calc_duration(fl.get("departure_iso", ""), fl.get("arrival_iso", ""))
 
-        price_str = str(int(price)) if isinstance(price, float) and price == int(price) else str(price)
+        price_str = str(round(price))
 
         line = (
             f"    {{ id:'{prefix}-{i}', airline:'JSX', "
