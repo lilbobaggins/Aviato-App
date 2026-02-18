@@ -1188,6 +1188,10 @@ export default function DesktopPage() {
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#fff'; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = C.g400; }}
             >Privacy Policy</a>
+            <a href="mailto:aviatoair@gmail.com" style={{ fontSize: '12px', color: C.g400, textDecoration: 'none', fontWeight: 500 }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#fff'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = C.g400; }}
+            >Contact Us</a>
           </div>
         </div>
 
