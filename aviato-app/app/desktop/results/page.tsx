@@ -553,7 +553,7 @@ function ResultsContent() {
       </div>
 
       {availableAirlines.length > 1 && (
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: isMobile ? '0 16px' : '0 40px' }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: isMobile ? '4px 16px 8px' : '4px 40px 8px' }}>
           <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
             <button onClick={() => setAirlineFilter(null)} style={{ padding: '6px 14px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', border: airlineFilter === null ? `2px solid ${t.filterActive}` : `1.5px solid ${dark ? '#555' : '#ccc'}`, backgroundColor: airlineFilter === null ? t.filterActive : 'transparent', color: airlineFilter === null ? t.filterActiveText : t.filterInactiveText, transition: 'all 0.2s ease' }}>
               All Airlines
@@ -572,7 +572,7 @@ function ResultsContent() {
       )}
 
       {/* Disclaimer */}
-      <div style={{ maxWidth: '800px', margin: '0 auto 8px', padding: isMobile ? '0 16px' : '0 40px' }}>
+      <div style={{ maxWidth: '800px', margin: '4px auto 8px', padding: isMobile ? '0 16px' : '0 40px' }}>
         <div style={{ padding: '10px 14px', backgroundColor: t.disclaimerBg, borderRadius: '10px', border: `1px solid ${t.disclaimerBorder}`, fontSize: '11px', color: t.disclaimerText, lineHeight: 1.4 }}>
           Prices & schedules are estimates and may not reflect real-time availability. Always confirm details on the airline&apos;s website before booking.
         </div>
