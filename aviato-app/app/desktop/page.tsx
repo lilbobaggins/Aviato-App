@@ -1178,7 +1178,17 @@ export default function DesktopPage() {
           </div>
           <div style={{ fontSize: '20px', fontWeight: 900, color: '#fff', marginBottom: '4px' }}>Aviato</div>
           <p style={{ fontSize: '13px', color: C.g400, margin: '0 0 6px' }}>Compare semi-private flights across every carrier.</p>
-          <p style={{ fontSize: '11px', color: C.g600, margin: 0 }}>Prices & schedules are estimates. Always confirm on the airline&apos;s website.</p>
+          <p style={{ fontSize: '11px', color: C.g600, margin: '0 0 16px' }}>Prices & schedules are estimates. Always confirm on the airline&apos;s website.</p>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+            <a href="/desktop/terms" style={{ fontSize: '12px', color: C.g400, textDecoration: 'none', fontWeight: 500 }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#fff'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = C.g400; }}
+            >Terms of Service</a>
+            <a href="/desktop/privacy" style={{ fontSize: '12px', color: C.g400, textDecoration: 'none', fontWeight: 500 }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#fff'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = C.g400; }}
+            >Privacy Policy</a>
+          </div>
         </div>
 
         <DesktopCalendar isOpen={calOpen} onClose={() => setCalOpen(false)} tripType={tripType} departDate={departDate} returnDate={returnDate} onSelectDepart={setDepartDate} onSelectReturn={setReturnDate} fromCode={fromCode} toCode={toCode} selectingReturn={selectingReturn} setSelectingReturn={setSelectingReturn} />
