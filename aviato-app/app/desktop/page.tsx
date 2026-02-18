@@ -491,10 +491,10 @@ export default function DesktopPage() {
   const footerReveal = useScrollReveal(0.2);
   const statsReveal = useScrollReveal(0.2);
 
-  // Animated stat counters (real data: 130 routes, 7 airlines, 73 airports)
-  const statRoutes = useCountUp(130, 2000);
-  const statAirlines = useCountUp(7, 1500);
-  const statAirports = useCountUp(73, 1800);
+  // Animated stat counters (real data: 84 routes, 5 airlines, 30 airports)
+  const statRoutes = useCountUp(84, 2000);
+  const statAirlines = useCountUp(5, 1500);
+  const statAirports = useCountUp(30, 1800);
 
   const t = T(dark);
   const fmtDate = (d: string) => d ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
