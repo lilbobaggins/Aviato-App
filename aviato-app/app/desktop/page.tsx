@@ -46,6 +46,33 @@ const HERO_IMAGES = [
 ];
 
 /* ────────────────────────────────────────────
+   Scroll Reveal Hook
+   ──────────────────────────────────────────── */
+const useScrollReveal = (threshold = 0.15) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.unobserve(el); } },
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, isVisible };
+};
+
+const revealStyle = (isVisible: boolean, delay = 0): React.CSSProperties => ({
+  opacity: isVisible ? 1 : 0,
+  transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
+  transition: `opacity 0.7s ease ${delay}s, transform 0.7s ease ${delay}s`,
+});
+
+/* ────────────────────────────────────────────
    Airport Field — full-featured with typing,
    live dropdown, clear button
    ──────────────────────────────────────────── */
@@ -410,6 +437,11 @@ export default function DesktopPage() {
     const iv = setInterval(() => setHeroIndex(i => (i + 1) % HERO_IMAGES.length), 5000);
     return () => clearInterval(iv);
   }, []);
+
+  // Scroll reveal for sections
+  const routesReveal = useScrollReveal(0.1);
+  const eventsReveal = useScrollReveal(0.1);
+  const footerReveal = useScrollReveal(0.2);
 
   const t = T(dark);
   const fmtDate = (d: string) => d ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
@@ -901,16 +933,17 @@ export default function DesktopPage() {
         </div>
 
         {/* ========== Popular Routes ========== */}
-        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 48px 40px' }}>
-          <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px' }}>Popular Routes</h2>
-          <p style={{ fontSize: '14px', color: t.textMuted, margin: '0 0 28px' }}>The most-booked semi-private flights</p>
+        <div ref={routesReveal.ref} style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 48px 40px' }}>
+          <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px', ...revealStyle(routesReveal.isVisible, 0) }}>Popular Routes</h2>
+          <p style={{ fontSize: '14px', color: t.textMuted, margin: '0 0 28px', ...revealStyle(routesReveal.isVisible, 0.1) }}>The most-booked semi-private flights</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
             {popularRoutes.map((r, i) => (
               <button key={i} onClick={() => { setFromCode(r.from); setToCode(r.to); setDepartDate(''); setReturnDate(''); window.scrollTo({ top: 0, behavior: 'smooth' }); setTimeout(() => setCalOpen(true), 400); }}
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 20px',
                   border: `1px solid ${t.cardBorder}`, borderRadius: '14px', backgroundColor: t.card, cursor: 'pointer',
-                  textAlign: 'left', transition: 'box-shadow 0.2s ease, transform 0.2s ease',
+                  textAlign: 'left', transition: 'box-shadow 0.2s ease, transform 0.2s ease, opacity 0.6s ease',
+                  ...revealStyle(routesReveal.isVisible, 0.15 + i * 0.06),
                 }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${dark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.06)'}`;  (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = 'none'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
@@ -926,9 +959,9 @@ export default function DesktopPage() {
         </div>
 
         {/* ========== Events Slider ========== */}
-        <div style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
+        <div ref={eventsReveal.ref} style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '48px 48px 52px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', ...revealStyle(eventsReveal.isVisible, 0) }}>
               <div>
                 <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px' }}>Upcoming Events</h2>
                 <p style={{ fontSize: '14px', color: t.textMuted, margin: 0 }}>Events worth flying semi-private for</p>
@@ -944,7 +977,7 @@ export default function DesktopPage() {
             </div>
 
             {/* Filter pills — single row: Upcoming + categories */}
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center', ...revealStyle(eventsReveal.isVisible, 0.15) }}>
               <button onClick={() => setUpcoming(!upcoming)} style={{
                 padding: '7px 16px', borderRadius: '20px',
                 border: `1.5px solid ${upcoming ? (dark ? C.pink : C.darkGreen) : t.cardBorder}`,
@@ -972,7 +1005,7 @@ export default function DesktopPage() {
                 <p style={{ fontSize: '13px', margin: 0 }}>Try adjusting your date or category filters.</p>
               </div>
             ) : null}
-            <div ref={eventsRef} style={{ display: filteredEvents.length === 0 ? 'none' : 'flex', gap: '16px', overflowX: 'auto', scrollSnapType: 'x mandatory', paddingBottom: '8px', scrollbarWidth: 'none' }}
+            <div ref={eventsRef} style={{ display: filteredEvents.length === 0 ? 'none' : 'flex', gap: '16px', overflowX: 'auto', scrollSnapType: 'x mandatory', paddingBottom: '8px', scrollbarWidth: 'none', ...revealStyle(eventsReveal.isVisible, 0.25) }}
               onMouseDown={(e) => {
                 const el = e.currentTarget; let startX = e.pageX; let scrollL = el.scrollLeft;
                 const move = (ev: MouseEvent) => { el.scrollLeft = scrollL - (ev.pageX - startX); };
@@ -1052,7 +1085,7 @@ export default function DesktopPage() {
         </div>
 
         {/* ========== Footer ========== */}
-        <div style={{ background: dark ? '#0A0A0A' : C.black, padding: '40px 48px', textAlign: 'center' }}>
+        <div ref={footerReveal.ref} style={{ background: dark ? '#0A0A0A' : C.black, padding: '40px 48px', textAlign: 'center', ...revealStyle(footerReveal.isVisible, 0) }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <div style={{ width: '16px', height: '8px', backgroundColor: C.darkGreen, borderRadius: '1px' }} />
