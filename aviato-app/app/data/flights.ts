@@ -8532,11 +8532,13 @@ export const getMetroAreaFlights = (fromCode: string, toCode: string, date?: str
       // If this sub-route is seasonal and a date is provided, only include if it operates that day
       if (date && SEASONAL_DATES[key]) {
         if (SEASONAL_DATES[key].includes(date)) {
-          allFlights = [...allFlights, ...flights];
+          const dated = flights.filter(f => f.date === date);
+          const undated = flights.filter(f => !f.date);
+          allFlights = [...allFlights, ...undated, ...dated];
         }
       } else {
-        // For date-specific flights (e.g. Slate), filter to matching date
-        // For non-dated flights (e.g. JSX daily service), always include
+        // For date-specific flights, filter to matching date
+        // For non-dated flights (daily service), always include
         if (date) {
           const dated = flights.filter(f => f.date === date);
           const undated = flights.filter(f => !f.date);
