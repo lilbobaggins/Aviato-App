@@ -46,6 +46,42 @@ const HERO_IMAGES = [
 ];
 
 /* ────────────────────────────────────────────
+   Animated Counter Hook
+   ──────────────────────────────────────────── */
+const useCountUp = (end: number, duration = 1800) => {
+  const [count, setCount] = useState(0);
+  const [started, setStarted] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setStarted(true); observer.unobserve(el); } },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * end));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [started, end, duration]);
+
+  return { count, ref, started };
+};
+
+/* ────────────────────────────────────────────
    Scroll Reveal Hook
    ──────────────────────────────────────────── */
 const useScrollReveal = (threshold = 0.15) => {
@@ -392,7 +428,18 @@ export default function DesktopPage() {
   const [heroIndex, setHeroIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
-  // heroLoaded removed — images load directly via backgroundImage
+  // Parallax mouse tracking for hero
+  const [parallax, setParallax] = useState({ x: 0, y: 0 });
+  const heroRef = useRef<HTMLDivElement>(null);
+  const handleHeroMouse = useCallback((e: React.MouseEvent) => {
+    const el = heroRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2; // -1 to 1
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    setParallax({ x, y });
+  }, []);
+
   const eventsRef = useRef<HTMLDivElement>(null);
   const [eventCat, setEventCat] = useState('All');
   const [upcoming, setUpcoming] = useState(false);
@@ -442,6 +489,12 @@ export default function DesktopPage() {
   const routesReveal = useScrollReveal(0.1);
   const eventsReveal = useScrollReveal(0.1);
   const footerReveal = useScrollReveal(0.2);
+  const statsReveal = useScrollReveal(0.2);
+
+  // Animated stat counters
+  const statRoutes = useCountUp(500, 2000);
+  const statAirlines = useCountUp(12, 1500);
+  const statAirports = useCountUp(45, 1800);
 
   const t = T(dark);
   const fmtDate = (d: string) => d ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
@@ -762,15 +815,14 @@ export default function DesktopPage() {
           transition: background-color 0.5s ease, color 0.5s ease !important;
         }
         .aviato-desktop [data-hero-slide] {
-          transition: opacity 1.8s ease-in-out !important;
-          will-change: opacity;
+          will-change: transform, opacity;
         }
       `}</style>
       <div className="aviato-desktop" style={{ minHeight: '100vh', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', backgroundColor: t.bg, scrollBehavior: 'smooth' }}>
 
         {/* ========== HERO — inset rounded card like Hopper ========== */}
         <div style={{ padding: '16px 16px 0 16px' }}>
-          <div style={{ position: 'relative', height: 'calc(100vh - 32px)', borderRadius: '20px', overflow: 'hidden' }}>
+          <div ref={heroRef} onMouseMove={handleHeroMouse} onMouseLeave={() => setParallax({ x: 0, y: 0 })} style={{ position: 'relative', height: 'calc(100vh - 32px)', borderRadius: '20px', overflow: 'hidden' }}>
 
             {/* ── Logo — inside hero frame, top-left (Hopper-sized) ── */}
             <div style={{
@@ -795,14 +847,17 @@ export default function DesktopPage() {
               {dark ? <Sun style={{ width: '22px', height: '22px', color: '#fff' }} /> : <Moon style={{ width: '22px', height: '22px', color: '#fff' }} />}
             </button>
 
-            {/* Rotating background images */}
+            {/* Rotating background images with parallax */}
             {HERO_IMAGES.map((img, i) => (
               <div key={i} data-hero-slide="true" style={{
-                position: 'absolute', inset: 0,
+                position: 'absolute', inset: '-20px',
                 backgroundImage: `url(${img.src})`,
                 backgroundColor: '#111',
                 backgroundSize: 'cover', backgroundPosition: 'center',
                 opacity: heroIndex === i ? 1 : 0,
+                transform: `translate(${parallax.x * -12}px, ${parallax.y * -8}px) scale(1.04)`,
+                transition: `opacity 1.8s ease-in-out, transform 0.4s ease-out`,
+                willChange: 'transform, opacity',
               }} />
             ))}
 
@@ -849,19 +904,21 @@ export default function DesktopPage() {
                 ))}
               </div>
 
-              {/* Search bar */}
+              {/* Search bar — glassmorphism */}
               <div style={{
-                backgroundColor: t.searchBg,
+                backgroundColor: dark ? 'rgba(26,26,26,0.55)' : 'rgba(255,255,255,0.45)',
                 borderRadius: '16px',
                 display: 'flex',
                 alignItems: 'center',
                 width: '860px',
                 maxWidth: '90vw',
                 minHeight: '76px',
-                boxShadow: '0 8px 40px rgba(0,0,0,0.15)',
-                backdropFilter: 'blur(24px)',
+                boxShadow: '0 8px 40px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.15)',
+                backdropFilter: 'blur(20px) saturate(1.6)',
+                WebkitBackdropFilter: 'blur(20px) saturate(1.6)',
                 overflow: 'visible',
                 position: 'relative',
+                border: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(255,255,255,0.35)',
               }}>
 
                 {/* Where from */}
@@ -930,6 +987,33 @@ export default function DesktopPage() {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* ========== Stats Counter ========== */}
+        <div ref={statsReveal.ref} style={{
+          maxWidth: '900px', margin: '0 auto', padding: '48px 48px 16px',
+          display: 'flex', justifyContent: 'center', gap: '64px',
+          ...revealStyle(statsReveal.isVisible, 0),
+        }}>
+          {[
+            { counter: statRoutes, suffix: '+', label: 'Routes Searched', icon: '✈' },
+            { counter: statAirlines, suffix: '', label: 'Partner Airlines', icon: '🛩' },
+            { counter: statAirports, suffix: '+', label: 'Airports Covered', icon: '📍' },
+          ].map((stat, i) => (
+            <div key={i} style={{ textAlign: 'center', ...revealStyle(statsReveal.isVisible, 0.1 + i * 0.12) }}>
+              <div style={{ fontSize: '14px', marginBottom: '6px' }}>{stat.icon}</div>
+              <span ref={i === 0 ? statRoutes.ref : i === 1 ? statAirlines.ref : statAirports.ref} style={{
+                fontSize: '42px', fontWeight: 900, letterSpacing: '-0.03em',
+                color: dark ? C.pink : C.darkGreen,
+                fontVariantNumeric: 'tabular-nums',
+              }}>
+                {stat.counter.count}{stat.suffix}
+              </span>
+              <div style={{ fontSize: '13px', fontWeight: 600, color: t.textMuted, marginTop: '4px', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                {stat.label}
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* ========== Popular Routes ========== */}
