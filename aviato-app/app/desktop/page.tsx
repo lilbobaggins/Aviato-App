@@ -491,10 +491,10 @@ export default function DesktopPage() {
   const footerReveal = useScrollReveal(0.2);
   const statsReveal = useScrollReveal(0.2);
 
-  // Animated stat counters
-  const statRoutes = useCountUp(500, 2000);
-  const statAirlines = useCountUp(12, 1500);
-  const statAirports = useCountUp(45, 1800);
+  // Animated stat counters (real data: 130 routes, 7 airlines, 73 airports)
+  const statRoutes = useCountUp(130, 2000);
+  const statAirlines = useCountUp(7, 1500);
+  const statAirports = useCountUp(73, 1800);
 
   const t = T(dark);
   const fmtDate = (d: string) => d ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
@@ -904,21 +904,19 @@ export default function DesktopPage() {
                 ))}
               </div>
 
-              {/* Search bar — glassmorphism */}
+              {/* Search bar */}
               <div style={{
-                backgroundColor: dark ? 'rgba(26,26,26,0.55)' : 'rgba(255,255,255,0.45)',
+                backgroundColor: t.searchBg,
                 borderRadius: '16px',
                 display: 'flex',
                 alignItems: 'center',
                 width: '860px',
                 maxWidth: '90vw',
                 minHeight: '76px',
-                boxShadow: '0 8px 40px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.15)',
-                backdropFilter: 'blur(20px) saturate(1.6)',
-                WebkitBackdropFilter: 'blur(20px) saturate(1.6)',
+                boxShadow: '0 8px 40px rgba(0,0,0,0.15)',
+                backdropFilter: 'blur(24px)',
                 overflow: 'visible',
                 position: 'relative',
-                border: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(255,255,255,0.35)',
               }}>
 
                 {/* Where from */}
@@ -996,12 +994,11 @@ export default function DesktopPage() {
           ...revealStyle(statsReveal.isVisible, 0),
         }}>
           {[
-            { counter: statRoutes, suffix: '+', label: 'Routes Searched', icon: '✈' },
-            { counter: statAirlines, suffix: '', label: 'Partner Airlines', icon: '🛩' },
-            { counter: statAirports, suffix: '+', label: 'Airports Covered', icon: '📍' },
+            { counter: statRoutes, suffix: '+', label: 'Routes Searched' },
+            { counter: statAirlines, suffix: '', label: 'Partner Airlines' },
+            { counter: statAirports, suffix: '+', label: 'Airports Covered' },
           ].map((stat, i) => (
             <div key={i} style={{ textAlign: 'center', ...revealStyle(statsReveal.isVisible, 0.1 + i * 0.12) }}>
-              <div style={{ fontSize: '14px', marginBottom: '6px' }}>{stat.icon}</div>
               <span ref={i === 0 ? statRoutes.ref : i === 1 ? statAirlines.ref : statAirports.ref} style={{
                 fontSize: '42px', fontWeight: 900, letterSpacing: '-0.03em',
                 color: dark ? C.pink : C.darkGreen,
