@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import {
   ChevronLeft, ChevronRight,
   ArrowLeftRight, Plane, X, Check, Search, Clock,
-  Globe, Sun, Moon
+  Globe, Sun, Moon, Zap, Shield, DollarSign
 } from 'lucide-react';
 
 import { C, AIRLINE_STYLE } from '../data/constants';
@@ -487,6 +487,9 @@ export default function DesktopPage() {
 
   // Scroll reveal for sections
   const routesReveal = useScrollReveal(0.1);
+  const howItWorksReveal = useScrollReveal(0.1);
+  const whySemiReveal = useScrollReveal(0.1);
+  const airlinesReveal = useScrollReveal(0.1);
   const eventsReveal = useScrollReveal(0.1);
   const footerReveal = useScrollReveal(0.2);
   const statsReveal = useScrollReveal(0.2);
@@ -1038,6 +1041,77 @@ export default function DesktopPage() {
                 <div style={{ fontWeight: 800, color: dark ? C.pink : C.darkGreen, fontSize: '17px' }}>${r.price}</div>
               </button>
             ))}
+          </div>
+        </div>
+
+        {/* ========== How Aviato Works ========== */}
+        <div ref={howItWorksReveal.ref} style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '56px 48px' }}>
+            <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px', textAlign: 'center', ...revealStyle(howItWorksReveal.isVisible, 0) }}>How Aviato Works</h2>
+            <p style={{ fontSize: '14px', color: t.textMuted, margin: '0 0 40px', textAlign: 'center', ...revealStyle(howItWorksReveal.isVisible, 0.08) }}>Book your next semi-private flight in three simple steps</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px' }}>
+              {[
+                { icon: <Search style={{ width: '24px', height: '24px' }} />, title: 'Search', desc: 'Enter your route and dates. We search across every semi-private carrier simultaneously so you never miss a flight.' },
+                { icon: <Zap style={{ width: '24px', height: '24px' }} />, title: 'Compare', desc: 'See all available flights side by side — prices, times, aircraft, amenities, and ratings. Filter by airline, sort by price or speed.' },
+                { icon: <Plane style={{ width: '24px', height: '24px' }} />, title: 'Book Direct', desc: 'Click through to book directly with the airline. We link you straight to the booking page with your route pre-selected.' },
+              ].map((step, i) => (
+                <div key={i} style={{ textAlign: 'center', padding: '32px 24px', borderRadius: '16px', backgroundColor: t.card, border: `1px solid ${t.cardBorder}`, ...revealStyle(howItWorksReveal.isVisible, 0.15 + i * 0.1) }}>
+                  <div style={{ width: '56px', height: '56px', borderRadius: '14px', backgroundColor: dark ? 'rgba(232,87,109,0.12)' : 'rgba(10,61,46,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px', color: dark ? C.pink : C.darkGreen }}>{step.icon}</div>
+                  <div style={{ fontSize: '13px', fontWeight: 800, color: dark ? C.pink : C.darkGreen, marginBottom: '6px', letterSpacing: '0.06em' }}>STEP {i + 1}</div>
+                  <h3 style={{ fontSize: '20px', fontWeight: 800, color: t.text, margin: '0 0 10px' }}>{step.title}</h3>
+                  <p style={{ fontSize: '14px', color: t.textMuted, margin: 0, lineHeight: 1.6 }}>{step.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ========== Why Semi-Private ========== */}
+        <div ref={whySemiReveal.ref} style={{ maxWidth: '1100px', margin: '0 auto', padding: '56px 48px' }}>
+          <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px', textAlign: 'center', ...revealStyle(whySemiReveal.isVisible, 0) }}>Why Fly Semi-Private?</h2>
+          <p style={{ fontSize: '14px', color: t.textMuted, margin: '0 0 40px', textAlign: 'center', ...revealStyle(whySemiReveal.isVisible, 0.08) }}>The best-kept secret in aviation</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+            {[
+              { icon: <Clock style={{ width: '22px', height: '22px' }} />, title: 'Skip the Terminal', desc: 'Walk in 15 minutes before departure. No TSA lines, no crowded gates, no overhead bin fights. Just show up and fly.' },
+              { icon: <DollarSign style={{ width: '22px', height: '22px' }} />, title: 'Affordable Luxury', desc: 'Starting from $99 per seat. Semi-private gives you a private jet experience at a fraction of the cost of chartering.' },
+              { icon: <Shield style={{ width: '22px', height: '22px' }} />, title: 'Premium Experience', desc: 'Leather seats, complimentary drinks, gourmet snacks, and planes with 16-30 seats max. Flying the way it should be.' },
+            ].map((item, i) => (
+              <div key={i} style={{ padding: '28px 24px', borderRadius: '16px', border: `1px solid ${t.cardBorder}`, backgroundColor: t.card, ...revealStyle(whySemiReveal.isVisible, 0.15 + i * 0.1) }}>
+                <div style={{ width: '44px', height: '44px', borderRadius: '12px', backgroundColor: dark ? 'rgba(232,87,109,0.12)' : 'rgba(10,61,46,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: dark ? C.pink : C.darkGreen }}>{item.icon}</div>
+                <h3 style={{ fontSize: '17px', fontWeight: 800, color: t.text, margin: '0 0 8px' }}>{item.title}</h3>
+                <p style={{ fontSize: '13px', color: t.textMuted, margin: 0, lineHeight: 1.6 }}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ========== Airlines We Track ========== */}
+        <div ref={airlinesReveal.ref} style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '56px 48px' }}>
+            <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px', textAlign: 'center', ...revealStyle(airlinesReveal.isVisible, 0) }}>Airlines We Track</h2>
+            <p style={{ fontSize: '14px', color: t.textMuted, margin: '0 0 40px', textAlign: 'center', ...revealStyle(airlinesReveal.isVisible, 0.08) }}>Every major semi-private carrier, one search</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px' }}>
+              {[
+                { name: 'JSX', desc: 'LA, TX, FL, West Coast', style: AIRLINE_STYLE['JSX'] },
+                { name: 'Aero', desc: 'LA, Aspen, Sun Valley, Cabo', style: AIRLINE_STYLE['Aero'] },
+                { name: 'Tradewind', desc: 'Northeast & Bahamas', style: AIRLINE_STYLE['Tradewind'] },
+                { name: 'Slate', desc: 'NY, FL, Nantucket', style: AIRLINE_STYLE['Slate'] },
+                { name: 'BARK Air', desc: 'Dog-friendly luxury', style: AIRLINE_STYLE['BARK Air'] },
+              ].map((airline, i) => (
+                <div key={i} style={{
+                  textAlign: 'center', padding: '28px 16px', borderRadius: '14px', backgroundColor: t.card, border: `1px solid ${t.cardBorder}`,
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  ...revealStyle(airlinesReveal.isVisible, 0.12 + i * 0.06),
+                }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${dark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.06)'}` ; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
+                >
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: airline.style?.bg || '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px', color: airline.style?.text || '#fff', fontSize: '12px', fontWeight: 900 }}>{airline.style?.label || '?'}</div>
+                  <h3 style={{ fontSize: '15px', fontWeight: 800, color: t.text, margin: '0 0 4px' }}>{airline.name}</h3>
+                  <p style={{ fontSize: '12px', color: t.textMuted, margin: 0 }}>{airline.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
