@@ -487,8 +487,6 @@ export default function DesktopPage() {
 
   // Scroll reveal for sections
   const routesReveal = useScrollReveal(0.1);
-  const howItWorksReveal = useScrollReveal(0.1);
-  const whySemiReveal = useScrollReveal(0.1);
   const airlinesReveal = useScrollReveal(0.1);
   const eventsReveal = useScrollReveal(0.1);
   const footerReveal = useScrollReveal(0.2);
@@ -1044,46 +1042,6 @@ export default function DesktopPage() {
           </div>
         </div>
 
-        {/* ========== How Aviato Works ========== */}
-        <div ref={howItWorksReveal.ref} style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
-          <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '56px 48px' }}>
-            <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px', textAlign: 'center', ...revealStyle(howItWorksReveal.isVisible, 0) }}>How Aviato Works</h2>
-            <p style={{ fontSize: '14px', color: t.textMuted, margin: '0 0 40px', textAlign: 'center', ...revealStyle(howItWorksReveal.isVisible, 0.08) }}>Book your next semi-private flight in three simple steps</p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px' }}>
-              {[
-                { icon: <Search style={{ width: '24px', height: '24px' }} />, title: 'Search', desc: 'Enter your route and dates. We search across every semi-private carrier simultaneously so you never miss a flight.' },
-                { icon: <Zap style={{ width: '24px', height: '24px' }} />, title: 'Compare', desc: 'See all available flights side by side — prices, times, aircraft, amenities, and ratings. Filter by airline, sort by price or speed.' },
-                { icon: <Plane style={{ width: '24px', height: '24px' }} />, title: 'Book Direct', desc: 'Click through to book directly with the airline. We link you straight to the booking page with your route pre-selected.' },
-              ].map((step, i) => (
-                <div key={i} style={{ textAlign: 'center', padding: '32px 24px', borderRadius: '16px', backgroundColor: t.card, border: `1px solid ${t.cardBorder}`, ...revealStyle(howItWorksReveal.isVisible, 0.15 + i * 0.1) }}>
-                  <div style={{ width: '56px', height: '56px', borderRadius: '14px', backgroundColor: dark ? 'rgba(232,87,109,0.12)' : 'rgba(10,61,46,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px', color: dark ? C.pink : C.darkGreen }}>{step.icon}</div>
-                  <div style={{ fontSize: '13px', fontWeight: 800, color: dark ? C.pink : C.darkGreen, marginBottom: '6px', letterSpacing: '0.06em' }}>STEP {i + 1}</div>
-                  <h3 style={{ fontSize: '20px', fontWeight: 800, color: t.text, margin: '0 0 10px' }}>{step.title}</h3>
-                  <p style={{ fontSize: '14px', color: t.textMuted, margin: 0, lineHeight: 1.6 }}>{step.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* ========== Why Semi-Private ========== */}
-        <div ref={whySemiReveal.ref} style={{ maxWidth: '1100px', margin: '0 auto', padding: '56px 48px' }}>
-          <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px', textAlign: 'center', ...revealStyle(whySemiReveal.isVisible, 0) }}>Why Fly Semi-Private?</h2>
-          <p style={{ fontSize: '14px', color: t.textMuted, margin: '0 0 40px', textAlign: 'center', ...revealStyle(whySemiReveal.isVisible, 0.08) }}>The best-kept secret in aviation</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
-            {[
-              { icon: <Clock style={{ width: '22px', height: '22px' }} />, title: 'Skip the Terminal', desc: 'Walk in 15 minutes before departure. No TSA lines, no crowded gates, no overhead bin fights. Just show up and fly.' },
-              { icon: <DollarSign style={{ width: '22px', height: '22px' }} />, title: 'Affordable Luxury', desc: 'Starting from $99 per seat. Semi-private gives you a private jet experience at a fraction of the cost of chartering.' },
-              { icon: <Shield style={{ width: '22px', height: '22px' }} />, title: 'Premium Experience', desc: 'Leather seats, complimentary drinks, gourmet snacks, and planes with 16-30 seats max. Flying the way it should be.' },
-            ].map((item, i) => (
-              <div key={i} style={{ padding: '28px 24px', borderRadius: '16px', border: `1px solid ${t.cardBorder}`, backgroundColor: t.card, ...revealStyle(whySemiReveal.isVisible, 0.15 + i * 0.1) }}>
-                <div style={{ width: '44px', height: '44px', borderRadius: '12px', backgroundColor: dark ? 'rgba(232,87,109,0.12)' : 'rgba(10,61,46,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: dark ? C.pink : C.darkGreen }}>{item.icon}</div>
-                <h3 style={{ fontSize: '17px', fontWeight: 800, color: t.text, margin: '0 0 8px' }}>{item.title}</h3>
-                <p style={{ fontSize: '13px', color: t.textMuted, margin: 0, lineHeight: 1.6 }}>{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
 
         {/* ========== Airlines We Track ========== */}
         <div ref={airlinesReveal.ref} style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
@@ -1266,6 +1224,10 @@ export default function DesktopPage() {
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#fff'; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = C.g400; }}
             >Contact Us</a>
+            <a href="/desktop/about" style={{ fontSize: '12px', color: C.g400, textDecoration: 'none', fontWeight: 500 }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#fff'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = C.g400; }}
+            >About</a>
           </div>
         </div>
 
