@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import {
   ChevronLeft, ChevronRight,
-  ArrowLeftRight, Plane, X, Check, Search, Clock,
+  ArrowLeftRight, ArrowRight, Plane, X, Check, Search, Clock,
   Globe, Sun, Moon, Zap, Shield, DollarSign
 } from 'lucide-react';
 
@@ -487,7 +487,7 @@ export default function DesktopPage() {
 
   // Scroll reveal for sections
   const routesReveal = useScrollReveal(0.1);
-  const airlinesReveal = useScrollReveal(0.1);
+  const aboutCtaReveal = useScrollReveal(0.2);
   const eventsReveal = useScrollReveal(0.1);
   const footerReveal = useScrollReveal(0.2);
   const statsReveal = useScrollReveal(0.2);
@@ -1043,36 +1043,6 @@ export default function DesktopPage() {
         </div>
 
 
-        {/* ========== Airlines We Track ========== */}
-        <div ref={airlinesReveal.ref} style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
-          <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '56px 48px' }}>
-            <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px', textAlign: 'center', ...revealStyle(airlinesReveal.isVisible, 0) }}>Airlines We Track</h2>
-            <p style={{ fontSize: '14px', color: t.textMuted, margin: '0 0 40px', textAlign: 'center', ...revealStyle(airlinesReveal.isVisible, 0.08) }}>Every major semi-private carrier, one search</p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px' }}>
-              {[
-                { name: 'JSX', desc: 'LA, TX, FL, West Coast', style: AIRLINE_STYLE['JSX'] },
-                { name: 'Aero', desc: 'LA, Aspen, Sun Valley, Cabo', style: AIRLINE_STYLE['Aero'] },
-                { name: 'Tradewind', desc: 'Northeast & Bahamas', style: AIRLINE_STYLE['Tradewind'] },
-                { name: 'Slate', desc: 'NY, FL, Nantucket', style: AIRLINE_STYLE['Slate'] },
-                { name: 'BARK Air', desc: 'Dog-friendly luxury', style: AIRLINE_STYLE['BARK Air'] },
-              ].map((airline, i) => (
-                <div key={i} style={{
-                  textAlign: 'center', padding: '28px 16px', borderRadius: '14px', backgroundColor: t.card, border: `1px solid ${t.cardBorder}`,
-                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                  ...revealStyle(airlinesReveal.isVisible, 0.12 + i * 0.06),
-                }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${dark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.06)'}` ; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
-                >
-                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: airline.style?.bg || '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px', color: airline.style?.text || '#fff', fontSize: '12px', fontWeight: 900 }}>{airline.style?.label || '?'}</div>
-                  <h3 style={{ fontSize: '15px', fontWeight: 800, color: t.text, margin: '0 0 4px' }}>{airline.name}</h3>
-                  <p style={{ fontSize: '12px', color: t.textMuted, margin: 0 }}>{airline.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
         {/* ========== Events Slider ========== */}
         <div ref={eventsReveal.ref} style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '48px 48px 52px' }}>
@@ -1197,6 +1167,23 @@ export default function DesktopPage() {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* ========== Learn More CTA ========== */}
+        <div ref={aboutCtaReveal.ref} style={{ maxWidth: '1100px', margin: '0 auto', padding: '56px 48px', textAlign: 'center' }}>
+          <p style={{ fontSize: '18px', fontWeight: 700, color: t.text, margin: '0 0 8px', ...revealStyle(aboutCtaReveal.isVisible, 0) }}>Curious how it all works?</p>
+          <p style={{ fontSize: '14px', color: t.textMuted, margin: '0 0 24px', ...revealStyle(aboutCtaReveal.isVisible, 0.08) }}>Learn about our airlines, ratings, and the semi-private flying experience</p>
+          <a href="/desktop/about" style={{
+            display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '16px 40px', borderRadius: '14px',
+            backgroundColor: dark ? C.pink : C.black, color: C.cream, fontSize: '16px', fontWeight: 700, textDecoration: 'none',
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+            ...revealStyle(aboutCtaReveal.isVisible, 0.15),
+          }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${dark ? 'rgba(232,87,109,0.3)' : 'rgba(0,0,0,0.15)'}` ; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
+          >
+            Learn More About Us <ArrowRight style={{ width: '18px', height: '18px' }} />
+          </a>
         </div>
 
         {/* ========== Footer ========== */}

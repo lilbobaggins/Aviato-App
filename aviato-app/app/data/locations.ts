@@ -2,7 +2,7 @@ import type { Location } from './types';
 
 export const LOCATIONS: Location[] = [
   // METRO AREAS
-  { code: 'LA', type: 'metro', city: 'Los Angeles', state: 'CA', name: 'All Los Angeles Airports', sub: 'LAX · BUR · VNY · SMO · SNA', airports: ['LAX','BUR','VNY','SMO','SNA'] },
+  { code: 'LA', type: 'metro', city: 'Los Angeles', state: 'CA', name: 'All Los Angeles Airports', sub: 'LAX · BUR · VNY · SMO', airports: ['LAX','BUR','VNY','SMO'] },
   { code: 'NYC', type: 'metro', city: 'New York', state: 'NY', name: 'All New York Airports', sub: 'HPN · TEB · FRG · MMU', airports: ['HPN','TEB','FRG','MMU'] },
   { code: 'SFL', type: 'metro', city: 'South Florida', state: 'FL', name: 'All South Florida Airports', sub: 'MIA · OPF · FLL · PBI · BCT · FXE', airports: ['MIA','OPF','FLL','PBI','BCT','FXE'] },
   // POPULAR STANDALONE
@@ -73,7 +73,7 @@ export const LOCATIONS: Location[] = [
   { code: 'BUR', type: 'airport', city: 'Burbank', state: 'CA', name: 'Hollywood Burbank', metro: 'LA' },
   { code: 'VNY', type: 'airport', city: 'Van Nuys', state: 'CA', name: 'Van Nuys Airport', metro: 'LA' },
   { code: 'SMO', type: 'airport', city: 'Santa Monica', state: 'CA', name: 'Santa Monica Airport', metro: 'LA' },
-  { code: 'SNA', type: 'airport', city: 'Orange County', state: 'CA', name: 'John Wayne Airport', metro: 'LA' },
+  { code: 'SNA', type: 'airport', city: 'Newport Beach', state: 'CA', name: 'John Wayne Airport' },
   // NYC airports
   { code: 'HPN', type: 'airport', city: 'White Plains', state: 'NY', name: 'Westchester County', metro: 'NYC' },
   { code: 'TEB', type: 'airport', city: 'Teterboro', state: 'NJ', name: 'Teterboro Airport', metro: 'NYC' },
