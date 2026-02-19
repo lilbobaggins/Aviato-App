@@ -74,6 +74,9 @@ function ResultsContent() {
   const [filter, setFilter] = useState('all');
   const [viewingReturn, setViewingReturn] = useState(false);
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
+  const [selectedOutbound, setSelectedOutbound] = useState<Flight | null>(null);
+  const [selectedReturn, setSelectedReturn] = useState<Flight | null>(null);
+  const [showTripSummary, setShowTripSummary] = useState(false);
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [pickerMonth, setPickerMonth] = useState(() => { const d = departDate ? new Date(departDate + 'T12:00:00') : new Date(); return d.getMonth(); });
   const [pickerYear, setPickerYear] = useState(() => { const d = departDate ? new Date(departDate + 'T12:00:00') : new Date(); return d.getFullYear(); });
@@ -543,10 +546,10 @@ function ResultsContent() {
       {isRT && (
         <div style={{ display: 'flex', backgroundColor: t.bgAlt, borderBottom: `1px solid ${t.cardBorder}`, maxWidth: '960px', margin: '0 auto' }}>
           <button onClick={() => setViewingReturn(false)} style={{ flex: 1, padding: '14px', border: 'none', borderBottom: !viewingReturn ? `3px solid ${dark ? C.pink : C.darkGreen}` : '3px solid transparent', backgroundColor: 'transparent', cursor: 'pointer', fontWeight: 700, fontSize: '13px', color: !viewingReturn ? (dark ? C.pink : C.darkGreen) : t.textMuted }}>
-            Outbound · {fmtDate(departDate)}
+            {selectedOutbound ? '✓ ' : ''}Outbound · {fmtDate(departDate)}
           </button>
           <button onClick={() => setViewingReturn(true)} style={{ flex: 1, padding: '14px', border: 'none', borderBottom: viewingReturn ? `3px solid ${dark ? C.pink : C.darkGreen}` : '3px solid transparent', backgroundColor: 'transparent', cursor: 'pointer', fontWeight: 700, fontSize: '13px', color: viewingReturn ? (dark ? C.pink : C.darkGreen) : t.textMuted }}>
-            Return · {fmtDate(returnDate)}
+            {selectedReturn ? '✓ ' : ''}Return · {fmtDate(returnDate)}
           </button>
         </div>
       )}
@@ -594,7 +597,7 @@ function ResultsContent() {
       </div>
 
       {/* Flight list */}
-      <div style={{ maxWidth: '960px', margin: '0 auto', padding: isMobile ? '8px 16px 60px' : '8px 40px 60px' }}>
+      <div style={{ maxWidth: '960px', margin: '0 auto', padding: isMobile ? '8px 16px 60px' : `8px 40px ${isRT && (selectedOutbound || selectedReturn) ? '120px' : '60px'}` }}>
         {flights.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px 20px', color: t.textMuted }}>
             <Plane style={{ width: '48px', height: '48px', color: t.cardBorder, margin: '0 auto 16px' }} />
@@ -611,10 +614,23 @@ function ResultsContent() {
               const rating = WING_RATINGS[fl.airline];
               const wingColor = rating ? WING_COLORS[rating.wings] : t.textMuted;
               return (
-                <button key={fl.id} onClick={() => setSelectedFlight(fl)}
+                <button key={fl.id} onClick={() => {
+                    if (isRT) {
+                      if (!viewingReturn) {
+                        setSelectedOutbound(fl);
+                        setViewingReturn(true);
+                      } else {
+                        setSelectedReturn(fl);
+                        setShowTripSummary(true);
+                      }
+                    } else {
+                      setSelectedFlight(fl);
+                    }
+                  }}
                   style={{
                     width: '100%', backgroundColor: t.card, borderRadius: '14px', padding: isMobile ? '14px 16px' : '22px 28px',
-                    border: `1px solid ${t.cardBorder}`, cursor: 'pointer', textAlign: 'left',
+                    border: `1px solid ${selectedOutbound?.id === fl.id && !viewingReturn ? (dark ? C.pink : C.darkGreen) : selectedReturn?.id === fl.id && viewingReturn ? (dark ? C.pink : C.darkGreen) : t.cardBorder}`,
+                    cursor: 'pointer', textAlign: 'left',
                     display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? '12px' : '24px',
                     transition: 'box-shadow 0.2s ease, transform 0.15s ease',
                   }}
@@ -685,13 +701,240 @@ function ResultsContent() {
         )}
       </div>
 
-      {/* Detail slide-over */}
-      {selectedFlight && (
+      {/* Detail slide-over (one-way only) */}
+      {selectedFlight && !isRT && (
         <>
           <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: dark ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.3)', zIndex: 99 }} onClick={() => setSelectedFlight(null)} />
           <DetailPanel fl={selectedFlight} onClose={() => setSelectedFlight(null)} />
         </>
       )}
+
+      {/* Round-trip sticky bottom bar */}
+      {isRT && (selectedOutbound || selectedReturn) && !showTripSummary && (
+        <div style={{
+          position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 90,
+          backgroundColor: dark ? '#1A1A1A' : '#FFFFFF',
+          borderTop: `1px solid ${t.cardBorder}`,
+          boxShadow: `0 -4px 24px ${dark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.1)'}`,
+          padding: '14px 40px',
+        }}>
+          <div style={{ maxWidth: '960px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '24px' }}>
+            {/* Outbound summary */}
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ fontSize: '9px', fontWeight: 700, color: t.textMuted, letterSpacing: '0.06em', width: '60px' }}>OUTBOUND</div>
+              {selectedOutbound ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: (AIRLINE_STYLE[selectedOutbound.airline] || { bg: '#333' }).bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: (AIRLINE_STYLE[selectedOutbound.airline] || { text: '#fff' }).text, fontSize: '9px', fontWeight: 900, flexShrink: 0 }}>{(AIRLINE_STYLE[selectedOutbound.airline] || { label: '?' }).label}</div>
+                  <div>
+                    <div style={{ fontSize: '13px', fontWeight: 700, color: t.text }}>{selectedOutbound.dep} → {selectedOutbound.arr}</div>
+                    <div style={{ fontSize: '11px', color: t.textSec }}>{selectedOutbound.airline} · {selectedOutbound.dur} · ${Math.round(selectedOutbound.price)}</div>
+                  </div>
+                  <button onClick={(e) => { e.stopPropagation(); setSelectedOutbound(null); }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: t.textMuted }}>
+                    <X style={{ width: '14px', height: '14px' }} />
+                  </button>
+                </div>
+              ) : (
+                <div style={{ fontSize: '12px', color: t.textMuted, fontStyle: 'italic' }}>Select an outbound flight</div>
+              )}
+            </div>
+
+            <div style={{ width: '1px', height: '36px', backgroundColor: t.cardBorder }} />
+
+            {/* Return summary */}
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ fontSize: '9px', fontWeight: 700, color: t.textMuted, letterSpacing: '0.06em', width: '60px' }}>RETURN</div>
+              {selectedReturn ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: (AIRLINE_STYLE[selectedReturn.airline] || { bg: '#333' }).bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: (AIRLINE_STYLE[selectedReturn.airline] || { text: '#fff' }).text, fontSize: '9px', fontWeight: 900, flexShrink: 0 }}>{(AIRLINE_STYLE[selectedReturn.airline] || { label: '?' }).label}</div>
+                  <div>
+                    <div style={{ fontSize: '13px', fontWeight: 700, color: t.text }}>{selectedReturn.dep} → {selectedReturn.arr}</div>
+                    <div style={{ fontSize: '11px', color: t.textSec }}>{selectedReturn.airline} · {selectedReturn.dur} · ${Math.round(selectedReturn.price)}</div>
+                  </div>
+                  <button onClick={(e) => { e.stopPropagation(); setSelectedReturn(null); }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: t.textMuted }}>
+                    <X style={{ width: '14px', height: '14px' }} />
+                  </button>
+                </div>
+              ) : (
+                <div style={{ fontSize: '12px', color: t.textMuted, fontStyle: 'italic' }}>Select a return flight</div>
+              )}
+            </div>
+
+            {/* Review button */}
+            {selectedOutbound && selectedReturn && (
+              <button onClick={() => setShowTripSummary(true)} style={{
+                padding: '12px 28px', borderRadius: '12px', border: 'none', fontSize: '14px', fontWeight: 700,
+                cursor: 'pointer', color: C.cream, backgroundColor: dark ? C.pink : C.black,
+                display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0, whiteSpace: 'nowrap',
+              }}>
+                Review Trip · ${Math.round(selectedOutbound.price + selectedReturn.price)}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Round-trip summary overlay */}
+      {isRT && showTripSummary && selectedOutbound && selectedReturn && (() => {
+        const sameAirline = selectedOutbound.airline === selectedReturn.airline;
+        const outStyle = AIRLINE_STYLE[selectedOutbound.airline] || { bg: '#333', text: '#fff', label: '?' };
+        const retStyle = AIRLINE_STYLE[selectedReturn.airline] || { bg: '#333', text: '#fff', label: '?' };
+        const outRating = WING_RATINGS[selectedOutbound.airline];
+        const retRating = WING_RATINGS[selectedReturn.airline];
+        const outBasePrice = Math.round(selectedOutbound.price);
+        const retBasePrice = Math.round(selectedReturn.price);
+        const totalBase = (outBasePrice + retBasePrice) * passengers;
+        const totalTaxes = Math.round(totalBase * 0.12);
+        const grandTotal = totalBase + totalTaxes;
+
+        const outDeepLink = generateDeepLink(selectedOutbound.airline, selectedOutbound.dc, selectedOutbound.ac, departDate, returnDate, passengers, sameAirline ? 'roundtrip' : 'oneway');
+        const retDeepLink = !sameAirline ? generateDeepLink(selectedReturn.airline, selectedReturn.dc, selectedReturn.ac, returnDate, '', passengers, 'oneway') : '';
+
+        return (
+          <>
+            <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: dark ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.3)', zIndex: 99 }} onClick={() => setShowTripSummary(false)} />
+            <div style={{ position: 'fixed', top: 0, right: 0, bottom: 0, width: isMobile ? '100%' : '520px', backgroundColor: t.panelBg, boxShadow: `-8px 0 40px ${dark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.15)'}`, zIndex: 100, overflowY: 'auto' }}>
+              {/* Header */}
+              <div style={{ background: dark ? '#1A1A1A' : C.black, padding: '20px 24px', color: C.white }}>
+                <button onClick={() => setShowTripSummary(false)} style={{ background: 'none', border: 'none', color: C.white, cursor: 'pointer', padding: '4px 0', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}>
+                  <X style={{ width: '16px', height: '16px' }} /> Close
+                </button>
+                <h2 style={{ fontSize: '22px', fontWeight: 800, margin: 0 }}>Your Round Trip</h2>
+                <p style={{ opacity: 0.7, margin: '4px 0 0', fontSize: '13px' }}>{findLoc(fromCode).city} ↔ {findLoc(toCode).city}</p>
+              </div>
+
+              {/* Outbound flight card */}
+              <div style={{ margin: '16px 24px 0', backgroundColor: t.panelSection, borderRadius: '14px', padding: '18px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ width: '36px', height: '36px', borderRadius: '10px', backgroundColor: outStyle.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: outStyle.text, fontSize: '10px', fontWeight: 900 }}>{outStyle.label}</div>
+                    <div>
+                      <div style={{ fontSize: '9px', fontWeight: 700, color: dark ? C.pink : C.darkGreen, letterSpacing: '0.06em' }}>OUTBOUND · {fmtDate(departDate)}</div>
+                      <div style={{ fontSize: '13px', fontWeight: 700, color: t.text }}>{selectedOutbound.airline}</div>
+                    </div>
+                  </div>
+                  <button onClick={() => { setSelectedOutbound(null); setShowTripSummary(false); setViewingReturn(false); }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: t.textMuted, fontSize: '11px', fontWeight: 600 }}>Change</button>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                  <div>
+                    <div style={{ fontSize: '20px', fontWeight: 800, color: t.text }}>{selectedOutbound.dep}</div>
+                    <div style={{ fontSize: '11px', color: t.textSec }}>{selectedOutbound.dc}</div>
+                  </div>
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                    <div style={{ fontSize: '10px', color: t.textSec, fontWeight: 600 }}>{selectedOutbound.dur}</div>
+                    <div style={{ width: '100%', height: '1px', backgroundColor: t.cardBorder, position: 'relative' }}>
+                      <Plane style={{ width: '11px', height: '11px', color: dark ? C.cream : C.darkGreen, position: 'absolute', top: '-5px', left: '50%', marginLeft: '-5px' }} />
+                    </div>
+                    <div style={{ fontSize: '9px', color: t.textMuted }}>{selectedOutbound.craft}</div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '20px', fontWeight: 800, color: t.text }}>{selectedOutbound.arr}</div>
+                    <div style={{ fontSize: '11px', color: t.textSec }}>{selectedOutbound.ac}</div>
+                  </div>
+                  <div style={{ fontSize: '16px', fontWeight: 800, color: t.text, flexShrink: 0 }}>${outBasePrice}</div>
+                </div>
+              </div>
+
+              {/* Connection line */}
+              <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>
+                <div style={{ width: '2px', height: '20px', backgroundColor: t.cardBorder }} />
+              </div>
+
+              {/* Return flight card */}
+              <div style={{ margin: '0 24px', backgroundColor: t.panelSection, borderRadius: '14px', padding: '18px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ width: '36px', height: '36px', borderRadius: '10px', backgroundColor: retStyle.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: retStyle.text, fontSize: '10px', fontWeight: 900 }}>{retStyle.label}</div>
+                    <div>
+                      <div style={{ fontSize: '9px', fontWeight: 700, color: dark ? C.pink : C.darkGreen, letterSpacing: '0.06em' }}>RETURN · {fmtDate(returnDate)}</div>
+                      <div style={{ fontSize: '13px', fontWeight: 700, color: t.text }}>{selectedReturn.airline}</div>
+                    </div>
+                  </div>
+                  <button onClick={() => { setSelectedReturn(null); setShowTripSummary(false); setViewingReturn(true); }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: t.textMuted, fontSize: '11px', fontWeight: 600 }}>Change</button>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                  <div>
+                    <div style={{ fontSize: '20px', fontWeight: 800, color: t.text }}>{selectedReturn.dep}</div>
+                    <div style={{ fontSize: '11px', color: t.textSec }}>{selectedReturn.dc}</div>
+                  </div>
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                    <div style={{ fontSize: '10px', color: t.textSec, fontWeight: 600 }}>{selectedReturn.dur}</div>
+                    <div style={{ width: '100%', height: '1px', backgroundColor: t.cardBorder, position: 'relative' }}>
+                      <Plane style={{ width: '11px', height: '11px', color: dark ? C.cream : C.darkGreen, position: 'absolute', top: '-5px', left: '50%', marginLeft: '-5px' }} />
+                    </div>
+                    <div style={{ fontSize: '9px', color: t.textMuted }}>{selectedReturn.craft}</div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '20px', fontWeight: 800, color: t.text }}>{selectedReturn.arr}</div>
+                    <div style={{ fontSize: '11px', color: t.textSec }}>{selectedReturn.ac}</div>
+                  </div>
+                  <div style={{ fontSize: '16px', fontWeight: 800, color: t.text, flexShrink: 0 }}>${retBasePrice}</div>
+                </div>
+              </div>
+
+              {/* Price breakdown */}
+              <div style={{ margin: '16px 24px', backgroundColor: t.panelSection, borderRadius: '14px', padding: '18px' }}>
+                <h3 style={{ fontSize: '12px', fontWeight: 700, color: t.text, margin: '0 0 12px' }}>Trip Total</h3>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}><span style={{ color: t.textSec }}>Outbound ({selectedOutbound.airline})</span><span style={{ fontWeight: 600, color: t.text }}>${outBasePrice * passengers}</span></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}><span style={{ color: t.textSec }}>Return ({selectedReturn.airline})</span><span style={{ fontWeight: 600, color: t.text }}>${retBasePrice * passengers}</span></div>
+                {passengers > 1 && <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '6px' }}><span style={{ color: t.textMuted }}>× {passengers} passengers</span><span /></div>}
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}><span style={{ color: t.textSec }}>Taxes & fees (est.)</span><span style={{ fontWeight: 600, color: t.text }}>${totalTaxes}</span></div>
+                <div style={{ borderTop: `2px solid ${t.cardBorder}`, paddingTop: '10px', display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ fontWeight: 800, color: t.text }}>Estimated Total</span><span style={{ fontWeight: 800, fontSize: '20px', color: dark ? C.pink : C.darkGreen }}>${grandTotal}</span>
+                </div>
+              </div>
+
+              {/* Booking buttons */}
+              <div style={{ padding: '0 24px 24px' }}>
+                {sameAirline ? (
+                  <>
+                    <a href={outDeepLink} target="_blank" rel="noopener noreferrer"
+                      style={{
+                        width: '100%', padding: '14px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700,
+                        cursor: 'pointer', color: C.cream, backgroundColor: dark ? C.pink : C.black, display: 'flex', alignItems: 'center',
+                        justifyContent: 'center', gap: '8px', textDecoration: 'none', boxSizing: 'border-box',
+                      }}>
+                      <ExternalLink style={{ width: '15px', height: '15px' }} /> Book Round Trip on {selectedOutbound.airline}
+                    </a>
+                    <p style={{ textAlign: 'center', fontSize: '11px', color: t.textMuted, marginTop: '8px' }}>
+                      You&apos;ll complete your booking on {selectedOutbound.airline}&apos;s website
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <div style={{ fontSize: '12px', color: t.textSec, marginBottom: '12px', textAlign: 'center', lineHeight: 1.5 }}>
+                      Your flights are on different airlines, so you&apos;ll book each leg separately.
+                    </div>
+                    <a href={outDeepLink} target="_blank" rel="noopener noreferrer"
+                      style={{
+                        width: '100%', padding: '14px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700,
+                        cursor: 'pointer', color: outStyle.text || C.cream, backgroundColor: outStyle.bg || C.black, display: 'flex', alignItems: 'center',
+                        justifyContent: 'center', gap: '8px', textDecoration: 'none', boxSizing: 'border-box', marginBottom: '10px',
+                      }}>
+                      <ExternalLink style={{ width: '15px', height: '15px' }} /> Book Outbound on {selectedOutbound.airline}
+                    </a>
+                    <a href={retDeepLink} target="_blank" rel="noopener noreferrer"
+                      style={{
+                        width: '100%', padding: '14px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700,
+                        cursor: 'pointer', color: retStyle.text || C.cream, backgroundColor: retStyle.bg || C.black, display: 'flex', alignItems: 'center',
+                        justifyContent: 'center', gap: '8px', textDecoration: 'none', boxSizing: 'border-box',
+                      }}>
+                      <ExternalLink style={{ width: '15px', height: '15px' }} /> Book Return on {selectedReturn.airline}
+                    </a>
+                    <p style={{ textAlign: 'center', fontSize: '10px', color: t.textMuted, marginTop: '10px' }}>
+                      Each airline will be opened in a new tab
+                    </p>
+                  </>
+                )}
+              </div>
+
+              {/* Disclaimer */}
+              <div style={{ margin: '0 24px 24px', padding: '12px 16px', backgroundColor: t.disclaimerBg, borderRadius: '10px', border: `1px solid ${t.disclaimerBorder}`, fontSize: '11px', color: t.disclaimerText, lineHeight: 1.4 }}>
+                Prices shown are estimates. Final pricing will be confirmed on the airline&apos;s booking page. Taxes and fees may vary.
+              </div>
+            </div>
+          </>
+        );
+      })()}
       </div>
     </>
   );
