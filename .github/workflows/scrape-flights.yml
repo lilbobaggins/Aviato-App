@@ -42,3 +42,6 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add aviato-app/app/data/flights.ts
           git diff --cached --quiet || (git commit -m "Auto-update flight data $(date -u +%Y-%m-%d)" && git pull --rebase && git push)
+
+      - name: Trigger Vercel Deploy
+        run: curl -X POST "https://api.vercel.com/v1/integrations/deploy/prj_44BewcCIsoHgrmkhEH8L76vOgyyY/fBEAdcvaiC"
