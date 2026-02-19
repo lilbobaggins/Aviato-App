@@ -165,12 +165,19 @@ export function generateDeepLink(
     }
 
     case 'BARK Air': {
-      // BARK Air uses Shopify — route filter via URL query param
+      // BARK Air uses Shopify — route + month filter via URL query params
       const barkOrigin = BARK_CITY_NAMES[originCode];
       const barkDest = BARK_CITY_NAMES[destCode];
       if (barkOrigin && barkDest) {
         const location = `${barkOrigin} To ${barkDest}`.replace(/ /g, '+');
-        return `https://air.bark.co/collections/bookings?filter.v.option.location=${location}&sort_by=created-ascending`;
+        let url = `https://air.bark.co/collections/bookings?filter.v.option.location=${location}`;
+        // Add month filter from departure date
+        if (departDate) {
+          const monthName = new Date(departDate + 'T12:00:00').toLocaleString('en-US', { month: 'long' });
+          url += `&filter.v.option.month=${monthName}`;
+        }
+        url += '&sort_by=created-ascending';
+        return url;
       }
       return 'https://air.bark.co/collections/bookings';
     }
@@ -220,7 +227,7 @@ export function getDeepLinkNote(
     case 'BARK Air': {
       const hasBarkLink = BARK_CITY_NAMES[originCode] && BARK_CITY_NAMES[destCode];
       return hasBarkLink
-        ? `Opens BARK Air filtered to ${origin.city} → ${dest.city} flights. Each ticket includes 1 dog + 1 human.`
+        ? `Opens BARK Air with ${origin.city} → ${dest.city} and your month pre-selected. Each ticket includes 1 dog + 1 human.`
         : `Opens BARK Air's booking page. Each ticket includes 1 dog + 1 human.`;
     }
 
