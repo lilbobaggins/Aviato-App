@@ -47,8 +47,16 @@ const TRADEWIND_DEST_SLUGS: Record<string, string> = {
   FLL: 'fort-lauderdale',
 };
 
-// BARK Air city name mapping (Shopify filter uses city names)
-// URL: air.bark.co/collections/bookings?filter.v.option.location={Origin}+To+{Dest}
+// BARK Air city name mapping for product URL slugs
+// URL: air.bark.co/products/{origin}-to-{destination}-{month}-{day}
+const BARK_CITY_SLUGS: Record<string, string> = {
+  VNY: 'los-angeles', BUR: 'los-angeles', SMO: 'los-angeles', SNA: 'los-angeles',
+  HPN: 'new-york', TEB: 'new-york', FRG: 'new-york', MMU: 'new-york',
+  SJC: 'san-francisco',
+  FXE: 'fort-lauderdale', FLL: 'fort-lauderdale',
+  KOA: 'kailua-kona',
+};
+// Also keep display names for booking notes
 const BARK_CITY_NAMES: Record<string, string> = {
   VNY: 'Los Angeles', BUR: 'Los Angeles', SMO: 'Los Angeles', SNA: 'Los Angeles',
   HPN: 'New York', TEB: 'New York', FRG: 'New York', MMU: 'New York',
@@ -165,19 +173,21 @@ export function generateDeepLink(
     }
 
     case 'BARK Air': {
-      // BARK Air uses Shopify — route + month filter via URL query params
+      // BARK Air uses Shopify product pages: /products/{origin}-to-{dest}-{month}-{day}
+      const barkOriginSlug = BARK_CITY_SLUGS[originCode];
+      const barkDestSlug = BARK_CITY_SLUGS[destCode];
+      if (barkOriginSlug && barkDestSlug && departDate) {
+        const d = new Date(departDate + 'T12:00:00');
+        const monthSlug = d.toLocaleString('en-US', { month: 'long' }).toLowerCase();
+        const day = d.getDate();
+        return `https://air.bark.co/products/${barkOriginSlug}-to-${barkDestSlug}-${monthSlug}-${day}`;
+      }
+      // Fallback: link to collection page filtered by route
       const barkOrigin = BARK_CITY_NAMES[originCode];
       const barkDest = BARK_CITY_NAMES[destCode];
       if (barkOrigin && barkDest) {
         const location = `${barkOrigin} To ${barkDest}`.replace(/ /g, '+');
-        let url = `https://air.bark.co/collections/bookings?filter.v.option.location=${location}`;
-        // Add month filter from departure date
-        if (departDate) {
-          const monthName = new Date(departDate + 'T12:00:00').toLocaleString('en-US', { month: 'long' });
-          url += `&filter.v.option.month=${monthName}`;
-        }
-        url += '&sort_by=created-ascending';
-        return url;
+        return `https://air.bark.co/collections/bookings?filter.v.option.location=${location}&sort_by=created-ascending`;
       }
       return 'https://air.bark.co/collections/bookings';
     }
@@ -225,9 +235,9 @@ export function getDeepLinkNote(
     }
 
     case 'BARK Air': {
-      const hasBarkLink = BARK_CITY_NAMES[originCode] && BARK_CITY_NAMES[destCode];
+      const hasBarkLink = BARK_CITY_SLUGS[originCode] && BARK_CITY_SLUGS[destCode];
       return hasBarkLink
-        ? `Opens BARK Air with ${origin.city} → ${dest.city} and your month pre-selected. Each ticket includes 1 dog + 1 human.`
+        ? `Opens the exact BARK Air flight page for ${origin.city} → ${dest.city} on your selected date. Each ticket includes 1 dog + 1 human.`
         : `Opens BARK Air's booking page. Each ticket includes 1 dog + 1 human.`;
     }
 
