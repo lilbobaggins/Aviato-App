@@ -98,6 +98,7 @@ export default function AboutPage() {
   const howReveal = useReveal(0.1);
   const whyReveal = useReveal(0.1);
   const airlinesReveal = useReveal(0.1);
+  const statusReveal = useReveal(0.15);
   const faqReveal = useReveal(0.1);
   const ctaReveal = useReveal(0.2);
 
@@ -264,6 +265,22 @@ export default function AboutPage() {
               );
             })}
           </div>
+        </div>
+      </div>
+
+      {/* ─── Where We're At ─── */}
+      <div ref={statusReveal.ref} style={{ maxWidth: '700px', margin: '0 auto', padding: '72px 48px 0' }}>
+        <h2 style={{ fontSize: '32px', fontWeight: 900, color: t.text, margin: '0 0 20px', textAlign: 'center', letterSpacing: '-0.02em', ...fadeUp(statusReveal.visible, 0) }}>Where We&apos;re At</h2>
+        <div style={{ fontSize: '16px', color: t.textSec, lineHeight: 1.8, textAlign: 'center', ...fadeUp(statusReveal.visible, 0.1) }}>
+          <p style={{ margin: '0 0 16px' }}>
+            Aviato is still pretty young — think of us as the scrappy startup that really, really loves planes. Right now we&apos;re covering the most popular semi-private routes, the ones people actually want to fly. But we&apos;re adding new routes every single day, so if your dream flight isn&apos;t here yet, give us a minute. It&apos;s coming.
+          </p>
+          <p style={{ margin: '0 0 16px' }}>
+            Same goes for airlines. We&apos;re actively bringing more carriers onto the platform. The semi-private world is growing fast and we want every option in one place for you.
+          </p>
+          <p style={{ margin: '0 0 0', fontWeight: 600, color: t.text }}>
+            And hey — if you&apos;re a semi-private airline and you&apos;re reading this, we&apos;d love to feature you. Seriously. <a href="mailto:aviatoair@gmail.com" style={{ color: t.accent, textDecoration: 'underline' }}>Drop us a line</a> and let&apos;s make it happen.
+          </p>
         </div>
       </div>
 
