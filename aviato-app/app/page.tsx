@@ -465,6 +465,13 @@ export default function AviatoApp() {
           ))}
         </div>
       </div>
+
+      {/* Footer links */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', padding: '24px 24px 32px' }}>
+        <a href="/desktop/terms" style={{ fontSize: '11px', color: C.g400, textDecoration: 'none', fontWeight: 500 }}>Terms</a>
+        <a href="/desktop/privacy" style={{ fontSize: '11px', color: C.g400, textDecoration: 'none', fontWeight: 500 }}>Privacy</a>
+        <a href="mailto:aviatoair@gmail.com" style={{ fontSize: '11px', color: C.g400, textDecoration: 'none', fontWeight: 500 }}>Contact</a>
+      </div>
     </div>
   );
 
@@ -554,60 +561,59 @@ export default function AviatoApp() {
               <button key={fl.id} onClick={() => {
                 if (viewingReturn) { setSelectedReturn(fl); setScreen('detail'); }
                 else { setSelectedFlight(fl); if (isRT && !selectedReturn) setViewingReturn(true); else setScreen('detail'); }
-              }} style={{ width: '100%', backgroundColor: C.white, borderRadius: '16px', padding: '18px', border: `1px solid ${C.g200}`, cursor: 'pointer', textAlign: 'left' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+              }} style={{ width: '100%', backgroundColor: C.white, borderRadius: '14px', padding: '14px 16px', border: `1px solid ${C.g200}`, cursor: 'pointer', textAlign: 'left' }}>
+                {/* Row 1: Airline badge + name + wings + craft | Price */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', backgroundColor: style.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: style.text, fontSize: '11px', fontWeight: 900 }}>{style.label}</div>
-                    <div>
-                      <div style={{ fontWeight: 700, color: C.black, fontSize: '14px' }}>{fl.airline}</div>
+                    <div style={{ width: '36px', height: '36px', borderRadius: '8px', backgroundColor: style.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: style.text, fontSize: '10px', fontWeight: 900, flexShrink: 0 }}>{style.label}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                      <span style={{ fontWeight: 700, color: C.black, fontSize: '14px' }}>{fl.airline}</span>
                       {rating && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
                           <div style={{ display: 'flex', gap: '1px' }}>
-                            {Array.from({ length: rating.wings }).map((_, i) => <WingIcon key={i} size={12} color={wingColor} />)}
+                            {Array.from({ length: rating.wings }).map((_, i) => <WingIcon key={i} size={10} color={wingColor} />)}
                           </div>
-                          <span style={{ fontSize: '9px', fontWeight: 700, color: wingColor, letterSpacing: '0.03em' }}>
-                            {rating.wings === 3 ? 'FLAGSHIP' : rating.wings === 2 ? 'PREMIUM' : 'ACCESSIBLE'}
-                          </span>
                         </div>
                       )}
+                      <span style={{ fontSize: '11px', color: C.g400, fontWeight: 500 }}>{fl.craft}</span>
                     </div>
                   </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '22px', fontWeight: 800, color: C.black }}>${Math.round(fl.price)}</div>
-                    <div style={{ fontSize: '10px', color: C.g400, fontWeight: 500 }}>per seat</div>
+                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                    <div style={{ fontSize: '20px', fontWeight: 800, color: C.black }}>${Math.round(fl.price)}</div>
                   </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '12px', marginBottom: '10px', borderBottom: `1px solid ${C.g100}` }}>
+                {/* Row 2: Times */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
                   <div>
-                    <div style={{ fontSize: '18px', fontWeight: 800, color: C.black }}>{fl.dep}</div>
-                    <div style={{ fontSize: '11px', color: C.g400 }}>{fl.dc}</div>
+                    <div style={{ fontSize: '17px', fontWeight: 800, color: C.black }}>{fl.dep}</div>
+                    <div style={{ fontSize: '10px', color: C.g400 }}>{fl.dc}</div>
                   </div>
-                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', padding: '0 12px' }}>
-                    <div style={{ fontSize: '10px', color: C.g600, fontWeight: 600 }}>{fl.dur}</div>
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', padding: '0 12px' }}>
+                    <div style={{ fontSize: '9px', color: C.g600, fontWeight: 600 }}>{fl.dur}</div>
                     <div style={{ width: '100%', height: '1px', backgroundColor: C.g200, position: 'relative' }}>
-                      <Plane style={{ width: '12px', height: '12px', color: C.darkGreen, position: 'absolute', top: '-6px', left: '50%', marginLeft: '-6px' }} />
+                      <Plane style={{ width: '10px', height: '10px', color: C.darkGreen, position: 'absolute', top: '-5px', left: '50%', marginLeft: '-5px' }} />
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '18px', fontWeight: 800, color: C.black }}>{fl.arr}</div>
-                    <div style={{ fontSize: '11px', color: C.g400 }}>{fl.ac}</div>
+                    <div style={{ fontSize: '17px', fontWeight: 800, color: C.black }}>{fl.arr}</div>
+                    <div style={{ fontSize: '10px', color: C.g400 }}>{fl.ac}</div>
                   </div>
                 </div>
+                {/* Row 3: Badges + seats */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
-                    {rating && rating.badges.slice(0, 3).map(b => (
-                      <span key={b} style={{ fontSize: '10px', padding: '3px 8px', borderRadius: '100px', backgroundColor: C.cream, color: C.darkGreen, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '3px' }}>
-                        <BadgeIcon type={BADGE_CONFIG[b]?.icon || ''} size={10} />
+                    {rating && rating.badges.slice(0, 2).map(b => (
+                      <span key={b} style={{ fontSize: '9px', padding: '2px 7px', borderRadius: '100px', backgroundColor: C.cream, color: C.darkGreen, fontWeight: 600 }}>
                         {BADGE_CONFIG[b]?.label}
                       </span>
                     ))}
                     {rating?.pets && (
-                      <span style={{ fontSize: '10px', padding: '3px 8px', borderRadius: '100px', backgroundColor: '#FDE8EC', color: C.pink, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '3px' }}>
-                        <Heart style={{ width: '10px', height: '10px' }} /> Pet Friendly
+                      <span style={{ fontSize: '9px', padding: '2px 7px', borderRadius: '100px', backgroundColor: '#FDE8EC', color: C.pink, fontWeight: 600 }}>
+                        Pet Friendly
                       </span>
                     )}
                   </div>
-                  <div style={{ fontSize: '11px', color: fl.seats <= 3 ? C.pink : C.g600, fontWeight: 700 }}>{fl.seats} left</div>
+                  <div style={{ fontSize: '10px', color: fl.seats <= 3 ? C.pink : C.g600, fontWeight: 700 }}>{fl.seats} left</div>
                 </div>
               </button>
             );
