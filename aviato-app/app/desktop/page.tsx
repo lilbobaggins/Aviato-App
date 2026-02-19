@@ -1177,7 +1177,7 @@ export default function DesktopPage() {
             </div>
           </div>
           <div style={{ fontSize: '20px', fontWeight: 900, color: '#fff', marginBottom: '4px' }}>Aviato</div>
-          <p style={{ fontSize: '13px', color: C.g400, margin: '0 0 6px' }}>Compare semi-private flights across every carrier.</p>
+          <p style={{ fontSize: '13px', color: C.g400, margin: '0 0 6px' }}>Search and compare semi-private flights across every carrier.</p>
           <p style={{ fontSize: '11px', color: C.g600, margin: '0 0 16px' }}>Prices & schedules are estimates. Always confirm on the airline&apos;s website.</p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
             <a href="/desktop/terms" style={{ fontSize: '12px', color: C.g400, textDecoration: 'none', fontWeight: 500 }}
