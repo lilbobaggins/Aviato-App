@@ -541,7 +541,7 @@ function ResultsContent() {
 
       {/* RT tabs */}
       {isRT && (
-        <div style={{ display: 'flex', backgroundColor: t.bgAlt, borderBottom: `1px solid ${t.cardBorder}`, maxWidth: '800px', margin: '0 auto' }}>
+        <div style={{ display: 'flex', backgroundColor: t.bgAlt, borderBottom: `1px solid ${t.cardBorder}`, maxWidth: '960px', margin: '0 auto' }}>
           <button onClick={() => setViewingReturn(false)} style={{ flex: 1, padding: '14px', border: 'none', borderBottom: !viewingReturn ? `3px solid ${dark ? C.pink : C.darkGreen}` : '3px solid transparent', backgroundColor: 'transparent', cursor: 'pointer', fontWeight: 700, fontSize: '13px', color: !viewingReturn ? (dark ? C.pink : C.darkGreen) : t.textMuted }}>
             Outbound · {fmtDate(departDate)}
           </button>
@@ -552,7 +552,7 @@ function ResultsContent() {
       )}
 
       {/* Filters */}
-      <div style={{ maxWidth: '800px', margin: '0 auto', padding: isMobile ? '16px 16px' : '16px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ maxWidth: '960px', margin: '0 auto', padding: isMobile ? '16px 16px' : '16px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', gap: '6px' }}>
           {['all', 'cheapest', 'fastest', 'rated'].map(f => (
             <button key={f} onClick={() => setFilter(f)} style={{
@@ -568,7 +568,7 @@ function ResultsContent() {
       </div>
 
       {availableAirlines.length > 1 && (
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: isMobile ? '4px 16px 8px' : '4px 40px 8px' }}>
+        <div style={{ maxWidth: '960px', margin: '0 auto', padding: isMobile ? '4px 16px 8px' : '4px 40px 8px' }}>
           <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
             <button onClick={() => setAirlineFilter(null)} style={{ padding: '6px 14px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', border: airlineFilter === null ? `2px solid ${t.filterActive}` : `1.5px solid ${dark ? '#555' : '#ccc'}`, backgroundColor: airlineFilter === null ? t.filterActive : 'transparent', color: airlineFilter === null ? t.filterActiveText : t.filterInactiveText, transition: 'all 0.2s ease' }}>
               All Airlines
@@ -587,14 +587,14 @@ function ResultsContent() {
       )}
 
       {/* Disclaimer */}
-      <div style={{ maxWidth: '800px', margin: '4px auto 8px', padding: isMobile ? '0 16px' : '0 40px' }}>
+      <div style={{ maxWidth: '960px', margin: '4px auto 8px', padding: isMobile ? '0 16px' : '0 40px' }}>
         <div style={{ padding: '10px 14px', backgroundColor: t.disclaimerBg, borderRadius: '10px', border: `1px solid ${t.disclaimerBorder}`, fontSize: '11px', color: t.disclaimerText, lineHeight: 1.4 }}>
           Prices & schedules are estimates and may not reflect real-time availability. Always confirm details on the airline&apos;s website before booking.
         </div>
       </div>
 
       {/* Flight list */}
-      <div style={{ maxWidth: '800px', margin: '0 auto', padding: isMobile ? '8px 16px 60px' : '8px 40px 60px' }}>
+      <div style={{ maxWidth: '960px', margin: '0 auto', padding: isMobile ? '8px 16px 60px' : '8px 40px 60px' }}>
         {flights.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px 20px', color: t.textMuted }}>
             <Plane style={{ width: '48px', height: '48px', color: t.cardBorder, margin: '0 auto 16px' }} />
@@ -605,7 +605,7 @@ function ResultsContent() {
             </button>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {flights.map(fl => {
               const style = AIRLINE_STYLE[fl.airline] || { bg: '#333', text: '#fff', label: '?', accent: '#999' };
               const rating = WING_RATINGS[fl.airline];
@@ -613,9 +613,9 @@ function ResultsContent() {
               return (
                 <button key={fl.id} onClick={() => setSelectedFlight(fl)}
                   style={{
-                    width: '100%', backgroundColor: t.card, borderRadius: '14px', padding: isMobile ? '14px 16px' : '20px 24px',
+                    width: '100%', backgroundColor: t.card, borderRadius: '14px', padding: isMobile ? '14px 16px' : '22px 28px',
                     border: `1px solid ${t.cardBorder}`, cursor: 'pointer', textAlign: 'left',
-                    display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? '12px' : '20px',
+                    display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? '12px' : '24px',
                     transition: 'box-shadow 0.2s ease, transform 0.15s ease',
                   }}
                   onMouseEnter={(e) => { if (!isMobile) { (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 16px ${t.hoverShadow}`; (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; } }}
@@ -627,7 +627,7 @@ function ResultsContent() {
                   {/* Airline + rating container */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '12px' : '0', flex: isMobile ? 1 : 'auto', width: isMobile ? '100%' : 'auto' }}>
                   {/* Airline + rating */}
-                  <div style={{ width: isMobile ? 'auto' : '100px', flexShrink: 0 }}>
+                  <div style={{ width: isMobile ? 'auto' : '110px', flexShrink: 0 }}>
                     <div style={{ fontWeight: 700, color: t.text, fontSize: '14px' }}>{fl.airline}</div>
                     {rating && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '3px', marginTop: '2px' }}>
@@ -660,7 +660,7 @@ function ResultsContent() {
                   </div>
 
                   {/* Badges - hidden on mobile */}
-                  <div style={{ display: isMobile ? 'none' : 'flex', gap: '4px', flexWrap: 'wrap', width: '120px', flexShrink: 0 }}>
+                  <div style={{ display: isMobile ? 'none' : 'flex', gap: '5px', flexWrap: 'wrap', width: '140px', flexShrink: 0 }}>
                     {rating && rating.badges.slice(0, 2).map(b => (
                       <span key={b} style={{ fontSize: '9px', padding: '2px 6px', borderRadius: '100px', backgroundColor: dark ? '#3D1520' : C.cream, color: dark ? C.pink : C.darkGreen, fontWeight: 600 }}>
                         {BADGE_CONFIG[b]?.label}
