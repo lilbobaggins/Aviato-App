@@ -874,7 +874,7 @@ export default function DesktopPage() {
                   fontSize: '48px', fontWeight: 800, color: '#fff', margin: '0 0 16px',
                   letterSpacing: '-0.02em', lineHeight: 1.2,
                 }}>
-                  Rediscover what flying is all about.
+                  Rediscover what flying is all about
                 </h1>
                 <p style={{
                   fontSize: '21px', fontWeight: 600, color: 'rgba(255,255,255,0.95)', margin: 0,
