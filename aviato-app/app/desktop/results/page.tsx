@@ -77,6 +77,7 @@ function ResultsContent() {
   const [selectedOutbound, setSelectedOutbound] = useState<Flight | null>(null);
   const [selectedReturn, setSelectedReturn] = useState<Flight | null>(null);
   const [showTripSummary, setShowTripSummary] = useState(false);
+  const [bookingConfirm, setBookingConfirm] = useState<{ url: string; airline: string; note: string } | null>(null);
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [pickerMonth, setPickerMonth] = useState(() => { const d = departDate ? new Date(departDate + 'T12:00:00') : new Date(); return d.getMonth(); });
   const [pickerYear, setPickerYear] = useState(() => { const d = departDate ? new Date(departDate + 'T12:00:00') : new Date(); return d.getFullYear(); });
@@ -306,17 +307,14 @@ function ResultsContent() {
 
         {/* Book button */}
         <div style={{ padding: '0 24px 24px' }}>
-          <a href={deepLinkUrl} target="_blank" rel="noopener noreferrer"
+          <button onClick={() => setBookingConfirm({ url: deepLinkUrl, airline: fl.airline, note: deepLinkNote })}
             style={{
               width: '100%', padding: '14px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700,
               cursor: 'pointer', color: C.cream, backgroundColor: dark ? C.pink : C.black, display: 'flex', alignItems: 'center',
               justifyContent: 'center', gap: '8px', textDecoration: 'none', boxSizing: 'border-box',
             }}>
             <ExternalLink style={{ width: '15px', height: '15px' }} /> Book on {fl.airline}
-          </a>
-          {AIRLINE_BOOKING[fl.airline] && (
-            <p style={{ textAlign: 'center', fontSize: '10px', color: t.textMuted, marginTop: '8px' }}>You&apos;ll complete your booking on {fl.airline}&apos;s website</p>
-          )}
+          </button>
         </div>
       </div>
     );
@@ -886,40 +884,35 @@ function ResultsContent() {
               {/* Booking buttons */}
               <div style={{ padding: '0 24px 24px' }}>
                 {sameAirline ? (
-                  <>
-                    <a href={outDeepLink} target="_blank" rel="noopener noreferrer"
-                      style={{
-                        width: '100%', padding: '14px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700,
-                        cursor: 'pointer', color: C.cream, backgroundColor: dark ? C.pink : C.black, display: 'flex', alignItems: 'center',
-                        justifyContent: 'center', gap: '8px', textDecoration: 'none', boxSizing: 'border-box',
-                      }}>
-                      <ExternalLink style={{ width: '15px', height: '15px' }} /> Book Round Trip on {selectedOutbound.airline}
-                    </a>
-                    <p style={{ textAlign: 'center', fontSize: '11px', color: t.textMuted, marginTop: '8px' }}>
-                      You&apos;ll complete your booking on {selectedOutbound.airline}&apos;s website
-                    </p>
-                  </>
+                  <button onClick={() => setBookingConfirm({ url: outDeepLink, airline: selectedOutbound.airline, note: getDeepLinkNote(selectedOutbound.airline, selectedOutbound.dc, selectedOutbound.ac, 'roundtrip') })}
+                    style={{
+                      width: '100%', padding: '14px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700,
+                      cursor: 'pointer', color: C.cream, backgroundColor: dark ? C.pink : C.black, display: 'flex', alignItems: 'center',
+                      justifyContent: 'center', gap: '8px', textDecoration: 'none', boxSizing: 'border-box',
+                    }}>
+                    <ExternalLink style={{ width: '15px', height: '15px' }} /> Book Round Trip on {selectedOutbound.airline}
+                  </button>
                 ) : (
                   <>
                     <div style={{ fontSize: '12px', color: t.textSec, marginBottom: '12px', textAlign: 'center', lineHeight: 1.5 }}>
                       Your flights are on different airlines, so you&apos;ll book each leg separately.
                     </div>
-                    <a href={outDeepLink} target="_blank" rel="noopener noreferrer"
+                    <button onClick={() => setBookingConfirm({ url: outDeepLink, airline: selectedOutbound.airline, note: getDeepLinkNote(selectedOutbound.airline, selectedOutbound.dc, selectedOutbound.ac, 'oneway') })}
                       style={{
                         width: '100%', padding: '14px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700,
                         cursor: 'pointer', color: outStyle.text || C.cream, backgroundColor: outStyle.bg || C.black, display: 'flex', alignItems: 'center',
                         justifyContent: 'center', gap: '8px', textDecoration: 'none', boxSizing: 'border-box', marginBottom: '10px',
                       }}>
                       <ExternalLink style={{ width: '15px', height: '15px' }} /> Book Outbound on {selectedOutbound.airline}
-                    </a>
-                    <a href={retDeepLink} target="_blank" rel="noopener noreferrer"
+                    </button>
+                    <button onClick={() => setBookingConfirm({ url: retDeepLink, airline: selectedReturn.airline, note: getDeepLinkNote(selectedReturn.airline, selectedReturn.dc, selectedReturn.ac, 'oneway') })}
                       style={{
                         width: '100%', padding: '14px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700,
                         cursor: 'pointer', color: retStyle.text || C.cream, backgroundColor: retStyle.bg || C.black, display: 'flex', alignItems: 'center',
                         justifyContent: 'center', gap: '8px', textDecoration: 'none', boxSizing: 'border-box',
                       }}>
                       <ExternalLink style={{ width: '15px', height: '15px' }} /> Book Return on {selectedReturn.airline}
-                    </a>
+                    </button>
                     <p style={{ textAlign: 'center', fontSize: '10px', color: t.textMuted, marginTop: '10px' }}>
                       Each airline will be opened in a new tab
                     </p>
@@ -935,6 +928,35 @@ function ResultsContent() {
           </>
         );
       })()}
+
+      {/* Booking confirmation popup */}
+      {bookingConfirm && (
+        <>
+          <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: dark ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.4)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setBookingConfirm(null)}>
+            <div style={{ backgroundColor: t.panelBg, borderRadius: '20px', padding: '32px', maxWidth: '420px', width: '90%', boxShadow: `0 24px 64px ${dark ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.2)'}`, textAlign: 'center' }} onClick={(e) => e.stopPropagation()}>
+              <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: dark ? '#3D1520' : C.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                <ExternalLink style={{ width: '24px', height: '24px', color: dark ? C.pink : C.darkGreen }} />
+              </div>
+              <h3 style={{ fontSize: '18px', fontWeight: 800, color: t.text, margin: '0 0 8px' }}>You&apos;re heading to {bookingConfirm.airline}</h3>
+              <p style={{ fontSize: '13px', color: t.textSec, lineHeight: 1.6, margin: '0 0 8px' }}>
+                We&apos;ll take you to {bookingConfirm.airline}&apos;s website with your route pre-filled. You&apos;ll just need to select your preferred flight time and complete checkout there.
+              </p>
+              <p style={{ fontSize: '12px', color: t.textMuted, lineHeight: 1.5, margin: '0 0 24px' }}>
+                {bookingConfirm.note}
+              </p>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button onClick={() => setBookingConfirm(null)} style={{ flex: 1, padding: '12px', borderRadius: '12px', border: `1px solid ${t.cardBorder}`, backgroundColor: 'transparent', color: t.textSec, fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>
+                  Go Back
+                </button>
+                <a href={bookingConfirm.url} target="_blank" rel="noopener noreferrer" onClick={() => setBookingConfirm(null)}
+                  style={{ flex: 2, padding: '12px', borderRadius: '12px', border: 'none', backgroundColor: dark ? C.pink : C.black, color: C.cream, fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', textDecoration: 'none' }}>
+                  Continue to {bookingConfirm.airline} <ArrowRight style={{ width: '14px', height: '14px' }} />
+                </a>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
       </div>
     </>
   );
