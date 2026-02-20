@@ -708,14 +708,14 @@ export default function DesktopPage() {
                 </div>
                 <div>
                   <div style={{ fontSize: '14px', fontWeight: 800, color: t.text, lineHeight: 1.3 }}>
-                    From <span style={{ color: dark ? C.pink : C.darkGreen }}>$99/seat</span> — less than first class
+                    From <span style={{ color: dark ? C.pink : C.darkGreen }}>$99/seat</span>, often less than first class
                   </div>
                   <div style={{ fontSize: '12px', color: t.textMuted, marginTop: '3px', lineHeight: 1.4 }}>
                     Private terminal. No TSA. Leather seats. Free food &amp; drinks.
                   </div>
                 </div>
               </div>
-              <a href="/desktop/about" style={{
+              <a href="/desktop/about#pricing" style={{
                 display: 'block', textAlign: 'center', padding: '10px', borderRadius: '10px',
                 fontSize: '12px', fontWeight: 700, backgroundColor: dark ? C.pink : C.darkGreen,
                 color: '#fff', textDecoration: 'none',
@@ -1102,14 +1102,14 @@ export default function DesktopPage() {
               </div>
               <div>
                 <div style={{ fontSize: '16px', fontWeight: 800, color: t.text, lineHeight: 1.3 }}>
-                  Semi-private from <span style={{ color: dark ? C.pink : C.darkGreen }}>$99/seat</span> — domestic first class averages $500–$900
+                  Semi-private from <span style={{ color: dark ? C.pink : C.darkGreen }}>$99/seat</span> while domestic first class averages $500 to $900
                 </div>
                 <div style={{ fontSize: '13px', color: t.textMuted, marginTop: '3px' }}>
                   Private terminal. No TSA. Leather seats. Free food &amp; drinks. Same price or less.
                 </div>
               </div>
             </div>
-            <a href="/desktop/about" style={{
+            <a href="/desktop/about#pricing" style={{
               padding: '10px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: 700,
               backgroundColor: dark ? C.pink : C.darkGreen, color: '#fff',
               textDecoration: 'none', flexShrink: 0, whiteSpace: 'nowrap',

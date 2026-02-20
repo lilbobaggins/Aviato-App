@@ -83,11 +83,180 @@ const WingIcon = ({ size = 14, color = '#0A3D2E' }: { size?: number; color?: str
   </svg>
 );
 
+/* ─── Interactive Pricing Comparison ─── */
+const ROUTES = [
+  { label: 'LA to Vegas',       semi: 215,  first: 580,  airline: 'JSX' },
+  { label: 'NY to Miami',       semi: 495,  first: 750,  airline: 'JSX' },
+  { label: 'Dallas to Houston', semi: 99,   first: 420,  airline: 'JSX' },
+  { label: 'NY to Nantucket',   semi: 395,  first: 680,  airline: 'Tradewind' },
+  { label: 'LA to Cabo',        semi: 349,  first: 890,  airline: 'JSX' },
+];
+
+const PricingComparison = ({ dark, pricingRef, pricingReveal }: {
+  dark: boolean;
+  pricingRef: React.RefObject<HTMLDivElement | null>;
+  pricingReveal: { ref: React.RefObject<HTMLDivElement | null>; visible: boolean };
+}) => {
+  const t = T(dark);
+  const [activeRoute, setActiveRoute] = useState(0);
+  const [animKey, setAnimKey] = useState(0);
+
+  const route = ROUTES[activeRoute];
+  const savings = Math.round((1 - route.semi / route.first) * 100);
+  const maxPrice = 1000;
+
+  const switchRoute = (i: number) => {
+    setActiveRoute(i);
+    setAnimKey(k => k + 1);
+  };
+
+  return (
+    <div ref={(el) => {
+      // Assign both refs
+      (pricingReveal.ref as React.MutableRefObject<HTMLDivElement | null>).current = el;
+      (pricingRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+    }} id="pricing" style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '80px 48px', textAlign: 'center' }}>
+        <p style={{ fontSize: '13px', fontWeight: 800, color: t.accent, letterSpacing: '0.1em', margin: '0 0 20px', ...fadeUp(pricingReveal.visible, 0) }}>THE PRICE MIGHT SURPRISE YOU</p>
+        <h2 style={{ fontSize: '48px', fontWeight: 900, color: t.text, margin: '0 0 8px', letterSpacing: '-0.03em', lineHeight: 1, ...fadeUp(pricingReveal.visible, 0.08) }}>
+          From <span style={{ color: dark ? C.pink : C.darkGreen }}>$99</span>/seat
+        </h2>
+        <p style={{ fontSize: '17px', color: t.textSec, margin: '12px 0 36px', lineHeight: 1.6, ...fadeUp(pricingReveal.visible, 0.15) }}>
+          Pick a route and see how semi-private stacks up against first class.
+        </p>
+
+        {/* Route selector pills */}
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '36px', ...fadeUp(pricingReveal.visible, 0.2) }}>
+          {ROUTES.map((r, i) => (
+            <button key={i} onClick={() => switchRoute(i)} style={{
+              padding: '8px 18px', borderRadius: '20px', border: `1.5px solid ${activeRoute === i ? (dark ? C.pink : C.darkGreen) : t.cardBorder}`,
+              backgroundColor: activeRoute === i ? (dark ? C.pink : C.darkGreen) : 'transparent',
+              color: activeRoute === i ? '#fff' : t.textSec,
+              fontSize: '13px', fontWeight: 700, cursor: 'pointer',
+              transition: 'all 0.25s ease',
+            }}>
+              {r.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Animated bar chart comparison */}
+        <div key={animKey} style={{ maxWidth: '580px', margin: '0 auto', textAlign: 'left', ...fadeUp(pricingReveal.visible, 0.25) }}>
+          {/* Semi-private bar */}
+          <div style={{ marginBottom: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ width: '10px', height: '10px', borderRadius: '3px', backgroundColor: dark ? C.pink : C.darkGreen }} />
+                <span style={{ fontSize: '14px', fontWeight: 700, color: t.text }}>Semi-Private ({route.airline})</span>
+              </div>
+              <span style={{ fontSize: '28px', fontWeight: 900, color: dark ? C.pink : C.darkGreen, letterSpacing: '-0.02em' }}>${route.semi}</span>
+            </div>
+            <div style={{ height: '40px', borderRadius: '12px', backgroundColor: dark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)', overflow: 'hidden', position: 'relative' }}>
+              <div style={{
+                height: '100%', borderRadius: '12px',
+                background: dark
+                  ? `linear-gradient(90deg, ${C.pink}, ${C.pink}dd)`
+                  : `linear-gradient(90deg, ${C.darkGreen}, ${C.darkGreen}cc)`,
+                width: `${(route.semi / maxPrice) * 100}%`,
+                animation: 'barGrow 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              }} />
+              <div style={{
+                position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
+                fontSize: '11px', fontWeight: 800, color: t.textMuted, letterSpacing: '0.04em',
+              }}>
+                PRIVATE TERMINAL &bull; NO TSA &bull; FREE FOOD
+              </div>
+            </div>
+          </div>
+
+          {/* First class bar */}
+          <div style={{ marginBottom: '28px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ width: '10px', height: '10px', borderRadius: '3px', backgroundColor: t.textMuted }} />
+                <span style={{ fontSize: '14px', fontWeight: 700, color: t.textSec }}>Domestic First Class</span>
+              </div>
+              <span style={{ fontSize: '28px', fontWeight: 900, color: t.textSec, letterSpacing: '-0.02em' }}>${route.first}</span>
+            </div>
+            <div style={{ height: '40px', borderRadius: '12px', backgroundColor: dark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)', overflow: 'hidden', position: 'relative' }}>
+              <div style={{
+                height: '100%', borderRadius: '12px',
+                backgroundColor: dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)',
+                width: `${(route.first / maxPrice) * 100}%`,
+                animation: 'barGrow 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards',
+                opacity: 0,
+              }} />
+              <div style={{
+                position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
+                fontSize: '11px', fontWeight: 800, color: t.textMuted, letterSpacing: '0.04em',
+              }}>
+                TSA LINES &bull; CROWDED GATE &bull; AIRLINE SNACKS
+              </div>
+            </div>
+          </div>
+
+          {/* Savings callout */}
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
+            padding: '16px 24px', borderRadius: '14px',
+            background: dark
+              ? `linear-gradient(135deg, rgba(232,87,109,0.1) 0%, rgba(245,240,225,0.03) 100%)`
+              : `linear-gradient(135deg, rgba(10,61,46,0.06) 0%, rgba(232,87,109,0.04) 100%)`,
+            border: `1px solid ${dark ? 'rgba(232,87,109,0.2)' : 'rgba(10,61,46,0.12)'}`,
+            animation: 'fadeIn 0.6s ease 0.5s forwards',
+            opacity: 0,
+          }}>
+            <div style={{
+              width: '44px', height: '44px', borderRadius: '12px',
+              background: dark ? C.pink : C.darkGreen,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '16px', fontWeight: 900, color: '#fff', flexShrink: 0,
+            }}>
+              {savings}%
+            </div>
+            <div style={{ textAlign: 'left' }}>
+              <div style={{ fontSize: '15px', fontWeight: 800, color: t.text }}>
+                Save ${route.first - route.semi} on {route.label}
+              </div>
+              <div style={{ fontSize: '12px', color: t.textMuted, marginTop: '2px' }}>
+                Plus private terminals, no TSA, leather seats, and complimentary food and drinks
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p style={{ fontSize: '12px', color: t.textMuted, margin: '28px 0 0', lineHeight: 1.5, fontStyle: 'italic', ...fadeUp(pricingReveal.visible, 0.3) }}>
+          Prices are estimates based on published rates. Always confirm on the airline&apos;s website.
+        </p>
+
+        {/* CSS keyframes for bar animation */}
+        <style>{`
+          @keyframes barGrow {
+            from { width: 0; opacity: 1; }
+            to { opacity: 1; }
+          }
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}</style>
+      </div>
+    </div>
+  );
+};
+
 export default function AboutPage() {
   const [dark, setDark] = useState(false);
+  const pricingRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const stored = new URLSearchParams(window.location.search).get('theme');
     if (stored === 'dark') setDark(true);
+    // Auto-scroll to pricing section if hash is #pricing
+    if (window.location.hash === '#pricing') {
+      setTimeout(() => {
+        pricingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 400);
+    }
   }, []);
 
   const t = T(dark);
@@ -110,11 +279,11 @@ export default function AboutPage() {
     },
     {
       q: 'Is it free?',
-      a: 'Completely free. We link you to the airline to book — same price as going direct.',
+      a: 'Completely free. We link you to the airline to book. Same price as going direct.',
     },
     {
       q: 'Do I book through Aviato?',
-      a: 'Nope — we link you straight to the airline\'s booking page. We never handle your payment info.',
+      a: 'Nope. We link you straight to the airline\'s booking page. We never handle your payment info.',
     },
     {
       q: 'What is semi-private flying?',
@@ -122,7 +291,7 @@ export default function AboutPage() {
     },
     {
       q: 'Is it really cheaper than first class?',
-      a: 'On many routes, yes. Most semi-private fares are $200–$600 vs. $500–$900 for domestic first class — with a much better experience.',
+      a: 'On many routes, yes. Most semi-private fares are $200 to $600 vs. $500 to $900 for domestic first class, with a much better experience.',
     },
     {
       q: 'Are the prices accurate?',
@@ -161,7 +330,7 @@ export default function AboutPage() {
           Rediscover what flying is all about
         </h1>
         <p style={{ fontSize: '19px', color: t.textSec, margin: '0 0 36px', lineHeight: 1.6, ...fadeUp(heroReveal.visible, 0.2) }}>
-          One search across every semi-private airline. Compare prices, times, and amenities — then book direct.
+          Search semi-private flights across multiple airlines. Compare prices, times, and amenities, then book direct.
         </p>
         <a href="/desktop" style={{
           display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '14px 32px', borderRadius: '12px',
@@ -183,7 +352,7 @@ export default function AboutPage() {
             I built Aviato after discovering semi-private aviation and realizing every airline had its own site, its own routes, its own booking system. Finding the best option meant opening a bunch of tabs and comparing everything manually.
           </p>
           <p style={{ margin: '16px 0' }}>
-            That was annoying. So I built the thing I wished existed — one search, every carrier, book direct.
+            That was annoying. So I built the thing I wished existed. One search, multiple carriers, book direct.
           </p>
         </div>
       </div>
@@ -196,7 +365,7 @@ export default function AboutPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '28px' }}>
             {[
               { icon: <Search style={{ width: '26px', height: '26px' }} />, title: 'Search', desc: 'Enter your route and dates. We search every semi-private carrier at once.' },
-              { icon: <Zap style={{ width: '26px', height: '26px' }} />, title: 'Compare', desc: 'See flights side by side — prices, times, aircraft, and our wing ratings.' },
+              { icon: <Zap style={{ width: '26px', height: '26px' }} />, title: 'Compare', desc: 'See flights side by side. Prices, times, aircraft, and our wing ratings.' },
               { icon: <Plane style={{ width: '26px', height: '26px' }} />, title: 'Book Direct', desc: 'Click through to the airline\'s booking page. No middleman, no markup.' },
             ].map((step, i) => (
               <div key={i} style={{
@@ -235,43 +404,8 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* ─── Pricing Comparison ─── */}
-      <div ref={pricingReveal.ref} style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '80px 48px', textAlign: 'center' }}>
-          <p style={{ fontSize: '13px', fontWeight: 800, color: t.accent, letterSpacing: '0.1em', margin: '0 0 20px', ...fadeUp(pricingReveal.visible, 0) }}>THE PRICE MIGHT SURPRISE YOU</p>
-          <h2 style={{ fontSize: '56px', fontWeight: 900, color: t.text, margin: '0 0 8px', letterSpacing: '-0.03em', lineHeight: 1, ...fadeUp(pricingReveal.visible, 0.08) }}>
-            From <span style={{ color: dark ? C.pink : C.darkGreen }}>$99</span>/seat
-          </h2>
-          <p style={{ fontSize: '18px', color: t.textSec, margin: '12px 0 40px', lineHeight: 1.6, ...fadeUp(pricingReveal.visible, 0.15) }}>
-            Semi-private fares often come in at or below domestic first class ($500–$900 one-way) — with a private terminal, no TSA, and way better vibes.
-          </p>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: '24px', alignItems: 'center', maxWidth: '640px', margin: '0 auto', ...fadeUp(pricingReveal.visible, 0.22) }}>
-            {/* Semi-Private side */}
-            <div style={{ padding: '28px 20px', borderRadius: '16px', backgroundColor: dark ? 'rgba(232,87,109,0.08)' : 'rgba(10,61,46,0.04)', border: `2px solid ${dark ? C.pink : C.darkGreen}` }}>
-              <div style={{ fontSize: '12px', fontWeight: 800, color: t.accent, letterSpacing: '0.08em', marginBottom: '8px' }}>SEMI-PRIVATE</div>
-              <div style={{ fontSize: '36px', fontWeight: 900, color: t.text, letterSpacing: '-0.02em' }}>$99–$599</div>
-              <div style={{ fontSize: '13px', color: t.textMuted, marginTop: '6px' }}>per seat, one way</div>
-              <div style={{ fontSize: '12px', color: t.textSec, marginTop: '12px', lineHeight: 1.5 }}>
-                Private terminal &bull; No TSA &bull; 15-min check-in &bull; Leather seats &bull; Free food &amp; drinks
-              </div>
-            </div>
-            {/* VS */}
-            <div style={{ fontSize: '16px', fontWeight: 900, color: t.textMuted, padding: '0 4px' }}>vs</div>
-            {/* First Class side */}
-            <div style={{ padding: '28px 20px', borderRadius: '16px', backgroundColor: dark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)', border: `1px solid ${t.cardBorder}` }}>
-              <div style={{ fontSize: '12px', fontWeight: 800, color: t.textMuted, letterSpacing: '0.08em', marginBottom: '8px' }}>DOMESTIC FIRST CLASS</div>
-              <div style={{ fontSize: '36px', fontWeight: 900, color: t.textSec, letterSpacing: '-0.02em' }}>$500–$900</div>
-              <div style={{ fontSize: '13px', color: t.textMuted, marginTop: '6px' }}>per seat, one way</div>
-              <div style={{ fontSize: '12px', color: t.textMuted, marginTop: '12px', lineHeight: 1.5 }}>
-                Standard terminal &bull; TSA lines &bull; 1-2 hr early &bull; Wider seat &bull; Airline snacks
-              </div>
-            </div>
-          </div>
-          <p style={{ fontSize: '13px', color: t.textMuted, margin: '28px 0 0', lineHeight: 1.5, fontStyle: 'italic', ...fadeUp(pricingReveal.visible, 0.3) }}>
-            Pricing varies by route and airline. Semi-private fares based on published rates from JSX, Surf Air, and Tradewind. First class averages based on domestic one-way fares across major US carriers.
-          </p>
-        </div>
-      </div>
+      {/* ─── Pricing Comparison (Interactive) ─── */}
+      <PricingComparison dark={dark} pricingRef={pricingRef} pricingReveal={pricingReveal} />
 
       {/* ─── Airlines We Track ─── */}
       <div ref={airlinesReveal.ref} style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
@@ -313,7 +447,7 @@ export default function AboutPage() {
         <h2 style={{ fontSize: '32px', fontWeight: 900, color: t.text, margin: '0 0 20px', textAlign: 'center', letterSpacing: '-0.02em', ...fadeUp(statusReveal.visible, 0) }}>Where We&apos;re At</h2>
         <div style={{ fontSize: '16px', color: t.textSec, lineHeight: 1.8, textAlign: 'center', ...fadeUp(statusReveal.visible, 0.1) }}>
           <p style={{ margin: '0 0 16px' }}>
-            We&apos;re young and growing fast. Right now we cover the most popular routes — and we&apos;re adding more every day. If your dream flight isn&apos;t here yet, it&apos;s coming.
+            We&apos;re young and growing fast. Right now we cover the most popular routes and we&apos;re adding more every day. If your dream flight isn&apos;t here yet, it&apos;s coming.
           </p>
           <p style={{ margin: '0 0 0', fontWeight: 600, color: t.text }}>
             Semi-private airline? We&apos;d love to feature you. <a href="mailto:aviatoair@gmail.com" style={{ color: t.accent, textDecoration: 'underline' }}>Drop us a line.</a>
