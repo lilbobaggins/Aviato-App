@@ -164,7 +164,7 @@ export default function AboutPage() {
           Rediscover what flying is all about
         </h1>
         <p style={{ fontSize: '19px', color: t.textSec, margin: '0 0 36px', lineHeight: 1.6, ...fadeUp(heroReveal.visible, 0.2) }}>
-          Aviato is the first search engine for semi-private flights. We bring together every carrier, every route, and every fare so you can find the perfect flight in seconds.
+          Aviato is a search engine built for semi-private flights. We pull together a growing selection of carriers, routes, and fares into one place so you can stop juggling five different airline websites.
         </p>
         <a href="/desktop" style={{
           display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '14px 32px', borderRadius: '12px',
@@ -176,14 +176,22 @@ export default function AboutPage() {
         </a>
       </div>
 
-      {/* ─── Mission statement ─── */}
+      {/* ─── The Story ─── */}
       <div ref={missionReveal.ref} style={{ maxWidth: '700px', margin: '0 auto', padding: '0 48px 80px', textAlign: 'center' }}>
         <p style={{ fontSize: '28px', fontWeight: 800, color: t.text, lineHeight: 1.4, letterSpacing: '-0.01em', ...fadeUp(missionReveal.visible, 0) }}>
-          Flying should feel special.
+          Why does this exist?
         </p>
-        <p style={{ fontSize: '16px', color: t.textSec, lineHeight: 1.7, margin: '16px 0 0', ...fadeUp(missionReveal.visible, 0.12) }}>
-          Commercial aviation turned a magical experience into a stressful one. Semi-private airlines are bringing it back — private terminals, small jets, and real hospitality. Aviato makes it easy to find them.
-        </p>
+        <div style={{ fontSize: '16px', color: t.textSec, lineHeight: 1.8, ...fadeUp(missionReveal.visible, 0.12) }}>
+          <p style={{ margin: '16px 0' }}>
+            I built Aviato after falling down the rabbit hole of semi-private aviation. The more I learned about it, the more I wanted to fly this way — skip the terminal chaos, board a nice small jet, actually enjoy the experience. The problem? Every airline had its own website, its own route map, its own booking system. Finding the best option meant opening a bunch of tabs and cross-referencing everything manually.
+          </p>
+          <p style={{ margin: '16px 0' }}>
+            That was annoying. So I built the thing I wished existed.
+          </p>
+          <p style={{ margin: '16px 0' }}>
+            Aviato puts all the semi-private options in one place. Search a route, see what&apos;s available across multiple airlines, compare prices and amenities, and book directly with whoever you choose. No middleman, no markup — just a faster way to find your flight.
+          </p>
+        </div>
       </div>
 
       {/* ─── How It Works ─── */}
@@ -302,7 +310,7 @@ export default function AboutPage() {
         <div style={{ maxWidth: '600px', margin: '0 auto', padding: '72px 48px', textAlign: 'center' }}>
           <h2 style={{ fontSize: '28px', fontWeight: 900, color: t.text, margin: '0 0 12px', letterSpacing: '-0.02em', ...fadeUp(ctaReveal.visible, 0) }}>Ready to fly different?</h2>
           <p style={{ fontSize: '15px', color: t.textSec, margin: '0 0 28px', lineHeight: 1.6, ...fadeUp(ctaReveal.visible, 0.1) }}>
-            Search thousands of semi-private flights across five airlines. Your next upgrade is one click away.
+            Browse semi-private flights across multiple airlines. Your next upgrade is one search away.
           </p>
           <a href="/desktop" style={{
             display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '14px 36px', borderRadius: '12px',
