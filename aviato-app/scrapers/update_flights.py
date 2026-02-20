@@ -585,60 +585,8 @@ def update_flights_ts(
         f.write("\n".join(new_lines))
 
     # Now update SEASONAL_DATES for Bark Air and Tradewind routes
-    _update_seasonal_dates(bark_routes, tradewind_routes)
-
-
-def _update_seasonal_dates(
-    bark_routes: dict[str, list[dict]],
-    tradewind_routes: dict[str, list[dict]],
-):
-    """Update SEASONAL_DATES in flights.ts for Bark Air and Tradewind routes."""
-    # Collect ISO dates per route from Bark Air flights
-    bark_dates: dict[str, list[str]] = {}
-    for route_key, flights in bark_routes.items():
-        dates = set()
-        for fl in flights:
-            raw_date = fl.get("date", "")
-            iso = _parse_date_to_iso(raw_date)
-            if iso and re.match(r"\d{4}-\d{2}-\d{2}", iso):
-                dates.add(iso)
-        if dates:
-            bark_dates[route_key] = sorted(dates)
-
-    # Tradewind routes all run year-round — do NOT add to SEASONAL_DATES.
-    # The calendar should allow picking any date for all Tradewind service.
-
-    all_new_dates = {**bark_dates}
-
-    if not all_new_dates:
-        return
-
-    # Read the current file
-    with open(FLIGHTS_TS, "r") as f:
-        content = f.read()
-
-    # For each route with dates, update or add to SEASONAL_DATES
-    for route_key, dates in sorted(all_new_dates.items()):
-        dates_str = ",".join(f"'{d}'" for d in dates)
-        new_entry = f"  '{route_key}': [{dates_str}],"
-
-        # Check if this route already exists in SEASONAL_DATES
-        pattern = rf"  '{re.escape(route_key)}':\s*\[.*?\],"
-        if re.search(pattern, content):
-            # Replace existing entry
-            content = re.sub(pattern, new_entry, content)
-            print(f"  [SEASONAL] Updated '{route_key}' ({len(dates)} dates)")
-        else:
-            # Add new entry before the closing '};' of SEASONAL_DATES
-            # Find SEASONAL_DATES closing bracket
-            sd_match = re.search(r"(export const SEASONAL_DATES.*?\n)(.*?)(^\};)", content, re.MULTILINE | re.DOTALL)
-            if sd_match:
-                insertion_point = sd_match.end(2)
-                content = content[:insertion_point] + new_entry + "\n" + content[insertion_point:]
-                print(f"  [SEASONAL] Added '{route_key}' ({len(dates)} dates)")
-
-    with open(FLIGHTS_TS, "w") as f:
-        f.write(content)
+    # Bark Air and Tradewind routes all run year-round — no SEASONAL_DATES needed.
+    # The calendar allows picking any date; flights are filtered by date match.
 
 
 def main():
