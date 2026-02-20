@@ -1,6 +1,6 @@
 """
 JSX Flight Scraper for Aviato
-Scrapes the JSX lowfare API for all routes and outputs JSON + CSV.
+Uses the JSX v4 availability API for all routes and outputs JSON + CSV.
 
 Usage:
     pip install requests
@@ -13,14 +13,24 @@ import json
 import time
 from datetime import datetime, timedelta
 
-BASE_URL = "https://api.jsx.com/api"
-TOKEN_URL = f"{BASE_URL}/nsk/v2/token"
-LOWFARE_URL = f"{BASE_URL}/nsk/v2/availability/lowfare"
-CULTURE_URL = f"{BASE_URL}/v2/graph/setCulture"
+# ── API config ──────────────────────────────────────────────
+SEARCH_URL = "https://api.jsx.com/api/nsk/v4/availability/search/simple"
 
-# Dynamic date range: today + 120 days
+# Also keep the old v2 lowfare endpoint as a fallback/batch option
+LOWFARE_URL = "https://api.jsx.com/api/nsk/v2/availability/lowfare"
+TOKEN_URL = "https://api.jsx.com/api/nsk/v2/token"
+
+# Static public JWT for JSX Internet Booking Engine (no expiry, no user data)
+V4_TOKEN = (
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
+    "eyJzdWIiOiJJQkUiLCJqdGkiOiI1MTMwMmM2Yi1lNTRlLWM1NjQtNGJjMy1iODkx"
+    "N2IyYmNmOTUiLCJpc3MiOiJkb3RSRVogQVBJIn0."
+    "3yif42MVO7gxHWAXnbDtowjfLk8MnM4Qa169WB3Qxf8"
+)
+
+# Dynamic date range: today + 60 days
 START_DATE = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-END_DATE = START_DATE + timedelta(days=120)
+END_DATE = START_DATE + timedelta(days=60)
 
 STATION_NAMES = {
     "BUR": "Burbank", "LAS": "Las Vegas", "SMO": "Santa Monica",
@@ -57,6 +67,7 @@ ROUTES = [
     ("BUR", "CLD"), ("CLD", "BUR"),
     # LA / Cabo
     ("LAX", "CSW"), ("CSW", "LAX"),
+    ("DAL", "CSW"), ("CSW", "DAL"),
     # LA area misc
     ("SMO", "TRM"), ("TRM", "SMO"),
     # Las Vegas to other destinations
@@ -71,7 +82,6 @@ ROUTES = [
     ("DAL", "DSI"), ("DSI", "DAL"),
     ("DAL", "HOU"), ("HOU", "DAL"),
     ("DAL", "OPF"), ("OPF", "DAL"),
-    ("DAL", "CSW"), ("CSW", "DAL"),
     ("DAL", "APA"), ("APA", "DAL"),
     ("DAL", "TSM"), ("TSM", "DAL"),
     ("DAL", "SCF"), ("SCF", "DAL"),
@@ -90,43 +100,32 @@ ROUTES = [
 
 BASE_HEADERS = {
     "Content-Type": "application/json",
-    "Accept": "application/json",
+    "Accept": "application/json, text/plain, */*",
     "Origin": "https://www.jsx.com",
     "Referer": "https://www.jsx.com/",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
 }
 
 
-def get_session():
+# ── v2 lowfare API (batch dates, works for original routes) ──
+
+def get_v2_session():
+    """Get a v2 session with dynamic token."""
     session = requests.Session()
     session.headers.update(BASE_HEADERS)
-
-    # Step 1: Get token
-    resp = session.post(TOKEN_URL, json={}, timeout=15)
-    resp.raise_for_status()
-    token = resp.json()["data"]["token"]
-    session.headers["Authorization"] = token
-
-    # Step 2: Set culture (initializes the session)
-    session.post(CULTURE_URL, json={
-        "query": "mutation setCulture($cultureCode: String, $currencyCode: String) { setCulture(cultureCode: $cultureCode, currencyCode: $currencyCode) { cultureCode currencyCode } }",
-        "variables": {"cultureCode": "en-US", "currencyCode": "USD"}
-    }, timeout=15)
-
-    return session
-
-
-def get_date_ranges(start, end, max_days=31):
-    ranges = []
-    current = start
-    while current < end:
-        chunk_end = min(current + timedelta(days=max_days - 1), end)
-        ranges.append((current, chunk_end))
-        current = chunk_end + timedelta(days=1)
-    return ranges
+    try:
+        resp = session.post(TOKEN_URL, json={}, timeout=15)
+        resp.raise_for_status()
+        token = resp.json()["data"]["token"]
+        session.headers["Authorization"] = token
+        return session
+    except Exception as e:
+        print(f"  v2 token failed: {e}")
+        return None
 
 
 def search_lowfare(session, origin, destination, begin_date, end_date):
+    """Batch search using the v2 lowfare API (up to 31 days at once)."""
     payload = {
         "criteria": [{
             "originStationCodes": [origin],
@@ -138,24 +137,18 @@ def search_lowfare(session, origin, destination, begin_date, end_date):
         "codes": {"currencyCode": "USD"},
         "taxesAndFees": 2,
     }
-
     try:
         resp = session.post(LOWFARE_URL, json=payload, timeout=30)
     except requests.exceptions.Timeout:
-        print("TIMEOUT", end=" ")
         return []
-
-    if resp.status_code == 401:
-        return None
-    if resp.status_code == 400:
+    if resp.status_code in (400, 401, 404):
         return []
-
     resp.raise_for_status()
-    data = resp.json()
-    return data.get("data", {}).get("lowFareDateMarkets", [])
+    return resp.json().get("data", {}).get("lowFareDateMarkets", [])
 
 
-def parse_flights(markets, origin_code, dest_code):
+def parse_lowfare(markets, origin_code, dest_code):
+    """Parse the v2 lowfare response."""
     rows = []
     if not markets:
         return rows
@@ -170,14 +163,10 @@ def parse_flights(markets, origin_code, dest_code):
             fare_amount = fare["passengers"]["ADT"]["fareAmount"]
             taxes = fare["passengers"]["ADT"].get("taxesAndFeesAmount", 0)
             total_price = fare_amount + taxes
-            dep_time = datetime.fromisoformat(fare["departureTime"]).strftime("%I:%M %p")
-            arr_time = datetime.fromisoformat(fare["arrivalTime"]).strftime("%I:%M %p")
+            dep_time = datetime.fromisoformat(fare["departureTime"]).strftime("%I:%M %p").lstrip("0")
+            arr_time = datetime.fromisoformat(fare["arrivalTime"]).strftime("%I:%M %p").lstrip("0")
             product_class = fare.get("productClass", "")
             fare_label = "Hop On" if product_class == "HO" else "All In" if product_class == "AI" else product_class
-
-            # Strip leading zeros from times (e.g., "09:00 AM" -> "9:00 AM")
-            dep_time = dep_time.lstrip("0") if dep_time.startswith("0") else dep_time
-            arr_time = arr_time.lstrip("0") if arr_time.startswith("0") else arr_time
 
             rows.append({
                 "airline": "JSX",
@@ -194,59 +183,258 @@ def parse_flights(markets, origin_code, dest_code):
                 "seats_available": fare.get("availableCount", 0),
                 "departure_iso": fare["departureTime"],
                 "arrival_iso": fare["arrivalTime"],
+                "equipment": "",
             })
     return rows
 
 
+# ── v4 search API (single date, works for ALL routes) ──
+
+def get_v4_session():
+    """Get a v4 session with the static public token."""
+    session = requests.Session()
+    session.headers.update(BASE_HEADERS)
+    session.headers["Authorization"] = V4_TOKEN
+    return session
+
+
+def search_v4(session, origin, destination, date):
+    """Search for flights on a single date using the v4 API."""
+    payload = {
+        "beginDate": date.strftime("%Y-%m-%d"),
+        "destination": destination,
+        "origin": origin,
+        "passengers": {"types": [{"count": 1, "type": "ADT"}]},
+        "taxesAndFees": 2,
+        "filters": {
+            "maxConnections": 4,
+            "compressionType": 1,
+            "sortOptions": [4],
+            "fareTypes": ["R"],
+            "exclusionType": 2,
+        },
+        "numberOfFaresPerJourney": 10,
+        "codes": {"currencyCode": "USD"},
+        "ssrCollectionsMode": 1,
+    }
+    try:
+        resp = session.post(SEARCH_URL, json=payload, timeout=30)
+    except requests.exceptions.Timeout:
+        return None
+    if resp.status_code in (400, 404):
+        return None
+    if resp.status_code == 401:
+        return "AUTH_FAIL"
+    resp.raise_for_status()
+    return resp.json()
+
+
+def parse_v4(data, origin_code, dest_code):
+    """Parse the v4 API response into flat flight rows."""
+    rows = []
+    if not data or "data" not in data:
+        return rows
+
+    results = data["data"].get("results", [])
+    fares_available = data["data"].get("faresAvailable", {})
+
+    for result in results:
+        for trip in result.get("trips", []):
+            markets = trip.get("journeysAvailableByMarket", {})
+            market_key = f"{origin_code}|{dest_code}"
+            journeys = markets.get(market_key, [])
+
+            for journey in journeys:
+                designator = journey.get("designator", {})
+                dep_str = designator.get("departure", "")
+                arr_str = designator.get("arrival", "")
+                if not dep_str or not arr_str:
+                    continue
+
+                dep_dt = datetime.fromisoformat(dep_str)
+                arr_dt = datetime.fromisoformat(arr_str)
+
+                # Flight number and equipment from segment
+                segments = journey.get("segments", [])
+                flight_num = ""
+                equipment = ""
+                if segments:
+                    seg = segments[0]
+                    ident = seg.get("identifier", {})
+                    flight_num = f"{ident.get('carrierCode', 'XE')}{ident.get('identifier', '')}"
+                    legs = seg.get("legs", [])
+                    if legs:
+                        equipment = legs[0].get("legInfo", {}).get("equipmentType", "")
+
+                # Fares
+                for jfare in journey.get("fares", []):
+                    fare_key = jfare.get("fareAvailabilityKey", "")
+                    fare_details = jfare.get("details", [])
+                    seats = fare_details[0].get("availableCount", 0) if fare_details else 0
+
+                    fare_info = fares_available.get(fare_key, {})
+                    fare_total = fare_info.get("totals", {}).get("fareTotal", 0)
+                    if fare_total <= 0:
+                        continue
+
+                    product_class = ""
+                    fare_entries = fare_info.get("fares", [])
+                    if fare_entries:
+                        product_class = fare_entries[0].get("productClass", "")
+
+                    fare_label = (
+                        "Hop On" if product_class == "HO"
+                        else "All In" if product_class == "AI"
+                        else product_class
+                    )
+
+                    rows.append({
+                        "airline": "JSX",
+                        "origin_code": origin_code,
+                        "destination_code": dest_code,
+                        "origin_city": STATION_NAMES.get(origin_code, origin_code),
+                        "destination_city": STATION_NAMES.get(dest_code, dest_code),
+                        "date": dep_dt.strftime("%Y-%m-%d"),
+                        "price": round(fare_total, 2),
+                        "fare_class": fare_label,
+                        "flight_number": flight_num,
+                        "departure_time": dep_dt.strftime("%I:%M %p").lstrip("0"),
+                        "arrival_time": arr_dt.strftime("%I:%M %p").lstrip("0"),
+                        "seats_available": seats,
+                        "departure_iso": dep_str,
+                        "arrival_iso": arr_str,
+                        "equipment": equipment,
+                    })
+    return rows
+
+
+# ── Date range helpers ──
+
+def get_date_ranges(start, end, max_days=31):
+    """Split a date range into chunks of max_days."""
+    ranges = []
+    current = start
+    while current < end:
+        chunk_end = min(current + timedelta(days=max_days - 1), end)
+        ranges.append((current, chunk_end))
+        current = chunk_end + timedelta(days=1)
+    return ranges
+
+
+# ── Main ──
+
 def main():
     print("=" * 60)
-    print("JSX Flight Scraper")
+    print("JSX Flight Scraper (dual API: v2 lowfare + v4 search)")
     print(f"Date range: {START_DATE.strftime('%Y-%m-%d')} to {END_DATE.strftime('%Y-%m-%d')}")
     print(f"Routes: {len(ROUTES)}")
     print("=" * 60)
 
-    print("\nConnecting to JSX API...")
-    session = get_session()
-    session_time = time.time()
-    print("Connected!\n")
-
-    all_flights = []
+    # ── Phase 1: Try v2 lowfare for all routes (batch, fast) ──
+    print("\n--- Phase 1: v2 lowfare API (batch queries) ---")
+    v2_session = get_v2_session()
+    v2_flights = []
+    v2_failed_routes = []
     date_ranges = get_date_ranges(START_DATE, END_DATE)
 
-    for route_idx, (origin, dest) in enumerate(ROUTES, 1):
-        route_label = f"{STATION_NAMES.get(origin, origin)} ({origin}) -> {STATION_NAMES.get(dest, dest)} ({dest})"
-        print(f"[{route_idx}/{len(ROUTES)}] {route_label}")
+    if v2_session:
+        v2_session_time = time.time()
+        for route_idx, (origin, dest) in enumerate(ROUTES, 1):
+            label = f"{STATION_NAMES.get(origin, origin)} ({origin}) -> {STATION_NAMES.get(dest, dest)} ({dest})"
+            print(f"[{route_idx}/{len(ROUTES)}] {label}", end=" ", flush=True)
 
-        route_flights = 0
-        for begin, end in date_ranges:
-            if time.time() - session_time > 600:
-                print("  Refreshing session...")
-                session = get_session()
-                session_time = time.time()
+            route_flights = 0
+            route_empty = True
 
-            print(f"  {begin.strftime('%b %d')} - {end.strftime('%b %d')}...", end=" ", flush=True)
+            for begin, end in date_ranges:
+                if time.time() - v2_session_time > 600:
+                    v2_session = get_v2_session()
+                    if not v2_session:
+                        break
+                    v2_session_time = time.time()
 
-            markets = search_lowfare(session, origin, dest, begin, end)
-            if markets is None:
-                session = get_session()
-                session_time = time.time()
-                markets = search_lowfare(session, origin, dest, begin, end)
-            if markets is None:
-                print("FAILED")
-                continue
+                markets = search_lowfare(v2_session, origin, dest, begin, end)
+                flights = parse_lowfare(markets, origin, dest)
+                if flights:
+                    route_empty = False
+                v2_flights.extend(flights)
+                route_flights += len(flights)
+                time.sleep(0.2)
 
-            flights = parse_flights(markets, origin, dest)
-            all_flights.extend(flights)
-            route_flights += len(flights)
-            print(f"{len(flights)} flights")
-            time.sleep(0.3)
+            if route_empty:
+                v2_failed_routes.append((origin, dest))
+                print(f"-> 0 (will try v4)")
+            else:
+                print(f"-> {route_flights}")
+    else:
+        print("v2 token failed, all routes go to v4")
+        v2_failed_routes = list(ROUTES)
 
-        print(f"  -> {route_flights} total\n")
+    print(f"\nPhase 1 done: {len(v2_flights)} flights, {len(v2_failed_routes)} routes need v4")
+
+    # ── Phase 2: v4 search for routes that v2 missed ──
+    v4_flights = []
+    if v2_failed_routes:
+        print(f"\n--- Phase 2: v4 search API ({len(v2_failed_routes)} routes) ---")
+        v4_session = get_v4_session()
+
+        for route_idx, (origin, dest) in enumerate(v2_failed_routes, 1):
+            label = f"{STATION_NAMES.get(origin, origin)} ({origin}) -> {STATION_NAMES.get(dest, dest)} ({dest})"
+            print(f"\n[{route_idx}/{len(v2_failed_routes)}] {label}")
+
+            route_flights = 0
+            consecutive_empty = 0
+            day = START_DATE
+
+            while day <= END_DATE:
+                data = search_v4(v4_session, origin, dest, day)
+
+                if data == "AUTH_FAIL":
+                    print("  AUTH FAIL")
+                    break
+
+                if data is None:
+                    consecutive_empty += 1
+                    if consecutive_empty >= 10 and route_flights == 0:
+                        print(f"  Skipping route (no flights found in {consecutive_empty} days)")
+                        break
+                    day += timedelta(days=1)
+                    time.sleep(0.1)
+                    continue
+
+                flights = parse_v4(data, origin, dest)
+                if flights:
+                    consecutive_empty = 0
+                    v4_flights.extend(flights)
+                    route_flights += len(flights)
+                else:
+                    consecutive_empty += 1
+                    if consecutive_empty >= 10 and route_flights == 0:
+                        print(f"  Skipping route (no flights found in {consecutive_empty} days)")
+                        break
+
+                day += timedelta(days=1)
+                time.sleep(0.15)
+
+            print(f"  -> {route_flights} total")
+
+    # ── Combine and deduplicate ──
+    all_flights = v2_flights + v4_flights
+
+    seen = set()
+    deduped = []
+    for f in all_flights:
+        key = (f["origin_code"], f["destination_code"], f["date"],
+               f["departure_time"], f["fare_class"])
+        if key not in seen:
+            seen.add(key)
+            deduped.append(f)
+    all_flights = deduped
 
     # Save JSON
     with open("jsx_flights.json", "w") as f:
         json.dump(all_flights, f, indent=2)
-    print(f"Saved JSON -> jsx_flights.json")
+    print(f"\nSaved JSON -> jsx_flights.json")
 
     # Save CSV
     csv_file = "jsx_flights.csv"
@@ -254,7 +442,7 @@ def main():
         "airline", "origin_code", "destination_code", "origin_city",
         "destination_city", "date", "price", "fare_class", "flight_number",
         "departure_time", "arrival_time", "seats_available",
-        "departure_iso", "arrival_iso",
+        "departure_iso", "arrival_iso", "equipment",
     ]
     with open(csv_file, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -263,7 +451,8 @@ def main():
 
     print(f"Saved CSV  -> {csv_file}")
     print("=" * 60)
-    print(f"DONE! {len(all_flights)} flights across {len(ROUTES)} routes")
+    print(f"DONE! {len(all_flights)} flights ({len(v2_flights)} from v2 + {len(v4_flights)} from v4)")
+    print(f"Routes: {len(ROUTES)} total, {len(v2_failed_routes)} used v4 fallback")
     print("=" * 60)
 
 

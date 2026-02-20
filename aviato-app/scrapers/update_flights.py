@@ -34,7 +34,7 @@ JSX_ROUTES = [
     "BUR-SLC", "SLC-BUR", "SNA-SLC", "SLC-SNA",
     # LA area to Carlsbad
     "BUR-CLD", "CLD-BUR",
-    # LA / Cabo
+    # LA / Cabo (scraper tries both CSW and CSL, normalizes to CSW)
     "LAX-CSW", "CSW-LAX",
     # LA area misc
     "SMO-TRM", "TRM-SMO",

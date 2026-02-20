@@ -1,47 +1,30 @@
 name: Scrape Flights
-
 on:
   schedule:
-    - cron: '0 6 * * *'   # Daily at 6am UTC (1am ET)
-  workflow_dispatch: {}     # Manual trigger from Actions tab
+    - cron: '0 6 * * *'
+  workflow_dispatch: {}
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Install dependencies
-        run: pip install -r aviato-app/scrapers/requirements.txt
-
+      - run: pip install -r aviato-app/scrapers/requirements.txt
       - name: Run JSX scraper
         run: cd aviato-app/scrapers && python jsx_scraper.py
-
-      - name: Run Aero scraper
-        run: cd aviato-app/scrapers && python aero_scraper.py
-
       - name: Run Tradewind scraper
         run: cd aviato-app/scrapers && python tradewind_scraper.py
-
       - name: Run BARK Air scraper
         run: cd aviato-app/scrapers && python bark_air_scraper.py
-
       - name: Update flights.ts
         run: cd aviato-app/scrapers && python update_flights.py
-
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add aviato-app/app/data/flights.ts
-          git diff --cached --quiet || (git commit -m "Auto-update flight data $(date -u +%Y-%m-%d)" && git pull --rebase && git push)
-
-      - name: Trigger Vercel Deploy
-        run: curl -X POST "https://api.vercel.com/v1/integrations/deploy/prj_44BewcCIsoHgrmkhEH8L76vOgyyY/fBEAdcvaiC"
+          git diff --cached --quiet || git commit -m "Auto-update flight data $(date -u +%Y-%m-%d)" && git push
