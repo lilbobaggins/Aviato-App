@@ -74,6 +74,11 @@ const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filter
         'SFL': ['south florida', 'miami', 'fort lauderdale', 'palm beach', 'west palm'],
         'CABO': ['cabo', 'cabos', 'los cabos', 'cabo san lucas', 'mexico', 'sjd', 'csw'],
         'DEN': ['denver', 'colorado', 'centennial', 'rocky mountain'],
+        'SJC': ['san francisco', 'sf', 'bay area', 'silicon valley', 'san jose'],
+        'LTN': ['london', 'uk', 'england', 'heathrow', 'gatwick'],
+        'LBG': ['paris', 'france', 'le bourget', 'cdg'],
+        'NRT': ['tokyo', 'japan', 'ota city', 'narita'],
+        'SEA': ['seattle', 'washington', 'tacoma', 'pacific northwest'],
       };
       const matchAlias = aliases[loc.code]?.some(a => a.includes(q));
       return matchCity || matchCode || matchName || matchSub || matchAlias;

@@ -19,7 +19,7 @@ export const LOCATIONS: Location[] = [
   { code: 'CCR', type: 'airport', city: 'Concord', state: 'CA', name: 'Buchanan Field' },
   // NEW STANDALONE
   { code: 'OAK', type: 'airport', city: 'Oakland', state: 'CA', name: 'Oakland International' },
-  { code: 'SJC', type: 'airport', city: 'San Jose', state: 'CA', name: 'San Jose Mineta International' },
+  { code: 'SJC', type: 'airport', city: 'San Jose', state: 'CA', name: 'San Jose Mineta International (San Francisco Area)' },
   { code: 'FXE', type: 'airport', city: 'Fort Lauderdale', state: 'FL', name: 'Fort Lauderdale Executive', metro: 'SFL' },
   { code: 'CABO', type: 'metro', city: 'Cabo San Lucas', state: 'MX', name: 'All Cabo Airports', sub: 'SJD · CSW', airports: ['SJD','CSW'] },
   { code: 'SJD', type: 'airport', city: 'Cabo San Lucas', state: 'MX', name: 'Los Cabos International', metro: 'CABO' },
@@ -66,6 +66,17 @@ export const LOCATIONS: Location[] = [
   { code: 'LNY', type: 'airport', city: 'Lanai City', state: 'HI', name: 'Lanai Airport' },
   { code: 'MKK', type: 'airport', city: 'Hoolehua', state: 'HI', name: 'Molokai Airport' },
   { code: 'MUE', type: 'airport', city: 'Waimea', state: 'HI', name: 'Waimea-Kohala Airport' },
+  // BARK AIR — International & New Routes
+  { code: 'LTN', type: 'airport', city: 'London', state: 'UK', name: 'London Luton Airport' },
+  { code: 'LBG', type: 'airport', city: 'Paris', state: 'FR', name: 'Paris Le Bourget' },
+  { code: 'MAD', type: 'airport', city: 'Madrid', state: 'ES', name: 'Adolfo Suárez Madrid-Barajas' },
+  { code: 'LIS', type: 'airport', city: 'Lisbon', state: 'PT', name: 'Humberto Delgado Airport' },
+  { code: 'BER', type: 'airport', city: 'Berlin', state: 'DE', name: 'Berlin Brandenburg' },
+  { code: 'DUB', type: 'airport', city: 'Dublin', state: 'IE', name: 'Dublin Airport' },
+  { code: 'ATH', type: 'airport', city: 'Athens', state: 'GR', name: 'Athens International' },
+  { code: 'ARN', type: 'airport', city: 'Stockholm', state: 'SE', name: 'Stockholm Arlanda' },
+  { code: 'NRT', type: 'airport', city: 'Ota City', state: 'JP', name: 'Narita International (Tokyo Area)' },
+  { code: 'SEA', type: 'airport', city: 'Seattle', state: 'WA', name: 'Seattle-Tacoma International' },
   // CARIBBEAN
   { code: 'SJU', type: 'airport', city: 'San Juan', state: 'PR', name: 'Luis Muñoz Marín International' },
   { code: 'SBH', type: 'airport', city: 'St. Barths', state: 'BL', name: 'Rémy de Haenen Airport' },

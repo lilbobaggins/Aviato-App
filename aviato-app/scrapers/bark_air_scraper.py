@@ -6,10 +6,13 @@ Scrapes flight availability from air.bark.co (Shopify-based store).
 Outputs both CSV and a TypeScript snippet that can be merged into Aviato's flights.ts.
 
 Target Routes:
-  - New York (HPN) ↔ Fort Lauderdale (FXE)
   - New York (HPN) ↔ Los Angeles (VNY)
   - New York (HPN) ↔ San Francisco (SJC)
   - Los Angeles (VNY) ↔ Kona, Hawaii (KOA)
+  - New York (HPN) ↔ London (LTN), Paris (LBG), Madrid (MAD), Lisbon (LIS)
+  - New York (HPN) ↔ Berlin (BER), Dublin (DUB), Athens (ATH), Stockholm (ARN)
+  - Los Angeles (VNY) ↔ Ota City/Tokyo (NRT)
+  - Seattle (SEA) ↔ New York (HPN)
 
 Usage:
   pip install requests beautifulsoup4
@@ -35,22 +38,52 @@ REQUEST_DELAY = 0.5  # seconds between requests to be polite
 
 # Route names as they appear in the Shopify product data
 TARGET_ROUTES = [
-    "New York To Fort Lauderdale",
-    "Fort Lauderdale To New York",
+    # Domestic
     "New York To Los Angeles",
     "Los Angeles To New York",
     "New York To San Francisco",
     "San Francisco To New York",
     "Los Angeles To Kailua-Kona",
     "Kailua-Kona To Los Angeles",
+    "Seattle To New York",
+    "New York To Seattle",
+    # Europe
+    "New York To London",
+    "London To New York",
+    "New York To Paris",
+    "Paris To New York",
+    "New York To Madrid",
+    "Madrid To New York",
+    "New York To Lisbon",
+    "Lisbon To New York",
+    "New York To Berlin",
+    "Berlin To New York",
+    "New York To Dublin",
+    "Dublin To New York",
+    "New York To Athens",
+    "Athens To New York",
+    "New York To Stockholm",
+    "Stockholm To New York",
+    # Asia
+    "Los Angeles To Ota City",
+    "Ota City To Los Angeles",
 ]
 
 AIRPORT_CODES = {
     "New York": "HPN",
     "Los Angeles": "VNY",
     "San Francisco": "SJC",
-    "Fort Lauderdale": "FXE",
     "Kailua-Kona": "KOA",
+    "Seattle": "SEA",
+    "London": "LTN",
+    "Paris": "LBG",
+    "Madrid": "MAD",
+    "Lisbon": "LIS",
+    "Berlin": "BER",
+    "Dublin": "DUB",
+    "Athens": "ATH",
+    "Stockholm": "ARN",
+    "Ota City": "NRT",
 }
 
 HEADERS = {
@@ -267,10 +300,19 @@ def parse_date_to_iso(date_str: str) -> Optional[str]:
 def estimate_duration(origin_code: str, dest_code: str) -> str:
     """Estimate flight duration based on route."""
     durations = {
-        ("HPN", "FXE"): "3h 15m", ("FXE", "HPN"): "3h 15m",
         ("HPN", "VNY"): "5h 30m", ("VNY", "HPN"): "5h 30m",
         ("HPN", "SJC"): "5h 45m", ("SJC", "HPN"): "5h 45m",
         ("VNY", "KOA"): "5h 30m", ("KOA", "VNY"): "5h 30m",
+        ("HPN", "LTN"): "7h 30m", ("LTN", "HPN"): "8h 00m",
+        ("HPN", "LBG"): "7h 45m", ("LBG", "HPN"): "8h 15m",
+        ("HPN", "MAD"): "8h 00m", ("MAD", "HPN"): "8h 30m",
+        ("HPN", "LIS"): "7h 30m", ("LIS", "HPN"): "8h 00m",
+        ("HPN", "BER"): "8h 30m", ("BER", "HPN"): "9h 00m",
+        ("HPN", "DUB"): "7h 00m", ("DUB", "HPN"): "7h 30m",
+        ("HPN", "ATH"): "10h 00m", ("ATH", "HPN"): "10h 30m",
+        ("HPN", "ARN"): "8h 30m", ("ARN", "HPN"): "9h 00m",
+        ("VNY", "NRT"): "11h 30m", ("NRT", "VNY"): "10h 00m",
+        ("SEA", "HPN"): "5h 15m", ("HPN", "SEA"): "5h 45m",
     }
     return durations.get((origin_code, dest_code), "5h 00m")
 

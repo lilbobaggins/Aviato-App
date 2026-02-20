@@ -81,18 +81,35 @@ AERO_LINK = "aero.com"
 
 # ── BARK Air config ───────────────────────────────────────────────────
 BARK_ROUTES = [
+    # Domestic
     "HPN-VNY", "VNY-HPN", "HPN-SJC", "SJC-HPN", "VNY-KOA", "KOA-VNY",
-    "HPN-FXE", "FXE-HPN",
+    "SEA-HPN", "HPN-SEA",
+    # Europe
+    "HPN-LTN", "LTN-HPN", "HPN-LBG", "LBG-HPN",
+    "HPN-MAD", "MAD-HPN", "HPN-LIS", "LIS-HPN",
+    "HPN-BER", "BER-HPN", "HPN-DUB", "DUB-HPN",
+    "HPN-ATH", "ATH-HPN", "HPN-ARN", "ARN-HPN",
+    # Asia
+    "VNY-NRT", "NRT-VNY",
 ]
 BARK_CRAFT = "Bombardier Challenger 601"
 BARK_AMEN = "['WiFi','Gourmet Catering','Champagne','Calming Treats','Vet Tech On Board']"
 BARK_LINK = "air.bark.co"
 
 BARK_DURATIONS = {
-    "HPN-FXE": "3h 15m", "FXE-HPN": "3h 15m",
     "HPN-VNY": "5h 30m", "VNY-HPN": "5h 30m",
     "HPN-SJC": "5h 45m", "SJC-HPN": "5h 45m",
     "VNY-KOA": "5h 30m", "KOA-VNY": "5h 30m",
+    "SEA-HPN": "5h 15m", "HPN-SEA": "5h 45m",
+    "HPN-LTN": "7h 30m", "LTN-HPN": "8h 00m",
+    "HPN-LBG": "7h 45m", "LBG-HPN": "8h 15m",
+    "HPN-MAD": "8h 00m", "MAD-HPN": "8h 30m",
+    "HPN-LIS": "7h 30m", "LIS-HPN": "8h 00m",
+    "HPN-BER": "8h 30m", "BER-HPN": "9h 00m",
+    "HPN-DUB": "7h 00m", "DUB-HPN": "7h 30m",
+    "HPN-ATH": "10h 00m", "ATH-HPN": "10h 30m",
+    "HPN-ARN": "8h 30m", "ARN-HPN": "9h 00m",
+    "VNY-NRT": "11h 30m", "NRT-VNY": "10h 00m",
 }
 
 
