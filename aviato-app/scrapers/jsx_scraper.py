@@ -1,6 +1,6 @@
 """
 JSX Flight Scraper for Aviato
-Uses the JSX v4 availability API for all routes and outputs JSON + CSV.
+Uses the JSX v2 lowfare (batch) + v4 availability (per-day) APIs.
 
 Usage:
     pip install requests
@@ -12,6 +12,7 @@ import csv
 import json
 import time
 from datetime import datetime, timedelta
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # ── API config ──────────────────────────────────────────────
 SEARCH_URL = "https://api.jsx.com/api/nsk/v4/availability/search/simple"
@@ -28,9 +29,9 @@ V4_TOKEN = (
     "3yif42MVO7gxHWAXnbDtowjfLk8MnM4Qa169WB3Qxf8"
 )
 
-# Dynamic date range: today + 60 days
+# Dynamic date range: today + 30 days
 START_DATE = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-END_DATE = START_DATE + timedelta(days=60)
+END_DATE = START_DATE + timedelta(days=30)
 
 STATION_NAMES = {
     "BUR": "Burbank", "LAS": "Las Vegas", "SMO": "Santa Monica",
@@ -321,6 +322,56 @@ def get_date_ranges(start, end, max_days=31):
     return ranges
 
 
+# ── v4 concurrent helper ──
+
+def _v4_fetch_one(origin, dest, date_str):
+    """Fetch a single date for a route via v4 (for use with ThreadPoolExecutor)."""
+    session = requests.Session()
+    session.headers.update(BASE_HEADERS)
+    session.headers["Authorization"] = V4_TOKEN
+    date = datetime.strptime(date_str, "%Y-%m-%d")
+    data = search_v4(session, origin, dest, date)
+    if data is None or data == "AUTH_FAIL":
+        return []
+    return parse_v4(data, origin, dest)
+
+
+def v4_scrape_route(origin, dest, start, end, max_workers=5):
+    """Scrape an entire route via v4 using parallel requests."""
+    days = []
+    day = start
+    while day <= end:
+        days.append(day.strftime("%Y-%m-%d"))
+        day += timedelta(days=1)
+
+    all_flights = []
+
+    # First, probe day 0 and day 7 to see if this route even exists
+    probe_days = [days[0], days[min(7, len(days) - 1)]]
+    found_any = False
+    for pd in probe_days:
+        result = _v4_fetch_one(origin, dest, pd)
+        if result:
+            all_flights.extend(result)
+            found_any = True
+
+    if not found_any:
+        return []
+
+    # Route exists — scrape remaining days in parallel
+    remaining = [d for d in days if d not in probe_days]
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = {pool.submit(_v4_fetch_one, origin, dest, d): d for d in remaining}
+        for future in as_completed(futures):
+            try:
+                flights = future.result()
+                all_flights.extend(flights)
+            except Exception:
+                pass
+
+    return all_flights
+
+
 # ── Main ──
 
 def main():
@@ -359,7 +410,7 @@ def main():
                     route_empty = False
                 v2_flights.extend(flights)
                 route_flights += len(flights)
-                time.sleep(0.2)
+                time.sleep(0.15)
 
             if route_empty:
                 v2_failed_routes.append((origin, dest))
@@ -372,51 +423,18 @@ def main():
 
     print(f"\nPhase 1 done: {len(v2_flights)} flights, {len(v2_failed_routes)} routes need v4")
 
-    # ── Phase 2: v4 search for routes that v2 missed ──
+    # ── Phase 2: v4 search for routes that v2 missed (parallel) ──
     v4_flights = []
     if v2_failed_routes:
-        print(f"\n--- Phase 2: v4 search API ({len(v2_failed_routes)} routes) ---")
-        v4_session = get_v4_session()
+        print(f"\n--- Phase 2: v4 search API ({len(v2_failed_routes)} routes, parallel) ---")
 
         for route_idx, (origin, dest) in enumerate(v2_failed_routes, 1):
             label = f"{STATION_NAMES.get(origin, origin)} ({origin}) -> {STATION_NAMES.get(dest, dest)} ({dest})"
-            print(f"\n[{route_idx}/{len(v2_failed_routes)}] {label}")
+            print(f"[{route_idx}/{len(v2_failed_routes)}] {label}", end=" ", flush=True)
 
-            route_flights = 0
-            consecutive_empty = 0
-            day = START_DATE
-
-            while day <= END_DATE:
-                data = search_v4(v4_session, origin, dest, day)
-
-                if data == "AUTH_FAIL":
-                    print("  AUTH FAIL")
-                    break
-
-                if data is None:
-                    consecutive_empty += 1
-                    if consecutive_empty >= 10 and route_flights == 0:
-                        print(f"  Skipping route (no flights found in {consecutive_empty} days)")
-                        break
-                    day += timedelta(days=1)
-                    time.sleep(0.1)
-                    continue
-
-                flights = parse_v4(data, origin, dest)
-                if flights:
-                    consecutive_empty = 0
-                    v4_flights.extend(flights)
-                    route_flights += len(flights)
-                else:
-                    consecutive_empty += 1
-                    if consecutive_empty >= 10 and route_flights == 0:
-                        print(f"  Skipping route (no flights found in {consecutive_empty} days)")
-                        break
-
-                day += timedelta(days=1)
-                time.sleep(0.15)
-
-            print(f"  -> {route_flights} total")
+            flights = v4_scrape_route(origin, dest, START_DATE, END_DATE, max_workers=5)
+            v4_flights.extend(flights)
+            print(f"-> {len(flights)}")
 
     # ── Combine and deduplicate ──
     all_flights = v2_flights + v4_flights
