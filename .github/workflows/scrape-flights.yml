@@ -23,6 +23,8 @@ jobs:
         run: cd aviato-app/scrapers && python jsx_scraper.py
       - name: Run Tradewind scraper
         run: cd aviato-app/scrapers && python tradewind_scraper.py
+      - name: Run Aero scraper
+        run: cd aviato-app/scrapers && python aero_scraper.py
       - name: Run BARK Air scraper
         run: cd aviato-app/scrapers && python bark_air_scraper.py
       - name: Update flights.ts
