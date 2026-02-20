@@ -36,6 +36,7 @@ jobs:
           git add aviato-app/app/data/flights.ts
           if ! git diff --cached --quiet; then
             git commit -m "Auto-update flight data $(date -u +%Y-%m-%d)"
+            git pull --rebase origin main
             git push
           else
             echo "No flight data changes to commit"
