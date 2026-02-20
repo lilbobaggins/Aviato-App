@@ -213,6 +213,8 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
         'LA': ['la', 'los angeles', 'hollywood', 'burbank', 'van nuys', 'santa monica'],
         'NYC': ['nyc', 'new york', 'manhattan', 'white plains', 'teterboro'],
         'SFL': ['south florida', 'miami', 'fort lauderdale', 'palm beach', 'west palm'],
+        'CABO': ['cabo', 'cabos', 'los cabos', 'cabo san lucas', 'mexico', 'sjd', 'csw'],
+        'DEN': ['denver', 'colorado', 'centennial', 'rocky mountain'],
       };
       return loc.city.toLowerCase().includes(q) || loc.code.toLowerCase().includes(q) ||
         loc.name?.toLowerCase().includes(q) || loc.sub?.toLowerCase().includes(q) ||
@@ -730,8 +732,8 @@ export default function DesktopPage() {
             <div style={{ padding: '28px 16px 32px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
                 <div>
-                  <h2 style={{ fontSize: '20px', fontWeight: 800, color: t.text, margin: '0 0 4px' }}>Upcoming Events</h2>
-                  <p style={{ fontSize: '13px', color: t.textMuted, margin: 0 }}>Events worth flying for</p>
+                  <h2 style={{ fontSize: '20px', fontWeight: 800, color: t.text, margin: '0 0 4px' }}>Events Worth Flying For</h2>
+                  <p style={{ fontSize: '12px', color: dark ? C.pink : C.darkGreen, margin: 0, fontWeight: 600 }}>2026 Hottest Events</p>
                 </div>
                 <div style={{ display: 'flex', gap: '6px' }}>
                   <button onClick={() => scrollEvents(-1)} style={{ width: '34px', height: '34px', borderRadius: '50%', border: `1px solid ${t.cardBorder}`, backgroundColor: t.card, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -1128,8 +1130,8 @@ export default function DesktopPage() {
           <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '48px 48px 52px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', ...revealStyle(eventsReveal.isVisible, 0) }}>
               <div>
-                <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px' }}>Upcoming Events</h2>
-                <p style={{ fontSize: '14px', color: t.textMuted, margin: 0 }}>Events worth flying semi-private for</p>
+                <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px' }}>Events Worth Flying For</h2>
+                <p style={{ fontSize: '13px', color: dark ? C.pink : C.darkGreen, margin: 0, fontWeight: 600 }}>2026 Hottest Events</p>
               </div>
               <div style={{ display: 'flex', gap: '8px' }}>
                 <button onClick={() => scrollEvents(-1)} style={{ width: '40px', height: '40px', borderRadius: '50%', border: `1px solid ${t.cardBorder}`, backgroundColor: t.card, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

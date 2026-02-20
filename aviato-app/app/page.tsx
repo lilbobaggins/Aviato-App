@@ -72,6 +72,8 @@ const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filter
         'LA': ['la', 'los angeles', 'hollywood', 'burbank', 'van nuys', 'santa monica'],
         'NYC': ['nyc', 'new york', 'manhattan', 'white plains', 'teterboro'],
         'SFL': ['south florida', 'miami', 'fort lauderdale', 'palm beach', 'west palm'],
+        'CABO': ['cabo', 'cabos', 'los cabos', 'cabo san lucas', 'mexico', 'sjd', 'csw'],
+        'DEN': ['denver', 'colorado', 'centennial', 'rocky mountain'],
       };
       const matchAlias = aliases[loc.code]?.some(a => a.includes(q));
       return matchCity || matchCode || matchName || matchSub || matchAlias;
@@ -907,8 +909,8 @@ export default function AviatoApp() {
     return (
       <div style={{ width: '100%', minHeight: '100%', backgroundColor: C.offWhite, paddingBottom: '80px' }}>
         <div style={{ background: C.black, padding: '16px 24px 20px', color: C.white }}>
-          <h1 style={{ fontSize: '24px', fontWeight: 800, margin: '0 0 4px' }}>Explore</h1>
-          <p style={{ fontSize: '13px', color: C.cream, opacity: 0.7, margin: 0 }}>Events worth flying semi-private for</p>
+          <h1 style={{ fontSize: '24px', fontWeight: 800, margin: '0 0 4px' }}>Events Worth Flying For</h1>
+          <p style={{ fontSize: '12px', color: C.pink, margin: 0, fontWeight: 600 }}>2026 Hottest Events</p>
         </div>
 
         <div style={{ backgroundColor: C.white, padding: '10px 24px', display: 'flex', gap: '6px', borderBottom: `1px solid ${C.g200}`, overflowX: 'auto' }}>
