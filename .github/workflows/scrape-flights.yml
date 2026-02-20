@@ -1,51 +1,51 @@
 name: Scrape Flights
 on:
   schedule:
-      - cron: '0 6 * * *'
-        workflow_dispatch: {}
+    - cron: '0 6 * * *'
+  workflow_dispatch: {}
 
-        permissions:
-          contents: write
+permissions:
+  contents: write
 
-          jobs:
-            scrape:
-                runs-on: ubuntu-latest
-                    timeout-minutes: 45
-                        steps:
-                              - uses: actions/checkout@v4
-                                      with:
-                                                token: ${{ github.token }}
-                                                          ref: main
-                                                                    fetch-depth: 0
-                                                                          - uses: actions/setup-python@v5
-                                                                                  with:
-                                                                                            python-version: '3.11'
-                                                                                                  - run: pip install -r aviato-app/scrapers/requirements.txt
-                                                                                                        - name: Run JSX scraper
-                                                                                                                run: cd aviato-app/scrapers && python jsx_scraper.py
-                                                                                                                      - name: Run Tradewind scraper
-                                                                                                                              run: cd aviato-app/scrapers && python tradewind_scraper.py
-                                                                                                                                    - name: Run Aero scraper
-                                                                                                                                            run: cd aviato-app/scrapers && python aero_scraper.py
-                                                                                                                                                  - name: Run BARK Air scraper
-                                                                                                                                                          run: cd aviato-app/scrapers && python bark_air_scraper.py
-                                                                                                                                                                - name: Update flights.ts
-                                                                                                                                                                        run: cd aviato-app/scrapers && python update_flights.py
-                                                                                                                                                                              - name: Save flights.ts as artifact
-                                                                                                                                                                                      if: always()
-                                                                                                                                                                                              uses: actions/upload-artifact@v4
-                                                                                                                                                                                                      with:
-                                                                                                                                                                                                                name: flights-ts
-                                                                                                                                                                                                                          path: aviato-app/app/data/flights.ts
-                                                                                                                                                                                                                                - name: Commit and push if changed
-                                                                                                                                                                                                                                        run: |
-                                                                                                                                                                                                                                                  git config user.name "github-actions[bot]"
-                                                                                                                                                                                                                                                            git config user.email "github-actions[bot]@users.noreply.github.com"
-                                                                                                                                                                                                                                                                      git add aviato-app/app/data/flights.ts
-                                                                                                                                                                                                                                                                                if ! git diff --cached --quiet; then
-                                                                                                                                                                                                                                                                                            git commit -m "Auto-update flight data $(date -u +%Y-%m-%d)"
-                                                                                                                                                                                                                                                                                                        git pull --rebase origin main
-                                                                                                                                                                                                                                                                                                                    git push
-                                                                                                                                                                                                                                                                                                                              else
-                                                                                                                                                                                                                                                                                                                                          echo "No flight data changes to commit"
-                                                                                                                                                                                                                                                                                                                                                    fi
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r aviato-app/scrapers/requirements.txt
+      - name: Run JSX scraper
+        run: cd aviato-app/scrapers && python jsx_scraper.py
+      - name: Run Tradewind scraper
+        run: cd aviato-app/scrapers && python tradewind_scraper.py
+      - name: Run Aero scraper
+        run: cd aviato-app/scrapers && python aero_scraper.py
+      - name: Run BARK Air scraper
+        run: cd aviato-app/scrapers && python bark_air_scraper.py
+      - name: Update flights.ts
+        run: cd aviato-app/scrapers && python update_flights.py
+      - name: Save flights.ts as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flights-ts
+          path: aviato-app/app/data/flights.ts
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add aviato-app/app/data/flights.ts
+          if ! git diff --cached --quiet; then
+            git commit -m "Auto-update flight data $(date -u +%Y-%m-%d)"
+            git pull --rebase origin main
+            git push
+          else
+            echo "No flight data changes to commit"
+          fi
