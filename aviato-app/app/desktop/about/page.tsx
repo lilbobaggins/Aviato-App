@@ -59,9 +59,9 @@ const FAQ = ({ question, answer, dark }: { question: string; answer: string; dar
       >
         <span style={{ fontSize: '17px', fontWeight: 700, color: t.text, flex: 1, paddingRight: '16px', lineHeight: 1.4 }}>{question}</span>
         <ChevronDown style={{
-          width: '20px', height: '20px', color: open ? C.pink : t.textMuted, flexShrink: 0,
+          width: '20px', height: '20px', color: t.textMuted, flexShrink: 0,
           transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
-          transition: 'transform 0.35s cubic-bezier(0.12, 0.23, 0.5, 1), color 0.2s ease',
+          transition: 'transform 0.35s cubic-bezier(0.12, 0.23, 0.5, 1)',
         }} />
       </button>
       <div style={{
@@ -154,9 +154,7 @@ const PricingComparison = ({ dark, pricingRef, pricingReveal }: {
             <div style={{ height: '40px', borderRadius: '12px', backgroundColor: dark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)', overflow: 'hidden', position: 'relative' }}>
               <div style={{
                 height: '100%', borderRadius: '12px',
-                background: dark
-                  ? `linear-gradient(90deg, ${C.pink}, ${C.pink}dd)`
-                  : `linear-gradient(90deg, ${C.darkGreen}, ${C.pink})`,
+                background: `linear-gradient(90deg, ${C.pink}, ${C.pink}cc)`,
                 width: `${(route.semi / maxPrice) * 100}%`,
                 animation: 'barGrow 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
               }} />
@@ -327,15 +325,14 @@ export default function AboutPage() {
           </div>
         </div>
         <h1 style={{ fontSize: '48px', fontWeight: 900, color: t.text, margin: '0 0 20px', lineHeight: 1.1, letterSpacing: '-0.02em', ...fadeUp(heroReveal.visible, 0.1) }}>
-          Rediscover what flying is <span style={{ color: C.pink }}>all about</span>
+          Rediscover what flying is all about
         </h1>
         <p style={{ fontSize: '19px', color: t.textSec, margin: '0 0 36px', lineHeight: 1.6, ...fadeUp(heroReveal.visible, 0.2) }}>
           Search semi-private flights across multiple airlines. Compare prices, times, and amenities, then book direct.
         </p>
         <a href="/desktop" style={{
           display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '14px 32px', borderRadius: '12px',
-          background: `linear-gradient(135deg, ${C.darkGreen} 0%, ${C.pink} 100%)`,
-          color: C.cream, fontSize: '15px', fontWeight: 700, textDecoration: 'none',
+          backgroundColor: dark ? C.pink : C.black, color: C.cream, fontSize: '15px', fontWeight: 700, textDecoration: 'none',
           transition: 'transform 0.2s ease, box-shadow 0.2s ease',
           ...fadeUp(heroReveal.visible, 0.3),
         }}>
@@ -346,7 +343,7 @@ export default function AboutPage() {
       {/* ─── The Story ─── */}
       <div ref={missionReveal.ref} style={{ maxWidth: '700px', margin: '0 auto', padding: '0 48px 80px', textAlign: 'center' }}>
         <p style={{ fontSize: '28px', fontWeight: 800, color: t.text, lineHeight: 1.4, letterSpacing: '-0.01em', ...fadeUp(missionReveal.visible, 0) }}>
-          Why does this <span style={{ color: C.pink }}>exist</span>?
+          Why does this exist?
         </p>
         <div style={{ fontSize: '16px', color: t.textSec, lineHeight: 1.8, ...fadeUp(missionReveal.visible, 0.12) }}>
           <p style={{ margin: '16px 0' }}>
@@ -374,7 +371,7 @@ export default function AboutPage() {
                 ...fadeUp(howReveal.visible, 0.15 + i * 0.1),
               }}>
                 <div style={{ width: '60px', height: '60px', borderRadius: '16px', backgroundColor: t.accentBg, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', color: t.accent }}>{step.icon}</div>
-                <div style={{ fontSize: '12px', fontWeight: 800, color: C.pink, marginBottom: '8px', letterSpacing: '0.08em' }}>STEP {i + 1}</div>
+                <div style={{ fontSize: '12px', fontWeight: 800, color: t.accent, marginBottom: '8px', letterSpacing: '0.08em' }}>STEP {i + 1}</div>
                 <h3 style={{ fontSize: '20px', fontWeight: 800, color: t.text, margin: '0 0 10px' }}>{step.title}</h3>
                 <p style={{ fontSize: '14px', color: t.textMuted, margin: 0, lineHeight: 1.7 }}>{step.desc}</p>
               </div>
@@ -386,18 +383,18 @@ export default function AboutPage() {
       {/* ─── Why Semi-Private ─── */}
       <div ref={whyReveal.ref} style={{ maxWidth: '960px', margin: '0 auto', padding: '72px 48px' }}>
         <h2 style={{ fontSize: '32px', fontWeight: 900, color: t.text, margin: '0 0 8px', textAlign: 'center', letterSpacing: '-0.02em', ...fadeUp(whyReveal.visible, 0) }}>Why Fly Semi-Private?</h2>
-        <p style={{ fontSize: '16px', color: C.pink, fontWeight: 600, margin: '0 0 48px', textAlign: 'center', ...fadeUp(whyReveal.visible, 0.08) }}>The best-kept secret in aviation</p>
+        <p style={{ fontSize: '16px', color: t.textMuted, margin: '0 0 48px', textAlign: 'center', ...fadeUp(whyReveal.visible, 0.08) }}>The best-kept secret in aviation</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
           {[
-            { icon: <Clock style={{ width: '24px', height: '24px' }} />, title: 'Skip the Terminal', desc: 'Arrive 15 minutes before departure. No TSA, no crowded gates. Just show up and fly.', pink: false },
-            { icon: <DollarSign style={{ width: '24px', height: '24px' }} />, title: 'Affordable Luxury', desc: 'From $99/seat. Private jet experience at a fraction of charter costs.', pink: true },
-            { icon: <Shield style={{ width: '24px', height: '24px' }} />, title: 'Premium Experience', desc: 'Leather seats, free drinks and snacks, 16–30 seat planes. Flying how it should be.', pink: false },
+            { icon: <Clock style={{ width: '24px', height: '24px' }} />, title: 'Skip the Terminal', desc: 'Arrive 15 minutes before departure. No TSA, no crowded gates. Just show up and fly.' },
+            { icon: <DollarSign style={{ width: '24px', height: '24px' }} />, title: 'Affordable Luxury', desc: 'From $99/seat. Private jet experience at a fraction of charter costs.' },
+            { icon: <Shield style={{ width: '24px', height: '24px' }} />, title: 'Premium Experience', desc: 'Leather seats, free drinks and snacks, 16–30 seat planes. Flying how it should be.' },
           ].map((item, i) => (
             <div key={i} style={{
               padding: '32px 28px', borderRadius: '18px', border: `1px solid ${t.cardBorder}`, backgroundColor: t.card,
               ...fadeUp(whyReveal.visible, 0.15 + i * 0.1),
             }}>
-              <div style={{ width: '48px', height: '48px', borderRadius: '14px', backgroundColor: item.pink ? 'rgba(232,87,109,0.1)' : t.accentBg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px', color: item.pink ? C.pink : t.accent }}>{item.icon}</div>
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', backgroundColor: t.accentBg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px', color: t.accent }}>{item.icon}</div>
               <h3 style={{ fontSize: '18px', fontWeight: 800, color: t.text, margin: '0 0 10px' }}>{item.title}</h3>
               <p style={{ fontSize: '14px', color: t.textMuted, margin: 0, lineHeight: 1.7 }}>{item.desc}</p>
             </div>
@@ -445,7 +442,7 @@ export default function AboutPage() {
 
       {/* ─── Where We're At ─── */}
       <div ref={statusReveal.ref} style={{ maxWidth: '700px', margin: '0 auto', padding: '72px 48px 0' }}>
-        <h2 style={{ fontSize: '32px', fontWeight: 900, color: t.text, margin: '0 0 20px', textAlign: 'center', letterSpacing: '-0.02em', ...fadeUp(statusReveal.visible, 0) }}>Where We&apos;re <span style={{ color: C.pink }}>At</span></h2>
+        <h2 style={{ fontSize: '32px', fontWeight: 900, color: t.text, margin: '0 0 20px', textAlign: 'center', letterSpacing: '-0.02em', ...fadeUp(statusReveal.visible, 0) }}>Where We&apos;re At</h2>
         <div style={{ fontSize: '16px', color: t.textSec, lineHeight: 1.8, textAlign: 'center', ...fadeUp(statusReveal.visible, 0.1) }}>
           <p style={{ margin: '0 0 16px' }}>
             We&apos;re young and growing fast. Right now we cover the most popular routes and we&apos;re adding more every day. If your dream flight isn&apos;t here yet, it&apos;s coming.
@@ -472,14 +469,13 @@ export default function AboutPage() {
       {/* ─── CTA ─── */}
       <div ref={ctaReveal.ref} style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}` }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', padding: '72px 48px', textAlign: 'center' }}>
-          <h2 style={{ fontSize: '28px', fontWeight: 900, color: t.text, margin: '0 0 12px', letterSpacing: '-0.02em', ...fadeUp(ctaReveal.visible, 0) }}>Ready to fly <span style={{ color: C.pink }}>different</span>?</h2>
+          <h2 style={{ fontSize: '28px', fontWeight: 900, color: t.text, margin: '0 0 12px', letterSpacing: '-0.02em', ...fadeUp(ctaReveal.visible, 0) }}>Ready to fly different?</h2>
           <p style={{ fontSize: '15px', color: t.textSec, margin: '0 0 28px', lineHeight: 1.6, ...fadeUp(ctaReveal.visible, 0.1) }}>
             Browse semi-private flights across multiple airlines. Your next upgrade is one search away.
           </p>
           <a href="/desktop" style={{
             display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '14px 36px', borderRadius: '12px',
-            background: `linear-gradient(135deg, ${C.darkGreen} 0%, ${C.pink} 100%)`,
-            color: C.cream, fontSize: '15px', fontWeight: 700, textDecoration: 'none',
+            backgroundColor: dark ? C.pink : C.black, color: C.cream, fontSize: '15px', fontWeight: 700, textDecoration: 'none',
             ...fadeUp(ctaReveal.visible, 0.2),
           }}>
             Search Flights <ArrowRight style={{ width: '16px', height: '16px' }} />
