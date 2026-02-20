@@ -29,9 +29,9 @@ V4_TOKEN = (
     "3yif42MVO7gxHWAXnbDtowjfLk8MnM4Qa169WB3Qxf8"
 )
 
-# Dynamic date range: today + 30 days
+# Dynamic date range: today + 90 days
 START_DATE = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-END_DATE = START_DATE + timedelta(days=30)
+END_DATE = START_DATE + timedelta(days=90)
 
 STATION_NAMES = {
     "BUR": "Burbank", "LAS": "Las Vegas", "SMO": "Santa Monica",
@@ -336,7 +336,7 @@ def _v4_fetch_one(origin, dest, date_str):
     return parse_v4(data, origin, dest)
 
 
-def v4_scrape_route(origin, dest, start, end, max_workers=5):
+def v4_scrape_route(origin, dest, start, end, max_workers=10):
     """Scrape an entire route via v4 using parallel requests."""
     days = []
     day = start
@@ -432,7 +432,7 @@ def main():
             label = f"{STATION_NAMES.get(origin, origin)} ({origin}) -> {STATION_NAMES.get(dest, dest)} ({dest})"
             print(f"[{route_idx}/{len(v2_failed_routes)}] {label}", end=" ", flush=True)
 
-            flights = v4_scrape_route(origin, dest, START_DATE, END_DATE, max_workers=5)
+            flights = v4_scrape_route(origin, dest, START_DATE, END_DATE, max_workers=10)
             v4_flights.extend(flights)
             print(f"-> {len(flights)}")
 
