@@ -426,11 +426,10 @@ class TradewindScraper:
 
                 time.sleep(REQUEST_DELAY)
 
-        # Step 3: Fall back to schedule-based generation
+        # Step 3: If live scrape failed, output nothing (don't generate fake flights)
         if not route_flights:
-            print(f"\n  [SCHEDULE] Live scrape unavailable — generating from published schedule")
-            route_flights = self._generate_schedule_flights(origin, destination, start_date, days)
-            print(f"  [SCHEDULE] Generated {len(route_flights)} flights")
+            print(f"\n  [SKIP] Live scrape unavailable — no flights to output")
+            print(f"         (not generating fake schedule data)")
 
         print(f"\n  Total for {origin}->{destination}: {len(route_flights)} flights")
         return route_flights
