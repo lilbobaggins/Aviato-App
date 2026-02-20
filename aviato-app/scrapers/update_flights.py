@@ -605,24 +605,10 @@ def _update_seasonal_dates(
         if dates:
             bark_dates[route_key] = sorted(dates)
 
-    # Collect ISO dates per route from Tradewind flights
-    # SKIP year-round routes (ACK↔HPN) — they should NOT be in SEASONAL_DATES
-    # because the calendar should allow picking any date for daily service.
-    # Only add seasonal routes (MVY↔HPN: May-Nov only).
-    TRADEWIND_YEAR_ROUND = {"ACK-HPN", "HPN-ACK"}
-    tw_dates: dict[str, list[str]] = {}
-    for route_key, flights in tradewind_routes.items():
-        if route_key in TRADEWIND_YEAR_ROUND:
-            continue  # Daily service, no date restriction needed
-        dates = set()
-        for fl in flights:
-            iso = fl.get("date_iso", "")
-            if iso and re.match(r"\d{4}-\d{2}-\d{2}", iso):
-                dates.add(iso)
-        if dates:
-            tw_dates[route_key] = sorted(dates)
+    # Tradewind routes all run year-round — do NOT add to SEASONAL_DATES.
+    # The calendar should allow picking any date for all Tradewind service.
 
-    all_new_dates = {**bark_dates, **tw_dates}
+    all_new_dates = {**bark_dates}
 
     if not all_new_dates:
         return
