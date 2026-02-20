@@ -28,22 +28,64 @@ STATION_NAMES = {
     "OAK": "Oakland", "HPN": "White Plains", "PBI": "West Palm Beach",
     "OPF": "Miami", "DAL": "Dallas", "DSI": "Destin",
     "HOU": "Houston", "TRM": "Coachella Valley",
+    "LAX": "Los Angeles", "CSW": "Cabo San Lucas",
+    "APA": "Denver", "RNO": "Reno", "SLC": "Salt Lake City",
+    "CLD": "Carlsbad", "TSM": "Taos", "EDC": "Austin",
+    "SAF": "Santa Fe", "HOB": "Hobbs",
 }
 
 ROUTES = [
+    # LA area to Las Vegas
     ("BUR", "LAS"), ("LAS", "BUR"),
     ("SMO", "LAS"), ("LAS", "SMO"),
     ("SNA", "LAS"), ("LAS", "SNA"),
+    ("LAX", "LAS"), ("LAS", "LAX"),
+    # LA area to Scottsdale
     ("SMO", "SCF"), ("SCF", "SMO"),
     ("SNA", "SCF"), ("SCF", "SNA"),
+    ("BUR", "SCF"), ("SCF", "BUR"),
+    # LA area to Bay Area
     ("BUR", "CCR"), ("CCR", "BUR"),
+    ("BUR", "OAK"), ("OAK", "BUR"),
     ("SNA", "OAK"), ("OAK", "SNA"),
-    ("HPN", "PBI"), ("PBI", "HPN"),
-    ("HPN", "OPF"), ("OPF", "HPN"),
+    # LA area to Reno / SLC
+    ("BUR", "RNO"), ("RNO", "BUR"),
+    ("SNA", "RNO"), ("RNO", "SNA"),
+    ("BUR", "SLC"), ("SLC", "BUR"),
+    ("SNA", "SLC"), ("SLC", "SNA"),
+    # LA area to Carlsbad
+    ("BUR", "CLD"), ("CLD", "BUR"),
+    # LA / Cabo
+    ("LAX", "CSW"), ("CSW", "LAX"),
+    # LA area misc
+    ("SMO", "TRM"), ("TRM", "SMO"),
+    # Las Vegas to other destinations
+    ("LAS", "SCF"), ("SCF", "LAS"),
+    ("LAS", "OAK"), ("OAK", "LAS"),
+    ("LAS", "CLD"), ("CLD", "LAS"),
+    ("LAS", "SLC"), ("SLC", "LAS"),
+    ("LAS", "APA"), ("APA", "LAS"),
+    ("LAS", "RNO"), ("RNO", "LAS"),
+    # Dallas hub
     ("DAL", "LAS"), ("LAS", "DAL"),
     ("DAL", "DSI"), ("DSI", "DAL"),
     ("DAL", "HOU"), ("HOU", "DAL"),
-    ("SMO", "TRM"), ("TRM", "SMO"),
+    ("DAL", "OPF"), ("OPF", "DAL"),
+    ("DAL", "CSW"), ("CSW", "DAL"),
+    ("DAL", "APA"), ("APA", "DAL"),
+    ("DAL", "TSM"), ("TSM", "DAL"),
+    ("DAL", "SCF"), ("SCF", "DAL"),
+    ("DAL", "BUR"), ("BUR", "DAL"),
+    ("DAL", "SAF"), ("SAF", "DAL"),
+    ("DAL", "HOB"), ("HOB", "DAL"),
+    ("DAL", "EDC"), ("EDC", "DAL"),
+    # East Coast
+    ("HPN", "PBI"), ("PBI", "HPN"),
+    ("HPN", "OPF"), ("OPF", "HPN"),
+    # Scottsdale hub
+    ("SCF", "APA"), ("APA", "SCF"),
+    ("SCF", "SLC"), ("SLC", "SCF"),
+    ("SCF", "CLD"), ("CLD", "SCF"),
 ]
 
 BASE_HEADERS = {

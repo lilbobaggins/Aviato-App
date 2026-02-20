@@ -22,11 +22,37 @@ FLIGHTS_TS = Path(__file__).parent.parent / "app" / "data" / "flights.ts"
 
 # ── JSX config ────────────────────────────────────────────────────────
 JSX_ROUTES = [
+    # LA area to Las Vegas
     "BUR-LAS", "LAS-BUR", "SMO-LAS", "LAS-SMO", "SNA-LAS", "LAS-SNA",
-    "SMO-SCF", "SCF-SMO", "SNA-SCF", "SCF-SNA", "BUR-CCR", "CCR-BUR",
-    "SNA-OAK", "OAK-SNA", "HPN-PBI", "PBI-HPN", "HPN-OPF", "OPF-HPN",
-    "DAL-LAS", "LAS-DAL", "DAL-DSI", "DSI-DAL", "DAL-HOU", "HOU-DAL",
+    "LAX-LAS", "LAS-LAX",
+    # LA area to Scottsdale
+    "SMO-SCF", "SCF-SMO", "SNA-SCF", "SCF-SNA", "BUR-SCF", "SCF-BUR",
+    # LA area to Bay Area
+    "BUR-CCR", "CCR-BUR", "BUR-OAK", "OAK-BUR", "SNA-OAK", "OAK-SNA",
+    # LA area to Reno / SLC
+    "BUR-RNO", "RNO-BUR", "SNA-RNO", "RNO-SNA",
+    "BUR-SLC", "SLC-BUR", "SNA-SLC", "SLC-SNA",
+    # LA area to Carlsbad
+    "BUR-CLD", "CLD-BUR",
+    # LA / Cabo
+    "LAX-CSW", "CSW-LAX",
+    # LA area misc
     "SMO-TRM", "TRM-SMO",
+    # Las Vegas to other destinations
+    "LAS-SCF", "SCF-LAS", "LAS-OAK", "OAK-LAS",
+    "LAS-CLD", "CLD-LAS", "LAS-SLC", "SLC-LAS",
+    "LAS-APA", "APA-LAS", "LAS-RNO", "RNO-LAS",
+    # Dallas hub
+    "DAL-LAS", "LAS-DAL", "DAL-DSI", "DSI-DAL", "DAL-HOU", "HOU-DAL",
+    "DAL-OPF", "OPF-DAL", "DAL-CSW", "CSW-DAL",
+    "DAL-APA", "APA-DAL", "DAL-TSM", "TSM-DAL",
+    "DAL-SCF", "SCF-DAL", "DAL-BUR", "BUR-DAL",
+    "DAL-SAF", "SAF-DAL", "DAL-HOB", "HOB-DAL",
+    "DAL-EDC", "EDC-DAL",
+    # East Coast
+    "HPN-PBI", "PBI-HPN", "HPN-OPF", "OPF-HPN",
+    # Scottsdale hub
+    "SCF-APA", "APA-SCF", "SCF-SLC", "SLC-SCF", "SCF-CLD", "CLD-SCF",
 ]
 JSX_CRAFT = "ERJ-135"
 JSX_SEATS_DEFAULT = 2
