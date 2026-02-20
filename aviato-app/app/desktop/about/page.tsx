@@ -97,6 +97,7 @@ export default function AboutPage() {
   const missionReveal = useReveal(0.15);
   const howReveal = useReveal(0.1);
   const whyReveal = useReveal(0.1);
+  const pricingReveal = useReveal(0.1);
   const airlinesReveal = useReveal(0.1);
   const statusReveal = useReveal(0.15);
   const faqReveal = useReveal(0.1);
@@ -118,6 +119,10 @@ export default function AboutPage() {
     {
       q: 'What is semi-private flying?',
       a: 'Semi-private airlines operate small jets (16–30 seats) from private terminals. You skip TSA lines, arrive just 15 minutes before departure, and enjoy a premium experience — leather seats, complimentary food & drinks, and quiet cabins — at a fraction of charter costs, starting from $99/seat.',
+    },
+    {
+      q: 'Is semi-private really cheaper than first class?',
+      a: 'On many popular routes, yes. Airlines like JSX offer fares starting at $99 one-way, and most semi-private flights price between $200–$600 — which is at or below the $500–$900 average for domestic first class. Plus you get private terminals, no TSA, and a way better experience. It\'s not cheaper on every single route, but the value is hard to beat.',
     },
     {
       q: 'Are the prices on Aviato accurate?',
@@ -238,6 +243,44 @@ export default function AboutPage() {
               <p style={{ fontSize: '14px', color: t.textMuted, margin: 0, lineHeight: 1.7 }}>{item.desc}</p>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ─── Pricing Comparison ─── */}
+      <div ref={pricingReveal.ref} style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '80px 48px', textAlign: 'center' }}>
+          <p style={{ fontSize: '13px', fontWeight: 800, color: t.accent, letterSpacing: '0.1em', margin: '0 0 20px', ...fadeUp(pricingReveal.visible, 0) }}>THE PRICE MIGHT SURPRISE YOU</p>
+          <h2 style={{ fontSize: '56px', fontWeight: 900, color: t.text, margin: '0 0 8px', letterSpacing: '-0.03em', lineHeight: 1, ...fadeUp(pricingReveal.visible, 0.08) }}>
+            From <span style={{ color: dark ? C.pink : C.darkGreen }}>$99</span>/seat
+          </h2>
+          <p style={{ fontSize: '18px', color: t.textSec, margin: '12px 0 40px', lineHeight: 1.6, ...fadeUp(pricingReveal.visible, 0.15) }}>
+            Semi-private fares on popular routes regularly come in at or below domestic first class — which averages $500–$900 one-way. You&apos;re getting a private terminal, no TSA, leather seats, and complimentary food and drinks for the same price (or less) as fighting for overhead bin space in first class.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: '24px', alignItems: 'center', maxWidth: '640px', margin: '0 auto', ...fadeUp(pricingReveal.visible, 0.22) }}>
+            {/* Semi-Private side */}
+            <div style={{ padding: '28px 20px', borderRadius: '16px', backgroundColor: dark ? 'rgba(232,87,109,0.08)' : 'rgba(10,61,46,0.04)', border: `2px solid ${dark ? C.pink : C.darkGreen}` }}>
+              <div style={{ fontSize: '12px', fontWeight: 800, color: t.accent, letterSpacing: '0.08em', marginBottom: '8px' }}>SEMI-PRIVATE</div>
+              <div style={{ fontSize: '36px', fontWeight: 900, color: t.text, letterSpacing: '-0.02em' }}>$99–$599</div>
+              <div style={{ fontSize: '13px', color: t.textMuted, marginTop: '6px' }}>per seat, one way</div>
+              <div style={{ fontSize: '12px', color: t.textSec, marginTop: '12px', lineHeight: 1.5 }}>
+                Private terminal &bull; No TSA &bull; 15-min check-in &bull; Leather seats &bull; Free food &amp; drinks
+              </div>
+            </div>
+            {/* VS */}
+            <div style={{ fontSize: '16px', fontWeight: 900, color: t.textMuted, padding: '0 4px' }}>vs</div>
+            {/* First Class side */}
+            <div style={{ padding: '28px 20px', borderRadius: '16px', backgroundColor: dark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)', border: `1px solid ${t.cardBorder}` }}>
+              <div style={{ fontSize: '12px', fontWeight: 800, color: t.textMuted, letterSpacing: '0.08em', marginBottom: '8px' }}>DOMESTIC FIRST CLASS</div>
+              <div style={{ fontSize: '36px', fontWeight: 900, color: t.textSec, letterSpacing: '-0.02em' }}>$500–$900</div>
+              <div style={{ fontSize: '13px', color: t.textMuted, marginTop: '6px' }}>per seat, one way</div>
+              <div style={{ fontSize: '12px', color: t.textMuted, marginTop: '12px', lineHeight: 1.5 }}>
+                Standard terminal &bull; TSA lines &bull; 1-2 hr early &bull; Wider seat &bull; Airline snacks
+              </div>
+            </div>
+          </div>
+          <p style={{ fontSize: '13px', color: t.textMuted, margin: '28px 0 0', lineHeight: 1.5, fontStyle: 'italic', ...fadeUp(pricingReveal.visible, 0.3) }}>
+            Pricing varies by route and airline. Semi-private fares based on published rates from JSX, Surf Air, and Tradewind. First class averages based on domestic one-way fares across major US carriers.
+          </p>
         </div>
       </div>
 
