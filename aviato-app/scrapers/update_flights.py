@@ -15,8 +15,24 @@ import json
 import re
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
+
+
+def _parse_date_to_iso(date_str: str) -> str:
+    """Convert various date formats to ISO YYYY-MM-DD."""
+    if not date_str:
+        return ""
+    # Already ISO?
+    if re.match(r"^\d{4}-\d{2}-\d{2}$", date_str.strip()):
+        return date_str.strip()
+    # Try common formats: "April 06, 2026", "Apr 06, 2026", "06 Apr 2026", etc.
+    for fmt in ["%B %d, %Y", "%b %d, %Y", "%d %B %Y", "%d %b %Y", "%m/%d/%Y"]:
+        try:
+            return datetime.strptime(date_str.strip(), fmt).strftime("%Y-%m-%d")
+        except ValueError:
+            continue
+    return date_str.strip()
 
 FLIGHTS_TS = Path(__file__).parent.parent / "app" / "data" / "flights.ts"
 
@@ -347,7 +363,8 @@ def bark_to_ts(route_key: str, flights: list[dict]) -> list[str]:
         arr = _calc_arrival(takeoff, dur, fr, to)
         price_raw = fl.get("price", "$6725")
         price = int(float(str(price_raw).replace("$", "").replace(",", "")))
-        date = fl.get("date", "")
+        raw_date = fl.get("date", "")
+        date = _parse_date_to_iso(raw_date)  # Convert to ISO format
         seats = fl.get("tickets_remaining", 5) or 5
 
         line = (
@@ -382,7 +399,15 @@ def _calc_arrival(takeoff: str, dur: str, origin: str, dest: str) -> str:
     dh, dmn = int(dm.group(1)), int(dm.group(2))
 
     # Timezone offsets (relative to ET)
-    tz = {'HPN': 0, 'FXE': 0, 'VNY': -3, 'SJC': -3, 'KOA': -5}
+    tz = {
+        'HPN': 0, 'FXE': 0,
+        'VNY': -3, 'SJC': -3, 'KOA': -5, 'SEA': -3,
+        # Europe (ahead of ET)
+        'LTN': 5, 'LBG': 6, 'MAD': 6, 'LIS': 5,
+        'BER': 6, 'DUB': 5, 'ATH': 7, 'ARN': 6,
+        # Asia
+        'NRT': 14,
+    }
     offset = tz.get(dest, 0) - tz.get(origin, 0)
 
     total_min = h * 60 + mn + dh * 60 + dmn + offset * 60
@@ -558,6 +583,70 @@ def update_flights_ts(
     # Write back
     with open(FLIGHTS_TS, "w") as f:
         f.write("\n".join(new_lines))
+
+    # Now update SEASONAL_DATES for Bark Air and Tradewind routes
+    _update_seasonal_dates(bark_routes, tradewind_routes)
+
+
+def _update_seasonal_dates(
+    bark_routes: dict[str, list[dict]],
+    tradewind_routes: dict[str, list[dict]],
+):
+    """Update SEASONAL_DATES in flights.ts for Bark Air and Tradewind routes."""
+    # Collect ISO dates per route from Bark Air flights
+    bark_dates: dict[str, list[str]] = {}
+    for route_key, flights in bark_routes.items():
+        dates = set()
+        for fl in flights:
+            raw_date = fl.get("date", "")
+            iso = _parse_date_to_iso(raw_date)
+            if iso and re.match(r"\d{4}-\d{2}-\d{2}", iso):
+                dates.add(iso)
+        if dates:
+            bark_dates[route_key] = sorted(dates)
+
+    # Collect ISO dates per route from Tradewind flights
+    tw_dates: dict[str, list[str]] = {}
+    for route_key, flights in tradewind_routes.items():
+        dates = set()
+        for fl in flights:
+            iso = fl.get("date_iso", "")
+            if iso and re.match(r"\d{4}-\d{2}-\d{2}", iso):
+                dates.add(iso)
+        if dates:
+            tw_dates[route_key] = sorted(dates)
+
+    all_new_dates = {**bark_dates, **tw_dates}
+
+    if not all_new_dates:
+        return
+
+    # Read the current file
+    with open(FLIGHTS_TS, "r") as f:
+        content = f.read()
+
+    # For each route with dates, update or add to SEASONAL_DATES
+    for route_key, dates in sorted(all_new_dates.items()):
+        dates_str = ",".join(f"'{d}'" for d in dates)
+        new_entry = f"  '{route_key}': [{dates_str}],"
+
+        # Check if this route already exists in SEASONAL_DATES
+        pattern = rf"  '{re.escape(route_key)}':\s*\[.*?\],"
+        if re.search(pattern, content):
+            # Replace existing entry
+            content = re.sub(pattern, new_entry, content)
+            print(f"  [SEASONAL] Updated '{route_key}' ({len(dates)} dates)")
+        else:
+            # Add new entry before the closing '};' of SEASONAL_DATES
+            # Find SEASONAL_DATES closing bracket
+            sd_match = re.search(r"(export const SEASONAL_DATES.*?\n)(.*?)(^\};)", content, re.MULTILINE | re.DOTALL)
+            if sd_match:
+                insertion_point = sd_match.end(2)
+                content = content[:insertion_point] + new_entry + "\n" + content[insertion_point:]
+                print(f"  [SEASONAL] Added '{route_key}' ({len(dates)} dates)")
+
+    with open(FLIGHTS_TS, "w") as f:
+        f.write(content)
 
 
 def main():
