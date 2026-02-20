@@ -118,7 +118,7 @@ def load_tradewind_flights(json_path: str) -> dict[str, list[dict]]:
 
     # Sort each route by date then time
     for key in routes:
-        routes[key].sort(key=lambda f: (f.get("date_iso", ""), f.get("departure_time", "")))
+        routes[key].sort(key=lambda f: (f.get("date_iso") or "", f.get("departure_time") or ""))
 
     return routes
 
@@ -146,7 +146,7 @@ def load_bark_flights(json_path: str) -> dict[str, list[dict]]:
 
     # Sort each route by date
     for key in routes:
-        routes[key].sort(key=lambda f: (f.get("date", ""), f.get("takeoff", "")))
+        routes[key].sort(key=lambda f: (f.get("date") or "", f.get("takeoff") or ""))
 
     return routes
 
@@ -252,7 +252,7 @@ def load_aero_flights(json_path: str) -> dict[str, list[dict]]:
             routes.setdefault(key, []).append(fl)
 
     for key in routes:
-        routes[key].sort(key=lambda f: (f.get("date", ""), f.get("departure_time", "")))
+        routes[key].sort(key=lambda f: (f.get("date") or "", f.get("departure_time") or ""))
 
     return routes
 
