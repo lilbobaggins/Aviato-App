@@ -162,11 +162,21 @@ function ResultsContent() {
     }
   };
 
+  // Per-airline tax/fee rates (based on actual airline pricing)
+  const TAX_RATES: Record<string, number> = {
+    'Aero': 0.076,
+    'JSX': 0.075,
+    'Tradewind': 0.075,
+    'Slate': 0.08,
+    'BARK Air': 0.05,
+  };
+  const getTaxRate = (airline: string) => TAX_RATES[airline] ?? 0.075;
+
   // Detail panel
   const DetailPanel = ({ fl, onClose }: { fl: Flight; onClose: () => void }) => {
     const style = AIRLINE_STYLE[fl.airline] || { bg: '#333', text: '#fff', label: '?', accent: '#999' };
     const basePrice = Math.round(fl.price);
-    const taxes = Math.round(basePrice * 0.12);
+    const taxes = Math.round(basePrice * getTaxRate(fl.airline));
     const total = (basePrice + taxes) * passengers;
     const rating = WING_RATINGS[fl.airline];
     const deepLinkUrl = generateDeepLink(fl.airline, fl.dc, fl.ac, departDate, returnDate, passengers, tripType);
@@ -781,7 +791,9 @@ function ResultsContent() {
         const outBasePrice = Math.round(selectedOutbound.price);
         const retBasePrice = Math.round(selectedReturn.price);
         const totalBase = (outBasePrice + retBasePrice) * passengers;
-        const totalTaxes = Math.round(totalBase * 0.12);
+        const outTaxes = Math.round(outBasePrice * getTaxRate(selectedOutbound.airline));
+        const retTaxes = Math.round(retBasePrice * getTaxRate(selectedReturn.airline));
+        const totalTaxes = (outTaxes + retTaxes) * passengers;
         const grandTotal = totalBase + totalTaxes;
 
         const outDeepLink = generateDeepLink(selectedOutbound.airline, selectedOutbound.dc, selectedOutbound.ac, departDate, returnDate, passengers, sameAirline ? 'roundtrip' : 'oneway');
