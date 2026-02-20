@@ -689,6 +689,42 @@ export default function DesktopPage() {
             </div>
           </div>
 
+          {/* ── Mobile Pricing Banner ── */}
+          <div style={{ padding: '0 16px 20px' }}>
+            <div style={{
+              padding: '20px 18px', borderRadius: '14px',
+              background: dark
+                ? 'linear-gradient(135deg, rgba(232,87,109,0.08) 0%, rgba(232,87,109,0.03) 100%)'
+                : 'linear-gradient(135deg, rgba(10,61,46,0.04) 0%, rgba(10,61,46,0.01) 100%)',
+              border: `1px solid ${dark ? 'rgba(232,87,109,0.15)' : 'rgba(10,61,46,0.1)'}`,
+            }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '12px' }}>
+                <div style={{
+                  width: '36px', height: '36px', borderRadius: '10px', flexShrink: 0,
+                  background: dark ? 'rgba(232,87,109,0.12)' : 'rgba(10,61,46,0.08)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <DollarSign style={{ width: '18px', height: '18px', color: t.accent }} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 800, color: t.text, lineHeight: 1.3 }}>
+                    From <span style={{ color: dark ? C.pink : C.darkGreen }}>$99/seat</span> — less than first class
+                  </div>
+                  <div style={{ fontSize: '12px', color: t.textMuted, marginTop: '3px', lineHeight: 1.4 }}>
+                    Private terminal. No TSA. Leather seats. Free food &amp; drinks.
+                  </div>
+                </div>
+              </div>
+              <a href="/desktop/about" style={{
+                display: 'block', textAlign: 'center', padding: '10px', borderRadius: '10px',
+                fontSize: '12px', fontWeight: 700, backgroundColor: dark ? C.pink : C.darkGreen,
+                color: '#fff', textDecoration: 'none',
+              }}>
+                See the Full Comparison
+              </a>
+            </div>
+          </div>
+
           {/* ── Mobile Events ── */}
           <div style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>
             <div style={{ padding: '28px 16px 32px' }}>
@@ -1042,6 +1078,50 @@ export default function DesktopPage() {
           </div>
         </div>
 
+
+        {/* ========== Pricing Comparison Banner ========== */}
+        <div style={{
+          maxWidth: '1100px', margin: '0 auto', padding: '0 48px 40px',
+          ...revealStyle(routesReveal.isVisible, 0.5),
+        }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '28px 36px', borderRadius: '16px',
+            background: dark
+              ? 'linear-gradient(135deg, rgba(232,87,109,0.08) 0%, rgba(232,87,109,0.03) 100%)'
+              : `linear-gradient(135deg, rgba(10,61,46,0.04) 0%, rgba(10,61,46,0.01) 100%)`,
+            border: `1px solid ${dark ? 'rgba(232,87,109,0.15)' : 'rgba(10,61,46,0.1)'}`,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{
+                width: '48px', height: '48px', borderRadius: '14px',
+                background: dark ? 'rgba(232,87,109,0.12)' : 'rgba(10,61,46,0.08)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+              }}>
+                <DollarSign style={{ width: '22px', height: '22px', color: t.accent }} />
+              </div>
+              <div>
+                <div style={{ fontSize: '16px', fontWeight: 800, color: t.text, lineHeight: 1.3 }}>
+                  Semi-private from <span style={{ color: dark ? C.pink : C.darkGreen }}>$99/seat</span> — domestic first class averages $500–$900
+                </div>
+                <div style={{ fontSize: '13px', color: t.textMuted, marginTop: '3px' }}>
+                  Private terminal. No TSA. Leather seats. Free food &amp; drinks. Same price or less.
+                </div>
+              </div>
+            </div>
+            <a href="/desktop/about" style={{
+              padding: '10px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: 700,
+              backgroundColor: dark ? C.pink : C.darkGreen, color: '#fff',
+              textDecoration: 'none', flexShrink: 0, whiteSpace: 'nowrap',
+              transition: 'transform 0.2s ease',
+            }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
+            >
+              See the Comparison
+            </a>
+          </div>
+        </div>
 
         {/* ========== Events Slider ========== */}
         <div ref={eventsReveal.ref} style={{ backgroundColor: t.bgAlt, borderTop: `1px solid ${t.cardBorder}`, borderBottom: `1px solid ${t.cardBorder}` }}>

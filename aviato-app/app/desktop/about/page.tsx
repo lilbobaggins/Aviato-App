@@ -106,35 +106,27 @@ export default function AboutPage() {
   const faqs = [
     {
       q: 'What is Aviato?',
-      a: 'Aviato is a flight search engine exclusively for semi-private airlines. We aggregate flights from carriers like JSX, Aero, Tradewind, Slate, and BARK Air into one easy search, so you can compare prices, times, and amenities across every option.',
+      a: 'A search engine for semi-private flights. We pull in flights from JSX, Aero, Tradewind, Slate, and BARK Air so you can compare everything in one place.',
     },
     {
-      q: 'Is Aviato free to use?',
-      a: 'Yes, Aviato is completely free. We help you find and compare semi-private flights, then link you directly to the airline to book. You always book at the same price as going directly to the airline.',
+      q: 'Is it free?',
+      a: 'Completely free. We link you to the airline to book — same price as going direct.',
     },
     {
       q: 'Do I book through Aviato?',
-      a: 'No — Aviato links you directly to the airline\'s booking page with your route pre-selected. You complete your purchase on their website. We never handle your payment or personal booking details.',
+      a: 'Nope — we link you straight to the airline\'s booking page. We never handle your payment info.',
     },
     {
       q: 'What is semi-private flying?',
-      a: 'Semi-private airlines operate small jets (16–30 seats) from private terminals. You skip TSA lines, arrive just 15 minutes before departure, and enjoy a premium experience — leather seats, complimentary food & drinks, and quiet cabins — at a fraction of charter costs, starting from $99/seat.',
+      a: 'Small jets (16–30 seats), private terminals, no TSA, 15-minute check-in, leather seats, free food and drinks. Starting at $99/seat.',
     },
     {
-      q: 'Is semi-private really cheaper than first class?',
-      a: 'On many popular routes, yes. Airlines like JSX offer fares starting at $99 one-way, and most semi-private flights price between $200–$600 — which is at or below the $500–$900 average for domestic first class. Plus you get private terminals, no TSA, and a way better experience. It\'s not cheaper on every single route, but the value is hard to beat.',
+      q: 'Is it really cheaper than first class?',
+      a: 'On many routes, yes. Most semi-private fares are $200–$600 vs. $500–$900 for domestic first class — with a much better experience.',
     },
     {
-      q: 'Are the prices on Aviato accurate?',
-      a: 'We update our flight data regularly, but prices and schedules are estimates. We always recommend confirming final pricing and availability directly on the airline\'s website before booking.',
-    },
-    {
-      q: 'Which airlines does Aviato track?',
-      a: 'We currently track JSX, Aero, Tradewind Aviation, Slate, and BARK Air. We\'re always working to add more carriers as the semi-private market grows.',
-    },
-    {
-      q: 'Can I book round-trip flights?',
-      a: 'Absolutely. Search round-trip and Aviato will show you outbound and return options. Select both legs and we\'ll create a trip summary with booking links — even if your outbound and return are on different airlines.',
+      q: 'Are the prices accurate?',
+      a: 'We update regularly, but prices are estimates. Always confirm on the airline\'s site before booking.',
     },
   ];
 
@@ -169,7 +161,7 @@ export default function AboutPage() {
           Rediscover what flying is all about
         </h1>
         <p style={{ fontSize: '19px', color: t.textSec, margin: '0 0 36px', lineHeight: 1.6, ...fadeUp(heroReveal.visible, 0.2) }}>
-          Aviato is a search engine built for semi-private flights. We pull together a growing selection of carriers, routes, and fares into one place so you can stop juggling five different airline websites.
+          One search across every semi-private airline. Compare prices, times, and amenities — then book direct.
         </p>
         <a href="/desktop" style={{
           display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '14px 32px', borderRadius: '12px',
@@ -188,13 +180,10 @@ export default function AboutPage() {
         </p>
         <div style={{ fontSize: '16px', color: t.textSec, lineHeight: 1.8, ...fadeUp(missionReveal.visible, 0.12) }}>
           <p style={{ margin: '16px 0' }}>
-            I built Aviato after falling down the rabbit hole of semi-private aviation. The more I learned about it, the more I wanted to fly this way — skip the terminal chaos, board a nice small jet, actually enjoy the experience. The problem? Every airline had its own website, its own route map, its own booking system. Finding the best option meant opening a bunch of tabs and cross-referencing everything manually.
+            I built Aviato after discovering semi-private aviation and realizing every airline had its own site, its own routes, its own booking system. Finding the best option meant opening a bunch of tabs and comparing everything manually.
           </p>
           <p style={{ margin: '16px 0' }}>
-            That was annoying. So I built the thing I wished existed.
-          </p>
-          <p style={{ margin: '16px 0' }}>
-            Aviato puts all the semi-private options in one place. Search a route, see what&apos;s available across multiple airlines, compare prices and amenities, and book directly with whoever you choose. No middleman, no markup — just a faster way to find your flight.
+            That was annoying. So I built the thing I wished existed — one search, every carrier, book direct.
           </p>
         </div>
       </div>
@@ -206,9 +195,9 @@ export default function AboutPage() {
           <p style={{ fontSize: '16px', color: t.textMuted, margin: '0 0 48px', textAlign: 'center', ...fadeUp(howReveal.visible, 0.08) }}>Three steps to your next flight</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '28px' }}>
             {[
-              { icon: <Search style={{ width: '26px', height: '26px' }} />, title: 'Search', desc: 'Enter your route and dates. We search across every semi-private carrier simultaneously so you never miss a flight.' },
-              { icon: <Zap style={{ width: '26px', height: '26px' }} />, title: 'Compare', desc: 'See all available flights side by side — prices, times, aircraft, amenities, and our wing ratings. Filter and sort instantly.' },
-              { icon: <Plane style={{ width: '26px', height: '26px' }} />, title: 'Book Direct', desc: 'Click through to book directly with the airline. We link you straight to the booking page with your route pre-selected.' },
+              { icon: <Search style={{ width: '26px', height: '26px' }} />, title: 'Search', desc: 'Enter your route and dates. We search every semi-private carrier at once.' },
+              { icon: <Zap style={{ width: '26px', height: '26px' }} />, title: 'Compare', desc: 'See flights side by side — prices, times, aircraft, and our wing ratings.' },
+              { icon: <Plane style={{ width: '26px', height: '26px' }} />, title: 'Book Direct', desc: 'Click through to the airline\'s booking page. No middleman, no markup.' },
             ].map((step, i) => (
               <div key={i} style={{
                 textAlign: 'center', padding: '36px 28px', borderRadius: '18px', backgroundColor: t.card, border: `1px solid ${t.cardBorder}`,
@@ -230,9 +219,9 @@ export default function AboutPage() {
         <p style={{ fontSize: '16px', color: t.textMuted, margin: '0 0 48px', textAlign: 'center', ...fadeUp(whyReveal.visible, 0.08) }}>The best-kept secret in aviation</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
           {[
-            { icon: <Clock style={{ width: '24px', height: '24px' }} />, title: 'Skip the Terminal', desc: 'Walk in 15 minutes before departure. No TSA lines, no crowded gates, no overhead bin fights. Just show up and fly.' },
-            { icon: <DollarSign style={{ width: '24px', height: '24px' }} />, title: 'Affordable Luxury', desc: 'Starting from $99 per seat. Semi-private gives you a private jet experience at a fraction of the cost of chartering.' },
-            { icon: <Shield style={{ width: '24px', height: '24px' }} />, title: 'Premium Experience', desc: 'Leather seats, complimentary drinks, gourmet snacks, and planes with 16-30 seats max. Flying the way it should be.' },
+            { icon: <Clock style={{ width: '24px', height: '24px' }} />, title: 'Skip the Terminal', desc: 'Arrive 15 minutes before departure. No TSA, no crowded gates. Just show up and fly.' },
+            { icon: <DollarSign style={{ width: '24px', height: '24px' }} />, title: 'Affordable Luxury', desc: 'From $99/seat. Private jet experience at a fraction of charter costs.' },
+            { icon: <Shield style={{ width: '24px', height: '24px' }} />, title: 'Premium Experience', desc: 'Leather seats, free drinks and snacks, 16–30 seat planes. Flying how it should be.' },
           ].map((item, i) => (
             <div key={i} style={{
               padding: '32px 28px', borderRadius: '18px', border: `1px solid ${t.cardBorder}`, backgroundColor: t.card,
@@ -254,7 +243,7 @@ export default function AboutPage() {
             From <span style={{ color: dark ? C.pink : C.darkGreen }}>$99</span>/seat
           </h2>
           <p style={{ fontSize: '18px', color: t.textSec, margin: '12px 0 40px', lineHeight: 1.6, ...fadeUp(pricingReveal.visible, 0.15) }}>
-            Semi-private fares on popular routes regularly come in at or below domestic first class — which averages $500–$900 one-way. You&apos;re getting a private terminal, no TSA, leather seats, and complimentary food and drinks for the same price (or less) as fighting for overhead bin space in first class.
+            Semi-private fares often come in at or below domestic first class ($500–$900 one-way) — with a private terminal, no TSA, and way better vibes.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: '24px', alignItems: 'center', maxWidth: '640px', margin: '0 auto', ...fadeUp(pricingReveal.visible, 0.22) }}>
             {/* Semi-Private side */}
@@ -324,13 +313,10 @@ export default function AboutPage() {
         <h2 style={{ fontSize: '32px', fontWeight: 900, color: t.text, margin: '0 0 20px', textAlign: 'center', letterSpacing: '-0.02em', ...fadeUp(statusReveal.visible, 0) }}>Where We&apos;re At</h2>
         <div style={{ fontSize: '16px', color: t.textSec, lineHeight: 1.8, textAlign: 'center', ...fadeUp(statusReveal.visible, 0.1) }}>
           <p style={{ margin: '0 0 16px' }}>
-            Aviato is still pretty young — think of us as the scrappy startup that really, really loves planes. Right now we&apos;re covering the most popular semi-private routes, the ones people actually want to fly. But we&apos;re adding new routes every single day, so if your dream flight isn&apos;t here yet, give us a minute. It&apos;s coming.
-          </p>
-          <p style={{ margin: '0 0 16px' }}>
-            Same goes for airlines. We&apos;re actively bringing more carriers onto the platform. The semi-private world is growing fast and we want every option in one place for you.
+            We&apos;re young and growing fast. Right now we cover the most popular routes — and we&apos;re adding more every day. If your dream flight isn&apos;t here yet, it&apos;s coming.
           </p>
           <p style={{ margin: '0 0 0', fontWeight: 600, color: t.text }}>
-            And hey — if you&apos;re a semi-private airline and you&apos;re reading this, we&apos;d love to feature you. Seriously. <a href="mailto:aviatoair@gmail.com" style={{ color: t.accent, textDecoration: 'underline' }}>Drop us a line</a> and let&apos;s make it happen.
+            Semi-private airline? We&apos;d love to feature you. <a href="mailto:aviatoair@gmail.com" style={{ color: t.accent, textDecoration: 'underline' }}>Drop us a line.</a>
           </p>
         </div>
       </div>
@@ -339,7 +325,7 @@ export default function AboutPage() {
       <div ref={faqReveal.ref} style={{ maxWidth: '700px', margin: '0 auto', padding: '72px 48px' }}>
         <h2 style={{ fontSize: '32px', fontWeight: 900, color: t.text, margin: '0 0 8px', textAlign: 'center', letterSpacing: '-0.02em', ...fadeUp(faqReveal.visible, 0) }}>FAQ</h2>
         <p style={{ fontSize: '16px', color: t.textMuted, margin: '0 0 40px', textAlign: 'center', ...fadeUp(faqReveal.visible, 0.08) }}>
-          Got a question? We&apos;re here to help. Feel free to <a href="mailto:aviatoair@gmail.com" style={{ color: t.accent, textDecoration: 'underline' }}>reach out</a> anytime.
+          Questions? <a href="mailto:aviatoair@gmail.com" style={{ color: t.accent, textDecoration: 'underline' }}>Reach out</a> anytime.
         </p>
         <div style={{ ...fadeUp(faqReveal.visible, 0.15), borderTop: `1px solid ${t.cardBorder}` }}>
           {faqs.map((faq, i) => (
