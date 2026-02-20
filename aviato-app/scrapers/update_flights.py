@@ -373,6 +373,32 @@ def _calc_arrival(takeoff: str, dur: str, origin: str, dest: str) -> str:
     return f"{arr_h12}:{arr_m:02d} {arr_ampm}"
 
 
+def _build_new_route_arrays(
+    replacements: list[tuple[str, str, list[str]]],
+    placed_routes: set[str],
+) -> list[str]:
+    """Build new route array blocks for routes that don't exist in flights.ts yet."""
+    # Group unplaced replacements by route key
+    unplaced: dict[str, list[str]] = {}
+    for route_key, airline, ts_lines in replacements:
+        if route_key not in placed_routes:
+            unplaced.setdefault(route_key, []).extend(ts_lines)
+
+    if not unplaced:
+        return []
+
+    lines = []
+    for route_key in sorted(unplaced.keys()):
+        entries = unplaced[route_key]
+        print(f"  [NEW] Creating route array '{route_key}' with {len(entries)} flights")
+        lines.append(f"  '{route_key}': [")
+        for entry in entries:
+            lines.append(entry)
+        lines.append("  ],")
+
+    return lines
+
+
 def update_flights_ts(
     jsx_routes: dict[str, list[dict]],
     aero_routes: dict[str, list[dict]],
@@ -410,6 +436,9 @@ def update_flights_ts(
         print("  No replacements to make.")
         return
 
+    # Track which route keys have been placed into existing arrays
+    placed_routes: set[str] = set()
+
     # Process the file line by line
     # IMPORTANT: Only process inside the FLIGHTS object, stop at '};'
     # This avoids touching SEASONAL_DATES which has duplicate route keys
@@ -425,6 +454,12 @@ def update_flights_ts(
         if "export const FLIGHTS" in line:
             inside_flights = True
         elif inside_flights and re.match(r"^\};", line):
+            # Before closing the FLIGHTS object, insert any NEW route arrays
+            # that didn't have existing arrays in the file
+            new_route_lines = _build_new_route_arrays(replacements, placed_routes)
+            if new_route_lines:
+                for nrl in new_route_lines:
+                    new_lines.append(nrl)
             inside_flights = False
 
         # Only process route arrays inside the FLIGHTS object
@@ -443,6 +478,11 @@ def update_flights_ts(
                 new_lines.append(line)
                 i += 1
                 continue
+
+            # Mark these routes as placed
+            for rk, airline, ts_lines in replacements:
+                if rk == route_key:
+                    placed_routes.add(rk)
 
             # We need to process this route array
             # Collect all lines until the closing '],'
