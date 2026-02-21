@@ -21,6 +21,10 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r aviato-app/scrapers/requirements.txt
+      - name: Install Chrome for Selenium
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
       - name: Run JSX scraper
         run: cd aviato-app/scrapers && python jsx_scraper.py
       - name: Run Tradewind scraper
