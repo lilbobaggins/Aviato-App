@@ -5287,6 +5287,11 @@ export const FLIGHTS: Record<string, Flight[]> = {
     { id:'slate-tebpbi-32', airline:'Slate', dep:'4:00 PM', arr:'7:00 PM', dc:'TEB', ac:'PBI', dur:'3h 00m', price:2490, craft:'CRJ-200', seats:8, amen:['WiFi','Catering','Champagne'], link:'flyslate.com', date:'2026-05-28' },
   ],
   'ACK-HPN': [
+    { id:'tw-ack-hpn-1', airline:'Tradewind', dep:'7:00 AM', arr:'7:45 AM', dc:'ACK', ac:'HPN', dur:'0h 45m', price:1120, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-ack-hpn-2', airline:'Tradewind', dep:'9:30 AM', arr:'10:15 AM', dc:'ACK', ac:'HPN', dur:'0h 45m', price:1120, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-ack-hpn-3', airline:'Tradewind', dep:'12:00 PM', arr:'12:45 PM', dc:'ACK', ac:'HPN', dur:'0h 45m', price:1120, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-ack-hpn-4', airline:'Tradewind', dep:'3:00 PM', arr:'3:45 PM', dc:'ACK', ac:'HPN', dur:'0h 45m', price:1120, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-ack-hpn-5', airline:'Tradewind', dep:'5:30 PM', arr:'6:15 PM', dc:'ACK', ac:'HPN', dur:'0h 45m', price:1120, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
   ],
   'APC-VNY': [
     { id:'aero-apc-vny-1', airline:'Aero', dep:'10:00 AM', arr:'11:15 AM', dc:'APC', ac:'VNY', dur:'1h 15m', price:825, craft:'ERJ-135', seats:16, amen:['WiFi','Gourmet Catering','Champagne'], link:'aero.com', date:'2026-04-24' },
@@ -5438,8 +5443,18 @@ export const FLIGHTS: Record<string, Flight[]> = {
     { id:'slate-fllteb-23', airline:'Slate', dep:'4:00 PM', arr:'7:00 PM', dc:'FLL', ac:'TEB', dur:'3h 00m', price:2290, craft:'CRJ-200', seats:8, amen:['WiFi','Catering','Champagne'], link:'flyslate.com', date:'2026-05-06' },
   ],
   'HPN-ACK': [
+    { id:'tw-hpn-ack-1', airline:'Tradewind', dep:'7:30 AM', arr:'8:15 AM', dc:'HPN', ac:'ACK', dur:'0h 45m', price:1120, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-hpn-ack-2', airline:'Tradewind', dep:'10:00 AM', arr:'10:45 AM', dc:'HPN', ac:'ACK', dur:'0h 45m', price:1120, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-hpn-ack-3', airline:'Tradewind', dep:'12:30 PM', arr:'1:15 PM', dc:'HPN', ac:'ACK', dur:'0h 45m', price:1120, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-hpn-ack-4', airline:'Tradewind', dep:'3:30 PM', arr:'4:15 PM', dc:'HPN', ac:'ACK', dur:'0h 45m', price:1120, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-hpn-ack-5', airline:'Tradewind', dep:'6:00 PM', arr:'6:45 PM', dc:'HPN', ac:'ACK', dur:'0h 45m', price:1120, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
   ],
   'HPN-MVY': [
+    { id:'tw-hpn-mvy-1', airline:'Tradewind', dep:'8:00 AM', arr:'8:40 AM', dc:'HPN', ac:'MVY', dur:'0h 40m', price:1010, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-hpn-mvy-2', airline:'Tradewind', dep:'10:30 AM', arr:'11:10 AM', dc:'HPN', ac:'MVY', dur:'0h 40m', price:1010, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-hpn-mvy-3', airline:'Tradewind', dep:'1:00 PM', arr:'1:40 PM', dc:'HPN', ac:'MVY', dur:'0h 40m', price:1010, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-hpn-mvy-4', airline:'Tradewind', dep:'4:00 PM', arr:'4:40 PM', dc:'HPN', ac:'MVY', dur:'0h 40m', price:1010, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-hpn-mvy-5', airline:'Tradewind', dep:'6:30 PM', arr:'7:10 PM', dc:'HPN', ac:'MVY', dur:'0h 40m', price:1010, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
   ],
   'HPN-SJC': [
     { id:'bark-hpn-sjc-1', airline:'BARK Air', dep:'9:00am (ET)', arr:'11:45 AM', dc:'HPN', ac:'SJC', dur:'5h 45m', price:7100, craft:'Bombardier Challenger 601', seats:2, amen:['WiFi','Gourmet Catering','Champagne','Calming Treats','Vet Tech On Board'], link:'air.bark.co', date:'2026-04-06' },
@@ -5554,6 +5569,11 @@ export const FLIGHTS: Record<string, Flight[]> = {
     { id:'slate-miateb-30', airline:'Slate', dep:'11:00 AM', arr:'2:00 PM', dc:'MIA', ac:'TEB', dur:'3h 00m', price:2190, craft:'CRJ-200', seats:8, amen:['WiFi','Catering','Champagne'], link:'flyslate.com', date:'2026-05-04' },
   ],
   'MVY-HPN': [
+    { id:'tw-mvy-hpn-1', airline:'Tradewind', dep:'7:00 AM', arr:'7:40 AM', dc:'MVY', ac:'HPN', dur:'0h 40m', price:1010, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-mvy-hpn-2', airline:'Tradewind', dep:'9:30 AM', arr:'10:10 AM', dc:'MVY', ac:'HPN', dur:'0h 40m', price:1010, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-mvy-hpn-3', airline:'Tradewind', dep:'12:00 PM', arr:'12:40 PM', dc:'MVY', ac:'HPN', dur:'0h 40m', price:1010, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-mvy-hpn-4', airline:'Tradewind', dep:'3:00 PM', arr:'3:40 PM', dc:'MVY', ac:'HPN', dur:'0h 40m', price:1010, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
+    { id:'tw-mvy-hpn-5', airline:'Tradewind', dep:'5:30 PM', arr:'6:10 PM', dc:'MVY', ac:'HPN', dur:'0h 40m', price:1010, craft:'Pilatus PC-12', seats:8, amen:['WiFi','Snacks'], link:'flytradewind.com' },
   ],
   'NAS-FLL': [
     { id:'tw-nf1', airline:'Tradewind', dep:'11:00 AM', arr:'12:00 PM', dc:'NAS', ac:'FLL', dur:'1h 00m', price:295, craft:'Pilatus PC-12', seats:5, amen:['WiFi','Snacks'], link:'flytradewind.com' },
