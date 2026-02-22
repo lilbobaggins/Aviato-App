@@ -125,13 +125,14 @@ const AirportDropdown = ({ dark, t, filtered, onChange, setIsOpen, setQuery, pos
       zIndex: 99999, maxHeight: '360px', overflowY: 'auto',
       border: `1px solid ${dark ? '#2A2A2A' : '#E5E5E0'}`,
       fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
-    }}>
+      WebkitOverflowScrolling: 'touch', touchAction: 'manipulation',
+    } as React.CSSProperties}>
       {filtered.length === 0 ? (
         <div style={{ padding: '20px', textAlign: 'center', color: t.textMuted, fontSize: '13px' }}>
           No matching locations
         </div>
       ) : filtered.map(loc => (
-        <button key={loc.code} onMouseDown={(e) => { e.preventDefault(); onChange(loc.code); setIsOpen(false); setQuery(''); }}
+        <button key={loc.code} onPointerDown={(e) => { e.preventDefault(); onChange(loc.code); setIsOpen(false); setQuery(''); }}
           style={{
             width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px',
             border: 'none', backgroundColor: 'transparent', cursor: 'pointer', textAlign: 'left', fontSize: '14px',
@@ -179,17 +180,20 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
     }
   }, []);
 
-  // Close dropdown only on main page scroll, not dropdown internal scroll
+  // Close dropdown only on main page scroll, not dropdown internal scroll or mobile keyboard
   useEffect(() => {
     if (!isOpen) return;
+    let scrollTimeout: ReturnType<typeof setTimeout>;
     const onScroll = (e: Event) => {
       const target = e.target as HTMLElement;
-      // Ignore scrolls inside the portal dropdown (zIndex 99999)
+      // Ignore scrolls inside the portal dropdown
       if (target && target.closest && target.closest('[data-airport-dropdown]')) return;
-      setIsOpen(false);
+      // Debounce: only close after sustained scroll (avoids mobile keyboard resize events)
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => setIsOpen(false), 100);
     };
     window.addEventListener('scroll', onScroll, true);
-    return () => window.removeEventListener('scroll', onScroll, true);
+    return () => { window.removeEventListener('scroll', onScroll, true); clearTimeout(scrollTimeout); };
   }, [isOpen]);
 
   useEffect(() => {
@@ -241,7 +245,7 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
           value={isOpen ? query : displayValue}
           onFocus={() => { updatePos(); setIsOpen(true); setQuery(''); }}
           onChange={(e) => setQuery(e.target.value)}
-          onBlur={() => setTimeout(() => setIsOpen(false), 200)}
+          onBlur={() => setTimeout(() => setIsOpen(false), 350)}
           style={{
             flex: 1, width: '100%', padding: 0, border: 'none', fontSize: '16px',
             fontFamily: 'inherit', outline: 'none', backgroundColor: 'transparent',
