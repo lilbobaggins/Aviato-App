@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
 Tradewind Aviation Flight Scraper for Aviato
-Scrapes the PUBLIC flight calendar at booking.flytradewind.com/VARS
-No login required — this page is publicly accessible.
+Scrapes the PUBLIC flight calendar at booking.flytradewind.com/VARS.
+No login required — uses the public widget to bootstrap a VARS session,
+then scrapes the flight calendar for each route.
 
 Routes:
   - ACK (Nantucket) <-> HPN (Westchester County)
@@ -38,17 +39,17 @@ from bs4 import BeautifulSoup
 
 # ── Configuration ──────────────────────────────────────────────────────────
 
-BASE_URL = "https://booking.flytradewind.com/VARS/Public/b/flightCal.aspx"
+WIDGET_URL = "https://mytradewind.flytradewind.com/widget?tripType=1"
 
 ROUTES = [
-    {"from_code": "HPN", "from_city": "Westchester County (New York)",
+    {"from_code": "HPN", "from_city": "Westchester County",
      "to_code":   "ACK", "to_city":   "Nantucket"},
     {"from_code": "ACK", "from_city": "Nantucket",
-     "to_code":   "HPN", "to_city":   "Westchester County (New York)"},
-    {"from_code": "HPN", "from_city": "Westchester County (New York)",
+     "to_code":   "HPN", "to_city":   "Westchester County"},
+    {"from_code": "HPN", "from_city": "Westchester County",
      "to_code":   "MVY", "to_city":   "Martha's Vineyard"},
     {"from_code": "MVY", "from_city": "Martha's Vineyard",
-     "to_code":   "HPN", "to_city":   "Westchester County (New York)"},
+     "to_code":   "HPN", "to_city":   "Westchester County"},
 ]
 
 # Real durations from flytradewind.com destination pages
@@ -110,13 +111,93 @@ def fmt_change_day(d):
         return d.strftime("%#d %b %Y")  # Windows
 
 
-def booking_url(origin, destination, date):
-    d = fmt_search_date(date)
-    return (
-        f"https://booking.flytradewind.com/VARS/Public/b/flightCal.aspx"
-        f"?Origin={origin}&Destination={destination}"
-        f"&departuredate={d}&ReturnTrip=chkJourneyTypeOneWay&Adults=1"
-    )
+# ── Widget → VARS Bootstrap ───────────────────────────────────────────────
+
+def bootstrap_vars_session(driver):
+    """
+    Navigate through the public booking widget to get a valid VARS session.
+    The old direct URL (booking.flytradewind.com/VARS/...) now requires a
+    session created by the widget at mytradewind.flytradewind.com/widget.
+
+    Flow: Widget → Scheduled tab → Non-Ticketbook → Select airports → SEARCH
+    This redirects to the VARS page with a valid VarsSessionID.
+    """
+    print("\n  Bootstrapping VARS session via widget...")
+    driver.get(WIDGET_URL)
+    wait = WebDriverWait(driver, 20)
+
+    try:
+        # Wait for widget to load — look for the Scheduled/Private tabs
+        time.sleep(3)
+
+        # Click "Scheduled" tab
+        scheduled = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, "//span[contains(text(),'Scheduled')]")
+        ))
+        scheduled.click()
+        time.sleep(1.5)
+
+        # Click "Non-Ticketbook" tab
+        non_tb = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, "//*[contains(text(),'Non-Ticketbook')]")
+        ))
+        non_tb.click()
+        time.sleep(1.5)
+
+        # Click "From" area to open airport picker
+        from_area = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, "//div[contains(@class,'airport')]//span[contains(text(),'From')] | "
+                        "//span[contains(text(),'Your Origin')]/.. | "
+                        "//div[contains(text(),'From')]")
+        ))
+        from_area.click()
+        time.sleep(1)
+
+        # Select HPN from the airport list
+        hpn = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, "//*[contains(text(),'HPN')]")
+        ))
+        hpn.click()
+        time.sleep(1)
+
+        # Click "To" area to open destination picker
+        to_area = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, "//span[contains(text(),'Your Destination')]/.. | "
+                        "//div[contains(text(),'To')]")
+        ))
+        to_area.click()
+        time.sleep(1)
+
+        # Select ACK from destination list
+        ack = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, "//*[contains(text(),'ACK')]")
+        ))
+        ack.click()
+        time.sleep(1)
+
+        # Click SEARCH button
+        search_btn = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, "//button[contains(text(),'SEARCH')]")
+        ))
+        search_btn.click()
+
+        # Wait for redirect to VARS page
+        wait.until(lambda d: "VARS" in d.current_url or "FlightCal" in d.current_url)
+        time.sleep(WAIT_SECONDS)
+
+        if "VARS" not in driver.current_url and "FlightCal" not in driver.current_url:
+            print("  [ERROR] Widget did not redirect to VARS page")
+            print(f"  Current URL: {driver.current_url}")
+            return False
+
+        print(f"  VARS session established: {driver.current_url[:80]}...")
+        return True
+
+    except Exception as e:
+        print(f"  [ERROR] Widget bootstrap failed: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
 
 
 # ── Parse Flights from HTML ───────────────────────────────────────────────
@@ -204,7 +285,7 @@ def parse_flights_from_html(html, route, date):
 
 # ── AJAX Day Navigation ───────────────────────────────────────────────────
 
-def change_day_ajax(driver, session_id, day):
+def change_day_ajax(driver, session_id, day, panel_index=0):
     """Call the ChangeDay AJAX endpoint to navigate to a new date."""
     day_str = fmt_change_day(day)
     try:
@@ -213,6 +294,7 @@ def change_day_ajax(driver, session_id, day):
             const done       = arguments[arguments.length - 1];
             const sessionId  = arguments[0];
             const dayStr     = arguments[1];
+            const panelIdx   = arguments[2];
             const xhr = new XMLHttpRequest();
             xhr.open('POST',
                 '/VARS/WebServices/AvailabilityWS.asmx/ChangeDay?VarsSessionID=' + sessionId);
@@ -225,12 +307,12 @@ def change_day_ajax(driver, session_id, day):
                     VarsSessionID: sessionId,
                     Zone: 'PUBLIC',
                     NewDay: dayStr,
-                    PanelIndex: 0,
+                    PanelIndex: panelIdx,
                     JustDayBar: false
                 }
             }));
             """,
-            session_id, day_str
+            session_id, day_str, panel_index
         )
         if result and result.get("ok"):
             return result.get("html", "")
@@ -239,9 +321,32 @@ def change_day_ajax(driver, session_id, day):
     return None
 
 
+# ── Extract Session ID ────────────────────────────────────────────────────
+
+def get_session_id(driver):
+    """Extract VarsSessionID from the page."""
+    # Try hidden input first
+    try:
+        el = driver.find_element(By.ID, "VarsSessionID")
+        sid = el.get_attribute("value")
+        if sid:
+            return sid
+    except Exception:
+        pass
+
+    # Try URL parameter
+    url = driver.current_url
+    m = re.search(r"VarsSessionID=([a-f0-9\-]+)", url, re.I)
+    if m:
+        return m.group(1)
+
+    return ""
+
+
 # ── Scrape One Route ──────────────────────────────────────────────────────
 
 def scrape_route(driver, route, start, end):
+    """Scrape flights for a single route using the VARS form."""
     all_flights = []
 
     print(f"\n{'=' * 60}")
@@ -249,39 +354,43 @@ def scrape_route(driver, route, start, end):
           f"({route['from_city']} → {route['to_city']})")
     print(f"{'=' * 60}")
 
-    # Load first date via form submission
-    driver.get(BASE_URL)
-    wait = WebDriverWait(driver, 20)
+    wait = WebDriverWait(driver, 15)
 
-    try:
-        wait.until(EC.presence_of_element_located((By.ID, "Origin")))
-    except Exception:
-        print("  [ERROR] Page did not load — booking.flytradewind.com may be down")
+    # Make sure we're on the VARS page
+    if "VARS" not in driver.current_url and "FlightCal" not in driver.current_url:
+        print("  [ERROR] Not on VARS page")
         return all_flights
 
     try:
-        Select(driver.find_element(By.ID, "Origin")).select_by_value(route["from_code"])
+        # Set origin
+        origin_select = Select(driver.find_element(By.ID, "Origin"))
+        origin_select.select_by_value(route["from_code"])
         time.sleep(0.5)
-        Select(driver.find_element(By.ID, "Destination")).select_by_value(route["to_code"])
 
-        # One-way
-        ow = driver.find_element(By.ID, "ReturnTrip2")
+        # Set destination
+        dest_select = Select(driver.find_element(By.ID, "Destination"))
+        dest_select.select_by_value(route["to_code"])
+        time.sleep(0.5)
+
+        # Set one-way
+        ow = driver.find_element(By.ID, "chkJourneyTypeOneWay")
         if not ow.is_selected():
             ow.click()
+        time.sleep(0.3)
 
-        # Date
-        df = driver.find_element(By.ID, "departuredate")
-        df.clear()
-        df.send_keys(fmt_search_date(start))
+        # Set departure date
+        dep_field = driver.find_element(By.ID, "departuredate")
+        dep_field.clear()
+        dep_field.send_keys(fmt_search_date(start))
 
-        # Search
-        driver.find_element(
-            By.CSS_SELECTOR, "button.fa-search, button[class*='btn-next']"
-        ).click()
+        # Click Search Again (button id="refineSearchButton")
+        search_btn = driver.find_element(By.ID, "refineSearchButton")
+        search_btn.click()
 
+        # Wait for results
         try:
             wait.until(EC.presence_of_element_located(
-                (By.CSS_SELECTOR, ".flt-cal-panel, .calDiv")
+                (By.CSS_SELECTOR, ".flt-cal-panel, .calDiv, .flt-panel")
             ))
         except Exception:
             pass
@@ -289,13 +398,13 @@ def scrape_route(driver, route, start, end):
 
     except Exception as e:
         print(f"  [ERROR] Form submission failed: {e}")
+        import traceback
+        traceback.print_exc()
         return all_flights
 
     # Get session ID for AJAX navigation
-    try:
-        session_id = driver.find_element(By.ID, "VarsSessionID").get_attribute("value")
-    except Exception:
-        session_id = ""
+    session_id = get_session_id(driver)
+    if not session_id:
         print("  [WARN] No session ID — AJAX navigation may fail")
 
     # Iterate over every date
@@ -309,12 +418,10 @@ def scrape_route(driver, route, start, end):
             if html is None:
                 # Fallback: reload via form
                 try:
-                    df = driver.find_element(By.ID, "departuredate")
-                    df.clear()
-                    df.send_keys(fmt_search_date(day))
-                    driver.find_element(
-                        By.CSS_SELECTOR, "button.fa-search, button[class*='btn-next']"
-                    ).click()
+                    dep_field = driver.find_element(By.ID, "departuredate")
+                    dep_field.clear()
+                    dep_field.send_keys(fmt_search_date(day))
+                    driver.find_element(By.ID, "refineSearchButton").click()
                     time.sleep(WAIT_SECONDS)
                     html = driver.page_source
                 except Exception as e:
@@ -345,7 +452,7 @@ def main():
     end_date = start_date + timedelta(days=DAYS_TO_SCRAPE)
 
     print("=" * 60)
-    print("  Tradewind Aviation Flight Scraper (VARS Public Calendar)")
+    print("  Tradewind Aviation Flight Scraper")
     print(f"  Period : {start_date.date()} → {end_date.date()}")
     print(f"  Routes : {len(ROUTES)}")
     print(f"  Mode   : {'headless' if headless else 'visible'}")
@@ -354,6 +461,14 @@ def main():
     driver = create_driver(headless=headless)
 
     try:
+        # Step 1: Bootstrap a VARS session via the widget
+        if not bootstrap_vars_session(driver):
+            print("\n  [FATAL] Could not establish VARS session — writing empty JSON")
+            with open(OUTPUT_JSON, "w") as f:
+                json.dump([], f)
+            return
+
+        # Step 2: Scrape each route using the VARS page form
         all_flights = []
         for route in ROUTES:
             try:
