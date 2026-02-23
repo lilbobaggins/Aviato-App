@@ -46,6 +46,7 @@ const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filter
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [displayValue, setDisplayValue] = useState('');
+  const blurTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (value) {
@@ -96,9 +97,9 @@ const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filter
           type="text"
           placeholder={placeholder}
           value={isOpen ? query : displayValue}
-          onFocus={() => { setIsOpen(true); setQuery(''); }}
+          onFocus={() => { if (blurTimer.current) { clearTimeout(blurTimer.current); blurTimer.current = null; } setIsOpen(true); setQuery(''); }}
           onChange={(e) => setQuery(e.target.value)}
-          onBlur={() => setTimeout(() => setIsOpen(false), 200)}
+          onBlur={() => { blurTimer.current = setTimeout(() => { setIsOpen(false); blurTimer.current = null; }, 200); }}
           style={{ width: '100%', paddingLeft: '42px', paddingRight: '16px', paddingTop: '13px', paddingBottom: '13px', border: `1.5px solid ${isOpen ? C.darkGreen : C.g200}`, borderRadius: '12px', fontSize: '15px', fontFamily: 'inherit', outline: 'none', backgroundColor: C.white, color: C.black, boxSizing: 'border-box' }}
         />
       </div>

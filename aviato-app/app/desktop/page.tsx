@@ -172,6 +172,7 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
   const [displayValue, setDisplayValue] = useState('');
   const [pos, setPos] = useState({ top: 0, left: 0 });
   const inputRef = useRef<HTMLInputElement>(null);
+  const blurTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const updatePos = useCallback(() => {
     if (inputRef.current) {
@@ -185,11 +186,12 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
     if (!isOpen) return;
     let scrollTimeout: ReturnType<typeof setTimeout>;
     const onScroll = (e: Event) => {
-      const target = e.target as HTMLElement;
+      const target = e.target as Node | null;
+      if (!target) return;
       // Ignore scrolls inside the portal dropdown itself
-      if (target && target.closest && target.closest('[data-airport-dropdown]')) return;
-      // Ignore scrolls on non-document targets (nested scrollable elements)
-      if (target !== document.documentElement && target !== document.body && target !== document) return;
+      if (target instanceof HTMLElement && target.closest('[data-airport-dropdown]')) return;
+      // Only close on document-level scrolls (not nested scrollable elements)
+      if (target !== document && target !== document.documentElement && target !== document.body) return;
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => setIsOpen(false), 250);
     };
@@ -244,9 +246,9 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
           type="text"
           placeholder={placeholder}
           value={isOpen ? query : displayValue}
-          onFocus={() => { updatePos(); setIsOpen(true); setQuery(''); }}
+          onFocus={() => { if (blurTimeout.current) { clearTimeout(blurTimeout.current); blurTimeout.current = null; } updatePos(); setIsOpen(true); setQuery(''); }}
           onChange={(e) => setQuery(e.target.value)}
-          onBlur={() => setTimeout(() => setIsOpen(false), 350)}
+          onBlur={() => { blurTimeout.current = setTimeout(() => { setIsOpen(false); blurTimeout.current = null; }, 200); }}
           style={{
             flex: 1, width: '100%', padding: 0, border: 'none', fontSize: '16px',
             fontFamily: 'inherit', outline: 'none', backgroundColor: 'transparent',
