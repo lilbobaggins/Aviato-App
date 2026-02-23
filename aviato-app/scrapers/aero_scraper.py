@@ -35,6 +35,12 @@ ROUTES = [
     {"origin": "OGG", "destination": "VNY", "origin_city": "Maui", "dest_city": "Los Angeles"},
     {"origin": "VNY", "destination": "TEB", "origin_city": "Los Angeles", "dest_city": "New York"},
     {"origin": "TEB", "destination": "VNY", "origin_city": "New York", "dest_city": "Los Angeles"},
+    {"origin": "VNY", "destination": "HCR", "origin_city": "Los Angeles", "dest_city": "Park City"},
+    {"origin": "HCR", "destination": "VNY", "origin_city": "Park City", "dest_city": "Los Angeles"},
+    {"origin": "VNY", "destination": "SLC", "origin_city": "Los Angeles", "dest_city": "Salt Lake City"},
+    {"origin": "SLC", "destination": "VNY", "origin_city": "Salt Lake City", "dest_city": "Los Angeles"},
+    {"origin": "ASE", "destination": "TEB", "origin_city": "Aspen", "dest_city": "New York"},
+    {"origin": "TEB", "destination": "ASE", "origin_city": "New York", "dest_city": "Aspen"},
 ]
 
 FLIGHT_SEARCH_QUERY = """

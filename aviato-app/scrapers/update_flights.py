@@ -51,6 +51,8 @@ JSX_ROUTES = [
     # LA area to Monterey / Napa / Taos / Denver
     "BUR-MRY", "MRY-BUR", "BUR-APC", "APC-BUR",
     "BUR-TSM", "TSM-BUR", "BUR-APA", "APA-BUR",
+    # SNA to Napa / Denver
+    "SNA-APC", "APC-SNA", "SNA-APA", "APA-SNA",
     # LA area to Carlsbad
     "BUR-CLD", "CLD-BUR",
     # LA / Cabo (scraper tries both CSW and CSL, normalizes to CSW)
@@ -68,8 +70,11 @@ JSX_ROUTES = [
     "DAL-SCF", "SCF-DAL", "DAL-BUR", "BUR-DAL",
     "DAL-SAF", "SAF-DAL", "DAL-HOB", "HOB-DAL",
     "DAL-EDC", "EDC-DAL",
-    # East Coast
+    # East Coast — White Plains / Morristown / Teterboro to Florida
     "HPN-PBI", "PBI-HPN", "HPN-OPF", "OPF-HPN",
+    "HPN-APF", "APF-HPN",
+    "MMU-PBI", "PBI-MMU", "MMU-APF", "APF-MMU", "MMU-BCT", "BCT-MMU",
+    "TEB-OPF", "OPF-TEB", "TEB-PBI", "PBI-TEB",
     # Scottsdale hub
     "SCF-APA", "APA-SCF", "SCF-SLC", "SLC-SCF", "SCF-CLD", "CLD-SCF",
 ]
@@ -90,6 +95,8 @@ AERO_ROUTES = [
     "VNY-LAS", "LAS-VNY", "VNY-ASE", "ASE-VNY", "VNY-SUN", "SUN-VNY",
     "VNY-TRM", "TRM-VNY", "VNY-APC", "APC-VNY", "VNY-SJD", "SJD-VNY",
     "VNY-OGG", "OGG-VNY", "VNY-TEB", "TEB-VNY",
+    "VNY-HCR", "HCR-VNY", "VNY-SLC", "SLC-VNY",
+    "ASE-TEB", "TEB-ASE",
 ]
 AERO_CRAFT = "ERJ-135"
 AERO_AMEN = "['WiFi','Gourmet Catering','Champagne']"

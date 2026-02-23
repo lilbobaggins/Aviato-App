@@ -42,6 +42,7 @@ export const LOCATIONS: Location[] = [
   { code: 'IPL', type: 'airport', city: 'Imperial', state: 'CA', name: 'Imperial County Airport' },
   { code: 'PHX', type: 'airport', city: 'Phoenix', state: 'AZ', name: 'Phoenix Sky Harbor International' },
   { code: 'APF', type: 'airport', city: 'Naples', state: 'FL', name: 'Naples Municipal Airport' },
+  { code: 'HCR', type: 'airport', city: 'Park City', state: 'UT', name: 'Heber Valley Airport' },
   // BOUTIQUE AIR — EAS routes (Pilatus PC-12)
   { code: 'PDX', type: 'airport', city: 'Portland', state: 'OR', name: 'Portland International' },
   { code: 'PDT', type: 'airport', city: 'Pendleton', state: 'OR', name: 'Eastern Oregon Regional' },

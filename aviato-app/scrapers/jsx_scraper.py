@@ -43,6 +43,8 @@ STATION_NAMES = {
     "APA": "Denver", "RNO": "Reno", "SLC": "Salt Lake City",
     "CLD": "Carlsbad", "TSM": "Taos", "EDC": "Austin",
     "SAF": "Santa Fe", "HOB": "Hobbs",
+    "APF": "Naples", "MMU": "Morristown", "TEB": "Teterboro",
+    "BCT": "Boca Raton", "MRY": "Monterey", "APC": "Napa",
 }
 
 ROUTES = [
@@ -95,9 +97,18 @@ ROUTES = [
     ("DAL", "SAF"), ("SAF", "DAL"),
     ("DAL", "HOB"), ("HOB", "DAL"),
     ("DAL", "EDC"), ("EDC", "DAL"),
-    # East Coast
+    # SNA to Napa / Denver
+    ("SNA", "APC"), ("APC", "SNA"),
+    ("SNA", "APA"), ("APA", "SNA"),
+    # East Coast — White Plains / Morristown / Teterboro to Florida
     ("HPN", "PBI"), ("PBI", "HPN"),
     ("HPN", "OPF"), ("OPF", "HPN"),
+    ("HPN", "APF"), ("APF", "HPN"),
+    ("MMU", "PBI"), ("PBI", "MMU"),
+    ("MMU", "APF"), ("APF", "MMU"),
+    ("MMU", "BCT"), ("BCT", "MMU"),
+    ("TEB", "OPF"), ("OPF", "TEB"),
+    ("TEB", "PBI"), ("PBI", "TEB"),
     # Scottsdale hub
     ("SCF", "APA"), ("APA", "SCF"),
     ("SCF", "SLC"), ("SLC", "SCF"),
