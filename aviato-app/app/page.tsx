@@ -636,7 +636,9 @@ export default function AviatoApp() {
     if (!fl) return null;
     const style = AIRLINE_STYLE[fl.airline] || { bg: '#333', text: '#fff', label: '?', accent: '#999' };
     const basePrice = Math.round(fl.price);
-    const taxes = Math.round(basePrice * 0.12);
+    // Aero prices already include taxes & fees
+    const taxRate = fl.airline === 'Aero' ? 0 : 0.075;
+    const taxes = Math.round(basePrice * taxRate);
     const total = (basePrice + taxes) * passengers;
     const isRT = tripType === 'roundtrip' && !!returnDate;
     const rating = WING_RATINGS[fl.airline];

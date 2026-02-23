@@ -163,8 +163,9 @@ function ResultsContent() {
   };
 
   // Per-airline tax/fee rates (based on actual airline pricing)
+  // Aero: 0 because their API prices already include taxes & fees
   const TAX_RATES: Record<string, number> = {
-    'Aero': 0.076,
+    'Aero': 0,
     'JSX': 0.075,
     'Tradewind': 0.075,
     'Slate': 0.08,
