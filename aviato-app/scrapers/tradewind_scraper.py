@@ -2,7 +2,10 @@
 """
 Tradewind Aviation Flight Scraper for Aviato
 Scrapes the PUBLIC flight calendar at booking.flytradewind.com/VARS
-using the deeplink.aspx endpoint to bootstrap sessions — no browser needed.
+using the deeplink.aspx endpoint — no browser needed.
+
+Each date+route gets its own deeplink request, which creates a fresh
+VARS session and returns the flight calendar HTML directly.
 
 Routes:
   - ACK (Nantucket) <-> HPN (Westchester County)
@@ -32,7 +35,6 @@ from bs4 import BeautifulSoup
 # ── Configuration ──────────────────────────────────────────────────────────
 
 DEEPLINK_URL = "https://booking.flytradewind.com/VARS/Public/deeplink.aspx"
-CHANGEDAY_URL = "https://booking.flytradewind.com/VARS/WebServices/AvailabilityWS.asmx/ChangeDay"
 
 ROUTES = [
     {"from_code": "HPN", "from_city": "Westchester County",
@@ -54,16 +56,16 @@ ROUTE_DURATIONS = {
 }
 
 DAYS_TO_SCRAPE = 120
-BETWEEN_DAYS_S = 1.0
+BETWEEN_REQUESTS_S = 0.8   # polite delay between requests
 OUTPUT_JSON = "tradewind_flights.json"
 
 
-# ── Session Bootstrap via deeplink.aspx ───────────────────────────────────
+# ── Fetch one day via deeplink.aspx ──────────────────────────────────────
 
-def create_vars_session(origin, destination, departure_date):
+def fetch_day(origin, destination, date):
     """
-    Hit deeplink.aspx with route params to create a VARS session.
-    Returns (session_id, initial_html) or (None, None) on failure.
+    Hit deeplink.aspx for a specific date+route.
+    Returns the HTML of the VARS flight calendar page, or None on failure.
     """
     params = {
         "way": "oneway",
@@ -75,82 +77,32 @@ def create_vars_session(origin, destination, departure_date):
         "BookingCode1": "E",
         "Adult": "1",
         "InfantLap": "0",
-        "DepartureDate1": departure_date.strftime("%Y-%m-%d"),
+        "DepartureDate1": date.strftime("%Y-%m-%d"),
         "Origin1": origin,
         "Destination1": destination,
     }
 
-    session = requests.Session()
-    session.headers.update({
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-                      "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    })
-
     try:
-        resp = session.get(DEEPLINK_URL, params=params, allow_redirects=True, timeout=30)
-        resp.raise_for_status()
-
-        # Extract VarsSessionID from the final URL after redirect
-        m = re.search(r"VarsSessionID=([a-f0-9\-]+)", resp.url, re.I)
-        if not m:
-            # Also try extracting from a hidden input in the HTML
-            soup = BeautifulSoup(resp.text, "html.parser")
-            sid_el = soup.find("input", {"id": "VarsSessionID"})
-            if sid_el and sid_el.get("value"):
-                return sid_el["value"], resp.text, session
-            print(f"    [WARN] No VarsSessionID in redirect URL: {resp.url[:100]}")
-            return None, None, None
-
-        session_id = m.group(1)
-        return session_id, resp.text, session
-
-    except Exception as e:
-        print(f"    [ERROR] deeplink.aspx failed: {e}")
-        return None, None, None
-
-
-# ── AJAX Day Navigation ──────────────────────────────────────────────────
-
-def change_day(http_session, session_id, day):
-    """Call the ChangeDay AJAX endpoint to get flights for a new date."""
-    try:
-        day_str = day.strftime("%-d %b %Y")
-    except ValueError:
-        day_str = day.strftime("%#d %b %Y")  # Windows
-
-    url = f"{CHANGEDAY_URL}?VarsSessionID={session_id}"
-    payload = {
-        "ChangeDayRequest": {
-            "VarsSessionID": session_id,
-            "Zone": "PUBLIC",
-            "NewDay": day_str,
-            "PanelIndex": 0,
-            "JustDayBar": False,
-        }
-    }
-
-    try:
-        resp = http_session.post(
-            url,
-            json=payload,
+        resp = requests.get(
+            DEEPLINK_URL,
+            params=params,
             headers={
-                "Content-Type": "application/json; charset=utf-8",
-                "X-Requested-With": "XMLHttpRequest",
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                              "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
             },
-            timeout=20,
+            allow_redirects=True,
+            timeout=30,
         )
         resp.raise_for_status()
 
-        # The response is JSON with a "d" key containing the HTML
-        data = resp.json()
-        html = data.get("d", "")
-        if not html:
-            # Sometimes the response is just the HTML directly
-            html = resp.text
-        return html
+        # Verify we landed on the VARS page (not the homepage)
+        if "VARS" not in resp.url and "FlightCal" not in resp.url:
+            return None
+
+        return resp.text
 
     except Exception as e:
-        print(f"    [AJAX ERROR] {day.strftime('%Y-%m-%d')}: {e}")
+        print(f"    [ERROR] {date.strftime('%Y-%m-%d')}: {e}")
         return None
 
 
@@ -249,37 +201,29 @@ def date_range(start, end):
 # ── Scrape One Route ─────────────────────────────────────────────────────
 
 def scrape_route(route, start, end):
-    """Scrape flights for a single route using deeplink.aspx + ChangeDay."""
+    """Scrape flights for a single route, one deeplink request per day."""
     all_flights = []
+    errors = 0
 
     print(f"\n{'=' * 60}")
     print(f"  {route['from_code']} -> {route['to_code']}  "
           f"({route['from_city']} -> {route['to_city']})")
     print(f"{'=' * 60}")
 
-    # Step 1: Create a VARS session via deeplink.aspx
-    session_id, initial_html, http_session = create_vars_session(
-        route["from_code"], route["to_code"], start
-    )
-
-    if not session_id:
-        print(f"  [ERROR] Could not create VARS session for "
-              f"{route['from_code']}->{route['to_code']}")
-        return all_flights
-
-    print(f"  Session: {session_id[:12]}...")
-
-    # Step 2: Parse the initial page (day 1)
-    for i, day in enumerate(date_range(start, end)):
+    for day in date_range(start, end):
         day_label = day.strftime("%Y-%m-%d")
 
-        if i == 0:
-            html = initial_html
-        else:
-            html = change_day(http_session, session_id, day)
-            if html is None:
-                time.sleep(BETWEEN_DAYS_S)
-                continue
+        html = fetch_day(route["from_code"], route["to_code"], day)
+        if html is None:
+            errors += 1
+            # If we get too many consecutive errors, the endpoint may be down
+            if errors >= 5:
+                print(f"  [WARN] 5 consecutive errors — skipping rest of route")
+                break
+            time.sleep(BETWEEN_REQUESTS_S)
+            continue
+
+        errors = 0  # reset consecutive error count on success
 
         flights = parse_flights_from_html(html, route, day)
         if flights:
@@ -288,10 +232,8 @@ def scrape_route(route, start, end):
                 print(f"    {f['departure_time']} -> {f['arrival_time']}"
                       f"  ${f['price_numeric']}  {f['flight_number']}")
             all_flights.extend(flights)
-        else:
-            print(f"  {day_label}: no flights")
 
-        time.sleep(BETWEEN_DAYS_S)
+        time.sleep(BETWEEN_REQUESTS_S)
 
     return all_flights
 
@@ -306,6 +248,8 @@ def main():
     print("  Tradewind Aviation Flight Scraper (HTTP)")
     print(f"  Period : {start_date.date()} -> {end_date.date()}")
     print(f"  Routes : {len(ROUTES)}")
+    print(f"  Requests: ~{DAYS_TO_SCRAPE * len(ROUTES)} "
+          f"(~{DAYS_TO_SCRAPE * len(ROUTES) * BETWEEN_REQUESTS_S / 60:.0f} min)")
     print("=" * 60)
 
     all_flights = []
