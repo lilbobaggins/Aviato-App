@@ -172,7 +172,7 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
   const [displayValue, setDisplayValue] = useState('');
   const [pos, setPos] = useState({ top: 0, left: 0 });
   const inputRef = useRef<HTMLInputElement>(null);
-  const blurTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fieldRef = useRef<HTMLDivElement>(null);
 
   const updatePos = useCallback(() => {
     if (inputRef.current) {
@@ -181,23 +181,30 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
     }
   }, []);
 
-  // Close dropdown on main page scroll — ignore dropdown-internal scrolls
+  // Close on click outside (input + portal dropdown)
   useEffect(() => {
     if (!isOpen) return;
-    let scrollTimeout: ReturnType<typeof setTimeout>;
-    const onScroll = (e: Event) => {
+    const onClickOutside = (e: MouseEvent) => {
       const target = e.target as Node | null;
       if (!target) return;
-      // Ignore scrolls inside the portal dropdown itself
+      // Keep open if clicking inside the input/field area
+      if (fieldRef.current?.contains(target)) return;
+      // Keep open if clicking inside the portal dropdown
       if (target instanceof HTMLElement && target.closest('[data-airport-dropdown]')) return;
-      // Only close on document-level scrolls (not nested scrollable elements)
-      if (target !== document && target !== document.documentElement && target !== document.body) return;
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => setIsOpen(false), 250);
+      setIsOpen(false);
     };
-    window.addEventListener('scroll', onScroll, true);
-    return () => { window.removeEventListener('scroll', onScroll, true); clearTimeout(scrollTimeout); };
+    document.addEventListener('mousedown', onClickOutside, true);
+    return () => document.removeEventListener('mousedown', onClickOutside, true);
   }, [isOpen]);
+
+  // Reposition dropdown on scroll/resize so it stays anchored
+  useEffect(() => {
+    if (!isOpen) return;
+    const reposition = () => updatePos();
+    window.addEventListener('scroll', reposition, true);
+    window.addEventListener('resize', reposition);
+    return () => { window.removeEventListener('scroll', reposition, true); window.removeEventListener('resize', reposition); };
+  }, [isOpen, updatePos]);
 
   useEffect(() => {
     if (value) {
@@ -238,7 +245,7 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
   };
 
   return (
-    <div style={{ position: 'relative', flex: 1 }}>
+    <div ref={fieldRef} style={{ position: 'relative', flex: 1 }}>
       <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px', letterSpacing: '0.02em' }}>{label}</div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
         <input
@@ -246,9 +253,8 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
           type="text"
           placeholder={placeholder}
           value={isOpen ? query : displayValue}
-          onFocus={() => { if (blurTimeout.current) { clearTimeout(blurTimeout.current); blurTimeout.current = null; } updatePos(); setIsOpen(true); setQuery(''); }}
+          onFocus={() => { updatePos(); setIsOpen(true); setQuery(''); }}
           onChange={(e) => setQuery(e.target.value)}
-          onBlur={() => { blurTimeout.current = setTimeout(() => { setIsOpen(false); blurTimeout.current = null; }, 200); }}
           style={{
             flex: 1, width: '100%', padding: 0, border: 'none', fontSize: '16px',
             fontFamily: 'inherit', outline: 'none', backgroundColor: 'transparent',
