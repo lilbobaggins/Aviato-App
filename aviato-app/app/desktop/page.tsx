@@ -180,17 +180,18 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
     }
   }, []);
 
-  // Close dropdown only on main page scroll, not dropdown internal scroll or mobile keyboard
+  // Close dropdown on main page scroll — ignore dropdown-internal scrolls
   useEffect(() => {
     if (!isOpen) return;
     let scrollTimeout: ReturnType<typeof setTimeout>;
     const onScroll = (e: Event) => {
       const target = e.target as HTMLElement;
-      // Ignore scrolls inside the portal dropdown
+      // Ignore scrolls inside the portal dropdown itself
       if (target && target.closest && target.closest('[data-airport-dropdown]')) return;
-      // Debounce: only close after sustained scroll (avoids mobile keyboard resize events)
+      // Ignore scrolls on non-document targets (nested scrollable elements)
+      if (target !== document.documentElement && target !== document.body && target !== document) return;
       clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => setIsOpen(false), 100);
+      scrollTimeout = setTimeout(() => setIsOpen(false), 250);
     };
     window.addEventListener('scroll', onScroll, true);
     return () => { window.removeEventListener('scroll', onScroll, true); clearTimeout(scrollTimeout); };
