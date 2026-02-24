@@ -43,9 +43,9 @@ ICAO_TO_IATA_FALLBACK = {
 # Scan config
 SCAN_START = 900000500       # Start scanning from here
 SCAN_END = 900002000         # End scanning here
-SCAN_THREADS = 50            # Parallel API calls (high — each call is I/O bound)
-# No early stopping — IDs are sparse (gaps of 30-80 between valid ones)
-# so we always scan the full range. With 50 threads all 1500 IDs finish in ~2 min.
+SCAN_THREADS = 5             # Keep low to avoid rate limiting / IP blocking
+SCAN_BATCH_SIZE = 20         # IDs per batch
+SCAN_BATCH_DELAY = 1.0       # Delay between batches to avoid triggering blocks
 
 
 def get_airports_and_metros() -> dict:
@@ -73,22 +73,44 @@ def get_calendar_prices(from_metro: int, to_metro: int) -> list[dict]:
     return data.get("seats", [])
 
 
-def probe_sr_id(sr_id: int) -> Optional[dict]:
+def probe_sr_id(sr_id: int, retries: int = 3) -> Optional[dict]:
     """Check if a seat reservation ID is valid and return flight details."""
-    try:
-        resp = requests.post(
-            f"{API_URL}/getPlaneBySeatInfo",
-            headers=HEADERS,
-            json={"id": sr_id},
-            timeout=15,
-        )
-        resp.raise_for_status()
-        data = resp.json()
-        if not data.get("status") or not data.get("charter"):
-            return None
-        return data["charter"]
-    except Exception:
-        return None
+    for attempt in range(retries):
+        try:
+            resp = requests.post(
+                f"{API_URL}/getPlaneBySeatInfo",
+                headers=HEADERS,
+                json={"id": sr_id},
+                timeout=15,
+            )
+            if resp.status_code == 429:
+                # Rate limited — back off and retry
+                wait = 2 ** attempt
+                print(f"    [RATE LIMITED] SR {sr_id}, retrying in {wait}s...")
+                time.sleep(wait)
+                continue
+            if resp.status_code >= 400:
+                if attempt == 0:  # Only log first attempt
+                    print(f"    [HTTP {resp.status_code}] SR {sr_id}: {resp.text[:100]}")
+                time.sleep(1)
+                continue
+            resp.raise_for_status()
+            data = resp.json()
+            if not data.get("status") or not data.get("charter"):
+                return None
+            return data["charter"]
+        except requests.exceptions.ConnectionError:
+            wait = 2 ** attempt
+            if attempt == 0:
+                print(f"    [CONN ERROR] SR {sr_id}, retrying in {wait}s...")
+            time.sleep(wait)
+            continue
+        except Exception as e:
+            if attempt == 0:
+                print(f"    [ERROR] SR {sr_id}: {type(e).__name__}: {e}")
+            time.sleep(1)
+            continue
+    return None
 
 
 def resolve_iata(slate_code: str, airports: dict) -> str:
@@ -170,35 +192,40 @@ def parse_charter(charter_data: dict, sr_id: int, airports: dict) -> list[dict]:
 
 
 def scan_sr_ids(start: int, end: int, airports: dict) -> list[dict]:
-    """Scan the full range of SR IDs in parallel and collect all valid flights.
+    """Scan the full range of SR IDs in batches to avoid rate limiting.
 
-    IDs are sparse — gaps of 30-80 between valid ones are normal — so we
-    always scan the entire range rather than using early stopping.
-    All IDs are submitted at once to a thread pool for maximum throughput.
+    Uses small batches with delays between them to stay under API limits.
+    IDs are sparse (gaps of 30-80 between valid ones) so we scan everything.
     """
     all_ids = list(range(start, end))
     total = len(all_ids)
-    print(f"  Scanning SR IDs {start} to {end} ({total} IDs) with {SCAN_THREADS} threads...")
+    print(f"  Scanning SR IDs {start} to {end} ({total} IDs)")
+    print(f"  Config: {SCAN_THREADS} threads, batch size {SCAN_BATCH_SIZE}, {SCAN_BATCH_DELAY}s delay")
 
     all_flights = []
-    completed = 0
     found = 0
+    errors_seen = 0
 
-    with ThreadPoolExecutor(max_workers=SCAN_THREADS) as executor:
-        futures = {executor.submit(probe_sr_id, sid): sid for sid in all_ids}
-        for future in as_completed(futures):
-            sid = futures[future]
-            completed += 1
-            charter = future.result()
-            if charter:
-                flights = parse_charter(charter, sid, airports)
-                all_flights.extend(flights)
-                found += len(flights)
-                print(f"    SR {sid}: +{len(flights)} flights (total: {found})")
+    for batch_start in range(0, total, SCAN_BATCH_SIZE):
+        batch_ids = all_ids[batch_start:batch_start + SCAN_BATCH_SIZE]
 
-            # Progress update every 200 completions
-            if completed % 200 == 0:
-                print(f"    Progress: {completed}/{total} IDs checked, {found} flights found")
+        with ThreadPoolExecutor(max_workers=SCAN_THREADS) as executor:
+            futures = {executor.submit(probe_sr_id, sid): sid for sid in batch_ids}
+            for future in as_completed(futures):
+                sid = futures[future]
+                charter = future.result()
+                if charter:
+                    flights = parse_charter(charter, sid, airports)
+                    all_flights.extend(flights)
+                    found += len(flights)
+                    print(f"    SR {sid}: +{len(flights)} flights (total: {found})")
+
+        checked = batch_start + len(batch_ids)
+        pct = int(checked / total * 100)
+        if checked % 100 == 0 or checked == total:
+            print(f"    [{pct}%] {checked}/{total} IDs checked, {found} flights found")
+
+        time.sleep(SCAN_BATCH_DELAY)
 
     print(f"  Scan complete — {found} flights found from {total} IDs checked")
     return all_flights
@@ -250,8 +277,31 @@ def scrape_all_flights():
 
     print(f"  Active routes: {active_routes}, Total dates: {total_dates}")
 
-    # Step 3: Scan SR IDs to find all flights
-    print(f"\n[3/3] Scanning seat reservation IDs ({SCAN_START}-{SCAN_END})...")
+    # Step 3: Sanity check — test a single known ID to verify API access
+    print("\n[3/4] Testing API access with a known SR ID...")
+    test_id = 900000690
+    try:
+        resp = requests.post(
+            f"{API_URL}/getPlaneBySeatInfo",
+            headers=HEADERS,
+            json={"id": test_id},
+            timeout=15,
+        )
+        print(f"  Test ID {test_id}: HTTP {resp.status_code}")
+        print(f"  Response: {resp.text[:300]}")
+        data = resp.json()
+        if data.get("status") and data.get("charter"):
+            print(f"  ✓ API accessible — flight data returned")
+        elif data.get("message") == "Flight not found":
+            print(f"  ✓ API accessible — ID expired (normal)")
+        else:
+            print(f"  ⚠ Unexpected response — API may be blocking this IP")
+    except Exception as e:
+        print(f"  ✗ API test failed: {e}")
+        print(f"  The API may be blocking datacenter IPs.")
+
+    # Step 4: Scan SR IDs to find all flights
+    print(f"\n[4/4] Scanning seat reservation IDs ({SCAN_START}-{SCAN_END})...")
     all_flights = scan_sr_ids(SCAN_START, SCAN_END, airports)
 
     # Deduplicate by SR ID (in case of overlapping scans)
