@@ -1,7 +1,7 @@
 name: Scrape Slate
 on:
-  schedule:
-    - cron: '30 6 * * *'    # Daily at 6:30am UTC (after main scrape)
+  # No schedule — this scraper must run locally (Slate blocks datacenter IPs)
+  # Use workflow_dispatch to commit+push after running locally
   workflow_dispatch: {}
 
 permissions:
@@ -10,7 +10,7 @@ permissions:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,27 +21,13 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r aviato-app/scrapers/requirements.txt
-      - name: Run Slate scraper
-        run: cd aviato-app/scrapers && python slate_scraper.py
-      - name: Save slate_flights.json as artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: slate-flights-json
-          path: aviato-app/scrapers/slate_flights.json
-      - name: Update flights.ts
+      - name: Update flights.ts from existing slate_flights.json
         run: cd aviato-app/scrapers && python update_flights.py
-      - name: Save flights.ts as artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: slate-flights-ts
-          path: aviato-app/app/data/flights.ts
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add aviato-app/app/data/flights.ts
+          git add aviato-app/app/data/flights.ts aviato-app/scrapers/slate_flights.json
           if ! git diff --cached --quiet; then
             git commit -m "Auto-update Slate flight data $(date -u +%Y-%m-%d)"
             git pull --rebase origin main
