@@ -10,7 +10,6 @@ export const LOCATIONS: Location[] = [
   { code: 'ASE', type: 'airport', city: 'Aspen', state: 'CO', name: 'Aspen-Pitkin County' },
   { code: 'ACK', type: 'airport', city: 'Nantucket', state: 'MA', name: 'Nantucket Memorial' },
   { code: 'DAL', type: 'airport', city: 'Dallas', state: 'TX', name: 'Dallas Love Field' },
-  { code: 'NAS', type: 'airport', city: 'Nassau', state: 'BS', name: 'Lynden Pindling Intl' },
   { code: 'SCF', type: 'airport', city: 'Scottsdale', state: 'AZ', name: 'Scottsdale Airport' },
   { code: 'SUN', type: 'airport', city: 'Sun Valley', state: 'ID', name: 'Friedman Memorial' },
   { code: 'DSI', type: 'airport', city: 'Destin', state: 'FL', name: 'Destin Executive' },
@@ -78,14 +77,6 @@ export const LOCATIONS: Location[] = [
   { code: 'ARN', type: 'airport', city: 'Stockholm', state: 'SE', name: 'Stockholm Arlanda' },
   { code: 'NRT', type: 'airport', city: 'Ota City', state: 'JP', name: 'Narita International (Tokyo Area)' },
   { code: 'SEA', type: 'airport', city: 'Seattle', state: 'WA', name: 'Seattle-Tacoma International' },
-  // CARIBBEAN
-  { code: 'SJU', type: 'airport', city: 'San Juan', state: 'PR', name: 'Luis Muñoz Marín International' },
-  { code: 'SBH', type: 'airport', city: 'St. Barths', state: 'BL', name: 'Rémy de Haenen Airport' },
-  { code: 'AXA', type: 'airport', city: 'Anguilla', state: 'AI', name: 'Clayton J. Lloyd International' },
-  { code: 'VIJ', type: 'airport', city: 'Virgin Gorda', state: 'VG', name: 'Virgin Gorda Airport' },
-  { code: 'EIS', type: 'airport', city: 'Tortola', state: 'VG', name: 'Terrance B. Lettsome International' },
-  { code: 'MHH', type: 'airport', city: 'Marsh Harbour', state: 'BS', name: 'Leonard M. Thompson International' },
-  { code: 'ELH', type: 'airport', city: 'North Eleuthera', state: 'BS', name: 'North Eleuthera Airport' },
   // LA airports
   { code: 'LAX', type: 'airport', city: 'Los Angeles', state: 'CA', name: 'Los Angeles International', metro: 'LA' },
   { code: 'BUR', type: 'airport', city: 'Burbank', state: 'CA', name: 'Hollywood Burbank', metro: 'LA' },
