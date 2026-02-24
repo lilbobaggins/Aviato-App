@@ -44,8 +44,9 @@ ICAO_TO_IATA_FALLBACK = {
 SCAN_START = 900000500       # Start scanning from here
 SCAN_END = 900002000         # End scanning here
 SCAN_THREADS = 10            # Parallel API calls
-SCAN_BATCH_DELAY = 0.1       # Delay between batches
-CONSECUTIVE_MISS_LIMIT = 50  # Stop scanning after this many misses in a row
+SCAN_BATCH_DELAY = 0.05      # Delay between batches (small — API is fast)
+# No early stopping — IDs are sparse (gaps of 30-80 between valid ones)
+# so we always scan the full range. 1500 IDs ÷ 10 threads ≈ 150 batches ≈ 3 min.
 
 
 def get_airports_and_metros() -> dict:
@@ -168,41 +169,22 @@ def parse_charter(charter_data: dict, sr_id: int, airports: dict) -> list[dict]:
     return flights
 
 
-def find_first_valid_id(start: int, end: int) -> Optional[int]:
-    """Binary-ish search to find the first valid SR ID in a range."""
-    print(f"  Searching for first valid ID in {start}-{end}...")
-
-    # Try a few spots to find any valid ID
-    step = max(1, (end - start) // 20)
-    for probe in range(start, end, step):
-        result = probe_sr_id(probe)
-        if result:
-            print(f"  Found valid ID at {probe}")
-            # Now search backwards to find the actual start
-            first = probe
-            for back in range(probe - 1, max(start, probe - 100), -1):
-                if probe_sr_id(back):
-                    first = back
-                else:
-                    break
-            return first
-        time.sleep(0.05)
-
-    return None
-
 
 def scan_sr_ids(start: int, end: int, airports: dict) -> list[dict]:
-    """Scan a range of SR IDs in parallel and collect all valid flights."""
+    """Scan the full range of SR IDs in parallel and collect all valid flights.
+
+    IDs are sparse — gaps of 30-80 between valid ones are normal — so we
+    always scan the entire range rather than using early stopping.
+    """
     all_flights = []
     total_ids = end - start
-    consecutive_misses = 0
-    found_any = False
 
     print(f"  Scanning SR IDs {start} to {end} ({total_ids} IDs)...")
 
     # Process in batches for controlled parallelism
-    batch_size = SCAN_THREADS
+    batch_size = SCAN_THREADS * 5  # 50 IDs per batch for faster throughput
     current = start
+    batches_done = 0
 
     while current < end:
         batch_end = min(current + batch_size, end)
@@ -222,26 +204,19 @@ def scan_sr_ids(start: int, end: int, airports: dict) -> list[dict]:
             if charter:
                 flights = parse_charter(charter, sid, airports)
                 all_flights.extend(flights)
-                consecutive_misses = 0
-                found_any = True
                 batch_found += 1
-            else:
-                if found_any:
-                    consecutive_misses += 1
 
+        batches_done += 1
+        pct = int((current - start) / total_ids * 100)
         if batch_found > 0:
-            # Print progress every batch with hits
-            dates = set(f["date"] for f in all_flights[-batch_found * 3:])
-            print(f"    IDs {current}-{batch_end}: +{batch_found} flights (total: {len(all_flights)})")
-
-        # Stop if we've gone too far past the last valid ID
-        if found_any and consecutive_misses >= CONSECUTIVE_MISS_LIMIT:
-            print(f"  Stopping scan — {CONSECUTIVE_MISS_LIMIT} consecutive misses")
-            break
+            print(f"    [{pct}%] IDs {current}-{batch_end}: +{batch_found} flights (total: {len(all_flights)})")
+        elif batches_done % 5 == 0:
+            print(f"    [{pct}%] IDs {current}-{batch_end}: scanning... (total: {len(all_flights)})")
 
         current = batch_end
         time.sleep(SCAN_BATCH_DELAY)
 
+    print(f"  Scan complete — {len(all_flights)} flights found")
     return all_flights
 
 
