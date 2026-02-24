@@ -163,13 +163,13 @@ function ResultsContent() {
   };
 
   // Per-airline tax/fee rates (based on actual airline pricing)
-  // Aero: 0 because their API prices already include taxes & fees
+  // Aero & BARK Air: 0 because their prices already include taxes & fees
   const TAX_RATES: Record<string, number> = {
     'Aero': 0,
     'JSX': 0.075,
     'Tradewind': 0.075,
     'Slate': 0.08,
-    'BARK Air': 0.05,
+    'BARK Air': 0,
   };
   const getTaxRate = (airline: string) => TAX_RATES[airline] ?? 0.075;
 
