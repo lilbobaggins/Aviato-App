@@ -104,15 +104,14 @@ AERO_LINK = "aero.com"
 
 # ── Slate config ─────────────────────────────────────────────────────
 SLATE_ROUTES = [
-    "TEB-FLL", "FLL-TEB", "TEB-PBI", "PBI-TEB",
-    "TEB-MIA", "MIA-TEB", "TEB-OPF", "OPF-TEB",
+    # Currently active routes (scraper discovers via calendar API)
+    "FLL-TEB", "TEB-FLL",
+    # Additional routes if Slate expands — scraper accepts any route it finds
+    "TEB-PBI", "PBI-TEB", "TEB-MIA", "MIA-TEB", "TEB-OPF", "OPF-TEB",
     "HPN-FLL", "FLL-HPN", "HPN-PBI", "PBI-HPN",
     "HPN-MIA", "MIA-HPN", "HPN-OPF", "OPF-HPN",
     "FRG-FLL", "FLL-FRG", "FRG-PBI", "PBI-FRG",
-    # Nantucket / Augusta / Maine routes if they appear
     "TEB-ACK", "ACK-TEB", "HPN-ACK", "ACK-HPN",
-    "TEB-AUG", "AUG-TEB", "HPN-AUG", "AUG-HPN",
-    "TEB-PWM", "PWM-TEB", "HPN-PWM", "PWM-HPN",
 ]
 SLATE_CRAFT = "CRJ-200"
 SLATE_AMEN = "['WiFi','Catering','Champagne']"

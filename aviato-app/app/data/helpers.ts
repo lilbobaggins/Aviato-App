@@ -47,9 +47,16 @@ const KNOWN_ROUTES = new Set([
   // Aero — Aspen to New York
   'ASE-TEB','TEB-ASE',
 
-  // Slate — NY to South Florida
+  // Slate — NY to South Florida + OPF
   'TEB-FLL','FLL-TEB','TEB-PBI','PBI-TEB','TEB-MIA','MIA-TEB',
+  'TEB-OPF','OPF-TEB','TEB-BCT','BCT-TEB',
   'HPN-FLL','FLL-HPN','HPN-PBI','PBI-HPN','HPN-MIA','MIA-HPN',
+  'HPN-OPF','OPF-HPN',
+  // Slate — FRG (Republic) to South Florida
+  'FRG-FLL','FLL-FRG','FRG-PBI','PBI-FRG',
+  // Slate — Northeast regional
+  'TEB-ACK','ACK-TEB','TEB-AUG','AUG-TEB','TEB-PWM','PWM-TEB',
+  'HPN-AUG','AUG-HPN','HPN-PWM','PWM-HPN',
 
   // Tradewind — Nantucket / Martha's Vineyard
   'HPN-ACK','ACK-HPN','HPN-MVY','MVY-HPN',

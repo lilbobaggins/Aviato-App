@@ -94,6 +94,9 @@ export const LOCATIONS: Location[] = [
   { code: 'FLL', type: 'airport', city: 'Fort Lauderdale', state: 'FL', name: 'Fort Lauderdale-Hollywood', metro: 'SFL' },
   { code: 'PBI', type: 'airport', city: 'West Palm Beach', state: 'FL', name: 'Palm Beach Intl', metro: 'SFL' },
   { code: 'BCT', type: 'airport', city: 'Boca Raton', state: 'FL', name: 'Boca Raton Airport', metro: 'SFL' },
+  // Slate — Northeast regional
+  { code: 'AUG', type: 'airport', city: 'Augusta', state: 'ME', name: 'Augusta State Airport' },
+  { code: 'PWM', type: 'airport', city: 'Portland', state: 'ME', name: 'Portland International Jetport' },
 ];
 
 export const AIRPORTS = LOCATIONS.filter(l => l.type === 'airport');
