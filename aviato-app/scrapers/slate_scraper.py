@@ -43,10 +43,9 @@ ICAO_TO_IATA_FALLBACK = {
 # Scan config
 SCAN_START = 900000500       # Start scanning from here
 SCAN_END = 900002000         # End scanning here
-SCAN_THREADS = 10            # Parallel API calls
-SCAN_BATCH_DELAY = 0.05      # Delay between batches (small — API is fast)
+SCAN_THREADS = 50            # Parallel API calls (high — each call is I/O bound)
 # No early stopping — IDs are sparse (gaps of 30-80 between valid ones)
-# so we always scan the full range. 1500 IDs ÷ 10 threads ≈ 150 batches ≈ 3 min.
+# so we always scan the full range. With 50 threads all 1500 IDs finish in ~2 min.
 
 
 def get_airports_and_metros() -> dict:
@@ -175,48 +174,33 @@ def scan_sr_ids(start: int, end: int, airports: dict) -> list[dict]:
 
     IDs are sparse — gaps of 30-80 between valid ones are normal — so we
     always scan the entire range rather than using early stopping.
+    All IDs are submitted at once to a thread pool for maximum throughput.
     """
+    all_ids = list(range(start, end))
+    total = len(all_ids)
+    print(f"  Scanning SR IDs {start} to {end} ({total} IDs) with {SCAN_THREADS} threads...")
+
     all_flights = []
-    total_ids = end - start
+    completed = 0
+    found = 0
 
-    print(f"  Scanning SR IDs {start} to {end} ({total_ids} IDs)...")
-
-    # Process in batches for controlled parallelism
-    batch_size = SCAN_THREADS * 5  # 50 IDs per batch for faster throughput
-    current = start
-    batches_done = 0
-
-    while current < end:
-        batch_end = min(current + batch_size, end)
-        batch_ids = list(range(current, batch_end))
-
-        with ThreadPoolExecutor(max_workers=SCAN_THREADS) as executor:
-            futures = {executor.submit(probe_sr_id, sid): sid for sid in batch_ids}
-            batch_results = {}
-            for future in as_completed(futures):
-                sid = futures[future]
-                batch_results[sid] = future.result()
-
-        # Process results in order
-        batch_found = 0
-        for sid in batch_ids:
-            charter = batch_results.get(sid)
+    with ThreadPoolExecutor(max_workers=SCAN_THREADS) as executor:
+        futures = {executor.submit(probe_sr_id, sid): sid for sid in all_ids}
+        for future in as_completed(futures):
+            sid = futures[future]
+            completed += 1
+            charter = future.result()
             if charter:
                 flights = parse_charter(charter, sid, airports)
                 all_flights.extend(flights)
-                batch_found += 1
+                found += len(flights)
+                print(f"    SR {sid}: +{len(flights)} flights (total: {found})")
 
-        batches_done += 1
-        pct = int((current - start) / total_ids * 100)
-        if batch_found > 0:
-            print(f"    [{pct}%] IDs {current}-{batch_end}: +{batch_found} flights (total: {len(all_flights)})")
-        elif batches_done % 5 == 0:
-            print(f"    [{pct}%] IDs {current}-{batch_end}: scanning... (total: {len(all_flights)})")
+            # Progress update every 200 completions
+            if completed % 200 == 0:
+                print(f"    Progress: {completed}/{total} IDs checked, {found} flights found")
 
-        current = batch_end
-        time.sleep(SCAN_BATCH_DELAY)
-
-    print(f"  Scan complete — {len(all_flights)} flights found")
+    print(f"  Scan complete — {found} flights found from {total} IDs checked")
     return all_flights
 
 
