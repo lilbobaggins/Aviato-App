@@ -10,7 +10,7 @@ permissions:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,8 +21,6 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r aviato-app/scrapers/requirements.txt
-      - name: Install Playwright browsers
-        run: python -m playwright install chromium --with-deps
       - name: Run Slate scraper
         run: cd aviato-app/scrapers && python slate_scraper.py
       - name: Save slate_flights.json as artifact

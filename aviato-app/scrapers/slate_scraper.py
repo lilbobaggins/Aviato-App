@@ -4,10 +4,13 @@ Slate Aviation Flight Scraper for Aviato
 
 Strategy:
   1. GET  /getAirportsAndMa        → metro areas + airport codes
-  2. POST /getCalendarSeatsPrices   → calendar of dates with prices per route
-  3. Use Playwright to render each search page and extract SR IDs from the DOM
-     (the search page is a Next.js SPA; raw HTML has no flight data)
-  4. POST /getPlaneBySeatInfo       → full flight detail per SR ID
+  2. POST /getCalendarSeatsPrices   → calendar dates (to find date range)
+  3. Scan sequential seat reservation IDs via POST /getPlaneBySeatInfo
+     (this API requires no authentication and returns full flight details)
+
+The search page requires auth to display flights, but the getPlaneBySeatInfo
+API is public. SR IDs are roughly sequential (~3-5 per day), so we scan a
+range of IDs to discover all flights.
 
 Output: slate_flights.json (flat list of flight dicts)
 """
@@ -17,8 +20,10 @@ import json
 import time
 import re
 import os
+import sys
 from datetime import datetime, timedelta
 from typing import Optional
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 BASE_URL = "https://app.flyslate.com"
 API_URL = "https://api.app.flyslate.com"
@@ -30,15 +35,17 @@ HEADERS = {
     "Content-Type": "application/json",
 }
 
-# Map ICAO codes to IATA for codes not in the API airport data
+# Map codes to IATA — Slate uses "NYC" as a generic destination
 ICAO_TO_IATA_FALLBACK = {
-    "NYC": "TEB",  # Slate uses "NYC" as a generic destination — map to Teterboro
+    "NYC": "TEB",
 }
 
-# Rate limiting
-BETWEEN_REQUESTS_S = 0.3
-BETWEEN_DATES_S = 1.0
-MAX_CONSECUTIVE_ERRORS = 5
+# Scan config
+SCAN_START = 900000500       # Start scanning from here
+SCAN_END = 900002000         # End scanning here
+SCAN_THREADS = 10            # Parallel API calls
+SCAN_BATCH_DELAY = 0.1       # Delay between batches
+CONSECUTIVE_MISS_LIMIT = 50  # Stop scanning after this many misses in a row
 
 
 def get_airports_and_metros() -> dict:
@@ -54,7 +61,7 @@ def get_airports_and_metros() -> dict:
 
 
 def get_calendar_prices(from_metro: int, to_metro: int) -> list[dict]:
-    """Get all available dates with prices for a route."""
+    """Get available dates with prices for a route (used to verify route is active)."""
     payload = {"directions": [{"from": from_metro, "to": to_metro}]}
     resp = requests.post(
         f"{API_URL}/getCalendarSeatsPrices", headers=HEADERS, json=payload, timeout=30
@@ -66,68 +73,39 @@ def get_calendar_prices(from_metro: int, to_metro: int) -> list[dict]:
     return data.get("seats", [])
 
 
-def get_sr_ids_playwright(page, from_metro: int, to_metro: int, date_compact: str) -> list[str]:
-    """Use Playwright to render a search page and extract SR IDs from the DOM."""
-    url = f"{BASE_URL}/search/points/{from_metro}-{to_metro}/dates/{date_compact}/ft/1/c/USD/"
+def probe_sr_id(sr_id: int) -> Optional[dict]:
+    """Check if a seat reservation ID is valid and return flight details."""
     try:
-        page.goto(url, wait_until="networkidle", timeout=20000)
-        # Wait for flight cards to appear (they are <a> tags with /sr/ in href)
-        page.wait_for_selector('a[href*="/sr/"]', timeout=10000)
-        # Extract SR IDs
-        links = page.query_selector_all('a[href*="/sr/"]')
-        sr_ids = set()
-        for link in links:
-            href = link.get_attribute("href") or ""
-            match = re.search(r"/sr/(\d+)/", href)
-            if match:
-                sr_ids.add(match.group(1))
-        return list(sr_ids)
-    except Exception as e:
-        # Timeout or no flights found — return empty
-        # Check if page loaded but has no flights (vs. error)
-        try:
-            page.wait_for_load_state("domcontentloaded", timeout=5000)
-        except Exception:
-            pass
-        return []
-
-
-def get_flight_detail(seat_reservation_id: int) -> Optional[dict]:
-    """Get full flight details from getPlaneBySeatInfo API."""
-    payload = {"id": seat_reservation_id}
-    resp = requests.post(
-        f"{API_URL}/getPlaneBySeatInfo", headers=HEADERS, json=payload, timeout=30
-    )
-    resp.raise_for_status()
-    data = resp.json()
-    if not data.get("status") or not data.get("charter"):
+        resp = requests.post(
+            f"{API_URL}/getPlaneBySeatInfo",
+            headers=HEADERS,
+            json={"id": sr_id},
+            timeout=15,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        if not data.get("status") or not data.get("charter"):
+            return None
+        return data["charter"]
+    except Exception:
         return None
-    return data["charter"]
 
 
 def resolve_iata(slate_code: str, airports: dict) -> str:
     """Convert Slate's internal airport code to IATA code."""
-    # Check fallback mapping first
     if slate_code in ICAO_TO_IATA_FALLBACK:
         return ICAO_TO_IATA_FALLBACK[slate_code]
-    # Check the airports data from API
     ap = airports.get(slate_code, {})
     iata = ap.get("iata") or ap.get("faa")
     if iata:
         return iata
-    # Strip leading K from ICAO codes (US airports)
     if slate_code.startswith("K") and len(slate_code) == 4:
         return slate_code[1:]
     return slate_code
 
 
-def parse_flights(
-    charter_data: dict,
-    from_metro_id: int,
-    to_metro_id: int,
-    airports: dict,
-) -> list[dict]:
-    """Parse a charter/flight response into Aviato-compatible flight dicts."""
+def parse_charter(charter_data: dict, sr_id: int, airports: dict) -> list[dict]:
+    """Parse a charter response into Aviato-compatible flight dicts."""
     short = charter_data.get("short", {})
     itinerary = charter_data.get("itinerary", [])
     flights = []
@@ -136,7 +114,7 @@ def parse_flights(
         dep_code = resolve_iata(leg["from"], airports)
         arr_code = resolve_iata(leg["to"], airports)
 
-        dep_local = leg.get("departureLocal", "")  # "2026-02-25 13:00"
+        dep_local = leg.get("departureLocal", "")
         if not dep_local:
             continue
 
@@ -147,24 +125,28 @@ def parse_flights(
         flight_date = dep_dt.strftime("%Y-%m-%d")
         date_compact = dep_dt.strftime("%Y%m%d")
 
-        # Format times as "1:00 PM"
         dep_time = dep_dt.strftime("%-I:%M %p")
         arr_time = arr_dt.strftime("%-I:%M %p")
 
-        # Price and seats
         price = leg.get("seatPrice", 0)
         seats = leg.get("maxPax", 0) - leg.get("alreadyTakenSeats", 0)
         if seats < 0:
             seats = 0
 
-        # Aircraft name — clean up double spaces
-        aircraft = short.get("name", "CRJ-200").strip()
-        aircraft = re.sub(r"\s+", " ", aircraft)
+        aircraft = re.sub(r"\s+", " ", short.get("name", "CRJ-200")).strip()
 
-        # Build booking deeplink
-        sr_id = short.get("id", "")
+        # Figure out metro IDs for deeplink (SFL=218, NY=252)
+        sfl_codes = {"FLL", "PBI", "MIA", "OPF", "BCT", "FXE", "TMB"}
+        ny_codes = {"TEB", "HPN", "FRG", "MMU", "JFK", "LGA", "EWR"}
+        if dep_code in sfl_codes:
+            from_metro, to_metro = 218, 252
+        elif dep_code in ny_codes:
+            from_metro, to_metro = 252, 218
+        else:
+            from_metro, to_metro = 218, 252  # default
+
         deeplink = (
-            f"{BASE_URL}/search/points/{from_metro_id}-{to_metro_id}"
+            f"{BASE_URL}/search/points/{from_metro}-{to_metro}"
             f"/dates/{date_compact}/ft/1/c/USD/sr/{sr_id}/"
         )
 
@@ -186,16 +168,91 @@ def parse_flights(
     return flights
 
 
-def scrape_all_flights():
-    """Main scraping function — uses Playwright to get SR IDs, then API for details."""
-    from playwright.sync_api import sync_playwright
+def find_first_valid_id(start: int, end: int) -> Optional[int]:
+    """Binary-ish search to find the first valid SR ID in a range."""
+    print(f"  Searching for first valid ID in {start}-{end}...")
 
+    # Try a few spots to find any valid ID
+    step = max(1, (end - start) // 20)
+    for probe in range(start, end, step):
+        result = probe_sr_id(probe)
+        if result:
+            print(f"  Found valid ID at {probe}")
+            # Now search backwards to find the actual start
+            first = probe
+            for back in range(probe - 1, max(start, probe - 100), -1):
+                if probe_sr_id(back):
+                    first = back
+                else:
+                    break
+            return first
+        time.sleep(0.05)
+
+    return None
+
+
+def scan_sr_ids(start: int, end: int, airports: dict) -> list[dict]:
+    """Scan a range of SR IDs in parallel and collect all valid flights."""
+    all_flights = []
+    total_ids = end - start
+    consecutive_misses = 0
+    found_any = False
+
+    print(f"  Scanning SR IDs {start} to {end} ({total_ids} IDs)...")
+
+    # Process in batches for controlled parallelism
+    batch_size = SCAN_THREADS
+    current = start
+
+    while current < end:
+        batch_end = min(current + batch_size, end)
+        batch_ids = list(range(current, batch_end))
+
+        with ThreadPoolExecutor(max_workers=SCAN_THREADS) as executor:
+            futures = {executor.submit(probe_sr_id, sid): sid for sid in batch_ids}
+            batch_results = {}
+            for future in as_completed(futures):
+                sid = futures[future]
+                batch_results[sid] = future.result()
+
+        # Process results in order
+        batch_found = 0
+        for sid in batch_ids:
+            charter = batch_results.get(sid)
+            if charter:
+                flights = parse_charter(charter, sid, airports)
+                all_flights.extend(flights)
+                consecutive_misses = 0
+                found_any = True
+                batch_found += 1
+            else:
+                if found_any:
+                    consecutive_misses += 1
+
+        if batch_found > 0:
+            # Print progress every batch with hits
+            dates = set(f["date"] for f in all_flights[-batch_found * 3:])
+            print(f"    IDs {current}-{batch_end}: +{batch_found} flights (total: {len(all_flights)})")
+
+        # Stop if we've gone too far past the last valid ID
+        if found_any and consecutive_misses >= CONSECUTIVE_MISS_LIMIT:
+            print(f"  Stopping scan — {CONSECUTIVE_MISS_LIMIT} consecutive misses")
+            break
+
+        current = batch_end
+        time.sleep(SCAN_BATCH_DELAY)
+
+    return all_flights
+
+
+def scrape_all_flights():
+    """Main scraping function — scans SR IDs to find all flights."""
     print("=" * 60)
-    print("Slate Aviation Flight Scraper (Playwright)")
+    print("Slate Aviation Flight Scraper (ID Scan)")
     print("=" * 60)
 
     # Step 1: Get airport/metro data
-    print("\n[1/4] Fetching airports and metropolitan areas...")
+    print("\n[1/3] Fetching airports and metropolitan areas...")
     ref_data = get_airports_and_metros()
     metros = ref_data["metros"]
     airports = ref_data["airports"]
@@ -204,10 +261,11 @@ def scrape_all_flights():
         iata = resolve_iata(m["main_ap"], airports)
         print(f"    - {m['name']} (ID: {mid}, Main: {m['main_ap']} → {iata})")
 
-    # Step 2: Discover active routes via calendar API
-    print("\n[2/4] Discovering active routes...")
+    # Step 2: Verify active routes exist via calendar API
+    print("\n[2/3] Checking active routes via calendar API...")
     metro_ids = list(metros.keys())
-    active_routes = []
+    active_routes = 0
+    total_dates = 0
 
     for from_id in metro_ids:
         for to_id in metro_ids:
@@ -216,81 +274,43 @@ def scrape_all_flights():
             try:
                 prices = get_calendar_prices(from_id, to_id)
                 if prices:
-                    active_routes.append((from_id, to_id, prices))
+                    active_routes += 1
+                    total_dates += len(prices)
                     print(
                         f"    {metros[from_id]['name']} -> {metros[to_id]['name']}"
                         f"  ({len(prices)} dates)"
                     )
             except Exception as e:
-                print(f"    Error checking {from_id}->{to_id}: {e}")
-            time.sleep(BETWEEN_REQUESTS_S)
+                print(f"    Error: {e}")
+            time.sleep(0.3)
 
-    if not active_routes:
+    if active_routes == 0:
         print("  No active routes found!")
         _save_empty()
         return
 
-    # Step 3: Use Playwright to get SR IDs for each date
-    print("\n[3/4] Loading search pages to find flight IDs (Playwright)...")
-    all_flights = []
-    consecutive_errors = 0
+    print(f"  Active routes: {active_routes}, Total dates: {total_dates}")
 
-    with sync_playwright() as pw:
-        browser = pw.chromium.launch(headless=True)
-        context = browser.new_context(
-            user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
-        )
-        page = context.new_page()
+    # Step 3: Scan SR IDs to find all flights
+    print(f"\n[3/3] Scanning seat reservation IDs ({SCAN_START}-{SCAN_END})...")
+    all_flights = scan_sr_ids(SCAN_START, SCAN_END, airports)
 
-        for from_id, to_id, dates in active_routes:
-            from_name = metros[from_id]["name"]
-            to_name = metros[to_id]["name"]
-            print(f"\n  Route: {from_name} -> {to_name} ({len(dates)} dates)")
+    # Deduplicate by SR ID (in case of overlapping scans)
+    seen_sr = set()
+    unique_flights = []
+    for fl in all_flights:
+        sr = fl.get("seat_reservation_id")
+        if sr not in seen_sr:
+            seen_sr.add(sr)
+            unique_flights.append(fl)
 
-            for date_entry in dates:
-                date_str = date_entry["date"]
-                date_compact = date_str.replace("-", "")
-                print(f"    {date_str}...", end=" ", flush=True)
+    # Sort by date then departure time
+    unique_flights.sort(key=lambda f: (f["date"], f["departure_time"]))
 
-                try:
-                    sr_ids = get_sr_ids_playwright(page, from_id, to_id, date_compact)
-                except Exception as e:
-                    print(f"page error: {e}")
-                    consecutive_errors += 1
-                    if consecutive_errors >= MAX_CONSECUTIVE_ERRORS:
-                        print(f"    Skipping rest of route after {MAX_CONSECUTIVE_ERRORS} consecutive errors")
-                        break
-                    time.sleep(2)
-                    continue
-
-                if not sr_ids:
-                    print("(no flights)")
-                    continue
-
-                consecutive_errors = 0
-                print(f"({len(sr_ids)} flights)", end=" ", flush=True)
-
-                # Step 4: Get details for each flight via API
-                for sr_id in sr_ids:
-                    try:
-                        detail = get_flight_detail(int(sr_id))
-                        if detail:
-                            flights = parse_flights(detail, from_id, to_id, airports)
-                            all_flights.extend(flights)
-                    except Exception as e:
-                        print(f"\n      Error on SR {sr_id}: {e}", end="")
-                    time.sleep(BETWEEN_REQUESTS_S)
-
-                print("done")
-                time.sleep(BETWEEN_DATES_S)
-
-        browser.close()
-
-    _save_and_summarize(all_flights, active_routes)
+    _save_and_summarize(unique_flights)
 
 
 def _save_empty():
-    """Save an empty flights file."""
     script_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(script_dir, "slate_flights.json")
     with open(json_path, "w") as f:
@@ -298,8 +318,7 @@ def _save_empty():
     print(f"Saved 0 flights to {json_path}")
 
 
-def _save_and_summarize(all_flights: list[dict], active_routes: list):
-    """Save flight data and print summary."""
+def _save_and_summarize(all_flights: list[dict]):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(script_dir, "slate_flights.json")
 
@@ -309,21 +328,21 @@ def _save_and_summarize(all_flights: list[dict], active_routes: list):
 
     print("\n" + "=" * 60)
     print("SUMMARY")
-    print(f"  Routes scraped: {len(active_routes)}")
-    print(f"  Total flights:  {len(all_flights)}")
+    print(f"  Total flights: {len(all_flights)}")
     if all_flights:
         prices = [fl["price"] for fl in all_flights if fl["price"]]
         if prices:
-            print(f"  Price range:    ${min(prices):,} - ${max(prices):,}")
+            print(f"  Price range:   ${min(prices):,} - ${max(prices):,}")
         dates = sorted(set(fl["date"] for fl in all_flights))
-        print(f"  Date range:     {dates[0]} to {dates[-1]}")
+        print(f"  Date range:    {dates[0]} to {dates[-1]}")
+        print(f"  Unique dates:  {len(dates)}")
         # Route breakdown
         route_counts: dict[str, int] = {}
         for fl in all_flights:
             key = f"{fl['origin_code']}-{fl['destination_code']}"
             route_counts[key] = route_counts.get(key, 0) + 1
-        print("  Routes found:")
-        for route, count in sorted(route_counts.items()):
+        print("  Route breakdown:")
+        for route, count in sorted(route_counts.items(), key=lambda x: -x[1]):
             print(f"    {route}: {count} flights")
     print("=" * 60)
 
