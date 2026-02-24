@@ -171,8 +171,16 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
   const [isOpen, setIsOpen] = useState(false);
   const [displayValue, setDisplayValue] = useState('');
   const [pos, setPos] = useState({ top: 0, left: 0 });
+  const [mobile, setMobile] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
+  const overlayInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth < 768);
+    check(); window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const updatePos = useCallback(() => {
     if (inputRef.current) {
@@ -181,30 +189,35 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
     }
   }, []);
 
-  // Close on click outside (input + portal dropdown)
+  // Desktop: close on click outside (input + portal dropdown)
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || mobile) return;
     const onClickOutside = (e: MouseEvent) => {
       const target = e.target as Node | null;
       if (!target) return;
-      // Keep open if clicking inside the input/field area
       if (fieldRef.current?.contains(target)) return;
-      // Keep open if clicking inside the portal dropdown
       if (target instanceof HTMLElement && target.closest('[data-airport-dropdown]')) return;
       setIsOpen(false);
     };
     document.addEventListener('mousedown', onClickOutside, true);
     return () => document.removeEventListener('mousedown', onClickOutside, true);
-  }, [isOpen]);
+  }, [isOpen, mobile]);
 
-  // Reposition dropdown on scroll/resize so it stays anchored
+  // Desktop: reposition dropdown on scroll/resize
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || mobile) return;
     const reposition = () => updatePos();
     window.addEventListener('scroll', reposition, true);
     window.addEventListener('resize', reposition);
     return () => { window.removeEventListener('scroll', reposition, true); window.removeEventListener('resize', reposition); };
-  }, [isOpen, updatePos]);
+  }, [isOpen, mobile, updatePos]);
+
+  // Mobile: auto-focus overlay input
+  useEffect(() => {
+    if (isOpen && mobile && overlayInputRef.current) {
+      setTimeout(() => overlayInputRef.current?.focus(), 50);
+    }
+  }, [isOpen, mobile]);
 
   useEffect(() => {
     if (value) {
@@ -236,6 +249,12 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
     }).slice(0, 20);
   };
 
+  const selectLocation = (code: string) => {
+    onChange(code);
+    setIsOpen(false);
+    setQuery('');
+  };
+
   const clearValue = (e: React.MouseEvent) => {
     e.stopPropagation();
     onChange('');
@@ -244,37 +263,131 @@ const AirportField = ({ value, onChange, placeholder, excludeCode, filterByFrom,
     setIsOpen(false);
   };
 
+  const filtered = getFiltered();
+
+  // Shared list item renderer
+  const renderItem = (loc: typeof LOCATIONS[number]) => (
+    <button key={loc.code}
+      onClick={mobile ? () => selectLocation(loc.code) : undefined}
+      onPointerDown={!mobile ? (e) => { e.preventDefault(); selectLocation(loc.code); } : undefined}
+      style={{
+        width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px',
+        border: 'none', backgroundColor: 'transparent', cursor: 'pointer', textAlign: 'left', fontSize: '14px',
+        borderBottom: `1px solid ${dark ? '#2A2A2A' : '#E5E5E0'}`,
+      }}
+    >
+      {loc.type === 'metro' ? (
+        <>
+          <div style={{ width: '36px', height: '36px', background: `linear-gradient(135deg, ${C.darkGreen}, ${C.black})`, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Globe style={{ width: '16px', height: '16px', color: C.cream }} />
+          </div>
+          <div><div style={{ fontWeight: 700, color: t.text }}>{loc.city}</div><div style={{ fontSize: '11px', color: t.textMuted, marginTop: '1px' }}>{loc.sub}</div></div>
+        </>
+      ) : (
+        <>
+          <div style={{ width: '36px', height: '36px', backgroundColor: dark ? '#252525' : C.cream, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '11px', color: C.darkGreen, flexShrink: 0 }}>{loc.code}</div>
+          <div><div style={{ fontWeight: 600, color: t.text }}>{loc.city}, {loc.state}</div><div style={{ fontSize: '11px', color: t.textMuted, marginTop: '1px' }}>{loc.name}{loc.metro ? ` · ${findLoc(loc.metro).city}` : ''}</div></div>
+        </>
+      )}
+    </button>
+  );
+
   return (
-    <div ref={fieldRef} style={{ position: 'relative', flex: 1 }}>
-      <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px', letterSpacing: '0.02em' }}>{label}</div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-        <input
-          ref={inputRef}
-          type="text"
-          placeholder={placeholder}
-          value={isOpen ? query : displayValue}
-          onFocus={() => { updatePos(); setIsOpen(true); setQuery(''); }}
-          onChange={(e) => setQuery(e.target.value)}
-          style={{
-            flex: 1, width: '100%', padding: 0, border: 'none', fontSize: '16px',
-            fontFamily: 'inherit', outline: 'none', backgroundColor: 'transparent',
-            color: displayValue && !isOpen ? t.text : t.textSec, fontWeight: 500,
-          }}
-        />
-        {value && !isOpen && (
-          <button onClick={clearValue} style={{
-            width: '20px', height: '20px', borderRadius: '50%', border: 'none',
-            backgroundColor: dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)',
-            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0, padding: 0,
-          }}>
-            <X style={{ width: '11px', height: '11px', color: t.textMuted }} />
-          </button>
-        )}
+    <>
+      <div ref={fieldRef} style={{ position: 'relative', flex: 1 }}>
+        <div style={{ fontSize: '11px', fontWeight: 600, color: t.textMuted, marginBottom: '2px', letterSpacing: '0.02em' }}>{label}</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          {mobile ? (
+            /* Mobile: read-only tap target that opens fullscreen overlay */
+            <input
+              type="text"
+              readOnly
+              placeholder={placeholder}
+              value={displayValue}
+              onFocus={(e) => { e.target.blur(); setIsOpen(true); setQuery(''); }}
+              style={{
+                flex: 1, width: '100%', padding: 0, border: 'none', fontSize: '16px',
+                fontFamily: 'inherit', outline: 'none', backgroundColor: 'transparent',
+                color: displayValue ? t.text : t.textSec, fontWeight: 500, cursor: 'pointer',
+              }}
+            />
+          ) : (
+            /* Desktop: normal editable input */
+            <input
+              ref={inputRef}
+              type="text"
+              placeholder={placeholder}
+              value={isOpen ? query : displayValue}
+              onFocus={() => { updatePos(); setIsOpen(true); setQuery(''); }}
+              onChange={(e) => setQuery(e.target.value)}
+              style={{
+                flex: 1, width: '100%', padding: 0, border: 'none', fontSize: '16px',
+                fontFamily: 'inherit', outline: 'none', backgroundColor: 'transparent',
+                color: displayValue && !isOpen ? t.text : t.textSec, fontWeight: 500,
+              }}
+            />
+          )}
+          {value && !isOpen && (
+            <button onClick={clearValue} style={{
+              width: '20px', height: '20px', borderRadius: '50%', border: 'none',
+              backgroundColor: dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)',
+              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0, padding: 0,
+            }}>
+              <X style={{ width: '11px', height: '11px', color: t.textMuted }} />
+            </button>
+          )}
+        </div>
+
+        {/* Desktop dropdown via portal */}
+        {isOpen && !mobile && <AirportDropdown dark={dark} t={t} filtered={filtered} onChange={onChange} setIsOpen={setIsOpen} setQuery={setQuery} pos={pos} />}
       </div>
 
-      {isOpen && <AirportDropdown dark={dark} t={t} filtered={getFiltered()} onChange={onChange} setIsOpen={setIsOpen} setQuery={setQuery} pos={pos} />}
-    </div>
+      {/* Mobile fullscreen overlay */}
+      {isOpen && mobile && typeof document !== 'undefined' && createPortal(
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: dark ? '#111' : '#fff', zIndex: 99999,
+          display: 'flex', flexDirection: 'column',
+          fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+        }}>
+          {/* Header */}
+          <div style={{ padding: '16px 16px 12px', borderBottom: `1px solid ${dark ? '#2A2A2A' : '#E5E5E0'}`, flexShrink: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              <button onClick={() => { setIsOpen(false); setQuery(''); }}
+                style={{ width: '36px', height: '36px', border: 'none', backgroundColor: dark ? '#252525' : '#F5F3ED', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <X style={{ width: '18px', height: '18px', color: t.textMuted }} />
+              </button>
+              <span style={{ fontSize: '16px', fontWeight: 700, color: t.text }}>{label === 'Where from' ? 'Where from?' : 'Where to?'}</span>
+            </div>
+            <div style={{ position: 'relative' }}>
+              <Search style={{ position: 'absolute', left: '14px', top: '12px', width: '16px', height: '16px', color: t.textMuted }} />
+              <input
+                ref={overlayInputRef}
+                type="text"
+                placeholder="Search city or airport..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                style={{
+                  width: '100%', paddingLeft: '42px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px',
+                  border: `1.5px solid ${dark ? '#333' : '#E5E5E0'}`, borderRadius: '12px', fontSize: '15px',
+                  fontFamily: 'inherit', outline: 'none', backgroundColor: dark ? '#1A1A1A' : '#F5F3ED',
+                  color: t.text, boxSizing: 'border-box' as const,
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Results list */}
+          <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch' as const }}>
+            {filtered.length === 0 ? (
+              <div style={{ padding: '24px 16px', textAlign: 'center', color: t.textMuted, fontSize: '14px' }}>No routes available</div>
+            ) : filtered.map(loc => renderItem(loc))}
+          </div>
+        </div>,
+        document.body
+      )}
+    </>
   );
 };
 
