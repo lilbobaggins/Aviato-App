@@ -14147,22 +14147,32 @@ export const getRouteDates = (fromCode: string, toCode: string): string[] | null
   const toCodes = expandCode(toCode);
   let allDates: string[] = [];
   let hasAnyFlights = false;
-  let allAreSeasonal = true;
+  let hasUndatedFlights = false;
   for (const fc of fromCodes) {
     for (const tc of toCodes) {
       const key = `${fc}-${tc}`;
-      if (FLIGHTS[key] && FLIGHTS[key].length > 0) {
+      const flights = FLIGHTS[key];
+      if (flights && flights.length > 0) {
         hasAnyFlights = true;
+        // Collect dates from SEASONAL_DATES
         if (SEASONAL_DATES[key]) {
           allDates = [...allDates, ...SEASONAL_DATES[key]];
-        } else {
-          // This sub-route runs daily — no date restriction
-          allAreSeasonal = false;
+        }
+        // Collect dates from individual flight objects (scraped flights)
+        for (const f of flights) {
+          if (f.date) {
+            allDates.push(f.date);
+          } else {
+            // Flight has no date → runs daily, can't restrict calendar
+            hasUndatedFlights = true;
+          }
         }
       }
     }
   }
-  if (hasAnyFlights && allAreSeasonal && allDates.length > 0) {
+  // If any sub-route has undated flights (daily service), don't restrict
+  if (hasUndatedFlights) return null;
+  if (hasAnyFlights && allDates.length > 0) {
     return [...new Set(allDates)].sort();
   }
   return null;

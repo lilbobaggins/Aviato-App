@@ -419,11 +419,20 @@ const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, on
   const routeDates = (fromCode && toCode) ? getRouteDates(fromCode, toCode) : null;
 
   useEffect(() => {
-    if (isOpen && routeDates && routeDates.length > 0) {
-      const fd = new Date(routeDates[0] + 'T12:00:00');
+    if (!isOpen) return;
+    if (routeDates && routeDates.length > 0) {
+      // If selecting return, jump to first date after departure
+      const targetDate = selectingReturn && departDate
+        ? routeDates.find(d => d > departDate) || routeDates[0]
+        : routeDates[0];
+      const fd = new Date(targetDate + 'T12:00:00');
       setViewMonth(fd.getMonth()); setViewYear(fd.getFullYear());
+    } else if (!routeDates) {
+      // No date restriction — show current month
+      const now = new Date();
+      setViewMonth(now.getMonth()); setViewYear(now.getFullYear());
     }
-  }, [isOpen, fromCode, toCode]);
+  }, [isOpen, fromCode, toCode, selectingReturn]);
 
   const getPriceForDate = (ds: string) => {
     if (!fromCode || !toCode) return null;
@@ -476,8 +485,8 @@ const DesktopCalendar = ({ isOpen, onClose, tripType, departDate, returnDate, on
             const dis = past || isBefore(ds) || noFl;
             return (
               <button key={ds} onClick={() => !dis && handleDate(ds)} disabled={dis}
-                style={{ padding: '3px 1px', border: 'none', borderRadius: dep ? '8px 0 0 8px' : ret ? '0 8px 8px 0' : inR ? '0' : '8px', backgroundColor: sel ? (dark ? C.pink : C.darkGreen) : inR ? (dark ? '#3D1520' : '#E0F2E1') : 'transparent', cursor: dis ? 'default' : 'pointer', opacity: dis ? 0.25 : 1, textAlign: 'center', minHeight: '48px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px' }}>
-                <span style={{ fontSize: '13px', fontWeight: sel ? 800 : 600, color: sel ? '#fff' : t.text }}>{day}</span>
+                style={{ padding: '3px 1px', border: 'none', borderRadius: dep ? '8px 0 0 8px' : ret ? '0 8px 8px 0' : inR ? '0' : '8px', backgroundColor: sel ? (dark ? C.pink : C.darkGreen) : inR ? (dark ? '#3D1520' : '#E0F2E1') : 'transparent', cursor: dis ? 'default' : 'pointer', textAlign: 'center', minHeight: '48px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px' }}>
+                <span style={{ fontSize: '13px', fontWeight: sel ? 800 : 600, color: sel ? '#fff' : dis ? t.textMuted : t.text, opacity: past ? 0.3 : 1 }}>{day}</span>
                 {price && !dis && <span style={{ fontSize: '9px', fontWeight: 700, color: sel ? C.cream : (dark ? C.pink : C.darkGreen), backgroundColor: sel ? 'rgba(255,255,255,0.15)' : getPriceColor(price), borderRadius: '3px', padding: '1px 4px' }}>${price}</span>}
               </button>
             );
