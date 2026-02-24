@@ -27,6 +27,8 @@ jobs:
         run: cd aviato-app/scrapers && python aero_scraper.py
       - name: Run BARK Air scraper
         run: cd aviato-app/scrapers && python bark_air_scraper.py
+      - name: Run Slate scraper
+        run: cd aviato-app/scrapers && python slate_scraper.py
       - name: Update flights.ts
         run: cd aviato-app/scrapers && python update_flights.py
       - name: Save flights.ts as artifact

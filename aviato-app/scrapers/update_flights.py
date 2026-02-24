@@ -102,6 +102,22 @@ AERO_CRAFT = "ERJ-135"
 AERO_AMEN = "['WiFi','Gourmet Catering','Champagne']"
 AERO_LINK = "aero.com"
 
+# ── Slate config ─────────────────────────────────────────────────────
+SLATE_ROUTES = [
+    "TEB-FLL", "FLL-TEB", "TEB-PBI", "PBI-TEB",
+    "TEB-MIA", "MIA-TEB", "TEB-OPF", "OPF-TEB",
+    "HPN-FLL", "FLL-HPN", "HPN-PBI", "PBI-HPN",
+    "HPN-MIA", "MIA-HPN", "HPN-OPF", "OPF-HPN",
+    "FRG-FLL", "FLL-FRG", "FRG-PBI", "PBI-FRG",
+    # Nantucket / Augusta / Maine routes if they appear
+    "TEB-ACK", "ACK-TEB", "HPN-ACK", "ACK-HPN",
+    "TEB-AUG", "AUG-TEB", "HPN-AUG", "AUG-HPN",
+    "TEB-PWM", "PWM-TEB", "HPN-PWM", "PWM-HPN",
+]
+SLATE_CRAFT = "CRJ-200"
+SLATE_AMEN = "['WiFi','Catering','Champagne']"
+SLATE_LINK = "flyslate.com"
+
 # ── BARK Air config ───────────────────────────────────────────────────
 BARK_ROUTES = [
     # Domestic
@@ -425,6 +441,65 @@ def _calc_arrival(takeoff: str, dur: str, origin: str, dest: str) -> str:
     return f"{arr_h12}:{arr_m:02d} {arr_ampm}"
 
 
+def load_slate_flights(json_path: str) -> dict[str, list[dict]]:
+    """Load Slate JSON and group by route key."""
+    if not os.path.exists(json_path):
+        print(f"  [skip] {json_path} not found")
+        return {}
+
+    with open(json_path) as f:
+        data = json.load(f)
+
+    flights = data if isinstance(data, list) else data.get("flights", data)
+
+    routes: dict[str, list[dict]] = {}
+    for fl in flights:
+        origin = fl.get("origin_code", "")
+        dest = fl.get("destination_code", "")
+        key = f"{origin}-{dest}"
+        # Accept any route the scraper found (Slate may add new routes)
+        routes.setdefault(key, []).append(fl)
+
+    for key in routes:
+        routes[key].sort(key=lambda f: (f.get("date") or "", f.get("departure_time") or ""))
+
+    return routes
+
+
+def slate_to_ts(route_key: str, flights: list[dict]) -> list[str]:
+    """Convert Slate flight dicts to TypeScript entry lines."""
+    fr, to = route_key.split("-")
+    prefix = f"slate-{fr.lower()}{to.lower()}"
+    lines = []
+
+    for i, fl in enumerate(flights, 1):
+        dep = fl.get("departure_time", "")
+        arr = fl.get("arrival_time", "")
+        date = fl.get("date", "")
+        price = fl.get("price", 0)
+        seats = fl.get("available_seats", 10) or 10
+        dur_min = fl.get("duration_minutes", 0)
+
+        # Format duration
+        if dur_min and dur_min > 0:
+            dur = f"{dur_min // 60}h {dur_min % 60:02d}m"
+        else:
+            dur = "3h 00m"
+
+        price_str = str(int(price)) if isinstance(price, float) and price == int(price) else str(round(price))
+
+        line = (
+            f"    {{ id:'{prefix}-{i}', airline:'Slate', "
+            f"dep:'{dep}', arr:'{arr}', dc:'{fr}', ac:'{to}', "
+            f"dur:'{dur}', price:{price_str}, craft:'{SLATE_CRAFT}', "
+            f"seats:{seats}, amen:{SLATE_AMEN}, "
+            f"link:'{SLATE_LINK}', date:'{date}' }},"
+        )
+        lines.append(line)
+
+    return lines
+
+
 def _build_new_route_arrays(
     replacements: list[tuple[str, str, list[str]]],
     placed_routes: set[str],
@@ -456,8 +531,12 @@ def update_flights_ts(
     aero_routes: dict[str, list[dict]],
     tradewind_routes: dict[str, list[dict]],
     bark_routes: dict[str, list[dict]],
+    slate_routes: dict[str, list[dict]] | None = None,
 ):
     """Read flights.ts, replace airline entries in route arrays, write back."""
+    if slate_routes is None:
+        slate_routes = {}
+
     with open(FLIGHTS_TS, "r") as f:
         content = f.read()
 
@@ -483,6 +562,11 @@ def update_flights_ts(
         ts_lines = bark_to_ts(route_key, flights)
         if ts_lines:
             replacements.append((route_key, "BARK Air", ts_lines))
+
+    for route_key, flights in slate_routes.items():
+        ts_lines = slate_to_ts(route_key, flights)
+        if ts_lines:
+            replacements.append((route_key, "Slate", ts_lines))
 
     if not replacements:
         print("  No replacements to make.")
@@ -607,6 +691,7 @@ def main():
     aero_json = os.path.join(script_dir, "aero_flights.json")
     tw_json = os.path.join(script_dir, "tradewind_flights.json")
     bark_json = os.path.join(script_dir, "bark_air_flights.json")
+    slate_json = os.path.join(script_dir, "slate_flights.json")
 
     print("\nLoading JSX data...")
     jsx_routes = load_jsx_flights(jsx_json)
@@ -628,15 +713,20 @@ def main():
     for route, flights in sorted(bark_routes.items()):
         print(f"  {route}: {len(flights)} flights")
 
-    if not jsx_routes and not aero_routes and not tw_routes and not bark_routes:
+    print("\nLoading Slate data...")
+    slate_routes = load_slate_flights(slate_json)
+    for route, flights in sorted(slate_routes.items()):
+        print(f"  {route}: {len(flights)} flights")
+
+    if not jsx_routes and not aero_routes and not tw_routes and not bark_routes and not slate_routes:
         print("\nNo data to update. Exiting.")
         sys.exit(0)
 
     print(f"\nUpdating {FLIGHTS_TS}...")
-    update_flights_ts(jsx_routes, aero_routes, tw_routes, bark_routes)
+    update_flights_ts(jsx_routes, aero_routes, tw_routes, bark_routes, slate_routes)
 
     # Count total entries written
-    all_routes = [jsx_routes, aero_routes, tw_routes, bark_routes]
+    all_routes = [jsx_routes, aero_routes, tw_routes, bark_routes, slate_routes]
     total = sum(len(f) for r in all_routes for f in r.values())
     n_routes = sum(len(r) for r in all_routes)
     print(f"\nDone! Replaced {total} flight entries across {n_routes} routes.")
