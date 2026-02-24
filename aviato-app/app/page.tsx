@@ -38,7 +38,7 @@ const BadgeIcon = ({ type, size = 12 }: { type: string; size?: number }) => {
   }
 };
 
-// Airport Input Component
+// Airport Input Component — opens fullscreen overlay on mobile
 const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filterByFrom, filterByTo }: {
   label: string; value: string; onChange: (code: string) => void; placeholder: string;
   excludeCode?: string; filterByFrom?: string; filterByTo?: string;
@@ -46,7 +46,7 @@ const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filter
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [displayValue, setDisplayValue] = useState('');
-  const blurTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const overlayInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (value) {
@@ -54,6 +54,13 @@ const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filter
       if (loc) setDisplayValue(loc.type === 'metro' ? loc.city : `${loc.city} (${loc.code})`);
     } else { setDisplayValue(''); }
   }, [value]);
+
+  // Auto-focus the overlay input when opened
+  useEffect(() => {
+    if (isOpen && overlayInputRef.current) {
+      setTimeout(() => overlayInputRef.current?.focus(), 50);
+    }
+  }, [isOpen]);
 
   const getFilteredLocations = () => {
     const pool = filterByFrom ? getValidDestinations(filterByFrom) : filterByTo ? getValidOrigins(filterByTo) : LOCATIONS;
@@ -88,52 +95,90 @@ const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filter
 
   const filtered = getFilteredLocations();
 
+  const selectLocation = (code: string) => {
+    onChange(code);
+    setIsOpen(false);
+    setQuery('');
+  };
+
   return (
-    <div style={{ position: 'relative' }}>
-      <label style={{ color: C.g600, fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', display: 'block', marginBottom: '6px' }}>{label}</label>
+    <>
       <div style={{ position: 'relative' }}>
-        <MapPin style={{ position: 'absolute', left: '14px', top: '13px', width: '16px', height: '16px', color: C.g400 }} />
-        <input
-          type="text"
-          placeholder={placeholder}
-          value={isOpen ? query : displayValue}
-          onFocus={() => { if (blurTimer.current) { clearTimeout(blurTimer.current); blurTimer.current = null; } setIsOpen(true); setQuery(''); }}
-          onChange={(e) => setQuery(e.target.value)}
-          onBlur={() => { blurTimer.current = setTimeout(() => { setIsOpen(false); blurTimer.current = null; }, 200); }}
-          style={{ width: '100%', paddingLeft: '42px', paddingRight: '16px', paddingTop: '13px', paddingBottom: '13px', border: `1.5px solid ${isOpen ? C.darkGreen : C.g200}`, borderRadius: '12px', fontSize: '15px', fontFamily: 'inherit', outline: 'none', backgroundColor: C.white, color: C.black, boxSizing: 'border-box' }}
-        />
+        <label style={{ color: C.g600, fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', display: 'block', marginBottom: '6px' }}>{label}</label>
+        <div style={{ position: 'relative' }}>
+          <MapPin style={{ position: 'absolute', left: '14px', top: '13px', width: '16px', height: '16px', color: C.g400 }} />
+          <input
+            type="text"
+            readOnly
+            placeholder={placeholder}
+            value={displayValue}
+            onFocus={(e) => { e.target.blur(); setIsOpen(true); setQuery(''); }}
+            style={{ width: '100%', paddingLeft: '42px', paddingRight: '16px', paddingTop: '13px', paddingBottom: '13px', border: `1.5px solid ${C.g200}`, borderRadius: '12px', fontSize: '15px', fontFamily: 'inherit', outline: 'none', backgroundColor: C.white, color: C.black, boxSizing: 'border-box', cursor: 'pointer' }}
+          />
+        </div>
       </div>
+
+      {/* Fullscreen overlay picker */}
       {isOpen && (
-        <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '4px', backgroundColor: C.white, border: `1px solid ${C.g200}`, borderRadius: '12px', boxShadow: '0 12px 40px rgba(0,0,0,0.15)', zIndex: 50, maxHeight: '340px', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
-          {filtered.length === 0 ? (
-            <div style={{ padding: '16px', textAlign: 'center', color: C.g400, fontSize: '14px' }}>No routes available</div>
-          ) : filtered.map(loc => (
-            <button key={loc.code} onMouseDown={(e) => { e.preventDefault(); onChange(loc.code); setIsOpen(false); setQuery(''); }}
-              style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 16px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', textAlign: 'left', fontSize: '14px', borderBottom: `1px solid ${C.g100}` }}>
-              {loc.type === 'metro' ? (
-                <>
-                  <div style={{ width: '40px', height: '40px', background: `linear-gradient(135deg, ${C.darkGreen}, ${C.black})`, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Globe style={{ width: '18px', height: '18px', color: C.cream }} />
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 700, color: C.black }}>{loc.city}</div>
-                    <div style={{ fontSize: '11px', color: C.g400 }}>{loc.sub}</div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div style={{ width: '40px', height: '40px', backgroundColor: C.cream, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '12px', color: C.darkGreen, flexShrink: 0 }}>{loc.code}</div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, color: C.black }}>{loc.city}, {loc.state}</div>
-                    <div style={{ fontSize: '11px', color: C.g400 }}>{loc.name}{loc.metro ? ` · ${findLoc(loc.metro).city}` : ''}</div>
-                  </div>
-                </>
-              )}
-            </button>
-          ))}
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: C.white, zIndex: 9999,
+          display: 'flex', flexDirection: 'column',
+        }}>
+          {/* Header */}
+          <div style={{ padding: '16px 16px 12px', borderBottom: `1px solid ${C.g200}`, flexShrink: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              <button onClick={() => { setIsOpen(false); setQuery(''); }}
+                style={{ width: '36px', height: '36px', border: 'none', backgroundColor: C.g100, borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <X style={{ width: '18px', height: '18px', color: C.g600 }} />
+              </button>
+              <span style={{ fontSize: '16px', fontWeight: 700, color: C.black }}>{label === 'FROM' ? 'Where from?' : 'Where to?'}</span>
+            </div>
+            <div style={{ position: 'relative' }}>
+              <Search style={{ position: 'absolute', left: '14px', top: '12px', width: '16px', height: '16px', color: C.g400 }} />
+              <input
+                ref={overlayInputRef}
+                type="text"
+                placeholder="Search city or airport..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                style={{ width: '100%', paddingLeft: '42px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px', border: `1.5px solid ${C.g200}`, borderRadius: '12px', fontSize: '15px', fontFamily: 'inherit', outline: 'none', backgroundColor: C.g100, color: C.black, boxSizing: 'border-box' }}
+              />
+            </div>
+          </div>
+
+          {/* Results list */}
+          <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
+            {filtered.length === 0 ? (
+              <div style={{ padding: '24px 16px', textAlign: 'center', color: C.g400, fontSize: '14px' }}>No routes available</div>
+            ) : filtered.map(loc => (
+              <button key={loc.code} onClick={() => selectLocation(loc.code)}
+                style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', textAlign: 'left', fontSize: '14px', borderBottom: `1px solid ${C.g100}` }}>
+                {loc.type === 'metro' ? (
+                  <>
+                    <div style={{ width: '40px', height: '40px', background: `linear-gradient(135deg, ${C.darkGreen}, ${C.black})`, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Globe style={{ width: '18px', height: '18px', color: C.cream }} />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: 700, color: C.black }}>{loc.city}</div>
+                      <div style={{ fontSize: '11px', color: C.g400 }}>{loc.sub}</div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div style={{ width: '40px', height: '40px', backgroundColor: C.cream, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '12px', color: C.darkGreen, flexShrink: 0 }}>{loc.code}</div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: 600, color: C.black }}>{loc.city}, {loc.state}</div>
+                      <div style={{ fontSize: '11px', color: C.g400 }}>{loc.name}{loc.metro ? ` · ${findLoc(loc.metro).city}` : ''}</div>
+                    </div>
+                  </>
+                )}
+              </button>
+            ))}
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
