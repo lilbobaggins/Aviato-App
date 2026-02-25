@@ -962,7 +962,7 @@ export default function AviatoApp() {
     return (
       <div style={{ width: '100%', minHeight: '100%', backgroundColor: C.offWhite, paddingBottom: '80px' }}>
         <div style={{ background: C.black, padding: '16px 24px 20px', color: C.white }}>
-          <h1 style={{ fontSize: '24px', fontWeight: 800, margin: '0 0 4px' }}>Events Worth Flying For</h1>
+          <h1 style={{ fontSize: '24px', fontWeight: 800, margin: '0 0 4px' }}>Events Worth Flying Semi-Private For</h1>
           <p style={{ fontSize: '12px', color: C.pink, margin: 0, fontWeight: 600 }}>2026 Hottest Events</p>
         </div>
 
