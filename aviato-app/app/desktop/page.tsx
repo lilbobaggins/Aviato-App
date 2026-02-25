@@ -867,7 +867,7 @@ export default function DesktopPage() {
             <div style={{ padding: '28px 16px 32px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
                 <div>
-                  <h2 style={{ fontSize: '20px', fontWeight: 800, color: t.text, margin: '0 0 4px' }}>Events Worth Flying For</h2>
+                  <h2 style={{ fontSize: '20px', fontWeight: 800, color: t.text, margin: '0 0 4px' }}>Events Worth Flying Semi-Private For</h2>
                   <p style={{ fontSize: '12px', color: dark ? C.pink : C.darkGreen, margin: 0, fontWeight: 600 }}>2026 Hottest Events</p>
                 </div>
                 <div style={{ display: 'flex', gap: '6px' }}>
@@ -1265,7 +1265,7 @@ export default function DesktopPage() {
           <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '48px 48px 52px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', ...revealStyle(eventsReveal.isVisible, 0) }}>
               <div>
-                <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px' }}>Events Worth Flying For</h2>
+                <h2 style={{ fontSize: '26px', fontWeight: 800, color: t.text, margin: '0 0 6px' }}>Events Worth Flying Semi-Private For</h2>
                 <p style={{ fontSize: '13px', color: dark ? C.pink : C.darkGreen, margin: 0, fontWeight: 600 }}>2026 Hottest Events</p>
               </div>
               <div style={{ display: 'flex', gap: '8px' }}>
