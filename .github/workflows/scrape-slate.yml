@@ -22,7 +22,7 @@ jobs:
           python-version: '3.11'
       - run: pip install -r aviato-app/scrapers/requirements.txt
       - name: Run Slate scraper
-        run: cd aviato-app/scrapers && python slate_scraper.py
+        run: cd aviato-app/scrapers && python -u slate_scraper.py
       - name: Save slate_flights.json as artifact
         if: always()
         uses: actions/upload-artifact@v4
