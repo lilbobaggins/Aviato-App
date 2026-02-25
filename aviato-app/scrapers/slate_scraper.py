@@ -45,7 +45,17 @@ DIRECTIONS = [
 START_DATE = datetime.today().strftime("%Y-%m-%d")
 END_DATE = (datetime.today() + timedelta(days=270)).strftime("%Y-%m-%d")
 
-DELAY = 0.5  # seconds between requests
+DELAY = 0.3  # seconds between requests
+
+# Typical flight durations in minutes (for estimating arrival times)
+FLIGHT_DURATIONS = {
+    ("252", "218"): 180,  # NY -> SFL: ~3h
+    ("218", "252"): 180,  # SFL -> NY: ~3h
+    ("252", "255"): 60,   # NY -> Nantucket: ~1h
+    ("255", "252"): 60,   # Nantucket -> NY: ~1h
+    ("252", "384"): 120,  # NY -> Augusta: ~2h
+    ("384", "252"): 120,  # Augusta -> NY: ~2h
+}
 
 
 def get_airport_map() -> dict:
@@ -99,8 +109,8 @@ def get_calendar_dates(from_ma: str, to_ma: str) -> list[dict]:
     return data.get("seats", [])
 
 
-def get_flights_for_date(date_str: str, from_ma: str, to_ma: str) -> list[dict]:
-    """Get all flights for a specific date and direction."""
+def get_flights_for_date(date_str: str, from_ma: str, to_ma: str, retries: int = 3) -> list[dict]:
+    """Get all flights for a specific date and direction, with retries."""
     payload = {
         "currency": CURRENCY,
         "flightType": 1,
@@ -110,35 +120,26 @@ def get_flights_for_date(date_str: str, from_ma: str, to_ma: str) -> list[dict]:
         "lang": LANG,
         "webapp": True,
     }
-    resp = requests.post(
-        f"{API_URL}/getPlaneBySeatList",
-        headers=HEADERS,
-        json=payload,
-        timeout=15,
-    )
-    resp.raise_for_status()
-    data = resp.json()
-    if not data.get("status"):
-        return []
-    # charters is a list of groups; flatten
-    return [flight for group in data.get("charters", []) for flight in group]
-
-
-def get_flight_info(flight_id: int) -> dict | None:
-    """Get detailed info for a flight (arrival time via flightTime)."""
-    payload = {"id": str(flight_id), "lang": LANG, "webapp": True}
-    resp = requests.post(
-        f"{API_URL}/getPlaneBySeatInfo",
-        headers=HEADERS,
-        json=payload,
-        timeout=15,
-    )
-    resp.raise_for_status()
-    data = resp.json()
-    if not data.get("status"):
-        return None
-    itinerary = data.get("charter", {}).get("itinerary", [])
-    return itinerary[0] if itinerary else None
+    for attempt in range(retries):
+        try:
+            resp = requests.post(
+                f"{API_URL}/getPlaneBySeatList",
+                headers=HEADERS,
+                json=payload,
+                timeout=20,
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            if not data.get("status"):
+                return []
+            return [flight for group in data.get("charters", []) for flight in group]
+        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
+            if attempt < retries - 1:
+                wait = 2 ** attempt
+                print(f"timeout, retry {attempt+1}...", end=" ")
+                time.sleep(wait)
+            else:
+                raise
 
 
 def scrape_all_flights():
@@ -193,18 +194,10 @@ def scrape_all_flights():
                 dep_iata = dep_ap["iata"]
                 arr_iata = arr_ap["iata"]
 
-                # Get arrival time via flight detail API
-                arr_time_str = ""
-                duration_min = 0
-                try:
-                    time.sleep(DELAY)
-                    info = get_flight_info(flight_id)
-                    if info and info.get("flightTime"):
-                        duration_min = info["flightTime"]
-                        arr_dt = dep_dt + timedelta(minutes=duration_min)
-                        arr_time_str = arr_dt.strftime("%-I:%M %p")
-                except Exception:
-                    pass
+                # Estimate arrival time from typical flight duration
+                duration_min = FLIGHT_DURATIONS.get((from_ma, to_ma), 180)
+                arr_dt = dep_dt + timedelta(minutes=duration_min)
+                arr_time_str = arr_dt.strftime("%-I:%M %p")
 
                 dep_time_str = dep_dt.strftime("%-I:%M %p")
                 date_compact = date_str.replace("-", "")
