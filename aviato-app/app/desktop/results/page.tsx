@@ -221,12 +221,12 @@ function ResultsContent() {
             <div style={{ flex: 1 }}>
               <div style={{ marginBottom: '24px' }}>
                 <div style={{ fontSize: '9px', fontWeight: 700, color: t.textMuted, letterSpacing: '0.06em' }}>DEPARTURE</div>
-                <div style={{ fontSize: '20px', fontWeight: 800, color: t.text }}>{fl.dep === '— —' ? 'See Slate' : fl.dep}</div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: t.text }}>{fl.dep}</div>
                 <div style={{ fontSize: '12px', color: t.textSec }}>{findLoc(fl.dc).name || findLoc(fl.dc).city} ({fl.dc})</div>
               </div>
               <div>
                 <div style={{ fontSize: '9px', fontWeight: 700, color: t.textMuted, letterSpacing: '0.06em' }}>ARRIVAL</div>
-                <div style={{ fontSize: '20px', fontWeight: 800, color: t.text }}>{fl.arr === '— —' ? 'See Slate' : fl.arr}</div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: t.text }}>{fl.arr}</div>
                 <div style={{ fontSize: '12px', color: t.textSec }}>{findLoc(fl.ac).name || findLoc(fl.ac).city} ({fl.ac})</div>
               </div>
             </div>
@@ -700,8 +700,8 @@ function ResultsContent() {
 
                   {/* Price + seats */}
                   <div style={{ textAlign: isMobile ? 'left' : 'right', flexShrink: 0, width: isMobile ? '100%' : 'auto' }}>
-                    <div style={{ fontSize: '22px', fontWeight: 800, color: t.text }}>{fl.dep === '— —' ? 'from ' : ''}${Math.round(fl.price)}</div>
-                    <div style={{ fontSize: '10px', color: fl.seats <= 3 ? C.pink : t.textMuted, fontWeight: 600 }}>{fl.dep === '— —' ? 'See times on Slate' : `${fl.seats} seats left`}</div>
+                    <div style={{ fontSize: '22px', fontWeight: 800, color: t.text }}>${Math.round(fl.price)}</div>
+                    <div style={{ fontSize: '10px', color: fl.seats <= 3 ? C.pink : t.textMuted, fontWeight: 600 }}>{fl.seats} seats left</div>
                   </div>
                 </button>
               );

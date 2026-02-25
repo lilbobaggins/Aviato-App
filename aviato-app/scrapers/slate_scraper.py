@@ -2,56 +2,95 @@
 """
 Slate Aviation Flight Scraper for Aviato
 
-Strategy (Calendar API):
-  1. GET  /getAirportsAndMa        → metro areas + airport codes
-  2. POST /getCalendarSeatsPrices   → available dates with starting prices
+Strategy:
+  1. GET  /getAirportsAndMa         → airport ICAO-to-IATA mapping
+  2. POST /getCalendarSeatsPrices    → all dates with available flights
+  3. POST /getPlaneBySeatList        → actual flights per date (times, prices, airports)
+  4. POST /getPlaneBySeatInfo        → arrival times (optional, per flight)
 
-Uses the calendar API which works from GitHub Actions (datacenter IPs).
-Gets dates and starting prices per route direction.
-
-Output: slate_flights.json (flat list of flight dicts)
+Output: slate_flights.json (flat list of flight dicts for Aviato)
 """
 
 import requests
 import json
 import time
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 BASE_URL = "https://app.flyslate.com"
 API_URL = "https://api.app.flyslate.com"
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
-    "Origin": BASE_URL,
-    "Referer": f"{BASE_URL}/",
-    "Content-Type": "application/json",
+    "accept": "application/json",
+    "content-type": "application/json",
+    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "origin": BASE_URL,
+    "referer": f"{BASE_URL}/",
 }
 
-# Metro area definitions with main IATA airports
-METROS = {
-    218: {"name": "South Florida", "iata": "FLL"},
-    252: {"name": "New York", "iata": "TEB"},
-    255: {"name": "Nantucket", "iata": "ACK"},
-    384: {"name": "Augusta, GA", "iata": "AGS"},
-}
+CURRENCY = "USD"
+LANG = "en-US"
 
-# Route pairs to check
-ROUTE_PAIRS = [
-    (218, 252),  # South Florida -> New York
-    (252, 218),  # New York -> South Florida
-    (252, 255),  # New York -> Nantucket
-    (255, 252),  # Nantucket -> New York
-    (252, 384),  # New York -> Augusta
-    (384, 252),  # Augusta -> New York
+# Route directions to scrape: (from_metro_id, to_metro_id)
+DIRECTIONS = [
+    ("252", "218"),  # New York -> South Florida
+    ("218", "252"),  # South Florida -> New York
+    ("252", "255"),  # New York -> Nantucket
+    ("255", "252"),  # Nantucket -> New York
+    ("252", "384"),  # New York -> Augusta GA
+    ("384", "252"),  # Augusta GA -> New York
 ]
 
+# Date range — look ~9 months out
+START_DATE = datetime.today().strftime("%Y-%m-%d")
+END_DATE = (datetime.today() + timedelta(days=270)).strftime("%Y-%m-%d")
 
-def get_calendar_prices(from_metro: int, to_metro: int) -> list[dict]:
-    """Get available dates with prices for a route."""
-    payload = {"directions": [{"from": from_metro, "to": to_metro}]}
+DELAY = 0.5  # seconds between requests
+
+
+def get_airport_map() -> dict:
+    """Fetch airport data and return {ICAO_code: {name, city, state, iata}}."""
     resp = requests.post(
-        f"{API_URL}/getCalendarSeatsPrices", headers=HEADERS, json=payload, timeout=30
+        f"{API_URL}/getAirportsAndMa",
+        headers=HEADERS,
+        json={},
+        timeout=15,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    ap_map = {}
+    for ap in data.get("ap", []):
+        code = ap["code"]
+        iata = ap.get("iata") or ap.get("faa") or code
+        # Strip ICAO K-prefix for IATA if needed
+        if not ap.get("iata") and code.startswith("K") and len(code) == 4:
+            iata = code[1:]
+        ap_map[code] = {
+            "name": ap.get("name", ""),
+            "city": ap.get("city", ""),
+            "state": ap.get("state", ""),
+            "iata": iata,
+        }
+    # Generic NYC area code
+    ap_map["NYC"] = {"name": "New York Area", "city": "New York", "state": "NY", "iata": "TEB"}
+    return ap_map
+
+
+def get_calendar_dates(from_ma: str, to_ma: str) -> list[dict]:
+    """Get all available dates with starting prices for a route direction."""
+    payload = {
+        "directions": [{"from": from_ma, "to": to_ma}],
+        "currentLeg": 0,
+        "prevSelectedDates": [],
+        "visibleDates": {"startDate": START_DATE, "endDate": END_DATE},
+        "lang": LANG,
+        "webapp": True,
+    }
+    resp = requests.post(
+        f"{API_URL}/getCalendarSeatsPrices",
+        headers=HEADERS,
+        json=payload,
+        timeout=15,
     )
     resp.raise_for_status()
     data = resp.json()
@@ -60,71 +99,140 @@ def get_calendar_prices(from_metro: int, to_metro: int) -> list[dict]:
     return data.get("seats", [])
 
 
-def build_flights_from_calendar(
-    calendar_entries: list[dict],
-    from_metro_id: int,
-    to_metro_id: int,
-) -> list[dict]:
-    """Build Aviato-compatible flight dicts from calendar data."""
-    from_iata = METROS[from_metro_id]["iata"]
-    to_iata = METROS[to_metro_id]["iata"]
+def get_flights_for_date(date_str: str, from_ma: str, to_ma: str) -> list[dict]:
+    """Get all flights for a specific date and direction."""
+    payload = {
+        "currency": CURRENCY,
+        "flightType": 1,
+        "prevSelectedDates": [date_str],
+        "directions": [{"from": from_ma, "to": to_ma}],
+        "currentLeg": "0",
+        "lang": LANG,
+        "webapp": True,
+    }
+    resp = requests.post(
+        f"{API_URL}/getPlaneBySeatList",
+        headers=HEADERS,
+        json=payload,
+        timeout=15,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    if not data.get("status"):
+        return []
+    # charters is a list of groups; flatten
+    return [flight for group in data.get("charters", []) for flight in group]
 
-    flights = []
-    for entry in calendar_entries:
-        flight_date = entry["date"]
-        price = entry["price"]
-        date_compact = flight_date.replace("-", "")
 
-        deeplink = (
-            f"{BASE_URL}/search/points/{from_metro_id}-{to_metro_id}"
-            f"/dates/{date_compact}/ft/1/c/USD/"
-        )
-
-        flights.append({
-            "airline": "Slate",
-            "origin_code": from_iata,
-            "destination_code": to_iata,
-            "date": flight_date,
-            "departure_time": "— —",
-            "arrival_time": "— —",
-            "duration_minutes": 0,
-            "price": price,
-            "available_seats": 1,
-            "aircraft": "CRJ-200",
-            "deeplink": deeplink,
-        })
-
-    return flights
+def get_flight_info(flight_id: int) -> dict | None:
+    """Get detailed info for a flight (arrival time via flightTime)."""
+    payload = {"id": str(flight_id), "lang": LANG, "webapp": True}
+    resp = requests.post(
+        f"{API_URL}/getPlaneBySeatInfo",
+        headers=HEADERS,
+        json=payload,
+        timeout=15,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    if not data.get("status"):
+        return None
+    itinerary = data.get("charter", {}).get("itinerary", [])
+    return itinerary[0] if itinerary else None
 
 
 def scrape_all_flights():
-    """Main scraping function."""
+    """Main scraper — pulls all flights from all directions."""
     print("=" * 60)
-    print("Slate Aviation Flight Scraper (Calendar API)")
+    print("Slate Aviation Flight Scraper")
     print("=" * 60)
+
+    print("\n[1/3] Loading airport data...")
+    ap_map = get_airport_map()
+    print(f"  {len(ap_map)} airports loaded")
 
     all_flights = []
 
-    print("\nFetching calendar data for all routes...")
-    for from_id, to_id in ROUTE_PAIRS:
-        from_name = METROS[from_id]["name"]
-        to_name = METROS[to_id]["name"]
-        from_iata = METROS[from_id]["iata"]
-        to_iata = METROS[to_id]["iata"]
+    for from_ma, to_ma in DIRECTIONS:
+        print(f"\n[2/3] Route {from_ma} -> {to_ma}")
+        print("  Loading calendar...")
 
-        try:
-            entries = get_calendar_prices(from_id, to_id)
-            if entries:
-                flights = build_flights_from_calendar(entries, from_id, to_id)
-                all_flights.extend(flights)
-                print(f"  {from_name} -> {to_name} ({from_iata}-{to_iata}): {len(flights)} flights")
-            else:
-                print(f"  {from_name} -> {to_name} ({from_iata}-{to_iata}): no flights")
-        except Exception as e:
-            print(f"  {from_name} -> {to_name}: ERROR - {e}")
-        time.sleep(0.5)
+        calendar = get_calendar_dates(from_ma, to_ma)
+        if not calendar:
+            print("  No dates available")
+            continue
+        print(f"  {len(calendar)} dates with flights")
 
-    all_flights.sort(key=lambda f: (f["date"], f["origin_code"], f["destination_code"]))
+        for idx, day in enumerate(calendar):
+            date_str = day["date"]
+            print(f"  [{idx+1}/{len(calendar)}] {date_str}...", end=" ")
+
+            try:
+                flights = get_flights_for_date(date_str, from_ma, to_ma)
+            except Exception as e:
+                print(f"SKIP ({e})")
+                time.sleep(DELAY)
+                continue
+
+            print(f"{len(flights)} flight(s)")
+
+            for flight in flights:
+                flight_id = flight["id"]
+                dep_code = flight["from"]
+                arr_code = flight["to"]
+                dep_dt_str = flight["departureTime"]
+                price = flight["priceBlock"]["price"]
+                aircraft = flight.get("name", "CRJ-200").strip()
+                seats_left = flight.get("seatsLeft", 1)
+
+                dep_dt = datetime.strptime(dep_dt_str, "%Y-%m-%d %H:%M")
+
+                # Resolve IATA codes
+                dep_ap = ap_map.get(dep_code, {"iata": dep_code})
+                arr_ap = ap_map.get(arr_code, {"iata": arr_code})
+                dep_iata = dep_ap["iata"]
+                arr_iata = arr_ap["iata"]
+
+                # Get arrival time via flight detail API
+                arr_time_str = ""
+                duration_min = 0
+                try:
+                    time.sleep(DELAY)
+                    info = get_flight_info(flight_id)
+                    if info and info.get("flightTime"):
+                        duration_min = info["flightTime"]
+                        arr_dt = dep_dt + timedelta(minutes=duration_min)
+                        arr_time_str = arr_dt.strftime("%-I:%M %p")
+                except Exception:
+                    pass
+
+                dep_time_str = dep_dt.strftime("%-I:%M %p")
+                date_compact = date_str.replace("-", "")
+
+                deeplink = (
+                    f"{BASE_URL}/search/points/{from_ma}-{to_ma}"
+                    f"/dates/{date_compact}/ft/1/c/{CURRENCY}/sr/{flight_id}/"
+                )
+
+                all_flights.append({
+                    "airline": "Slate",
+                    "origin_code": dep_iata,
+                    "destination_code": arr_iata,
+                    "date": date_str,
+                    "departure_time": dep_time_str,
+                    "arrival_time": arr_time_str,
+                    "duration_minutes": duration_min,
+                    "price": price,
+                    "available_seats": max(seats_left, 1),
+                    "aircraft": aircraft,
+                    "seat_reservation_id": flight_id,
+                    "deeplink": deeplink,
+                })
+
+            time.sleep(DELAY)
+
+    # Sort by date then time
+    all_flights.sort(key=lambda f: (f["date"], f["departure_time"]))
 
     _save_and_summarize(all_flights)
 
