@@ -68,6 +68,7 @@ ROUTES = [
     ("SNA", "SLC"), ("SLC", "SNA"),
     # LA area to Monterey / Napa / Taos / Denver
     ("BUR", "MRY"), ("MRY", "BUR"),
+    ("SNA", "MRY"), ("MRY", "SNA"),
     ("BUR", "APC"), ("APC", "BUR"),
     ("BUR", "TSM"), ("TSM", "BUR"),
     ("BUR", "APA"), ("APA", "BUR"),
