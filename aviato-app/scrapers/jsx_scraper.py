@@ -29,9 +29,9 @@ V4_TOKEN = (
     "3yif42MVO7gxHWAXnbDtowjfLk8MnM4Qa169WB3Qxf8"
 )
 
-# Dynamic date range: today + 90 days
+# Dynamic date range: today + 150 days
 START_DATE = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-END_DATE = START_DATE + timedelta(days=90)
+END_DATE = START_DATE + timedelta(days=150)
 
 STATION_NAMES = {
     "BUR": "Burbank", "LAS": "Las Vegas", "SMO": "Santa Monica",
