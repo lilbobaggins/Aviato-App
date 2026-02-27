@@ -12,6 +12,7 @@ import { C, AIRLINE_STYLE, AIRLINE_BOOKING, WING_RATINGS, BADGE_CONFIG, WING_COL
 import { findLoc } from '../../data/locations';
 import { getMetroAreaFlights, getRouteDates } from '../../data/flights';
 import { generateDeepLink, getDeepLinkNote } from '../../data/deeplinks';
+import { buildTrackingUrl, getSessionId, trackBookingClick } from '../../lib/tracking';
 import type { Flight } from '../../data/types';
 
 // Theme colors (same as landing page)
@@ -77,7 +78,10 @@ function ResultsContent() {
   const [selectedOutbound, setSelectedOutbound] = useState<Flight | null>(null);
   const [selectedReturn, setSelectedReturn] = useState<Flight | null>(null);
   const [showTripSummary, setShowTripSummary] = useState(false);
-  const [bookingConfirm, setBookingConfirm] = useState<{ url: string; airline: string; note: string } | null>(null);
+  const [bookingConfirm, setBookingConfirm] = useState<{ url: string; airline: string; origin?: string; destination?: string; flightDate?: string; price?: number; note: string } | null>(null);
+  const [sessionId, setSessionId] = useState('');
+
+  useEffect(() => { setSessionId(getSessionId()); }, []);
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [pickerMonth, setPickerMonth] = useState(() => { const d = departDate ? new Date(departDate + 'T12:00:00') : new Date(); return d.getMonth(); });
   const [pickerYear, setPickerYear] = useState(() => { const d = departDate ? new Date(departDate + 'T12:00:00') : new Date(); return d.getFullYear(); });
@@ -318,7 +322,7 @@ function ResultsContent() {
 
         {/* Book button */}
         <div style={{ padding: '0 24px 24px' }}>
-          <button onClick={() => setBookingConfirm({ url: deepLinkUrl, airline: fl.airline, note: deepLinkNote })}
+          <button onClick={() => setBookingConfirm({ url: deepLinkUrl, airline: fl.airline, note: deepLinkNote , origin: fl.dc, destination: fl.ac, flightDate: departDate, price: fl.price})}
             style={{
               width: '100%', padding: '14px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700,
               cursor: 'pointer', color: C.cream, backgroundColor: dark ? C.pink : C.black, display: 'flex', alignItems: 'center',
@@ -897,7 +901,7 @@ function ResultsContent() {
               {/* Booking buttons */}
               <div style={{ padding: '0 24px 24px' }}>
                 {sameAirline ? (
-                  <button onClick={() => setBookingConfirm({ url: outDeepLink, airline: selectedOutbound.airline, note: getDeepLinkNote(selectedOutbound.airline, selectedOutbound.dc, selectedOutbound.ac, 'roundtrip') })}
+                  <button onClick={() => setBookingConfirm({ url: outDeepLink, airline: selectedOutbound.airline, note: getDeepLinkNote(selectedOutbound.airline, selectedOutbound.dc, selectedOutbound.ac, 'roundtrip') , origin: fl.dc, destination: fl.ac, flightDate: departDate, price: fl.price})}
                     style={{
                       width: '100%', padding: '14px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700,
                       cursor: 'pointer', color: C.cream, backgroundColor: dark ? C.pink : C.black, display: 'flex', alignItems: 'center',
@@ -910,7 +914,7 @@ function ResultsContent() {
                     <div style={{ fontSize: '12px', color: t.textSec, marginBottom: '12px', textAlign: 'center', lineHeight: 1.5 }}>
                       Your flights are on different airlines, so you&apos;ll book each leg separately.
                     </div>
-                    <button onClick={() => setBookingConfirm({ url: outDeepLink, airline: selectedOutbound.airline, note: getDeepLinkNote(selectedOutbound.airline, selectedOutbound.dc, selectedOutbound.ac, 'oneway') })}
+                    <button onClick={() => setBookingConfirm({ url: outDeepLink, airline: selectedOutbound.airline, note: getDeepLinkNote(selectedOutbound.airline, selectedOutbound.dc, selectedOutbound.ac, 'oneway') , origin: fl.dc, destination: fl.ac, flightDate: departDate, price: fl.price})}
                       style={{
                         width: '100%', padding: '14px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700,
                         cursor: 'pointer', color: outStyle.text || C.cream, backgroundColor: outStyle.bg || C.black, display: 'flex', alignItems: 'center',
@@ -918,7 +922,7 @@ function ResultsContent() {
                       }}>
                       <ExternalLink style={{ width: '15px', height: '15px' }} /> Book Outbound on {selectedOutbound.airline}
                     </button>
-                    <button onClick={() => setBookingConfirm({ url: retDeepLink, airline: selectedReturn.airline, note: getDeepLinkNote(selectedReturn.airline, selectedReturn.dc, selectedReturn.ac, 'oneway') })}
+                    <button onClick={() => setBookingConfirm({ url: retDeepLink, airline: selectedReturn.airline, note: getDeepLinkNote(selectedReturn.airline, selectedReturn.dc, selectedReturn.ac, 'oneway') , origin: fl.dc, destination: fl.ac, flightDate: departDate, price: fl.price})}
                       style={{
                         width: '100%', padding: '14px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700,
                         cursor: 'pointer', color: retStyle.text || C.cream, backgroundColor: retStyle.bg || C.black, display: 'flex', alignItems: 'center',
@@ -961,7 +965,7 @@ function ResultsContent() {
                 <button onClick={() => setBookingConfirm(null)} style={{ flex: 1, padding: '12px', borderRadius: '12px', border: `1px solid ${t.cardBorder}`, backgroundColor: 'transparent', color: t.textSec, fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>
                   Go Back
                 </button>
-                <a href={bookingConfirm.url} target="_blank" rel="noopener noreferrer" onClick={() => setBookingConfirm(null)}
+                <a href={buildTrackingUrl({ url: bookingConfirm.url, airline: bookingConfirm.airline, origin: bookingConfirm.origin || '', destination: bookingConfirm.destination || '', flightDate: bookingConfirm.flightDate, price: bookingConfirm.price, sessionId })} target="_blank" rel="noopener noreferrer" onClick={() => { trackBookingClick({ airline: bookingConfirm.airline, origin: bookingConfirm.origin || '', destination: bookingConfirm.destination || '', price: bookingConfirm.price }); setBookingConfirm(null); }}
                   style={{ flex: 2, padding: '12px', borderRadius: '12px', border: 'none', backgroundColor: dark ? C.pink : C.black, color: C.cream, fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', textDecoration: 'none' }}>
                   Continue to {bookingConfirm.airline} <ArrowRight style={{ width: '14px', height: '14px' }} />
                 </a>
