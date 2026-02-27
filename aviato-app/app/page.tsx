@@ -14,6 +14,7 @@ import { FLIGHTS, getMetroAreaFlights, getRouteDates } from './data/flights';
 import { EVENTS, shiftDate } from './data/events';
 import { getValidDestinations, getValidOrigins } from './data/helpers';
 import { generateDeepLink, getDeepLinkNote } from './data/deeplinks';
+import { buildTrackingUrl, getSessionId, trackBookingClick } from './lib/tracking';
 import type { Flight, Location } from './data/types';
 
 // Wing SVG icon
@@ -388,6 +389,9 @@ export default function AviatoApp() {
   const [passengers, setPassengers] = useState(1);
   const [tripType, setTripType] = useState('roundtrip');
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
+  const [sessionId, setSessionId] = useState('');
+
+  useEffect(() => { setSessionId(getSessionId()); }, []);
   const [selectedReturn, setSelectedReturn] = useState<Flight | null>(null);
   const [bookingRef, setBookingRef] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
@@ -936,7 +940,8 @@ export default function AviatoApp() {
         </div>
 
         <div style={{ padding: '0 24px' }}>
-          <a href={deepLinkUrl} target="_blank" rel="noopener noreferrer"
+          <a href={fl ? buildTrackingUrl({ url: deepLinkUrl, airline, origin: fl.dc, destination: fl.ac, flightDate: departDate, price: fl.price, sessionId }) : deepLinkUrl} target="_blank"
+                onClick={() => fl && trackBookingClick({ airline, origin: fl.dc, destination: fl.ac, price: fl.price })} rel="noopener noreferrer"
             style={{ width: '100%', padding: '16px', border: 'none', borderRadius: '14px', fontSize: '15px', fontWeight: 700, cursor: 'pointer', color: C.cream, backgroundColor: C.black, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', textDecoration: 'none', boxSizing: 'border-box' }}>
             <ExternalLink style={{ width: '16px', height: '16px' }} /> {hasFullDeepLink ? `Book on ${airline}` : `Go to ${airline}`}
           </a>
