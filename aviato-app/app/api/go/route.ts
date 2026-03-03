@@ -1,27 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAllowedDomain } from '@/app/lib/tracking';
+import { neon } from '@neondatabase/serverless';
 
-// In-memory click log for MVP (persists per serverless instance lifecycle)
-// For production: replace with Vercel Postgres via @vercel/postgres
-interface ClickRecord {
-  id: number;
-  created_at: string;
-  airline: string;
-  origin: string;
-  destination: string;
-  flight_date: string;
-  price: number;
-  session_id: string;
-  user_ip: string;
-  user_agent: string;
-  destination_url: string;
+// Lazy table init â runs CREATE TABLE IF NOT EXISTS on first request
+let tableReady = false;
+async function ensureTable() {
+  if (tableReady) return;
+  const sql = neon(process.env.DATABASE_URL!);
+  await sql`
+    CREATE TABLE IF NOT EXISTS clicks (
+      id SERIAL PRIMARY KEY,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      airline VARCHAR(50) NOT NULL DEFAULT 'unknown',
+      origin VARCHAR(10) DEFAULT '',
+      destination VARCHAR(10) DEFAULT '',
+      flight_date VARCHAR(20) DEFAULT '',
+      price INTEGER DEFAULT 0,
+      session_id VARCHAR(100) DEFAULT '',
+      user_ip VARCHAR(50) DEFAULT '',
+      user_agent TEXT DEFAULT '',
+      destination_url VARCHAR(2048) NOT NULL
+    )
+  `;
+  tableReady = true;
 }
-
-// In-memory storage â works for dev/testing and low-traffic MVP
-// Each serverless instance maintains its own array; data resets on cold starts
-// To persist: connect Vercel Postgres and INSERT instead of push
-const clickLog: ClickRecord[] = [];
-let nextId = 1;
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -49,32 +51,18 @@ export async function GET(request: NextRequest) {
     || '';
   const userAgent = request.headers.get('user-agent') || '';
 
-  // Log the click
-  const record: ClickRecord = {
-    id: nextId++,
-    created_at: new Date().toISOString(),
-    airline,
-    origin,
-    destination,
-    flight_date: flightDate,
-    price,
-    session_id: sessionId,
-    user_ip: userIp,
-    user_agent: userAgent,
-    destination_url: url,
-  };
-
-  clickLog.push(record);
-
-  // Keep in-memory log bounded (last 10,000 clicks)
-  if (clickLog.length > 10000) {
-    clickLog.splice(0, clickLog.length - 10000);
+  // Log the click to Postgres
+  try {
+    await ensureTable();
+    const sql = neon(process.env.DATABASE_URL!);
+    await sql`
+      INSERT INTO clicks (airline, origin, destination, flight_date, price, session_id, user_ip, user_agent, destination_url)
+      VALUES (${airline}, ${origin}, ${destination}, ${flightDate}, ${price}, ${sessionId}, ${userIp}, ${userAgent}, ${url})
+    `;
+  } catch (error) {
+    console.error('Failed to log click:', error);
+    // Don't block the redirect if DB write fails
   }
-
-  // TODO: When Vercel Postgres is connected, uncomment:
-  // import { sql } from '@vercel/postgres';
-  // await sql`INSERT INTO clicks (airline, origin, destination, flight_date, price, session_id, user_ip, user_agent, destination_url)
-  //           VALUES (${airline}, ${origin}, ${destination}, ${flightDate}, ${price}, ${sessionId}, ${userIp}, ${userAgent}, ${url})`;
 
   // 302 redirect to the actual airline booking page
   return NextResponse.redirect(url, 302);
@@ -91,47 +79,71 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // Aggregate stats from in-memory log
-  const now = new Date();
-  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  try {
+    await ensureTable();
+    const sql = neon(process.env.DATABASE_URL!);
 
-  const recentClicks = clickLog.filter(c => new Date(c.created_at) >= thirtyDaysAgo);
+    // Total all time
+    const totalResult = await sql`SELECT COUNT(*) as count FROM clicks`;
+    const totalAllTime = parseInt(totalResult[0].count as string, 10);
 
-  // Clicks by airline
-  const byAirline: Record<string, number> = {};
-  for (const c of recentClicks) {
-    byAirline[c.airline] = (byAirline[c.airline] || 0) + 1;
+    // Total last 30 days
+    const recentResult = await sql`
+      SELECT COUNT(*) as count FROM clicks
+      WHERE created_at >= NOW() - INTERVAL '30 days'
+    `;
+    const total30Days = parseInt(recentResult[0].count as string, 10);
+
+    // Clicks by airline (last 30 days)
+    const airlineResult = await sql`
+      SELECT airline, COUNT(*) as count FROM clicks
+      WHERE created_at >= NOW() - INTERVAL '30 days'
+      GROUP BY airline
+      ORDER BY count DESC
+    `;
+    const byAirline = airlineResult.map((r: Record<string, unknown>) => ({
+      airline: r.airline as string,
+      count: parseInt(r.count as string, 10),
+    }));
+
+    // Top routes (last 30 days)
+    const routeResult = await sql`
+      SELECT origin || '-' || destination as route, COUNT(*) as count FROM clicks
+      WHERE created_at >= NOW() - INTERVAL '30 days'
+      GROUP BY origin, destination
+      ORDER BY count DESC
+      LIMIT 20
+    `;
+    const topRoutes = routeResult.map((r: Record<string, unknown>) => ({
+      route: r.route as string,
+      count: parseInt(r.count as string, 10),
+    }));
+
+    // Recent 50 clicks
+    const recentClicks = await sql`
+      SELECT id, created_at, airline, origin, destination, price
+      FROM clicks
+      ORDER BY created_at DESC
+      LIMIT 50
+    `;
+    const recent = recentClicks.map((r: Record<string, unknown>) => ({
+      id: r.id as number,
+      created_at: (r.created_at as Date).toISOString ? (r.created_at as Date).toISOString() : String(r.created_at),
+      airline: r.airline as string,
+      origin: r.origin as string,
+      destination: r.destination as string,
+      price: r.price as number,
+    }));
+
+    return NextResponse.json({
+      total_all_time: totalAllTime,
+      total_30_days: total30Days,
+      by_airline: byAirline,
+      top_routes: topRoutes,
+      recent,
+    });
+  } catch (error) {
+    console.error('Failed to fetch stats:', error);
+    return NextResponse.json({ error: 'Database error' }, { status: 500 });
   }
-
-  // Clicks by route
-  const byRoute: Record<string, number> = {};
-  for (const c of recentClicks) {
-    const route = `${c.origin}-${c.destination}`;
-    byRoute[route] = (byRoute[route] || 0) + 1;
-  }
-
-  // Sort by count descending
-  const airlineStats = Object.entries(byAirline)
-    .map(([airline, count]) => ({ airline, count }))
-    .sort((a, b) => b.count - a.count);
-
-  const routeStats = Object.entries(byRoute)
-    .map(([route, count]) => ({ route, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 20);
-
-  return NextResponse.json({
-    total_all_time: clickLog.length,
-    total_30_days: recentClicks.length,
-    by_airline: airlineStats,
-    top_routes: routeStats,
-    recent: clickLog.slice(-50).reverse().map(c => ({
-      id: c.id,
-      created_at: c.created_at,
-      airline: c.airline,
-      origin: c.origin,
-      destination: c.destination,
-      price: c.price,
-    })),
-  });
 }
