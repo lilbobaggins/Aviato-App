@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import {
   ChevronLeft, ChevronRight,
   ArrowLeftRight, ArrowRight, Plane, X, Check, Search, Clock,
-  Globe, Sun, Moon, Zap, Shield, DollarSign, Mail
+  Globe, Sun, Moon, Zap, Shield, DollarSign, Mail, Bell
 } from 'lucide-react';
 
 import { C, AIRLINE_STYLE } from '../data/constants';
@@ -566,6 +566,8 @@ export default function DesktopPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [emailSigned, setEmailSigned] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupDismissed, setPopupDismissed] = useState(false);
   // Parallax mouse tracking for hero
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
@@ -577,6 +579,17 @@ export default function DesktopPage() {
     const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
     setParallax({ x, y });
   }, []);
+
+  // Email popup on 50% scroll
+  useEffect(() => {
+    if (popupDismissed || emailSigned) return;
+    const handleScroll = () => {
+      const scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+      if (scrollPct > 0.5 && !popupDismissed && !emailSigned) setShowPopup(true);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [popupDismissed, emailSigned]);
 
   const eventsRef = useRef<HTMLDivElement>(null);
   const [eventCat, setEventCat] = useState('All');
@@ -1443,6 +1456,25 @@ export default function DesktopPage() {
             </form>
           )}
         </div>
+
+        {/* ========== Email Popup Modal ========== */}
+        {showPopup && !popupDismissed && !emailSigned && (
+          <div style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }} onClick={() => { setShowPopup(false); setPopupDismissed(true); }}>
+            <div onClick={(e) => e.stopPropagation()} style={{ background: dark ? '#1E1E1E' : '#fff', borderRadius: '20px', padding: '36px 32px', maxWidth: '420px', width: '90%', textAlign: 'center', position: 'relative', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}>
+              <button onClick={() => { setShowPopup(false); setPopupDismissed(true); }} style={{ position: 'absolute', top: '14px', right: '14px', background: 'none', border: 'none', cursor: 'pointer', color: dark ? '#666' : C.g400, padding: '4px' }}><X style={{ width: '20px', height: '20px' }} /></button>
+              <div style={{ width: '52px', height: '52px', borderRadius: '14px', background: dark ? 'rgba(232,87,109,0.15)' : 'rgba(10,61,46,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                <Bell style={{ width: '26px', height: '26px', color: dark ? C.pink : C.darkGreen }} />
+              </div>
+              <h3 style={{ fontSize: '22px', fontWeight: 800, color: dark ? '#fff' : C.black, margin: '0 0 8px' }}>Never miss a deal</h3>
+              <p style={{ fontSize: '14px', color: dark ? '#999' : C.g400, margin: '0 0 24px', lineHeight: '1.5' }}>Get free route alerts when prices drop on semi-private flights. No spam, just savings.</p>
+              <form onSubmit={async (e) => { e.preventDefault(); const email = (e.currentTarget.elements.namedItem('email') as HTMLInputElement).value; if (!email) return; try { const fd = new FormData(); fd.append('email', email); fd.append('tag', 'popup-route-alerts'); await fetch('https://buttondown.com/api/emails/embed-subscribe/aviatoair', { method: 'POST', body: fd, mode: 'no-cors' }); setEmailSigned(true); setShowPopup(false); setPopupDismissed(true); } catch { setEmailSigned(true); setShowPopup(false); setPopupDismissed(true); } }} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <input name="email" type="email" required placeholder="Your email address" style={{ width: '100%', padding: '14px 18px', border: `1.5px solid ${dark ? '#333' : C.g200}`, borderRadius: '12px', fontSize: '15px', color: dark ? '#fff' : C.black, backgroundColor: dark ? '#111' : '#fff', outline: 'none', boxSizing: 'border-box' }} />
+                <button type="submit" style={{ width: '100%', padding: '14px 18px', border: 'none', borderRadius: '12px', fontSize: '15px', fontWeight: 700, color: '#fff', backgroundColor: dark ? C.pink : C.darkGreen, cursor: 'pointer' }}>Get Free Route Alerts</button>
+              </form>
+              <p style={{ fontSize: '11px', color: dark ? '#555' : C.g400, marginTop: '12px' }}>Unsubscribe anytime. We respect your inbox.</p>
+            </div>
+          </div>
+        )}
 
         {/* ========== Footer ========== */}
         <div ref={footerReveal.ref} style={{ background: dark ? '#0A0A0A' : C.black, padding: '40px 48px', textAlign: 'center', ...revealStyle(footerReveal.isVisible, 0) }}>
