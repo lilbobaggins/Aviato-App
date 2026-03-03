@@ -5,7 +5,7 @@ import {
   Search, MapPin, Calendar, Users, ChevronRight, ChevronDown, ChevronLeft,
   Clock, Plane, Check, Share2, Star, ArrowRight, ArrowLeftRight,
   Wifi, Coffee, Wine, X, Home, Compass, ExternalLink,
-  TrendingDown, Globe, Building2, Timer, Briefcase, Sparkles, Heart, Shield
+  TrendingDown, Globe, Building2, Timer, Briefcase, Sparkles, Heart, Shield, Mail
 } from 'lucide-react';
 
 import { C, AIRLINE_STYLE, AIRLINE_BOOKING, WING_RATINGS, BADGE_CONFIG, WING_COLORS } from './data/constants';
@@ -403,6 +403,7 @@ export default function AviatoApp() {
   const [redirectAirline, setRedirectAirline] = useState<string | null>(null);
   const [redirectFlight, setRedirectFlight] = useState<Flight | null>(null);
   const searchCardRef = useRef<HTMLDivElement>(null);
+  const [emailSigned, setEmailSigned] = useState(false);
   const phoneContentRef = useRef<HTMLDivElement>(null);
 
   const sortFlights = (flights: Flight[], f: string) => {
@@ -521,6 +522,26 @@ export default function AviatoApp() {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Email signup */}
+      <div style={{ padding: '32px 24px 0', textAlign: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '6px' }}>
+          <Mail style={{ width: '18px', height: '18px', color: C.darkGreen }} />
+          <h2 style={{ fontSize: '18px', fontWeight: 800, color: C.black, margin: 0 }}>Stay in the loop</h2>
+        </div>
+        <p style={{ fontSize: '13px', color: C.g400, margin: '0 0 16px', lineHeight: '1.4' }}>Get exclusive deals on semi-private flights</p>
+        {emailSigned ? (
+          <div style={{ padding: '20px', borderRadius: '14px', backgroundColor: C.darkGreen, color: C.cream }}>
+            <Check style={{ width: '20px', height: '20px', marginBottom: '4px' }} />
+            <div style={{ fontWeight: 700, fontSize: '14px' }}>You&apos;re on the list!</div>
+          </div>
+        ) : (
+          <form onSubmit={async (e) => { e.preventDefault(); const form = e.target as HTMLFormElement; const email = (form.elements.namedItem('email') as HTMLInputElement).value; if (!email) return; try { const fd = new FormData(); fd.append('email', email); fd.append('tag', 'homepage'); await fetch('https://buttondown.com/api/emails/embed-subscribe/aviatoair', { method: 'POST', body: fd, mode: 'no-cors' }); setEmailSigned(true); } catch { setEmailSigned(true); } }} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <input name="email" type="email" required placeholder="Your email address" style={{ width: '100%', padding: '14px 16px', border: `1.5px solid ${C.g200}`, borderRadius: '12px', fontSize: '14px', color: C.black, backgroundColor: C.white, outline: 'none', boxSizing: 'border-box' }} />
+            <button type="submit" style={{ width: '100%', padding: '14px 16px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700, color: C.cream, backgroundColor: C.darkGreen, cursor: 'pointer' }}>Subscribe</button>
+          </form>
+        )}
       </div>
 
       {/* Footer links */}
