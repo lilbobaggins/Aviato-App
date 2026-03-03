@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import {
   ChevronLeft, ChevronRight,
   ArrowLeftRight, ArrowRight, Plane, X, Check, Search, Clock,
-  Globe, Sun, Moon, Zap, Shield, DollarSign
+  Globe, Sun, Moon, Zap, Shield, DollarSign, Mail
 } from 'lucide-react';
 
 import { C, AIRLINE_STYLE } from '../data/constants';
@@ -565,6 +565,7 @@ export default function DesktopPage() {
   const [heroIndex, setHeroIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [emailSigned, setEmailSigned] = useState(false);
   // Parallax mouse tracking for hero
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
@@ -959,6 +960,26 @@ export default function DesktopPage() {
                 </div>
               )}
             </div>
+          </div>
+
+          {/* ── Mobile Email Signup ── */}
+          <div style={{ padding: '24px 20px', textAlign: 'center', background: dark ? '#111' : C.offWhite }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginBottom: '4px' }}>
+              <Mail style={{ width: '16px', height: '16px', color: dark ? C.pink : C.darkGreen }} />
+              <h3 style={{ fontSize: '16px', fontWeight: 800, color: dark ? '#fff' : C.black, margin: 0 }}>Stay in the loop</h3>
+            </div>
+            <p style={{ fontSize: '12px', color: C.g400, margin: '0 0 12px' }}>Get exclusive deals on semi-private flights</p>
+            {emailSigned ? (
+              <div style={{ padding: '14px', borderRadius: '12px', backgroundColor: dark ? C.pink : C.darkGreen, color: '#fff' }}>
+                <Check style={{ width: '16px', height: '16px', marginBottom: '2px' }} />
+                <div style={{ fontWeight: 700, fontSize: '13px' }}>You&apos;re on the list!</div>
+              </div>
+            ) : (
+              <form onSubmit={async (e) => { e.preventDefault(); const email = (e.currentTarget.elements.namedItem('email') as HTMLInputElement).value; if (!email) return; try { const fd = new FormData(); fd.append('email', email); fd.append('tag', 'homepage'); await fetch('https://buttondown.com/api/emails/embed-subscribe/aviatoair', { method: 'POST', body: fd, mode: 'no-cors' }); setEmailSigned(true); } catch { setEmailSigned(true); } }} style={{ display: 'flex', gap: '8px' }}>
+                <input name="email" type="email" required placeholder="Your email" style={{ flex: 1, padding: '12px 14px', border: `1.5px solid ${dark ? '#333' : C.g200}`, borderRadius: '10px', fontSize: '13px', color: dark ? '#fff' : C.black, backgroundColor: dark ? '#1a1a1a' : '#fff', outline: 'none' }} />
+                <button type="submit" style={{ padding: '12px 18px', border: 'none', borderRadius: '10px', fontSize: '13px', fontWeight: 700, color: '#fff', backgroundColor: dark ? C.pink : C.darkGreen, cursor: 'pointer', whiteSpace: 'nowrap' }}>Subscribe</button>
+              </form>
+            )}
           </div>
 
           {/* ── Mobile Footer ── */}
@@ -1401,6 +1422,26 @@ export default function DesktopPage() {
           >
             Learn More About Us <ArrowRight style={{ width: '18px', height: '18px' }} />
           </a>
+        </div>
+
+        {/* ========== Email Signup ========== */}
+        <div style={{ maxWidth: '600px', margin: '0 auto', padding: '56px 48px', textAlign: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '8px' }}>
+            <Mail style={{ width: '22px', height: '22px', color: dark ? C.pink : C.darkGreen }} />
+            <h2 style={{ fontSize: '24px', fontWeight: 800, color: t.text, margin: 0 }}>Stay in the loop</h2>
+          </div>
+          <p style={{ fontSize: '15px', color: t.textMuted, margin: '0 0 24px', lineHeight: '1.5' }}>Get exclusive deals on semi-private flights delivered to your inbox</p>
+          {emailSigned ? (
+            <div style={{ padding: '20px', borderRadius: '14px', backgroundColor: dark ? C.pink : C.darkGreen, color: '#fff' }}>
+              <Check style={{ width: '22px', height: '22px', marginBottom: '4px' }} />
+              <div style={{ fontWeight: 700, fontSize: '16px' }}>You&apos;re on the list!</div>
+            </div>
+          ) : (
+            <form onSubmit={async (e) => { e.preventDefault(); const email = (e.currentTarget.elements.namedItem('email') as HTMLInputElement).value; if (!email) return; try { const fd = new FormData(); fd.append('email', email); fd.append('tag', 'homepage'); await fetch('https://buttondown.com/api/emails/embed-subscribe/aviatoair', { method: 'POST', body: fd, mode: 'no-cors' }); setEmailSigned(true); } catch { setEmailSigned(true); } }} style={{ display: 'flex', gap: '12px', maxWidth: '480px', margin: '0 auto' }}>
+              <input name="email" type="email" required placeholder="Your email address" style={{ flex: 1, padding: '16px 20px', border: `1.5px solid ${dark ? '#333' : C.g200}`, borderRadius: '12px', fontSize: '15px', color: dark ? '#fff' : C.black, backgroundColor: dark ? '#1a1a1a' : '#fff', outline: 'none' }} />
+              <button type="submit" style={{ padding: '16px 28px', border: 'none', borderRadius: '12px', fontSize: '15px', fontWeight: 700, color: '#fff', backgroundColor: dark ? C.pink : C.darkGreen, cursor: 'pointer', whiteSpace: 'nowrap', transition: 'transform 0.2s ease' }} onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }} onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}>Subscribe</button>
+            </form>
+          )}
         </div>
 
         {/* ========== Footer ========== */}
