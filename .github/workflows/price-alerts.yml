@@ -1,0 +1,41 @@
+name: Price drop alerts
+
+on:
+  schedule:
+    - cron: '30 8 * * *'   # Daily at 8:30am UTC (after all scrapers finish)
+  workflow_dispatch:        # Manual trigger for testing
+
+jobs:
+  check-prices:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Check for price drops and send alerts
+        env:
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
+        run: cd aviato-app/scrapers && python -u check_price_drops.py
+
+      - name: Commit updated previous_prices.json
+        run: |
+          cd aviato-app/scrapers
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull origin main || true
+          git add previous_prices.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update previous prices $(date -u +%Y-%m-%d)"
+            git push
+          fi
