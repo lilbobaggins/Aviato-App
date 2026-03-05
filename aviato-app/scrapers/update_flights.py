@@ -774,6 +774,16 @@ def update_flights_ts(
         if route_match:
             route_key = route_match.group(1)
 
+            # If we've already placed this route, skip the duplicate array entirely
+            if route_key in placed_routes:
+                # Skip over the entire duplicate array
+                i += 1
+                bracket_depth = 1
+                while i < len(lines) and bracket_depth > 0:
+                    bracket_depth += lines[i].count("[") - lines[i].count("]")
+                    i += 1
+                continue
+
             # Check if we have replacements for this route
             route_replacements = [
                 (airline, ts_lines)
