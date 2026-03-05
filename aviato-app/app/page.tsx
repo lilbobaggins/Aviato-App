@@ -415,12 +415,8 @@ export default function AviatoApp() {
   const [selectingReturn, setSelectingReturn] = useState(false);
   const [redirectAirline, setRedirectAirline] = useState<string | null>(null);
   const [redirectFlight, setRedirectFlight] = useState<Flight | null>(null);
-  const [sessionId, setSessionId] = useState('');
   const searchCardRef = useRef<HTMLDivElement>(null);
   const [emailSigned, setEmailSigned] = useState(false);
-
-  // Initialize session ID for click tracking
-  useEffect(() => { setSessionId(getSessionId()); }, []);
   const phoneContentRef = useRef<HTMLDivElement>(null);
 
   const sortFlights = (flights: Flight[], f: string) => {
