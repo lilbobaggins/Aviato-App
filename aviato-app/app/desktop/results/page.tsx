@@ -93,7 +93,6 @@ function ResultsContent() {
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
   }, []);
-  useEffect(() => { setSessionId(getSessionId()); }, []);
 
   const t = T(dark);
   const fmtDate = (d: string) => d ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', weekday: 'short' }) : '';
