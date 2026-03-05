@@ -136,44 +136,31 @@ BARK_LINK = "air.bark.co"
 
 # ── K9 Jets config ────────────────────────────────────────────────────
 K9JETS_ROUTES = [
-    # US Domestic
-    "TEB-VNY", "VNY-TEB",
-    # US to Florida
-    "TEB-FXE", "FXE-TEB",
-    # US to UK
-    "TEB-LTN", "LTN-TEB", "VNY-LTN", "LTN-VNY",
-    # US to France
-    "TEB-LBG", "LBG-TEB", "TEB-NCE", "NCE-TEB",
-    # US to Iberia
-    "TEB-LIS", "LIS-TEB", "TEB-MAD", "MAD-TEB", "TEB-AGP", "AGP-TEB",
-    # US to Ireland/Germany
-    "TEB-DUB", "DUB-TEB", "TEB-FRA", "FRA-TEB",
-    # US to Switzerland/Italy
-    "TEB-GVA", "GVA-TEB", "TEB-MXP", "MXP-TEB",
-    # US to Dubai
-    "TEB-DWC", "DWC-TEB",
-    # Dubai to Europe
-    "DWC-GVA", "GVA-DWC", "DWC-MXP", "MXP-DWC", "DWC-LTN", "LTN-DWC",
-    # UK/Canada
-    "LTN-YYZ", "YYZ-LTN", "TEB-YYZ", "YYZ-TEB",
-    # UK to Florida
-    "LTN-FXE", "FXE-LTN",
-    # US to Hawaii
-    "VNY-HNL", "HNL-VNY",
-    # US to Mexico (Los Cabos)
-    "VNY-SJD", "SJD-VNY", "TEB-SJD", "SJD-TEB",
-    # UK to Birmingham
-    "TEB-BHX", "BHX-TEB",
-    # Florida to Europe
-    "FXE-LBG", "LBG-FXE", "FXE-LIS", "LIS-FXE",
-    "FXE-DUB", "DUB-FXE", "FXE-MAD", "MAD-FXE",
-    # London intra-Europe
-    "LTN-DUB", "DUB-LTN", "LTN-LBG", "LBG-LTN",
-    # Via routes (LA to Europe via NJ)
-    "VNY-LBG", "LBG-VNY", "VNY-LIS", "LIS-VNY",
-    "VNY-FRA", "FRA-VNY",
-    # Toronto to Florida
-    "YYZ-FXE", "FXE-YYZ",
+    # Only routes that have REAL confirmed flights on k9jets.com
+    # The scraper outputs only actual flight pages — these route keys
+    # tell update_flights.py which keys to accept from the JSON
+    "TEB-LTN", "LTN-TEB",         # NJ ↔ London
+    "TEB-VNY", "VNY-TEB",         # NJ ↔ LA
+    "TEB-LBG", "LBG-TEB",         # NJ ↔ Paris
+    "TEB-GVA", "GVA-TEB",         # NJ ↔ Geneva
+    "TEB-DUB", "DUB-TEB",         # NJ ↔ Dublin
+    "TEB-LIS", "LIS-TEB",         # NJ ↔ Lisbon
+    "TEB-FRA", "FRA-TEB",         # NJ ↔ Frankfurt
+    "TEB-MXP", "MXP-TEB",         # NJ ↔ Milan
+    "TEB-FXE", "FXE-TEB",         # NJ ↔ Florida
+    "TEB-DWC", "DWC-TEB",         # NJ ↔ Dubai
+    "TEB-BHX", "BHX-TEB",         # NJ ↔ Birmingham
+    "VNY-LTN", "LTN-VNY",         # LA ↔ London
+    "LTN-DWC", "DWC-LTN",         # London ↔ Dubai
+    "LTN-FXE", "FXE-LTN",         # London ↔ Florida
+    "LTN-YYZ", "YYZ-LTN",         # London ↔ Toronto
+    "FRA-DWC", "DWC-FRA",         # Frankfurt ↔ Dubai
+    "DWC-GVA", "GVA-DWC",         # Dubai ↔ Geneva
+    "DWC-MXP", "MXP-DWC",         # Dubai ↔ Milan
+    "VNY-LBG", "LBG-VNY",         # LA ↔ Paris (via NJ)
+    "VNY-FRA", "FRA-VNY",         # LA ↔ Frankfurt (via NJ)
+    "VNY-LIS", "LIS-VNY",         # LA ↔ Lisbon (via NJ)
+    "YYZ-FXE", "FXE-YYZ",         # Toronto ↔ Florida
 ]
 K9JETS_CRAFT = "Gulfstream G-IV"
 K9JETS_AMEN = "['WiFi','Gourmet Catering','Champagne','Pet Amenities','Vet Tech On Board']"
@@ -225,6 +212,8 @@ K9JETS_DURATIONS = {
     # London intra-Europe
     "LTN-DUB": "1h 15m", "DUB-LTN": "1h 20m",
     "LTN-LBG": "1h 00m", "LBG-LTN": "1h 05m",
+    # Frankfurt to Dubai
+    "FRA-DWC": "6h 30m", "DWC-FRA": "7h 00m",
     # Via routes (LA to Europe)
     "VNY-LBG": "12h 00m", "LBG-VNY": "13h 00m",
     "VNY-LIS": "12h 00m", "LIS-VNY": "13h 00m",
