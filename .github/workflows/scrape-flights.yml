@@ -27,6 +27,8 @@ jobs:
         run: cd aviato-app/scrapers && python aero_scraper.py
       - name: Run BARK Air scraper
         run: cd aviato-app/scrapers && python bark_air_scraper.py
+      - name: Run K9 Jets scraper
+        run: cd aviato-app/scrapers && python k9jets_scraper.py
       - name: Update flights.ts
         run: cd aviato-app/scrapers && python update_flights.py
       - name: Save flights.ts as artifact
@@ -39,7 +41,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add aviato-app/app/data/flights.ts
+          git add aviato-app/app/data/flights.ts aviato-app/scrapers/k9jets_flights.json aviato-app/scrapers/k9jets_flights.csv || true
           if ! git diff --cached --quiet; then
             git commit -m "Auto-update flight data $(date -u +%Y-%m-%d)"
             git pull --rebase origin main

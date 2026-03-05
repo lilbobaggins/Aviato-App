@@ -61,7 +61,11 @@ export default function Dashboard() {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: C.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>
         <div style={{ backgroundColor: '#fff', borderRadius: '20px', padding: '40px', maxWidth: '400px', width: '90%', boxShadow: '0 4px 24px rgba(0,0,0,0.08)', textAlign: 'center' }}>
+
           <div style={{ fontSize: '32px', marginBottom: '8px' }}>ð</div>
+
+          <div style={{ fontSize: '32px', marginBottom: '8px' }}>📊</div>
+
           <h1 style={{ fontSize: '22px', fontWeight: 800, color: C.black, margin: '0 0 6px' }}>Aviato Dashboard</h1>
           <p style={{ fontSize: '13px', color: C.g400, margin: '0 0 24px' }}>Enter your admin key to view click analytics</p>
           <input
@@ -126,7 +130,11 @@ export default function Dashboard() {
                     <div key={a.airline}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                         <span style={{ fontSize: '13px', fontWeight: 600, color: C.black }}>{a.airline}</span>
+
                         <span style={{ fontSize: '13px', fontWeight: 700, color: C.green }}>{a.count} clicks Â· ${(a.count * CPC_RATE).toFixed(2)}</span>
+
+                        <span style={{ fontSize: '13px', fontWeight: 700, color: C.green }}>{a.count} clicks · ${(a.count * CPC_RATE).toFixed(2)}</span>
+
                       </div>
                       <div style={{ height: '6px', backgroundColor: C.g100, borderRadius: '3px', overflow: 'hidden' }}>
                         <div style={{ height: '100%', width: `${(a.count / maxCount) * 100}%`, backgroundColor: C.green, borderRadius: '3px' }} />
@@ -176,7 +184,11 @@ export default function Dashboard() {
                     <tr key={c.id} style={{ borderBottom: `1px solid ${C.g100}` }}>
                       <td style={{ padding: '10px 12px', color: C.g600 }}>{new Date(c.created_at).toLocaleString()}</td>
                       <td style={{ padding: '10px 12px', fontWeight: 600, color: C.black }}>{c.airline}</td>
+
                       <td style={{ padding: '10px 12px', color: C.black }}>{c.origin} â {c.destination}</td>
+
+                      <td style={{ padding: '10px 12px', color: C.black }}>{c.origin} → {c.destination}</td>
+
                       <td style={{ padding: '10px 12px', textAlign: 'right', fontWeight: 600, color: C.green }}>${c.price}</td>
                     </tr>
                   ))}

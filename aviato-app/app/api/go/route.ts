@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { isAllowedDomain } from '@/app/lib/tracking';
 import { neon } from '@neondatabase/serverless';
 
-// Lazy table init â runs CREATE TABLE IF NOT EXISTS on first request
+// Lazy table init — runs CREATE TABLE IF NOT EXISTS on first request
 let tableReady = false;
 async function ensureTable() {
   if (tableReady) return;
@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Missing url parameter' }, { status: 400 });
   }
 
-  // Prevent open redirects â only allow known airline domains
+  // Prevent open redirects — only allow known airline domains
   if (!isAllowedDomain(url)) {
     return NextResponse.json({ error: 'Invalid redirect domain' }, { status: 403 });
   }
@@ -68,7 +68,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.redirect(url, 302);
 }
 
-// Dashboard data endpoint â returns click stats
+// Dashboard data endpoint — returns click stats
 export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => ({}));
   const key = (body as Record<string, string>).key || '';

@@ -1,1 +1,1032 @@
-{}
+{
+  "ACK-HPN": {
+    "airline": "Tradewind",
+    "date": "2026-03-05",
+    "price": 483
+  },
+  "AGP-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9950
+  },
+  "APA-BUR": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 528
+  },
+  "APA-DAL": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 289
+  },
+  "APA-LAS": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 259
+  },
+  "APA-SCF": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 344
+  },
+  "APA-SNA": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 558
+  },
+  "APC-BUR": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "APC-SNA": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "APC-VNY": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 825
+  },
+  "APF-HPN": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 519
+  },
+  "ARN-HPN": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 14000
+  },
+  "ASE-TEB": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 5100
+  },
+  "ASE-VNY": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 1950
+  },
+  "ATH-HPN": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 15500
+  },
+  "BER-HPN": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 14250
+  },
+  "BHX-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 8925
+  },
+  "BUR-APA": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 558
+  },
+  "BUR-APC": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "BUR-CCR": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 199
+  },
+  "BUR-DAL": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 614
+  },
+  "BUR-LAS": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "BUR-MRY": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 249
+  },
+  "BUR-OAK": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 229
+  },
+  "BUR-RNO": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "BUR-SCF": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 269
+  },
+  "BUR-SLC": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 279
+  },
+  "BUR-TSM": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 249
+  },
+  "CCR-BUR": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 199
+  },
+  "CLD-LAS": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 189
+  },
+  "CLD-SCF": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 249
+  },
+  "CSW-DAL": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 554
+  },
+  "CSW-LAX": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 554
+  },
+  "DAL-APA": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 289
+  },
+  "DAL-BUR": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 614
+  },
+  "DAL-CSW": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 554
+  },
+  "DAL-DSI": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 289
+  },
+  "DAL-HOB": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 179
+  },
+  "DAL-HOU": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 189
+  },
+  "DAL-LAS": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 389
+  },
+  "DAL-OPF": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 479
+  },
+  "DAL-SCF": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 439
+  },
+  "DAL-TSM": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 289
+  },
+  "DSI-DAL": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 289
+  },
+  "DUB-FXE": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 8500
+  },
+  "DUB-HPN": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 7850
+  },
+  "DUB-LTN": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 3950
+  },
+  "DUB-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 7925
+  },
+  "DWC-GVA": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9950
+  },
+  "DWC-LTN": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9250
+  },
+  "DWC-MXP": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9750
+  },
+  "DWC-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 14950
+  },
+  "FLL-FRG": {
+    "airline": "Slate",
+    "date": "2026-03-05",
+    "price": 2190
+  },
+  "FLL-HPN": {
+    "airline": "Slate",
+    "date": "2026-03-05",
+    "price": 2090
+  },
+  "FLL-TEB": {
+    "airline": "Slate",
+    "date": "2026-03-05",
+    "price": 1990
+  },
+  "FRA-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9250
+  },
+  "FRG-FLL": {
+    "airline": "Slate",
+    "date": "2026-03-05",
+    "price": 1890
+  },
+  "FRG-PBI": {
+    "airline": "Slate",
+    "date": "2026-03-05",
+    "price": 1990
+  },
+  "FXE-DUB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 8500
+  },
+  "FXE-LBG": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9250
+  },
+  "FXE-LIS": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9500
+  },
+  "FXE-LTN": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9925
+  },
+  "FXE-MAD": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9250
+  },
+  "FXE-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 4950
+  },
+  "GVA-DWC": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9950
+  },
+  "GVA-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9950
+  },
+  "HCR-VNY": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 1795
+  },
+  "HNL-VNY": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 7925
+  },
+  "HOB-DAL": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 179
+  },
+  "HOU-DAL": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 189
+  },
+  "HPN-ACK": {
+    "airline": "Tradewind",
+    "date": "2026-03-05",
+    "price": 483
+  },
+  "HPN-APF": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 519
+  },
+  "HPN-ARN": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 14000
+  },
+  "HPN-ATH": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 15500
+  },
+  "HPN-BER": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 14250
+  },
+  "HPN-DUB": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 7850
+  },
+  "HPN-FLL": {
+    "airline": "Slate",
+    "date": "2026-03-05",
+    "price": 1690
+  },
+  "HPN-LBG": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 9675
+  },
+  "HPN-LIS": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 11250
+  },
+  "HPN-LTN": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 9350
+  },
+  "HPN-MAD": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 8750
+  },
+  "HPN-MVY": {
+    "airline": "Tradewind",
+    "date": "2026-03-05",
+    "price": 456
+  },
+  "HPN-OPF": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 682
+  },
+  "HPN-PBI": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 682
+  },
+  "HPN-SJC": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 7100
+  },
+  "HPN-VNY": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 6725
+  },
+  "KOA-VNY": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 7500
+  },
+  "LAS-APA": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 259
+  },
+  "LAS-BUR": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "LAS-CLD": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 189
+  },
+  "LAS-DAL": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 459
+  },
+  "LAS-LAX": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 199
+  },
+  "LAS-OAK": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 189
+  },
+  "LAS-RNO": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "LAS-SCF": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "LAS-SLC": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "LAS-SMO": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "LAS-SNA": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 259
+  },
+  "LAS-VNY": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 777
+  },
+  "LAX-CSW": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 554
+  },
+  "LAX-LAS": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 199
+  },
+  "LBG-FXE": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9250
+  },
+  "LBG-HPN": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 9675
+  },
+  "LBG-LTN": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 2950
+  },
+  "LBG-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9250
+  },
+  "LIS-FXE": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9500
+  },
+  "LIS-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 11850
+  },
+  "LTN-DUB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 3950
+  },
+  "LTN-DWC": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9250
+  },
+  "LTN-FXE": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9925
+  },
+  "LTN-HPN": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 9150
+  },
+  "LTN-LBG": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 2950
+  },
+  "LTN-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 8925
+  },
+  "LTN-VNY": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 13850
+  },
+  "LTN-YYZ": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9950
+  },
+  "MAD-FXE": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9250
+  },
+  "MAD-HPN": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 8750
+  },
+  "MAD-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9750
+  },
+  "MIA-TEB": {
+    "airline": "Slate",
+    "date": "2026-03-05",
+    "price": 1590
+  },
+  "MRY-BUR": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 249
+  },
+  "MVY-HPN": {
+    "airline": "Tradewind",
+    "date": "2026-03-05",
+    "price": 456
+  },
+  "MXP-DWC": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9750
+  },
+  "MXP-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9750
+  },
+  "NCE-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9950
+  },
+  "NRT-VNY": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 17500
+  },
+  "OAK-BUR": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 229
+  },
+  "OAK-LAS": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 189
+  },
+  "OAK-SNA": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 249
+  },
+  "OGG-VNY": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 5495
+  },
+  "OPF-DAL": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 479
+  },
+  "OPF-HPN": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 682
+  },
+  "OPF-TEB": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 687
+  },
+  "PBI-FRG": {
+    "airline": "Slate",
+    "date": "2026-03-05",
+    "price": 2290
+  },
+  "PBI-HPN": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 682
+  },
+  "PBI-TEB": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 682
+  },
+  "RNO-BUR": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "RNO-LAS": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "RNO-SNA": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "SCF-APA": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 344
+  },
+  "SCF-BUR": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 269
+  },
+  "SCF-CLD": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 249
+  },
+  "SCF-DAL": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 439
+  },
+  "SCF-LAS": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "SCF-SLC": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 249
+  },
+  "SCF-SMO": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 274
+  },
+  "SCF-SNA": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 289
+  },
+  "SEA-HPN": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 7725
+  },
+  "SJC-HPN": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 7100
+  },
+  "SJD-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 7925
+  },
+  "SJD-VNY": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 1950
+  },
+  "SLC-BUR": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 279
+  },
+  "SLC-LAS": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "SLC-SCF": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 249
+  },
+  "SLC-SNA": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 319
+  },
+  "SMO-LAS": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "SMO-SCF": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 274
+  },
+  "SMO-TRM": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 420
+  },
+  "SNA-APA": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 588
+  },
+  "SNA-APC": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "SNA-LAS": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 259
+  },
+  "SNA-OAK": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 249
+  },
+  "SNA-RNO": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 209
+  },
+  "SNA-SCF": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 289
+  },
+  "SNA-SLC": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 319
+  },
+  "SUN-VNY": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 1975
+  },
+  "TEB-AGP": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9950
+  },
+  "TEB-ASE": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 5100
+  },
+  "TEB-BHX": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 8925
+  },
+  "TEB-DUB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 7925
+  },
+  "TEB-DWC": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 14950
+  },
+  "TEB-FLL": {
+    "airline": "Slate",
+    "date": "2026-03-05",
+    "price": 1990
+  },
+  "TEB-FRA": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9250
+  },
+  "TEB-FXE": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 4950
+  },
+  "TEB-GVA": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9950
+  },
+  "TEB-LBG": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9250
+  },
+  "TEB-LIS": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 11850
+  },
+  "TEB-LTN": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 8925
+  },
+  "TEB-MAD": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9750
+  },
+  "TEB-MIA": {
+    "airline": "Slate",
+    "date": "2026-03-05",
+    "price": 1790
+  },
+  "TEB-MXP": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9750
+  },
+  "TEB-NCE": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9950
+  },
+  "TEB-OPF": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 687
+  },
+  "TEB-PBI": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 682
+  },
+  "TEB-SJD": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 7925
+  },
+  "TEB-VNY": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 5500
+  },
+  "TEB-YYZ": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 4950
+  },
+  "TRM-SMO": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 420
+  },
+  "TRM-VNY": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 775
+  },
+  "TSM-BUR": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 249
+  },
+  "TSM-DAL": {
+    "airline": "JSX",
+    "date": "2026-03-05",
+    "price": 289
+  },
+  "VNY-APC": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 975
+  },
+  "VNY-ASE": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 1950
+  },
+  "VNY-HCR": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 1795
+  },
+  "VNY-HNL": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 7925
+  },
+  "VNY-HPN": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 6725
+  },
+  "VNY-KOA": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 7500
+  },
+  "VNY-LAS": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 777
+  },
+  "VNY-LTN": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 13850
+  },
+  "VNY-NRT": {
+    "airline": "BARK Air",
+    "date": "2026-03-05",
+    "price": 17500
+  },
+  "VNY-OGG": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 5495
+  },
+  "VNY-SJD": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 1950
+  },
+  "VNY-SUN": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 1975
+  },
+  "VNY-TEB": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 5500
+  },
+  "VNY-TRM": {
+    "airline": "Aero",
+    "date": "2026-03-05",
+    "price": 775
+  },
+  "YYZ-LTN": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 9950
+  },
+  "YYZ-TEB": {
+    "airline": "K9 Jets",
+    "date": "2026-03-05",
+    "price": 4950
+  }
+}

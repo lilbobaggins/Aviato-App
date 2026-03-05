@@ -74,6 +74,27 @@ AIRPORT_NAMES = {
     "ATH": "Athens",
     "ARN": "Stockholm",
     "NRT": "Tokyo",
+    # K9 Jets airports
+    "DWC": "Dubai",
+    "FXE": "Fort Lauderdale",
+    "NCE": "Nice",
+    "AGP": "Malaga",
+    "FRA": "Frankfurt",
+    "GVA": "Geneva",
+    "MXP": "Milan",
+    "YYZ": "Toronto",
+    "BHX": "Birmingham, UK",
+    "HNL": "Honolulu",
+    "HCR": "Park City, UT",
+    # Boutique Air / misc
+    "PDX": "Portland, OR",
+    "BOS": "Boston",
+    "DFW": "Dallas/Fort Worth",
+    "IAD": "Washington, DC",
+    "PIT": "Pittsburgh",
+    "MEM": "Memphis",
+    "BNA": "Nashville",
+    "STL": "St. Louis",
 }
 
 
