@@ -169,6 +169,11 @@ K9JETS_ROUTES = [
     "FXE-DUB", "DUB-FXE", "FXE-MAD", "MAD-FXE",
     # London intra-Europe
     "LTN-DUB", "DUB-LTN", "LTN-LBG", "LBG-LTN",
+    # Via routes (LA to Europe via NJ)
+    "VNY-LBG", "LBG-VNY", "VNY-LIS", "LIS-VNY",
+    "VNY-FRA", "FRA-VNY",
+    # Toronto to Florida
+    "YYZ-FXE", "FXE-YYZ",
 ]
 K9JETS_CRAFT = "Gulfstream G-IV"
 K9JETS_AMEN = "['WiFi','Gourmet Catering','Champagne','Pet Amenities','Vet Tech On Board']"
@@ -220,6 +225,12 @@ K9JETS_DURATIONS = {
     # London intra-Europe
     "LTN-DUB": "1h 15m", "DUB-LTN": "1h 20m",
     "LTN-LBG": "1h 00m", "LBG-LTN": "1h 05m",
+    # Via routes (LA to Europe)
+    "VNY-LBG": "12h 00m", "LBG-VNY": "13h 00m",
+    "VNY-LIS": "12h 00m", "LIS-VNY": "13h 00m",
+    "VNY-FRA": "12h 00m", "FRA-VNY": "13h 00m",
+    # Toronto to Florida
+    "YYZ-FXE": "3h 00m", "FXE-YYZ": "3h 10m",
 }
 
 BARK_DURATIONS = {

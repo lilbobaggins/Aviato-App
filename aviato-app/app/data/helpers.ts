@@ -104,6 +104,10 @@ const KNOWN_ROUTES = new Set([
   'FXE-DUB','DUB-FXE','FXE-MAD','MAD-FXE',
   // K9 Jets — London intra-Europe
   'LTN-DUB','DUB-LTN','LTN-LBG','LBG-LTN',
+  // K9 Jets — Via routes (LA to Europe via NJ)
+  'VNY-LBG','LBG-VNY','VNY-LIS','LIS-VNY','VNY-FRA','FRA-VNY',
+  // K9 Jets — Toronto to Florida
+  'YYZ-FXE','FXE-YYZ',
 ]);
 
 export const getReachableFrom = (fromCode: string): Set<string> => {
