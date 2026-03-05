@@ -86,6 +86,9 @@ export const LOCATIONS: Location[] = [
   { code: 'MXP', type: 'airport', city: 'Milan', state: 'IT', name: 'Milan Malpensa Airport' },
   { code: 'YYZ', type: 'airport', city: 'Toronto', state: 'CA', name: 'Toronto Pearson International' },
   { code: 'BHX', type: 'airport', city: 'Birmingham', state: 'UK', name: 'Birmingham Airport' },
+  { code: 'STN', type: 'airport', city: 'London', state: 'UK', name: 'London Stansted Airport' },
+  { code: 'LIN', type: 'airport', city: 'Milan', state: 'IT', name: 'Milan Linate Airport' },
+  { code: 'YVR', type: 'airport', city: 'Vancouver', state: 'CA', name: 'Vancouver International' },
   // LA airports
   { code: 'LAX', type: 'airport', city: 'Los Angeles', state: 'CA', name: 'Los Angeles International', metro: 'LA' },
   { code: 'BUR', type: 'airport', city: 'Burbank', state: 'CA', name: 'Hollywood Burbank', metro: 'LA' },

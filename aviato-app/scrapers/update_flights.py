@@ -136,31 +136,50 @@ BARK_LINK = "air.bark.co"
 
 # ── K9 Jets config ────────────────────────────────────────────────────
 K9JETS_ROUTES = [
-    # Only routes that have REAL confirmed flights on k9jets.com
-    # The scraper outputs only actual flight pages — these route keys
-    # tell update_flights.py which keys to accept from the JSON
-    "TEB-LTN", "LTN-TEB",         # NJ ↔ London
+    # Auto-discovered from WooCommerce Store API (60 routes across 19 airports)
+    # NJ (TEB) routes
+    "TEB-LTN", "LTN-TEB",         # NJ ↔ London Luton
     "TEB-VNY", "VNY-TEB",         # NJ ↔ LA
     "TEB-LBG", "LBG-TEB",         # NJ ↔ Paris
     "TEB-GVA", "GVA-TEB",         # NJ ↔ Geneva
     "TEB-DUB", "DUB-TEB",         # NJ ↔ Dublin
     "TEB-LIS", "LIS-TEB",         # NJ ↔ Lisbon
     "TEB-FRA", "FRA-TEB",         # NJ ↔ Frankfurt
-    "TEB-MXP", "MXP-TEB",         # NJ ↔ Milan
+    "TEB-LIN", "LIN-TEB",         # NJ ↔ Milan Linate
+    "TEB-MXP", "MXP-TEB",         # NJ ↔ Milan Malpensa (legacy)
     "TEB-FXE", "FXE-TEB",         # NJ ↔ Florida
     "TEB-DWC", "DWC-TEB",         # NJ ↔ Dubai
     "TEB-BHX", "BHX-TEB",         # NJ ↔ Birmingham
-    "VNY-LTN", "LTN-VNY",         # LA ↔ London
+    "TEB-MAD", "MAD-TEB",         # NJ ↔ Madrid
+    # LA (VNY) routes
+    "VNY-LTN", "LTN-VNY",         # LA ↔ London Luton
+    "VNY-LBG", "LBG-VNY",         # LA ↔ Paris
+    "VNY-FRA", "FRA-VNY",         # LA ↔ Frankfurt
+    "VNY-LIN", "LIN-VNY",         # LA ↔ Milan Linate
+    "VNY-LIS", "LIS-VNY",         # LA ↔ Lisbon
+    "VNY-GVA", "GVA-VNY",         # LA ↔ Geneva
+    "VNY-MAD", "MAD-VNY",         # LA ↔ Madrid
+    # London (LTN) routes
     "LTN-DWC", "DWC-LTN",         # London ↔ Dubai
-    "LTN-FXE", "FXE-LTN",         # London ↔ Florida
+    "LTN-OPF", "OPF-LTN",         # London ↔ Miami Opa-locka
     "LTN-YYZ", "YYZ-LTN",         # London ↔ Toronto
-    "FRA-DWC", "DWC-FRA",         # Frankfurt ↔ Dubai
+    "LTN-YVR", "YVR-LTN",         # London ↔ Vancouver
+    # London Stansted (STN) routes
+    "STN-DWC", "DWC-STN",         # Stansted ↔ Dubai
+    "STN-AGP", "AGP-STN",         # Stansted ↔ Malaga
+    "STN-NCE", "NCE-STN",         # Stansted ↔ Nice
+    # Dubai (DWC) routes
+    "DWC-FRA", "FRA-DWC",         # Dubai ↔ Frankfurt
+    "DWC-LIN", "LIN-DWC",         # Dubai ↔ Milan Linate
+    "DWC-MAD", "MAD-DWC",         # Dubai ↔ Madrid
     "DWC-GVA", "GVA-DWC",         # Dubai ↔ Geneva
-    "DWC-MXP", "MXP-DWC",         # Dubai ↔ Milan
-    "VNY-LBG", "LBG-VNY",         # LA ↔ Paris (via NJ)
-    "VNY-FRA", "FRA-VNY",         # LA ↔ Frankfurt (via NJ)
-    "VNY-LIS", "LIS-VNY",         # LA ↔ Lisbon (via NJ)
+    "DWC-MXP", "MXP-DWC",         # Dubai ↔ Milan Malpensa (legacy)
+    # Toronto (YYZ) routes
+    "YYZ-DWC", "DWC-YYZ",         # Toronto ↔ Dubai (via London)
+    "YYZ-LBG", "LBG-YYZ",         # Toronto ↔ Paris
     "YYZ-FXE", "FXE-YYZ",         # Toronto ↔ Florida
+    # Goose Bay (YYR) — refueling stop used in some routes
+    "YYR-LTN", "LTN-YYR",         # Goose Bay ↔ London
 ]
 K9JETS_CRAFT = "Gulfstream G-IV"
 K9JETS_AMEN = "['WiFi','Gourmet Catering','Champagne','Pet Amenities','Vet Tech On Board']"
@@ -218,8 +237,29 @@ K9JETS_DURATIONS = {
     "VNY-LBG": "12h 00m", "LBG-VNY": "13h 00m",
     "VNY-LIS": "12h 00m", "LIS-VNY": "13h 00m",
     "VNY-FRA": "12h 00m", "FRA-VNY": "13h 00m",
-    # Toronto to Florida
+    "VNY-GVA": "12h 00m", "GVA-VNY": "13h 00m",
+    "VNY-LIN": "12h 00m", "LIN-VNY": "13h 00m",
+    "VNY-MAD": "12h 00m", "MAD-VNY": "13h 00m",
+    # Toronto to Florida / Dubai / Paris
     "YYZ-FXE": "3h 00m", "FXE-YYZ": "3h 10m",
+    "YYZ-DWC": "12h 00m", "DWC-YYZ": "14h 00m",
+    "YYZ-LBG": "7h 30m", "LBG-YYZ": "8h 00m",
+    # Milan Linate (LIN) routes
+    "TEB-LIN": "8h 00m", "LIN-TEB": "9h 00m",
+    "DWC-LIN": "6h 00m", "LIN-DWC": "5h 30m",
+    # Madrid routes
+    "TEB-MAD": "7h 30m", "MAD-TEB": "8h 30m",
+    "DWC-MAD": "7h 30m", "MAD-DWC": "7h 00m",
+    # London Stansted (STN) routes
+    "STN-DWC": "7h 00m", "DWC-STN": "6h 00m",
+    "STN-AGP": "2h 30m", "AGP-STN": "2h 30m",
+    "STN-NCE": "2h 00m", "NCE-STN": "2h 00m",
+    # London to Vancouver
+    "LTN-YVR": "9h 30m", "YVR-LTN": "9h 00m",
+    # London to Miami Opa-locka
+    "LTN-OPF": "9h 00m", "OPF-LTN": "8h 00m",
+    # Goose Bay
+    "YYR-LTN": "5h 30m", "LTN-YYR": "6h 00m",
 }
 
 BARK_DURATIONS = {
@@ -639,11 +679,17 @@ def k9jets_to_ts(route_key: str, flights: list[dict]) -> list[str]:
         if date and not re.match(r"^\d{4}-\d{2}-\d{2}$", date):
             date = _parse_date_to_iso(date)
         seats = fl.get("seats", 10) or 10
+        # Use actual aircraft from API if available, otherwise fallback
+        craft = fl.get("aircraft", "").strip()
+        if not craft:
+            craft = K9JETS_CRAFT
+        # Escape any single quotes in aircraft name
+        craft = craft.replace("'", "\\'")
 
         line = (
             f"    {{ id:'{prefix}-{i}', airline:'K9 Jets', "
             f"dep:'{dep}', arr:'{arr}', dc:'{fr}', ac:'{to}', "
-            f"dur:'{dur}', price:{price}, craft:'{K9JETS_CRAFT}', "
+            f"dur:'{dur}', price:{price}, craft:'{craft}', "
             f"seats:{seats}, amen:{K9JETS_AMEN}, "
             f"link:'{K9JETS_LINK}', date:'{date}' }},"
         )

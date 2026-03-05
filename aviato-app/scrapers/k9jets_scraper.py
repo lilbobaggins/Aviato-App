@@ -1,120 +1,51 @@
 #!/usr/bin/env python3
 """
-K9 Jets Flight Scraper
-=======================
-Scrapes REAL flight listings from k9jets.com.
+K9 Jets Flight Scraper — WooCommerce Store API
+================================================
+Uses the public WooCommerce Store API at k9jets.com/wp-json/wc/store/v1/products
+to fetch ALL flight listings with structured data (prices, airports, dates, aircraft).
 
-K9 Jets publishes individual flight pages at k9jets.com/flight/{date-slug}/
-and route listing pages at k9jets.com/route/{route-slug}/.
+This is far more reliable than HTML scraping because the data comes as structured JSON
+with explicit fields for departure/arrival airports (IATA codes), prices, dates,
+operators, and aircraft type.
 
-Unlike JSX/Aero which have API endpoints, K9 Jets uses a WordPress site
-with individual pages per flight. This scraper:
-  1. Fetches the main /routes/ page to discover linked flights
-  2. Fetches each known route page (e.g. /route/new-jersey-london/)
-  3. Fetches discovered individual flight pages (e.g. /flight/april-1-2026-2/)
-  4. Extracts real dates, prices, routes, and availability
-  5. Outputs ONLY verified flights — never generates fake dates
+The Store API returns WooCommerce products (each flight is a product) with attributes:
+  - Departure Airport (IATA code)
+  - Arrival Airport (IATA code)
+  - Flight date (MM/DD/YYYY)
+  - Departure time
+  - Arrival Time
+  - Operator
+  - Aircraft
+  - Route (city pair)
+  - Route type (Direct / Via)
+
+Prices are in cents (USD) with currency_minor_unit=2, so 992500 = $9,925.00
 
 Usage:
-  pip install requests beautifulsoup4
+  pip install requests
   python k9jets_scraper.py
 """
 import requests
 import json
 import csv
-import time
-import re
 import sys
-from datetime import datetime, timedelta
-from bs4 import BeautifulSoup
+from datetime import datetime
 from typing import Optional
 from dataclasses import dataclass, asdict
 
 # ─── Configuration ───────────────────────────────────────────────────────────
 
-BASE_URL = "https://www.k9jets.com"
-ROUTES_URL = f"{BASE_URL}/routes/"
+API_BASE = "https://www.k9jets.com/wp-json/wc/store/v1/products"
+PER_PAGE = 100  # max allowed by WooCommerce Store API
 
-REQUEST_DELAY = 1.5
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
                   "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.9",
+    "Accept": "application/json",
 }
 
-# ── Known Route Page Slugs ───────────────────────────────────────────────────
-# Each route on k9jets.com has a page that lists upcoming flights for that route.
-# These are the confirmed slugs from their sitemap/search indexing.
-
-ROUTE_SLUGS = {
-    # slug → (origin_code, dest_code, origin_city, dest_city)
-    "new-jersey-london":       ("TEB", "LTN", "New Jersey", "London"),
-    "london-new-jersey":       ("LTN", "TEB", "London", "New Jersey"),
-    "los-angeles-london":      ("VNY", "LTN", "Los Angeles", "London"),
-    "london-los-angeles":      ("LTN", "VNY", "London", "Los Angeles"),
-    "new-jersey-paris":        ("TEB", "LBG", "New Jersey", "Paris"),
-    "paris-new-jersey":        ("LBG", "TEB", "Paris", "New Jersey"),
-    "new-jersey-lisbon":       ("TEB", "LIS", "New Jersey", "Lisbon"),
-    "lisbon-new-jersey":       ("LIS", "TEB", "Lisbon", "New Jersey"),
-    "new-jersey-dublin":       ("TEB", "DUB", "New Jersey", "Dublin"),
-    "dublin-new-jersey":       ("DUB", "TEB", "Dublin", "New Jersey"),
-    "new-jersey-california":   ("TEB", "VNY", "New Jersey", "Los Angeles"),
-    "los-angeles-new-jersey":  ("VNY", "TEB", "Los Angeles", "New Jersey"),
-    "new-jersey-florida":      ("TEB", "FXE", "New Jersey", "Florida"),
-    "florida-new-jersey":      ("FXE", "TEB", "Florida", "New Jersey"),
-    "london-to-florida":       ("LTN", "FXE", "London", "Florida"),
-    "florida-to-london":       ("FXE", "LTN", "Florida", "London"),
-    "london-dubai":            ("LTN", "DWC", "London", "Dubai"),
-    "dubai-london":            ("DWC", "LTN", "Dubai", "London"),
-    "new-jersey-to-geneva":    ("TEB", "GVA", "New Jersey", "Geneva"),
-    "geneva-to-new-jersey":    ("GVA", "TEB", "Geneva", "New Jersey"),
-    "toronto-to-london":       ("YYZ", "LTN", "Toronto", "London"),
-    "london-to-toronto":       ("LTN", "YYZ", "London", "Toronto"),
-    "toronto-to-florida":      ("YYZ", "FXE", "Toronto", "Florida"),
-    "florida-to-toronto":      ("FXE", "YYZ", "Florida", "Toronto"),
-    "new-jersey-frankfurt":    ("TEB", "FRA", "New Jersey", "Frankfurt"),
-    "frankfurt-new-jersey":    ("FRA", "TEB", "Frankfurt", "New Jersey"),
-    "new-jersey-milan":        ("TEB", "MXP", "New Jersey", "Milan"),
-    "milan-new-jersey":        ("MXP", "TEB", "Milan", "New Jersey"),
-    "dubai-to-geneva":         ("DWC", "GVA", "Dubai", "Geneva"),
-    "geneva-to-dubai":         ("GVA", "DWC", "Geneva", "Dubai"),
-    "dubai-to-milan":          ("DWC", "MXP", "Dubai", "Milan"),
-    "milan-to-dubai":          ("MXP", "DWC", "Milan", "Dubai"),
-    "los-angeles-to-paris":    ("VNY", "LBG", "Los Angeles", "Paris"),
-    "paris-to-los-angeles":    ("LBG", "VNY", "Paris", "Los Angeles"),
-    "frankfurt-to-los-angeles": ("FRA", "VNY", "Frankfurt", "Los Angeles"),
-    "los-angeles-to-lisbon-via-new-jersey": ("VNY", "LIS", "Los Angeles", "Lisbon"),
-    "new-jersey-birmingham":   ("TEB", "BHX", "New Jersey", "Birmingham"),
-    "birmingham-new-jersey":   ("BHX", "TEB", "Birmingham", "New Jersey"),
-}
-
-# Verified per-seat prices from k9jets.com route pages (USD, one-way)
-VERIFIED_PRICES = {
-    ("TEB", "LTN"): 8925, ("LTN", "TEB"): 8925,
-    ("VNY", "LTN"): 13850, ("LTN", "VNY"): 13850,
-    ("TEB", "LBG"): 9125, ("LBG", "TEB"): 9125,
-    ("TEB", "LIS"): 11850, ("LIS", "TEB"): 11850,
-    ("TEB", "DUB"): 7925, ("DUB", "TEB"): 7925,
-    ("TEB", "VNY"): 6650, ("VNY", "TEB"): 6650,
-    ("TEB", "FXE"): 4950, ("FXE", "TEB"): 4950,
-    ("LTN", "FXE"): 11495, ("FXE", "LTN"): 11495,
-    ("LTN", "DWC"): 10925, ("DWC", "LTN"): 10925,
-    ("TEB", "GVA"): 9925, ("GVA", "TEB"): 9925,
-    ("TEB", "FRA"): 9250, ("FRA", "TEB"): 9250,
-    ("TEB", "MXP"): 9750, ("MXP", "TEB"): 9750,
-    ("YYZ", "LTN"): 9950, ("LTN", "YYZ"): 9950,
-    ("TEB", "BHX"): 8925, ("BHX", "TEB"): 8925,
-    ("DWC", "GVA"): 9925, ("GVA", "DWC"): 9925,
-    ("DWC", "MXP"): 9750, ("MXP", "DWC"): 9750,
-    ("VNY", "LBG"): 15775, ("LBG", "VNY"): 15775,
-    ("FRA", "VNY"): 15775, ("VNY", "FRA"): 15775,
-    ("FRA", "DWC"): 10925, ("DWC", "FRA"): 10925,
-    ("YYZ", "FXE"): 6500, ("FXE", "YYZ"): 6500,
-    ("TEB", "DWC"): 14950, ("DWC", "TEB"): 14950,
-    ("VNY", "LIS"): 17500, ("LIS", "VNY"): 17500,
-}
-
+# Estimated flight durations (used for display only — not from the API)
 DURATIONS = {
     ("TEB", "LTN"): "7h 00m", ("LTN", "TEB"): "8h 00m",
     ("VNY", "LTN"): "10h 00m", ("LTN", "VNY"): "11h 00m",
@@ -139,9 +70,16 @@ DURATIONS = {
     ("TEB", "DWC"): "12h 30m", ("DWC", "TEB"): "14h 00m",
     ("VNY", "LIS"): "12h 00m", ("LIS", "VNY"): "13h 00m",
     ("TEB", "YYZ"): "1h 30m", ("YYZ", "TEB"): "1h 30m",
+    ("LTN", "MAD"): "2h 30m", ("MAD", "LTN"): "2h 30m",
+    ("DWC", "MAD"): "7h 30m", ("MAD", "DWC"): "7h 00m",
+    ("LTN", "NCE"): "2h 00m", ("NCE", "LTN"): "2h 00m",
+    ("LTN", "YVR"): "9h 30m", ("YVR", "LTN"): "9h 00m",
+    ("DWC", "NCE"): "7h 00m", ("NCE", "DWC"): "6h 30m",
+    ("YYZ", "DWC"): "12h 00m", ("DWC", "YYZ"): "14h 00m",
 }
 
-AIRPORT_CODES = {
+# Map city names to IATA codes (fallback if API attributes are missing)
+CITY_TO_IATA = {
     "New Jersey": "TEB", "Teterboro": "TEB", "New York": "TEB",
     "London": "LTN", "Luton": "LTN",
     "Paris": "LBG", "Le Bourget": "LBG",
@@ -176,319 +114,163 @@ class Flight:
     arrival_time: Optional[str] = None
     price: Optional[int] = None
     available: bool = True
-    aircraft: str = "Gulfstream G-IV"
+    aircraft: str = ""
     seats: int = 9
     booking_url: Optional[str] = None
     scraped_at: Optional[str] = None
 
 
-# ─── Scraping Functions ──────────────────────────────────────────────────────
+# ─── API Functions ───────────────────────────────────────────────────────────
 
-def fetch_page(url: str) -> Optional[str]:
-    """Fetch a page and return HTML content."""
-    try:
-        resp = requests.get(url, headers=HEADERS, timeout=30)
-        resp.raise_for_status()
-        return resp.text
-    except requests.RequestException as e:
-        print(f"    WARN: Could not fetch {url}: {e}")
-        return None
-
-
-def discover_flight_urls(html: str) -> set[str]:
-    """Find all links to individual flight pages in an HTML page."""
-    soup = BeautifulSoup(html, "html.parser")
-    urls = set()
-    for a in soup.find_all("a", href=True):
-        href = a["href"]
-        # Match /flight/some-date-slug/ pattern
-        if "/flight/" in href and href != "/flight/":
-            if href.startswith("/"):
-                urls.add(BASE_URL + href)
-            elif href.startswith("http"):
-                urls.add(href)
-    return urls
-
-
-def parse_flight_page(html: str, url: str) -> list[Flight]:
-    """
-    Parse an individual flight page (e.g. k9jets.com/flight/april-1-2026-2/).
-    These pages show multi-leg journeys with dates, times, prices, and routes.
-    """
-    flights = []
-    soup = BeautifulSoup(html, "html.parser")
-    text = soup.get_text(" ", strip=True)
-
-    # Extract all legs from this flight page
-    # K9 Jets flight pages often show multiple legs (e.g. NJ→London→Dubai)
-
-    # Find all price entries on the page
-    prices = list(re.finditer(r'\$\s*([\d,]+(?:\.\d{2})?)', text))
-
-    # Find all dates
-    dates = list(re.finditer(
-        r'((?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4})|'
-        r'(\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4})',
-        text, re.IGNORECASE
-    ))
-
-    # Find city/airport pairs
-    # K9 Jets shows legs as "City1, Country → City2, Country"
-    legs = list(re.finditer(
-        r'(\w[\w\s]*?)(?:,\s*\w[\w\s]*)?\s*'
-        r'(?:to|→|➜|->|►)\s*'
-        r'(\w[\w\s]*?)(?:,\s*\w[\w\s]*)?(?:\s|$)',
-        text, re.IGNORECASE
-    ))
-
-    # Find departure/arrival times
-    times = list(re.finditer(r'(\d{1,2}:\d{2}\s*(?:am|pm|AM|PM))', text))
-
-    # Find "sold out" or availability indicators
-    sold_out_global = any(p in text.lower() for p in ["sold out", "soldout", "fully booked"])
-
-    # Extract structured flight data
-    # Strategy: look for price + city pair combinations
-    for price_m in prices:
-        try:
-            price = int(float(price_m.group(1).replace(",", "")))
-        except ValueError:
-            continue
-
-        if price < 2000 or price > 25000:
-            continue
-
-        # Find the closest city names to this price
-        price_pos = price_m.start()
-        context = text[max(0, price_pos - 300):price_pos + 300]
-
-        # Try to identify origin/destination from context
-        origin_code = None
-        dest_code = None
-        origin_city = None
-        dest_city = None
-
-        for city, code in AIRPORT_CODES.items():
-            if city.lower() in context.lower():
-                if origin_code is None:
-                    origin_code = code
-                    origin_city = city
-                elif dest_code is None and code != origin_code:
-                    dest_code = code
-                    dest_city = city
-
-        if not origin_code or not dest_code:
-            continue
-
-        # Find closest date
-        closest_date = None
-        min_dist = float('inf')
-        for date_m in dates:
-            dist = abs(date_m.start() - price_pos)
-            if dist < min_dist:
-                min_dist = dist
-                closest_date = date_m.group(0)
-
-        iso_date = parse_date_to_iso(closest_date) if closest_date else None
-
-        # Skip past dates
-        if iso_date and iso_date < datetime.now().strftime("%Y-%m-%d"):
-            continue
-
-        # Check sold out near this price
-        local_context = text[max(0, price_pos - 100):price_pos + 100].lower()
-        sold_out = any(p in local_context for p in ["sold out", "soldout", "fully booked", "waitlist"])
-
-        # Find departure time
-        dep_time = None
-        for tm in times:
-            if abs(tm.start() - price_pos) < 200:
-                dep_time = tm.group(1).upper()
-                break
-
-        route_name = f"{origin_city} To {dest_city}"
-        dur = DURATIONS.get((origin_code, dest_code), "")
-
-        flight = Flight(
-            route=route_name,
-            origin=origin_city,
-            destination=dest_city,
-            origin_code=origin_code,
-            destination_code=dest_code,
-            date=iso_date,
-            departure_time=dep_time,
-            price=price,
-            available=not sold_out,
-            aircraft="Gulfstream G-IV",
-            seats=0 if sold_out else 9,
-            booking_url=url,
-            scraped_at=datetime.utcnow().isoformat() + "Z",
-        )
-        flights.append(flight)
-
-    return flights
-
-
-def parse_route_page(html: str, slug: str, origin_code: str, dest_code: str,
-                     origin_city: str, dest_city: str) -> list[Flight]:
-    """Parse a route page for flight listings with prices and dates."""
-    flights = []
-    soup = BeautifulSoup(html, "html.parser")
-    text = soup.get_text(" ", strip=True)
-    route_name = f"{origin_city} To {dest_city}"
-    verified_price = VERIFIED_PRICES.get((origin_code, dest_code))
-
-    # Find all prices
-    prices = list(re.finditer(r'\$\s*([\d,]+(?:\.\d{2})?)', text))
-
-    # Find all dates
-    dates = list(re.finditer(
-        r'((?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4})|'
-        r'(\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4})',
-        text, re.IGNORECASE
-    ))
-
-    today = datetime.now().strftime("%Y-%m-%d")
-
-    for price_m in prices:
-        try:
-            price = int(float(price_m.group(1).replace(",", "")))
-        except ValueError:
-            continue
-        if price < 2000 or price > 25000:
-            continue
-
-        price_pos = price_m.start()
-
-        # Find closest date
-        closest_date = None
-        min_dist = float('inf')
-        for date_m in dates:
-            dist = abs(date_m.start() - price_pos)
-            if dist < min_dist and dist < 300:
-                min_dist = dist
-                closest_date = date_m.group(0)
-
-        iso_date = parse_date_to_iso(closest_date) if closest_date else None
-        if iso_date and iso_date < today:
-            continue
-
-        # Check sold out near price
-        ctx = text[max(0, price_pos - 100):price_pos + 100].lower()
-        sold_out = any(p in ctx for p in ["sold out", "soldout", "fully booked", "waitlist"])
-
-        # Departure time
-        dep_time = None
-        time_m = re.search(r'(\d{1,2}:\d{2}\s*(?:am|pm|AM|PM))',
-                           text[max(0, price_pos - 150):price_pos + 150])
-        if time_m:
-            dep_time = time_m.group(1).upper()
-
-        flight = Flight(
-            route=route_name,
-            origin=origin_city,
-            destination=dest_city,
-            origin_code=origin_code,
-            destination_code=dest_code,
-            date=iso_date,
-            departure_time=dep_time,
-            price=price,
-            available=not sold_out,
-            aircraft="Gulfstream G-IV",
-            seats=0 if sold_out else 9,
-            booking_url=f"{BASE_URL}/route/{slug}/",
-            scraped_at=datetime.utcnow().isoformat() + "Z",
-        )
-        flights.append(flight)
-
-    return flights
-
-
-def parse_date_to_iso(date_str: str) -> Optional[str]:
-    """Convert date string to ISO YYYY-MM-DD."""
-    if not date_str:
-        return None
-    date_str = re.sub(r'(\d+)(st|nd|rd|th)', r'\1', date_str.strip())
-    if re.match(r"^\d{4}-\d{2}-\d{2}$", date_str):
-        return date_str
-    for fmt in ["%B %d, %Y", "%B %d %Y", "%d %B %Y", "%b %d, %Y", "%b %d %Y",
-                "%d %b %Y", "%m/%d/%Y"]:
-        try:
-            return datetime.strptime(date_str.strip(), fmt).strftime("%Y-%m-%d")
-        except ValueError:
-            continue
+def get_attr(product: dict, attr_name: str) -> Optional[str]:
+    """Extract an attribute value from a WooCommerce Store API product."""
+    for attr in product.get("attributes", []):
+        if attr.get("name", "").lower() == attr_name.lower():
+            terms = attr.get("terms", [])
+            if terms:
+                return terms[0].get("name", "")
     return None
 
 
-# ─── Main Scraping Logic ─────────────────────────────────────────────────────
+def fetch_all_products() -> list[dict]:
+    """Fetch all products (flights) from the WooCommerce Store API."""
+    all_products = []
+    page = 1
 
-def scrape_live() -> list[Flight]:
-    """
-    Scrape real K9 Jets flights from their website.
+    while True:
+        url = f"{API_BASE}?per_page={PER_PAGE}&page={page}"
+        print(f"    Fetching page {page}...", end="", flush=True)
 
-    Step 1: Fetch /routes/ page and discover individual flight page URLs
-    Step 2: Fetch each route page for flight listings
-    Step 3: Fetch each discovered flight page for detailed data
-    """
-    all_flights = []
-    flight_urls = set()
+        try:
+            resp = requests.get(url, headers=HEADERS, timeout=30)
+            resp.raise_for_status()
+        except requests.RequestException as e:
+            print(f" ERROR: {e}")
+            break
 
-    # Step 1: Main routes page — discover flight page links
-    print("\n  [1/3] Fetching main routes page...")
-    html = fetch_page(ROUTES_URL)
-    if html:
-        urls = discover_flight_urls(html)
-        flight_urls.update(urls)
-        print(f"    Found {len(urls)} flight page links")
+        products = resp.json()
+        if not products:
+            print(" (empty)")
+            break
+
+        all_products.extend(products)
+        total = resp.headers.get("X-WP-Total", "?")
+        total_pages = resp.headers.get("X-WP-TotalPages", "?")
+        print(f" got {len(products)} (total: {total}, page {page}/{total_pages})")
+
+        # Check if we've reached the last page
+        try:
+            if page >= int(total_pages):
+                break
+        except (ValueError, TypeError):
+            if len(products) < PER_PAGE:
+                break
+
+        page += 1
+
+    return all_products
+
+
+def parse_product(product: dict) -> Optional[Flight]:
+    """Parse a single WooCommerce product into a Flight object."""
+
+    # Extract attributes
+    dep_code = get_attr(product, "Departure Airport (IATA code)")
+    arr_code = get_attr(product, "Arrival Airport (IATA code)")
+    flight_date = get_attr(product, "Flight date")
+    dep_time = get_attr(product, "Departure time")
+    arr_time = get_attr(product, "Arrival Time")
+    operator = get_attr(product, "Operator")
+    aircraft = get_attr(product, "Aircraft")
+    route_name = get_attr(product, "Route")
+    route_type = get_attr(product, "Route type")
+    dep_location = get_attr(product, "Departure location")
+    arr_location = get_attr(product, "Arrival location")
+
+    # Must have airport codes
+    if not dep_code or not arr_code:
+        # Try to get from category name as fallback
+        cats = product.get("categories", [])
+        if cats:
+            cat_name = cats[0].get("name", "")
+            parts = cat_name.split(" to ")
+            if len(parts) == 2:
+                dep_city = parts[0].strip().split(" (")[0].strip()
+                arr_city = parts[1].strip().split(" (")[0].strip()
+                dep_code = dep_code or CITY_TO_IATA.get(dep_city)
+                arr_code = arr_code or CITY_TO_IATA.get(arr_city)
+
+    if not dep_code or not arr_code:
+        return None
+
+    # Parse price (in minor units, divide by 100)
+    price = None
+    prices = product.get("prices", {})
+    raw_price = prices.get("price")
+    if raw_price:
+        try:
+            minor_unit = prices.get("currency_minor_unit", 2)
+            price = int(int(raw_price) / (10 ** minor_unit))
+        except (ValueError, TypeError):
+            pass
+
+    # Parse date to ISO format
+    iso_date = None
+    if flight_date:
+        for fmt in ["%m/%d/%Y", "%d/%m/%Y", "%Y-%m-%d", "%B %d, %Y", "%B %d %Y"]:
+            try:
+                iso_date = datetime.strptime(flight_date.strip(), fmt).strftime("%Y-%m-%d")
+                break
+            except ValueError:
+                continue
+
+    # Skip past flights
+    if iso_date:
+        today = datetime.now().strftime("%Y-%m-%d")
+        if iso_date < today:
+            return None
+
+    # Check availability
+    is_purchasable = product.get("is_purchasable", True)
+    is_in_stock = product.get("is_in_stock", True)
+    available = is_purchasable and is_in_stock
+
+    # Build origin/destination city names
+    origin_city = dep_location or dep_code
+    dest_city = arr_location or arr_code
+    # Clean up city names (remove country suffix like "Dubai, UAE")
+    if "," in origin_city:
+        origin_city = origin_city.split(",")[0].strip()
+    if "," in dest_city:
+        dest_city = dest_city.split(",")[0].strip()
+
+    # Route display name
+    if route_name:
+        display_route = route_name
     else:
-        print("    Could not fetch routes page")
+        display_route = f"{origin_city} To {dest_city}"
 
-    # Step 2: Scrape each route page
-    print(f"\n  [2/3] Scraping {len(ROUTE_SLUGS)} route pages...")
-    for slug, (oc, dc, ocity, dcity) in ROUTE_SLUGS.items():
-        url = f"{BASE_URL}/route/{slug}/"
-        print(f"    {oc}→{dc} ({slug})...", end="", flush=True)
+    # Duration
+    dur = DURATIONS.get((dep_code, arr_code), "")
 
-        rhtml = fetch_page(url)
-        if not rhtml:
-            print(" FAILED")
-            time.sleep(REQUEST_DELAY)
-            continue
+    permalink = product.get("permalink", "")
 
-        # Also discover flight page links from route pages
-        new_urls = discover_flight_urls(rhtml)
-        flight_urls.update(new_urls)
-
-        flights = parse_route_page(rhtml, slug, oc, dc, ocity, dcity)
-        if flights:
-            print(f" {len(flights)} flights")
-            all_flights.extend(flights)
-        else:
-            print(f" 0 flights")
-
-        time.sleep(REQUEST_DELAY)
-
-    # Step 3: Scrape individual flight pages
-    print(f"\n  [3/3] Scraping {len(flight_urls)} individual flight pages...")
-    for furl in sorted(flight_urls):
-        print(f"    {furl.split('/')[-2]}...", end="", flush=True)
-
-        fhtml = fetch_page(furl)
-        if not fhtml:
-            print(" FAILED")
-            time.sleep(REQUEST_DELAY)
-            continue
-
-        flights = parse_flight_page(fhtml, furl)
-        if flights:
-            print(f" {len(flights)} legs")
-            all_flights.extend(flights)
-        else:
-            print(f" 0")
-
-        time.sleep(REQUEST_DELAY)
-
-    return all_flights
+    return Flight(
+        route=display_route,
+        origin=origin_city,
+        destination=dest_city,
+        origin_code=dep_code,
+        destination_code=arr_code,
+        date=iso_date,
+        departure_time=dep_time,
+        arrival_time=arr_time,
+        price=price,
+        available=available,
+        aircraft=aircraft or "",
+        seats=0 if not available else 9,
+        booking_url=permalink,
+        scraped_at=datetime.utcnow().isoformat() + "Z",
+    )
 
 
 # ─── Output ──────────────────────────────────────────────────────────────────
@@ -497,7 +279,7 @@ def save_json(flights: list, filename: str = "k9jets_flights.json"):
     data = {
         "scraped_at": datetime.utcnow().isoformat() + "Z",
         "total_flights": len(flights),
-        "source": "k9jets.com",
+        "source": "k9jets.com (WooCommerce Store API)",
         "routes": sorted(set(f"{f.origin_code}-{f.destination_code}" for f in flights)),
         "flights": [asdict(f) for f in flights],
     }
@@ -520,7 +302,7 @@ def save_csv(flights: list, filename: str = "k9jets_flights.csv"):
 
 def print_summary(flights: list):
     print("\n" + "=" * 90)
-    print("K9 JETS — SCRAPED FLIGHT DATA")
+    print("K9 JETS — SCRAPED FLIGHT DATA (via WooCommerce Store API)")
     print("=" * 90)
 
     routes = {}
@@ -534,17 +316,19 @@ def print_summary(flights: list):
         price_str = f"${min(prices):,}" if prices else "N/A"
         avail = sum(1 for f in rflights if f.available)
 
-        print(f"\n  {first.route} ({rk}) — {price_str}")
+        print(f"\n  {first.route} ({rk}) — from {price_str}")
         for f in sorted(rflights, key=lambda x: x.date or ""):
             status = "Available" if f.available else "SOLD OUT"
             date = f.date or "TBD"
             dep = f.departure_time or ""
             price = f"${f.price:,}" if f.price else "N/A"
-            print(f"    {date}  {dep:<10} {price:>10}  {status}")
+            print(f"    {date}  {dep:<10} {price:>10}  {status}  [{f.aircraft}]")
         print(f"  ({avail}/{len(rflights)} available)")
 
     print(f"\n{'=' * 90}")
-    print(f"Total: {len(flights)} flights, {sum(1 for f in flights if f.available)} available")
+    print(f"Total: {len(flights)} flights across {len(routes)} routes")
+    print(f"  Available: {sum(1 for f in flights if f.available)}")
+    print(f"  Sold out:  {sum(1 for f in flights if not f.available)}")
     print(f"Scraped at: {datetime.utcnow().isoformat()}Z")
     print("=" * 90)
 
@@ -554,10 +338,25 @@ def print_summary(flights: list):
 def main():
     print("=" * 60)
     print("  K9 Jets Flight Scraper")
-    print("  Scraping LIVE data from k9jets.com")
+    print("  Using WooCommerce Store API (structured JSON)")
     print("=" * 60)
 
-    flights = scrape_live()
+    # Fetch all products from the API
+    print("\n  Fetching flights from WooCommerce Store API...")
+    products = fetch_all_products()
+    print(f"\n  Fetched {len(products)} total products")
+
+    # Parse each product into a Flight
+    flights = []
+    skipped = 0
+    for p in products:
+        flight = parse_product(p)
+        if flight:
+            flights.append(flight)
+        else:
+            skipped += 1
+
+    print(f"  Parsed {len(flights)} valid future flights ({skipped} skipped: past or incomplete)")
 
     # Deduplicate by route + date + price
     seen = set()
@@ -568,21 +367,17 @@ def main():
             seen.add(key)
             unique.append(f)
 
-    # Only keep future flights
-    today = datetime.now().strftime("%Y-%m-%d")
-    future = [f for f in unique if not f.date or f.date >= today]
+    print(f"  After dedup: {len(unique)} unique flights")
 
-    if not future:
-        print("\n  WARNING: No flights found from live scraping.")
-        print("  This may be because k9jets.com is not accessible from this environment.")
-        print("  The scraper will produce an empty result — no fake data will be generated.")
+    if not unique:
+        print("\n  WARNING: No flights found from API.")
+        print("  The API may be down or the products may have changed.")
+        print("  No fake data will be generated.")
 
-    print(f"\n  Total unique future flights: {len(future)}")
-
-    save_json(future)
-    save_csv(future)
-    if future:
-        print_summary(future)
+    save_json(unique)
+    save_csv(unique)
+    if unique:
+        print_summary(unique)
 
 
 if __name__ == "__main__":
