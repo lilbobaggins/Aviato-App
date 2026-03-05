@@ -23,6 +23,7 @@ export const AIRLINE_STYLE: Record<string, AirlineStyle> = {
   'Surf Air': { bg: '#003049', text: '#FFF', label: 'SA', accent: '#00B4D8' },
   'BARK Air': { bg: '#2C3E2D', text: '#FFF', label: 'BA', accent: '#8DB580' },
   'Boutique Air': { bg: '#1C3A50', text: '#FFF', label: 'BQ', accent: '#6BAED6' },
+  'K9 Jets': { bg: '#1B2838', text: '#FFF', label: 'K9', accent: '#D4A574' },
 };
 
 export const AIRLINE_BOOKING: Record<string, AirlineBooking> = {
@@ -33,6 +34,7 @@ export const AIRLINE_BOOKING: Record<string, AirlineBooking> = {
   'Surf Air': { url: 'https://fly.surfair.com/explore/scheduled', name: 'Surf Air', note: 'Operated by Southern Airways Express. Book at fly.surfair.com' },
   'BARK Air': { url: 'https://air.bark.co/collections/bookings', name: 'BARK Air', note: 'Each ticket includes 1 dog + 1 human. Book at air.bark.co' },
   'Boutique Air': { url: 'https://www.boutiqueair.com', name: 'Boutique Air', note: 'Fly private for the cost of commercial. Book at boutiqueair.com' },
+  'K9 Jets': { url: 'https://www.k9jets.com/routes/', name: 'K9 Jets', note: 'Pet-dedicated semi-private jets. Each seat includes 1 human + up to 2 pets. Book at k9jets.com' },
 };
 
 export const WING_RATINGS: Record<string, WingRating> = {
@@ -43,6 +45,7 @@ export const WING_RATINGS: Record<string, WingRating> = {
   'Surf Air': { wings: 1, tier: 'Accessible Semi-Private', score: 3, badges: ['terminal','arrival','density'], pets: false },
   'BARK Air': { wings: 3, tier: 'Flagship Semi-Private', score: 6, badges: ['terminal','arrival','density','baggage','amenities','seating'], pets: true, petNote: '1 dog + 1 human per ticket' },
   'Boutique Air': { wings: 1, tier: 'Accessible Semi-Private', score: 3, badges: ['density','baggage','seating'], pets: true, petNote: 'Pets allowed in cabin' },
+  'K9 Jets': { wings: 3, tier: 'Flagship Semi-Private', score: 7, badges: ['terminal','arrival','density','baggage','amenities','seating'], pets: true, petNote: 'The most feature-rich flight experience we list. Pet-dedicated Gulfstream G-IV with gourmet catering, champagne, vet tech on board, and up to 2 pets per seat -- no crate required' },
 };
 
 export const BADGE_CONFIG: Record<string, BadgeConfig> = {

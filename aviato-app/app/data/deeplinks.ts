@@ -201,6 +201,11 @@ export function generateDeepLink(
       return 'https://www.boutiqueair.com/flight_search/new';
     }
 
+    case 'K9 Jets': {
+      // K9 Jets — link to their routes/booking page
+      return 'https://www.k9jets.com/routes/';
+    }
+
     default:
       return '#';
   }
@@ -246,6 +251,9 @@ export function getDeepLinkNote(
 
     case 'Boutique Air':
       return `Opens Boutique Air's booking page. Search ${origin.city} → ${dest.city} and pick your date to book.`;
+
+    case 'K9 Jets':
+      return `Opens K9 Jets' booking page. Each seat includes your pet(s) in the cabin, no crate required for dogs.`;
 
     default:
       return `Complete your booking on ${airline}'s website.`;

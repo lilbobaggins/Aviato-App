@@ -2,7 +2,7 @@ import { LOCATIONS, expandCode } from './locations';
 import { FLIGHTS } from './flights';
 import type { Location } from './types';
 
-// All known route pairs across all airlines (JSX, Aero, Tradewind, BARK Air)
+// All known route pairs across all airlines (JSX, Aero, Tradewind, BARK Air, K9 Jets)
 // This ensures the search dropdown shows valid destinations even before
 // the scrapers have populated flights.ts with data for a given route.
 const KNOWN_ROUTES = new Set([
@@ -70,6 +70,40 @@ const KNOWN_ROUTES = new Set([
   'HPN-ATH','ATH-HPN','HPN-ARN','ARN-HPN',
   // BARK Air — Asia
   'VNY-NRT','NRT-VNY',
+
+  // K9 Jets — US Domestic
+  'TEB-VNY','VNY-TEB',
+  // K9 Jets — US to Florida
+  'TEB-FXE','FXE-TEB',
+  // K9 Jets — US to UK
+  'TEB-LTN','LTN-TEB','VNY-LTN','LTN-VNY',
+  // K9 Jets — US to France
+  'TEB-LBG','LBG-TEB','TEB-NCE','NCE-TEB',
+  // K9 Jets — US to Iberia
+  'TEB-LIS','LIS-TEB','TEB-MAD','MAD-TEB','TEB-AGP','AGP-TEB',
+  // K9 Jets — US to Ireland/Germany
+  'TEB-DUB','DUB-TEB','TEB-FRA','FRA-TEB',
+  // K9 Jets — US to Switzerland/Italy
+  'TEB-GVA','GVA-TEB','TEB-MXP','MXP-TEB',
+  // K9 Jets — US to Dubai
+  'TEB-DWC','DWC-TEB',
+  // K9 Jets — Dubai to Europe
+  'DWC-GVA','GVA-DWC','DWC-MXP','MXP-DWC','DWC-LTN','LTN-DWC',
+  // K9 Jets — UK/Canada
+  'LTN-YYZ','YYZ-LTN','TEB-YYZ','YYZ-TEB',
+  // K9 Jets — UK to Florida
+  'LTN-FXE','FXE-LTN',
+  // K9 Jets — US to Hawaii
+  'VNY-HNL','HNL-VNY',
+  // K9 Jets — US to Mexico (Los Cabos)
+  'VNY-SJD','SJD-VNY','TEB-SJD','SJD-TEB',
+  // K9 Jets — UK to Birmingham
+  'TEB-BHX','BHX-TEB',
+  // K9 Jets — Florida to Europe
+  'FXE-LBG','LBG-FXE','FXE-LIS','LIS-FXE',
+  'FXE-DUB','DUB-FXE','FXE-MAD','MAD-FXE',
+  // K9 Jets — London intra-Europe
+  'LTN-DUB','DUB-LTN','LTN-LBG','LBG-LTN',
 ]);
 
 export const getReachableFrom = (fromCode: string): Set<string> => {

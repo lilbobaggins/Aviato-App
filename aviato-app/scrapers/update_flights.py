@@ -134,6 +134,94 @@ BARK_CRAFT = "Bombardier Challenger 601"
 BARK_AMEN = "['WiFi','Gourmet Catering','Champagne','Calming Treats','Vet Tech On Board']"
 BARK_LINK = "air.bark.co"
 
+# ── K9 Jets config ────────────────────────────────────────────────────
+K9JETS_ROUTES = [
+    # US Domestic
+    "TEB-VNY", "VNY-TEB",
+    # US to Florida
+    "TEB-FXE", "FXE-TEB",
+    # US to UK
+    "TEB-LTN", "LTN-TEB", "VNY-LTN", "LTN-VNY",
+    # US to France
+    "TEB-LBG", "LBG-TEB", "TEB-NCE", "NCE-TEB",
+    # US to Iberia
+    "TEB-LIS", "LIS-TEB", "TEB-MAD", "MAD-TEB", "TEB-AGP", "AGP-TEB",
+    # US to Ireland/Germany
+    "TEB-DUB", "DUB-TEB", "TEB-FRA", "FRA-TEB",
+    # US to Switzerland/Italy
+    "TEB-GVA", "GVA-TEB", "TEB-MXP", "MXP-TEB",
+    # US to Dubai
+    "TEB-DWC", "DWC-TEB",
+    # Dubai to Europe
+    "DWC-GVA", "GVA-DWC", "DWC-MXP", "MXP-DWC", "DWC-LTN", "LTN-DWC",
+    # UK/Canada
+    "LTN-YYZ", "YYZ-LTN", "TEB-YYZ", "YYZ-TEB",
+    # UK to Florida
+    "LTN-FXE", "FXE-LTN",
+    # US to Hawaii
+    "VNY-HNL", "HNL-VNY",
+    # US to Mexico (Los Cabos)
+    "VNY-SJD", "SJD-VNY", "TEB-SJD", "SJD-TEB",
+    # UK to Birmingham
+    "TEB-BHX", "BHX-TEB",
+    # Florida to Europe
+    "FXE-LBG", "LBG-FXE", "FXE-LIS", "LIS-FXE",
+    "FXE-DUB", "DUB-FXE", "FXE-MAD", "MAD-FXE",
+    # London intra-Europe
+    "LTN-DUB", "DUB-LTN", "LTN-LBG", "LBG-LTN",
+]
+K9JETS_CRAFT = "Gulfstream G-IV"
+K9JETS_AMEN = "['WiFi','Gourmet Catering','Champagne','Pet Amenities','Vet Tech On Board']"
+K9JETS_LINK = "k9jets.com"
+
+K9JETS_DURATIONS = {
+    # US Domestic
+    "TEB-VNY": "5h 30m", "VNY-TEB": "5h 00m",
+    "TEB-FXE": "2h 45m", "FXE-TEB": "2h 50m",
+    # US to UK
+    "TEB-LTN": "7h 00m", "LTN-TEB": "8h 00m",
+    "VNY-LTN": "10h 00m", "LTN-VNY": "11h 00m",
+    # US to France
+    "TEB-LBG": "7h 15m", "LBG-TEB": "8h 15m",
+    "TEB-NCE": "8h 00m", "NCE-TEB": "9h 00m",
+    # US to Iberia
+    "TEB-LIS": "7h 00m", "LIS-TEB": "8h 00m",
+    "TEB-MAD": "7h 30m", "MAD-TEB": "8h 30m",
+    "TEB-AGP": "7h 45m", "AGP-TEB": "8h 45m",
+    # US to Ireland/Germany
+    "TEB-DUB": "6h 30m", "DUB-TEB": "7h 30m",
+    "TEB-FRA": "7h 30m", "FRA-TEB": "8h 30m",
+    # US to Switzerland/Italy
+    "TEB-GVA": "7h 45m", "GVA-TEB": "8h 45m",
+    "TEB-MXP": "8h 00m", "MXP-TEB": "9h 00m",
+    # US to Dubai
+    "TEB-DWC": "12h 30m", "DWC-TEB": "14h 00m",
+    # Dubai to Europe
+    "DWC-GVA": "6h 30m", "GVA-DWC": "5h 45m",
+    "DWC-MXP": "6h 00m", "MXP-DWC": "5h 30m",
+    "DWC-LTN": "7h 00m", "LTN-DWC": "6h 00m",
+    # UK/Canada
+    "LTN-YYZ": "7h 30m", "YYZ-LTN": "6h 30m",
+    "TEB-YYZ": "1h 30m", "YYZ-TEB": "1h 30m",
+    # UK to Florida
+    "LTN-FXE": "9h 00m", "FXE-LTN": "8h 00m",
+    # US to Hawaii
+    "VNY-HNL": "5h 30m", "HNL-VNY": "5h 00m",
+    # US to Mexico (Los Cabos)
+    "VNY-SJD": "2h 30m", "SJD-VNY": "2h 45m",
+    "TEB-SJD": "5h 00m", "SJD-TEB": "5h 15m",
+    # UK to Birmingham
+    "TEB-BHX": "7h 15m", "BHX-TEB": "8h 15m",
+    # Florida to Europe
+    "FXE-LBG": "8h 45m", "LBG-FXE": "9h 45m",
+    "FXE-LIS": "7h 30m", "LIS-FXE": "8h 30m",
+    "FXE-DUB": "7h 45m", "DUB-FXE": "8h 45m",
+    "FXE-MAD": "8h 00m", "MAD-FXE": "9h 00m",
+    # London intra-Europe
+    "LTN-DUB": "1h 15m", "DUB-LTN": "1h 20m",
+    "LTN-LBG": "1h 00m", "LBG-LTN": "1h 05m",
+}
+
 BARK_DURATIONS = {
     "HPN-VNY": "5h 30m", "VNY-HPN": "5h 30m",
     "HPN-SJC": "5h 45m", "SJC-HPN": "5h 45m",
@@ -422,11 +510,17 @@ def _calc_arrival(takeoff: str, dur: str, origin: str, dest: str) -> str:
 
     # Timezone offsets (relative to ET)
     tz = {
-        'HPN': 0, 'FXE': 0,
+        'HPN': 0, 'FXE': 0, 'TEB': 0,
         'VNY': -3, 'SJC': -3, 'KOA': -5, 'SEA': -3,
+        'HNL': -5, 'SJD': -2,
         # Europe (ahead of ET)
         'LTN': 5, 'LBG': 6, 'MAD': 6, 'LIS': 5,
         'BER': 6, 'DUB': 5, 'ATH': 7, 'ARN': 6,
+        'NCE': 6, 'AGP': 6, 'FRA': 6, 'GVA': 6, 'MXP': 6, 'BHX': 5,
+        # Middle East
+        'DWC': 9,
+        # Canada
+        'YYZ': 0,
         # Asia
         'NRT': 14,
     }
@@ -499,6 +593,65 @@ def slate_to_ts(route_key: str, flights: list[dict]) -> list[str]:
     return lines
 
 
+def load_k9jets_flights(json_path: str) -> dict[str, list[dict]]:
+    """Load K9 Jets JSON and group by route key."""
+    if not os.path.exists(json_path):
+        print(f"  [skip] {json_path} not found")
+        return {}
+
+    with open(json_path) as f:
+        data = json.load(f)
+
+    flights = data.get("flights", []) if isinstance(data, dict) else data
+
+    routes: dict[str, list[dict]] = {}
+    for fl in flights:
+        if not fl.get("available", True):
+            continue
+        origin = fl.get("origin_code", "")
+        dest = fl.get("destination_code", "")
+        key = f"{origin}-{dest}"
+        if key in K9JETS_ROUTES:
+            routes.setdefault(key, []).append(fl)
+
+    for key in routes:
+        routes[key].sort(key=lambda f: (f.get("date") or "", f.get("departure_time") or ""))
+
+    return routes
+
+
+def k9jets_to_ts(route_key: str, flights: list[dict]) -> list[str]:
+    """Convert K9 Jets flight dicts to TypeScript entry lines."""
+    fr, to = route_key.split("-")
+    prefix = f"k9jets-{fr.lower()}-{to.lower()}"
+    dur = K9JETS_DURATIONS.get(route_key, "7h 00m")
+    lines = []
+
+    for i, fl in enumerate(flights, 1):
+        dep = fl.get("departure_time", "9:00 PM")
+        arr = fl.get("arrival_time", "")
+        if not arr:
+            arr = _calc_arrival(dep, dur, fr, to)
+        price = fl.get("price", 8950)
+        if isinstance(price, str):
+            price = int(float(str(price).replace("$", "").replace(",", "")))
+        date = fl.get("date", "")
+        if date and not re.match(r"^\d{4}-\d{2}-\d{2}$", date):
+            date = _parse_date_to_iso(date)
+        seats = fl.get("seats", 10) or 10
+
+        line = (
+            f"    {{ id:'{prefix}-{i}', airline:'K9 Jets', "
+            f"dep:'{dep}', arr:'{arr}', dc:'{fr}', ac:'{to}', "
+            f"dur:'{dur}', price:{price}, craft:'{K9JETS_CRAFT}', "
+            f"seats:{seats}, amen:{K9JETS_AMEN}, "
+            f"link:'{K9JETS_LINK}', date:'{date}' }},"
+        )
+        lines.append(line)
+
+    return lines
+
+
 def _build_new_route_arrays(
     replacements: list[tuple[str, str, list[str]]],
     placed_routes: set[str],
@@ -531,10 +684,13 @@ def update_flights_ts(
     tradewind_routes: dict[str, list[dict]],
     bark_routes: dict[str, list[dict]],
     slate_routes: dict[str, list[dict]] | None = None,
+    k9jets_routes: dict[str, list[dict]] | None = None,
 ):
     """Read flights.ts, replace airline entries in route arrays, write back."""
     if slate_routes is None:
         slate_routes = {}
+    if k9jets_routes is None:
+        k9jets_routes = {}
 
     with open(FLIGHTS_TS, "r") as f:
         content = f.read()
@@ -566,6 +722,11 @@ def update_flights_ts(
         ts_lines = slate_to_ts(route_key, flights)
         if ts_lines:
             replacements.append((route_key, "Slate", ts_lines))
+
+    for route_key, flights in k9jets_routes.items():
+        ts_lines = k9jets_to_ts(route_key, flights)
+        if ts_lines:
+            replacements.append((route_key, "K9 Jets", ts_lines))
 
     if not replacements:
         print("  No replacements to make.")
@@ -691,6 +852,7 @@ def main():
     tw_json = os.path.join(script_dir, "tradewind_flights.json")
     bark_json = os.path.join(script_dir, "bark_air_flights.json")
     slate_json = os.path.join(script_dir, "slate_flights.json")
+    k9jets_json = os.path.join(script_dir, "k9jets_flights.json")
 
     print("\nLoading JSX data...")
     jsx_routes = load_jsx_flights(jsx_json)
@@ -717,15 +879,20 @@ def main():
     for route, flights in sorted(slate_routes.items()):
         print(f"  {route}: {len(flights)} flights")
 
-    if not jsx_routes and not aero_routes and not tw_routes and not bark_routes and not slate_routes:
+    print("\nLoading K9 Jets data...")
+    k9jets_routes = load_k9jets_flights(k9jets_json)
+    for route, flights in sorted(k9jets_routes.items()):
+        print(f"  {route}: {len(flights)} flights")
+
+    if not jsx_routes and not aero_routes and not tw_routes and not bark_routes and not slate_routes and not k9jets_routes:
         print("\nNo data to update. Exiting.")
         sys.exit(0)
 
     print(f"\nUpdating {FLIGHTS_TS}...")
-    update_flights_ts(jsx_routes, aero_routes, tw_routes, bark_routes, slate_routes)
+    update_flights_ts(jsx_routes, aero_routes, tw_routes, bark_routes, slate_routes, k9jets_routes)
 
     # Count total entries written
-    all_routes = [jsx_routes, aero_routes, tw_routes, bark_routes, slate_routes]
+    all_routes = [jsx_routes, aero_routes, tw_routes, bark_routes, slate_routes, k9jets_routes]
     total = sum(len(f) for r in all_routes for f in r.values())
     n_routes = sum(len(r) for r in all_routes)
     print(f"\nDone! Replaced {total} flight entries across {n_routes} routes.")

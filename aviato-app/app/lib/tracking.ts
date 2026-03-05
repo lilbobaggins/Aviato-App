@@ -10,6 +10,7 @@ const ALLOWED_DOMAINS = [
   'bark.co', 'air.bark.co',
   'surfair.com', 'fly.surfair.com',
   'boutiqueair.com', 'www.boutiqueair.com',
+  'k9jets.com', 'www.k9jets.com',
 ];
 
 export function isAllowedDomain(url: string): boolean {

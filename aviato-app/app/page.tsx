@@ -84,10 +84,23 @@ const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filter
         'CABO': ['cabo', 'cabos', 'los cabos', 'cabo san lucas', 'mexico', 'sjd', 'csw'],
         'DEN': ['denver', 'colorado', 'centennial', 'rocky mountain'],
         'SJC': ['san francisco', 'sf', 'bay area', 'silicon valley', 'san jose'],
-        'LTN': ['london', 'uk', 'england', 'heathrow', 'gatwick'],
+        'LTN': ['london', 'uk', 'england', 'heathrow', 'gatwick', 'luton'],
         'LBG': ['paris', 'france', 'le bourget', 'cdg'],
         'NRT': ['tokyo', 'japan', 'ota city', 'narita'],
         'SEA': ['seattle', 'washington', 'tacoma', 'pacific northwest'],
+        'DWC': ['dubai', 'uae', 'emirates', 'al maktoum'],
+        'NCE': ['nice', 'french riviera', 'cote d\'azur', 'côte d\'azur'],
+        'AGP': ['malaga', 'málaga', 'costa del sol', 'spain'],
+        'FRA': ['frankfurt', 'germany'],
+        'GVA': ['geneva', 'switzerland', 'swiss'],
+        'MXP': ['milan', 'milano', 'malpensa', 'italy'],
+        'YYZ': ['toronto', 'canada', 'pearson'],
+        'BHX': ['birmingham', 'uk', 'england', 'crufts'],
+        'DUB': ['dublin', 'ireland'],
+        'MAD': ['madrid', 'spain'],
+        'LIS': ['lisbon', 'portugal', 'lisboa'],
+        'HNL': ['honolulu', 'hawaii', 'oahu', 'waikiki'],
+        'FXE': ['fort lauderdale', 'florida', 'south florida'],
       };
       const matchAlias = aliases[loc.code]?.some(a => a.includes(q));
       return matchCity || matchCode || matchName || matchSub || matchAlias;
@@ -402,8 +415,12 @@ export default function AviatoApp() {
   const [selectingReturn, setSelectingReturn] = useState(false);
   const [redirectAirline, setRedirectAirline] = useState<string | null>(null);
   const [redirectFlight, setRedirectFlight] = useState<Flight | null>(null);
+  const [sessionId, setSessionId] = useState('');
   const searchCardRef = useRef<HTMLDivElement>(null);
   const [emailSigned, setEmailSigned] = useState(false);
+
+  // Initialize session ID for click tracking
+  useEffect(() => { setSessionId(getSessionId()); }, []);
   const phoneContentRef = useRef<HTMLDivElement>(null);
 
   const sortFlights = (flights: Flight[], f: string) => {

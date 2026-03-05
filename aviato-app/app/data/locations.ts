@@ -77,6 +77,15 @@ export const LOCATIONS: Location[] = [
   { code: 'ARN', type: 'airport', city: 'Stockholm', state: 'SE', name: 'Stockholm Arlanda' },
   { code: 'NRT', type: 'airport', city: 'Ota City', state: 'JP', name: 'Narita International (Tokyo Area)' },
   { code: 'SEA', type: 'airport', city: 'Seattle', state: 'WA', name: 'Seattle-Tacoma International' },
+  // K9 JETS — International Routes
+  { code: 'DWC', type: 'airport', city: 'Dubai', state: 'AE', name: 'Al Maktoum International' },
+  { code: 'NCE', type: 'airport', city: 'Nice', state: 'FR', name: 'Nice Côte d\'Azur Airport' },
+  { code: 'AGP', type: 'airport', city: 'Malaga', state: 'ES', name: 'Málaga-Costa del Sol Airport' },
+  { code: 'FRA', type: 'airport', city: 'Frankfurt', state: 'DE', name: 'Frankfurt Airport' },
+  { code: 'GVA', type: 'airport', city: 'Geneva', state: 'CH', name: 'Geneva Airport' },
+  { code: 'MXP', type: 'airport', city: 'Milan', state: 'IT', name: 'Milan Malpensa Airport' },
+  { code: 'YYZ', type: 'airport', city: 'Toronto', state: 'CA', name: 'Toronto Pearson International' },
+  { code: 'BHX', type: 'airport', city: 'Birmingham', state: 'UK', name: 'Birmingham Airport' },
   // LA airports
   { code: 'LAX', type: 'airport', city: 'Los Angeles', state: 'CA', name: 'Los Angeles International', metro: 'LA' },
   { code: 'BUR', type: 'airport', city: 'Burbank', state: 'CA', name: 'Hollywood Burbank', metro: 'LA' },
