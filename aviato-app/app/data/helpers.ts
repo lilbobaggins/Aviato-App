@@ -2,104 +2,11 @@ import { LOCATIONS, expandCode } from './locations';
 import { FLIGHTS } from './flights';
 import type { Location } from './types';
 
-// All known route pairs across all airlines (JSX, Aero, Tradewind, BARK Air, K9 Jets)
-// This ensures the search dropdown shows valid destinations even before
-// the scrapers have populated flights.ts with data for a given route.
-const KNOWN_ROUTES = new Set([
-  // JSX — LA area to Las Vegas
-  'BUR-LAS','LAS-BUR','SMO-LAS','LAS-SMO','SNA-LAS','LAS-SNA','LAX-LAS','LAS-LAX',
-  // JSX — LA area to Scottsdale
-  'SMO-SCF','SCF-SMO','SNA-SCF','SCF-SNA','BUR-SCF','SCF-BUR',
-  // JSX — LA area to Bay Area
-  'BUR-CCR','CCR-BUR','BUR-OAK','OAK-BUR','SNA-OAK','OAK-SNA',
-  // JSX — LA area to Reno / SLC
-  'BUR-RNO','RNO-BUR','SNA-RNO','RNO-SNA','BUR-SLC','SLC-BUR','SNA-SLC','SLC-SNA',
-  // JSX — LA area to Monterey / Napa / Taos / Denver
-  'BUR-MRY','MRY-BUR','BUR-APC','APC-BUR','BUR-TSM','TSM-BUR','BUR-APA','APA-BUR',
-  // JSX — SNA to Napa / Denver
-  'SNA-APC','APC-SNA','SNA-APA','APA-SNA',
-  // JSX — LA area to Carlsbad
-  'BUR-CLD','CLD-BUR',
-  // JSX — LA / Dallas to Cabo
-  'LAX-CSW','CSW-LAX','DAL-CSW','CSW-DAL',
-  // JSX — LA area misc
-  'SMO-TRM','TRM-SMO',
-  // JSX — Las Vegas to other destinations
-  'LAS-SCF','SCF-LAS','LAS-OAK','OAK-LAS','LAS-CLD','CLD-LAS',
-  'LAS-SLC','SLC-LAS','LAS-APA','APA-LAS','LAS-RNO','RNO-LAS',
-  // JSX — Dallas hub
-  'DAL-LAS','LAS-DAL','DAL-DSI','DSI-DAL','DAL-HOU','HOU-DAL',
-  'DAL-OPF','OPF-DAL','DAL-APA','APA-DAL','DAL-TSM','TSM-DAL',
-  'DAL-SCF','SCF-DAL','DAL-BUR','BUR-DAL','DAL-SAF','SAF-DAL',
-  'DAL-HOB','HOB-DAL','DAL-EDC','EDC-DAL',
-  // JSX — East Coast to Florida
-  'HPN-PBI','PBI-HPN','HPN-OPF','OPF-HPN','HPN-APF','APF-HPN',
-  'MMU-PBI','PBI-MMU','MMU-APF','APF-MMU','MMU-BCT','BCT-MMU',
-  'TEB-OPF','OPF-TEB','TEB-PBI','PBI-TEB',
-  // JSX — Scottsdale hub
-  'SCF-APA','APA-SCF','SCF-SLC','SLC-SCF','SCF-CLD','CLD-SCF',
-
-  // Aero — VNY hub
-  'VNY-LAS','LAS-VNY','VNY-ASE','ASE-VNY','VNY-SUN','SUN-VNY',
-  'VNY-TRM','TRM-VNY','VNY-APC','APC-VNY','VNY-SJD','SJD-VNY',
-  'VNY-OGG','OGG-VNY','VNY-TEB','TEB-VNY',
-  'VNY-HCR','HCR-VNY','VNY-SLC','SLC-VNY',
-  // Aero — Aspen to New York
-  'ASE-TEB','TEB-ASE',
-
-  // Slate — NY to South Florida + OPF
-  'TEB-FLL','FLL-TEB','TEB-PBI','PBI-TEB','TEB-MIA','MIA-TEB',
-  'TEB-OPF','OPF-TEB','TEB-BCT','BCT-TEB',
-  'HPN-FLL','FLL-HPN','HPN-PBI','PBI-HPN','HPN-MIA','MIA-HPN',
-  'HPN-OPF','OPF-HPN',
-  // Slate — FRG (Republic) to South Florida
-  'FRG-FLL','FLL-FRG','FRG-PBI','PBI-FRG',
-  // Slate — Northeast regional
-  'TEB-ACK','ACK-TEB','TEB-AUG','AUG-TEB','TEB-PWM','PWM-TEB',
-  'HPN-AUG','AUG-HPN','HPN-PWM','PWM-HPN',
-
-  // Tradewind — Nantucket / Martha's Vineyard
-  'HPN-ACK','ACK-HPN','HPN-MVY','MVY-HPN',
-
-  // BARK Air — Domestic
-  'HPN-VNY','VNY-HPN','HPN-SJC','SJC-HPN','VNY-KOA','KOA-VNY',
-  'SEA-HPN','HPN-SEA',
-  // BARK Air — Europe
-  'HPN-LTN','LTN-HPN','HPN-LBG','LBG-HPN','HPN-MAD','MAD-HPN',
-  'HPN-LIS','LIS-HPN','HPN-BER','BER-HPN','HPN-DUB','DUB-HPN',
-  'HPN-ATH','ATH-HPN','HPN-ARN','ARN-HPN',
-  // BARK Air — Asia
-  'VNY-NRT','NRT-VNY',
-
-  // K9 Jets — NJ (TEB) routes
-  'TEB-VNY','VNY-TEB','TEB-LTN','LTN-TEB',
-  'TEB-LBG','LBG-TEB','TEB-GVA','GVA-TEB',
-  'TEB-DUB','DUB-TEB','TEB-LIS','LIS-TEB',
-  'TEB-FRA','FRA-TEB','TEB-LIN','LIN-TEB',
-  'TEB-MXP','MXP-TEB','TEB-FXE','FXE-TEB',
-  'TEB-DWC','DWC-TEB','TEB-BHX','BHX-TEB',
-  'TEB-MAD','MAD-TEB',
-  // K9 Jets — LA (VNY) routes
-  'VNY-LTN','LTN-VNY','VNY-LBG','LBG-VNY',
-  'VNY-FRA','FRA-VNY','VNY-LIN','LIN-VNY',
-  'VNY-LIS','LIS-VNY','VNY-GVA','GVA-VNY',
-  'VNY-MAD','MAD-VNY',
-  // K9 Jets — London Luton (LTN) routes
-  'LTN-DWC','DWC-LTN','LTN-OPF','OPF-LTN',
-  'LTN-YYZ','YYZ-LTN','LTN-YVR','YVR-LTN',
-  // K9 Jets — London Stansted (STN) routes
-  'STN-DWC','DWC-STN','STN-AGP','AGP-STN',
-  'STN-NCE','NCE-STN',
-  // K9 Jets — Dubai (DWC) routes
-  'DWC-FRA','FRA-DWC','DWC-LIN','LIN-DWC',
-  'DWC-MAD','MAD-DWC','DWC-GVA','GVA-DWC',
-  'DWC-MXP','MXP-DWC',
-  // K9 Jets — Toronto (YYZ) routes
-  'YYZ-DWC','DWC-YYZ','YYZ-LBG','LBG-YYZ',
-  'YYZ-FXE','FXE-YYZ',
-  // K9 Jets — Goose Bay / Vancouver
-  'YYR-LTN','LTN-YYR',
-]);
+// KNOWN_ROUTES only lists routes that have ACTUAL flights in flights.ts.
+// The getReachableFrom/getReachableTo functions also check FLIGHTS keys directly,
+// so this set just ensures the dropdown stays in sync with real data.
+// Do NOT add routes here unless they have flight entries in flights.ts.
+const KNOWN_ROUTES = new Set(Object.keys(FLIGHTS));
 
 export const getReachableFrom = (fromCode: string): Set<string> => {
   const fromCodes = expandCode(fromCode);

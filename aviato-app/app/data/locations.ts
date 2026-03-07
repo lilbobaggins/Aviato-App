@@ -89,6 +89,7 @@ export const LOCATIONS: Location[] = [
   { code: 'STN', type: 'airport', city: 'London', state: 'UK', name: 'London Stansted Airport' },
   { code: 'LIN', type: 'airport', city: 'Milan', state: 'IT', name: 'Milan Linate Airport' },
   { code: 'YVR', type: 'airport', city: 'Vancouver', state: 'CA', name: 'Vancouver International' },
+  { code: 'YYR', type: 'airport', city: 'Goose Bay', state: 'CA', name: 'Goose Bay Airport' },
   // LA airports
   { code: 'LAX', type: 'airport', city: 'Los Angeles', state: 'CA', name: 'Los Angeles International', metro: 'LA' },
   { code: 'BUR', type: 'airport', city: 'Burbank', state: 'CA', name: 'Hollywood Burbank', metro: 'LA' },
