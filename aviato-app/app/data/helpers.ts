@@ -2,21 +2,16 @@ import { LOCATIONS, expandCode } from './locations';
 import { FLIGHTS } from './flights';
 import type { Location } from './types';
 
-// KNOWN_ROUTES only lists routes that have ACTUAL flights in flights.ts.
-// The getReachableFrom/getReachableTo functions also check FLIGHTS keys directly,
-// so this set just ensures the dropdown stays in sync with real data.
-// Do NOT add routes here unless they have flight entries in flights.ts.
-const KNOWN_ROUTES = new Set(Object.keys(FLIGHTS));
+// Only include routes that have at least one flight entry.
+// This filters out any empty arrays that might sneak in from scrapers.
+const KNOWN_ROUTES = new Set(
+  Object.keys(FLIGHTS).filter(key => (FLIGHTS as any)[key].length > 0)
+);
 
 export const getReachableFrom = (fromCode: string): Set<string> => {
   const fromCodes = expandCode(fromCode);
   const dests = new Set<string>();
   fromCodes.forEach(fc => {
-    // Check flights.ts
-    Object.keys(FLIGHTS).forEach(key => {
-      if (key.startsWith(fc + '-')) dests.add(key.split('-')[1]);
-    });
-    // Check known routes
     KNOWN_ROUTES.forEach(key => {
       if (key.startsWith(fc + '-')) dests.add(key.split('-')[1]);
     });
@@ -28,11 +23,6 @@ export const getReachableTo = (toCode: string): Set<string> => {
   const toCodes = expandCode(toCode);
   const origins = new Set<string>();
   toCodes.forEach(tc => {
-    // Check flights.ts
-    Object.keys(FLIGHTS).forEach(key => {
-      if (key.endsWith('-' + tc)) origins.add(key.split('-')[0]);
-    });
-    // Check known routes
     KNOWN_ROUTES.forEach(key => {
       if (key.endsWith('-' + tc)) origins.add(key.split('-')[0]);
     });
