@@ -686,12 +686,18 @@ def k9jets_to_ts(route_key: str, flights: list[dict]) -> list[str]:
         # Escape any single quotes in aircraft name
         craft = craft.replace("'", "\\'")
 
+        # Use per-flight booking URL if available, otherwise fallback
+        booking_url = fl.get("booking_url", "").strip()
+        link = booking_url if booking_url else f"https://www.{K9JETS_LINK}/routes/"
+        # Escape single quotes in URL
+        link = link.replace("'", "\\'")
+
         line = (
             f"    {{ id:'{prefix}-{i}', airline:'K9 Jets', "
             f"dep:'{dep}', arr:'{arr}', dc:'{fr}', ac:'{to}', "
             f"dur:'{dur}', price:{price}, craft:'{craft}', "
             f"seats:{seats}, amen:{K9JETS_AMEN}, "
-            f"link:'{K9JETS_LINK}', date:'{date}' }},"
+            f"link:'{link}', date:'{date}' }},"
         )
         lines.append(line)
 

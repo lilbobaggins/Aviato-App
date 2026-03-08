@@ -184,7 +184,7 @@ function ResultsContent() {
     const taxes = Math.round(basePrice * getTaxRate(fl.airline));
     const total = (basePrice + taxes) * passengers;
     const rating = WING_RATINGS[fl.airline];
-    const deepLinkUrl = generateDeepLink(fl.airline, fl.dc, fl.ac, departDate, returnDate, passengers, tripType);
+    const deepLinkUrl = generateDeepLink(fl.airline, fl.dc, fl.ac, departDate, returnDate, passengers, tripType, fl.link);
     const deepLinkNote = getDeepLinkNote(fl.airline, fl.dc, fl.ac, tripType);
 
     return (
@@ -801,8 +801,8 @@ function ResultsContent() {
         const totalTaxes = (outTaxes + retTaxes) * passengers;
         const grandTotal = totalBase + totalTaxes;
 
-        const outDeepLink = generateDeepLink(selectedOutbound.airline, selectedOutbound.dc, selectedOutbound.ac, departDate, returnDate, passengers, sameAirline ? 'roundtrip' : 'oneway');
-        const retDeepLink = !sameAirline ? generateDeepLink(selectedReturn.airline, selectedReturn.dc, selectedReturn.ac, returnDate, '', passengers, 'oneway') : '';
+        const outDeepLink = generateDeepLink(selectedOutbound.airline, selectedOutbound.dc, selectedOutbound.ac, departDate, returnDate, passengers, sameAirline ? 'roundtrip' : 'oneway', selectedOutbound.link);
+        const retDeepLink = !sameAirline ? generateDeepLink(selectedReturn.airline, selectedReturn.dc, selectedReturn.ac, returnDate, '', passengers, 'oneway', selectedReturn.link) : '';
 
         return (
           <>

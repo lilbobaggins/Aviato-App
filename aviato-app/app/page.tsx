@@ -879,7 +879,7 @@ export default function AviatoApp() {
 
     // Generate dynamic deep link URL based on airline, route, and trip details
     const deepLinkUrl = fl
-      ? generateDeepLink(airline, fl.dc, fl.ac, departDate, returnDate, passengers, tripType)
+      ? generateDeepLink(airline, fl.dc, fl.ac, departDate, returnDate, passengers, tripType, fl.link)
       : '#';
     const deepLinkNote = fl
       ? getDeepLinkNote(airline, fl.dc, fl.ac, tripType)

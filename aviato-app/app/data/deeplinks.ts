@@ -88,7 +88,8 @@ export function generateDeepLink(
   departDate: string,
   returnDate: string,
   passengers: number,
-  tripType: string
+  tripType: string,
+  flightLink?: string
 ): string {
   switch (airline) {
     case 'Aero': {
@@ -202,7 +203,10 @@ export function generateDeepLink(
     }
 
     case 'K9 Jets': {
-      // K9 Jets — link to their routes/booking page
+      // K9 Jets — use per-flight booking URL if available (e.g. k9jets.com/flight/march-6-2027/)
+      if (flightLink && flightLink.startsWith('https://')) {
+        return flightLink;
+      }
       return 'https://www.k9jets.com/routes/';
     }
 
@@ -253,7 +257,7 @@ export function getDeepLinkNote(
       return `Opens Boutique Air's booking page. Search ${origin.city} → ${dest.city} and pick your date to book.`;
 
     case 'K9 Jets':
-      return `Opens K9 Jets' booking page. Each seat includes your pet(s) in the cabin, no crate required for dogs.`;
+      return `Opens the K9 Jets flight page for ${origin.city} → ${dest.city}. Each seat includes your pet(s) in the cabin, no crate required for dogs.`;
 
     default:
       return `Complete your booking on ${airline}'s website.`;
