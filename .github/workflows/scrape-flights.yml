@@ -22,13 +22,21 @@ jobs:
           python-version: '3.11'
       - run: pip install -r aviato-app/scrapers/requirements.txt
       - name: Run JSX scraper
-        run: cd aviato-app/scrapers && python jsx_scraper.py
+        continue-on-error: true
+        timeout-minutes: 25
+        run: cd aviato-app/scrapers && python -u jsx_scraper.py
       - name: Run Aero scraper
-        run: cd aviato-app/scrapers && python aero_scraper.py
+        continue-on-error: true
+        timeout-minutes: 10
+        run: cd aviato-app/scrapers && python -u aero_scraper.py
       - name: Run BARK Air scraper
-        run: cd aviato-app/scrapers && python bark_air_scraper.py
+        continue-on-error: true
+        timeout-minutes: 10
+        run: cd aviato-app/scrapers && python -u bark_air_scraper.py
       - name: Run K9 Jets scraper
-        run: cd aviato-app/scrapers && python k9jets_scraper.py
+        continue-on-error: true
+        timeout-minutes: 5
+        run: cd aviato-app/scrapers && python -u k9jets_scraper.py
       - name: Update flights.ts
         run: cd aviato-app/scrapers && python update_flights.py
       - name: Save flights.ts as artifact
@@ -44,8 +52,8 @@ jobs:
           git add aviato-app/app/data/flights.ts aviato-app/scrapers/k9jets_flights.json aviato-app/scrapers/k9jets_flights.csv || true
           if ! git diff --cached --quiet; then
             git commit -m "Auto-update flight data $(date -u +%Y-%m-%d)"
-            git pull --rebase origin main
-            git push
+            git pull --rebase origin main || true
+            git push || echo "Push failed — will retry next run"
           else
             echo "No flight data changes to commit"
           fi

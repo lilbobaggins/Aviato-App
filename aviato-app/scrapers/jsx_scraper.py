@@ -1,6 +1,8 @@
 """
 JSX Flight Scraper for Aviato
-Uses the JSX v2 lowfare (batch) + v4 availability (per-day) APIs.
+Uses the JSX v4 availability API (the v2 lowfare endpoint is defunct).
+
+Includes a time budget to avoid GitHub Actions timeout.
 
 Usage:
     pip install requests
@@ -11,15 +13,12 @@ import requests
 import csv
 import json
 import time
+import os
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # ── API config ──────────────────────────────────────────────
 SEARCH_URL = "https://api.jsx.com/api/nsk/v4/availability/search/simple"
-
-# Also keep the old v2 lowfare endpoint as a fallback/batch option
-LOWFARE_URL = "https://api.jsx.com/api/nsk/v2/availability/lowfare"
-TOKEN_URL = "https://api.jsx.com/api/nsk/v2/token"
 
 # Static public JWT for JSX Internet Booking Engine (no expiry, no user data)
 V4_TOKEN = (
@@ -29,9 +28,12 @@ V4_TOKEN = (
     "3yif42MVO7gxHWAXnbDtowjfLk8MnM4Qa169WB3Qxf8"
 )
 
-# Dynamic date range: today + 150 days
+# Time budget in seconds (default 20 min; leave room for other scrapers in CI)
+TIME_BUDGET = int(os.environ.get("JSX_TIME_BUDGET", 1200))
+
+# Dynamic date range: today + 90 days (was 150 — reduced for speed)
 START_DATE = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-END_DATE = START_DATE + timedelta(days=150)
+END_DATE = START_DATE + timedelta(days=90)
 
 STATION_NAMES = {
     "BUR": "Burbank", "LAS": "Las Vegas", "SMO": "Santa Monica",
@@ -121,100 +123,11 @@ BASE_HEADERS = {
     "Accept": "application/json, text/plain, */*",
     "Origin": "https://www.jsx.com",
     "Referer": "https://www.jsx.com/",
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
 }
 
 
-# ── v2 lowfare API (batch dates, works for original routes) ──
-
-def get_v2_session():
-    """Get a v2 session with dynamic token."""
-    session = requests.Session()
-    session.headers.update(BASE_HEADERS)
-    try:
-        resp = session.post(TOKEN_URL, json={}, timeout=15)
-        resp.raise_for_status()
-        token = resp.json()["data"]["token"]
-        session.headers["Authorization"] = token
-        return session
-    except Exception as e:
-        print(f"  v2 token failed: {e}")
-        return None
-
-
-def search_lowfare(session, origin, destination, begin_date, end_date):
-    """Batch search using the v2 lowfare API (up to 31 days at once)."""
-    payload = {
-        "criteria": [{
-            "originStationCodes": [origin],
-            "destinationStationCodes": [destination],
-            "beginDate": begin_date.strftime("%Y-%m-%d"),
-            "endDate": end_date.strftime("%Y-%m-%d"),
-        }],
-        "passengers": {"types": [{"count": 1, "type": "ADT"}]},
-        "codes": {"currencyCode": "USD"},
-        "taxesAndFees": 2,
-    }
-    try:
-        resp = session.post(LOWFARE_URL, json=payload, timeout=30)
-    except requests.exceptions.Timeout:
-        return []
-    if resp.status_code in (400, 401, 404):
-        return []
-    resp.raise_for_status()
-    return resp.json().get("data", {}).get("lowFareDateMarkets", [])
-
-
-def parse_lowfare(markets, origin_code, dest_code):
-    """Parse the v2 lowfare response."""
-    rows = []
-    if not markets:
-        return rows
-    for market in markets:
-        if market.get("noFlights"):
-            continue
-        dep_date = market["departureDate"][:10]
-        for fare in market.get("lowFares", []):
-            if fare.get("soldOut"):
-                continue
-            leg = fare["legs"][0]
-            fare_amount = fare["passengers"]["ADT"]["fareAmount"]
-            taxes = fare["passengers"]["ADT"].get("taxesAndFeesAmount", 0)
-            total_price = fare_amount + taxes
-            dep_time = datetime.fromisoformat(fare["departureTime"]).strftime("%I:%M %p").lstrip("0")
-            arr_time = datetime.fromisoformat(fare["arrivalTime"]).strftime("%I:%M %p").lstrip("0")
-            product_class = fare.get("productClass", "")
-            fare_label = "Hop On" if product_class == "HO" else "All In" if product_class == "AI" else product_class
-
-            rows.append({
-                "airline": "JSX",
-                "origin_code": origin_code,
-                "destination_code": dest_code,
-                "origin_city": STATION_NAMES.get(origin_code, origin_code),
-                "destination_city": STATION_NAMES.get(dest_code, dest_code),
-                "date": dep_date,
-                "price": round(total_price, 2),
-                "fare_class": fare_label,
-                "flight_number": f"XE{leg['flightNumber']}",
-                "departure_time": dep_time,
-                "arrival_time": arr_time,
-                "seats_available": fare.get("availableCount", 0),
-                "departure_iso": fare["departureTime"],
-                "arrival_iso": fare["arrivalTime"],
-                "equipment": "",
-            })
-    return rows
-
-
-# ── v4 search API (single date, works for ALL routes) ──
-
-def get_v4_session():
-    """Get a v4 session with the static public token."""
-    session = requests.Session()
-    session.headers.update(BASE_HEADERS)
-    session.headers["Authorization"] = V4_TOKEN
-    return session
-
+# ── v4 search API ──
 
 def search_v4(session, origin, destination, date):
     """Search for flights on a single date using the v4 API."""
@@ -239,11 +152,16 @@ def search_v4(session, origin, destination, date):
         resp = session.post(SEARCH_URL, json=payload, timeout=30)
     except requests.exceptions.Timeout:
         return None
+    except requests.exceptions.ConnectionError:
+        return None
     if resp.status_code in (400, 404):
         return None
     if resp.status_code == 401:
         return "AUTH_FAIL"
-    resp.raise_for_status()
+    try:
+        resp.raise_for_status()
+    except Exception:
+        return None
     return resp.json()
 
 
@@ -326,19 +244,6 @@ def parse_v4(data, origin_code, dest_code):
     return rows
 
 
-# ── Date range helpers ──
-
-def get_date_ranges(start, end, max_days=31):
-    """Split a date range into chunks of max_days."""
-    ranges = []
-    current = start
-    while current < end:
-        chunk_end = min(current + timedelta(days=max_days - 1), end)
-        ranges.append((current, chunk_end))
-        current = chunk_end + timedelta(days=1)
-    return ranges
-
-
 # ── v4 concurrent helper ──
 
 def _v4_fetch_one(origin, dest, date_str):
@@ -392,70 +297,39 @@ def v4_scrape_route(origin, dest, start, end, max_workers=10):
 # ── Main ──
 
 def main():
+    script_start = time.time()
+
     print("=" * 60)
-    print("JSX Flight Scraper (dual API: v2 lowfare + v4 search)")
+    print("JSX Flight Scraper (v4 API)")
     print(f"Date range: {START_DATE.strftime('%Y-%m-%d')} to {END_DATE.strftime('%Y-%m-%d')}")
     print(f"Routes: {len(ROUTES)}")
+    print(f"Time budget: {TIME_BUDGET}s")
     print("=" * 60)
 
-    # ── Phase 1: Try v2 lowfare for all routes (batch, fast) ──
-    print("\n--- Phase 1: v2 lowfare API (batch queries) ---")
-    v2_session = get_v2_session()
-    v2_flights = []
-    v2_failed_routes = []
-    date_ranges = get_date_ranges(START_DATE, END_DATE)
+    all_flights = []
+    routes_scraped = 0
+    routes_skipped = 0
 
-    if v2_session:
-        v2_session_time = time.time()
-        for route_idx, (origin, dest) in enumerate(ROUTES, 1):
-            label = f"{STATION_NAMES.get(origin, origin)} ({origin}) -> {STATION_NAMES.get(dest, dest)} ({dest})"
-            print(f"[{route_idx}/{len(ROUTES)}] {label}", end=" ", flush=True)
+    for route_idx, (origin, dest) in enumerate(ROUTES, 1):
+        # Check time budget before starting a new route
+        elapsed = time.time() - script_start
+        if elapsed > TIME_BUDGET:
+            routes_skipped = len(ROUTES) - route_idx + 1
+            print(f"\n⏰ Time budget reached ({int(elapsed)}s). Skipping remaining {routes_skipped} routes.")
+            break
 
-            route_flights = 0
-            route_empty = True
+        label = f"{STATION_NAMES.get(origin, origin)} ({origin}) -> {STATION_NAMES.get(dest, dest)} ({dest})"
+        print(f"[{route_idx}/{len(ROUTES)}] {label}", end=" ", flush=True)
 
-            for begin, end in date_ranges:
-                if time.time() - v2_session_time > 600:
-                    v2_session = get_v2_session()
-                    if not v2_session:
-                        break
-                    v2_session_time = time.time()
-
-                markets = search_lowfare(v2_session, origin, dest, begin, end)
-                flights = parse_lowfare(markets, origin, dest)
-                if flights:
-                    route_empty = False
-                v2_flights.extend(flights)
-                route_flights += len(flights)
-                time.sleep(0.15)
-
-            if route_empty:
-                v2_failed_routes.append((origin, dest))
-                print(f"-> 0 (will try v4)")
-            else:
-                print(f"-> {route_flights}")
-    else:
-        print("v2 token failed, all routes go to v4")
-        v2_failed_routes = list(ROUTES)
-
-    print(f"\nPhase 1 done: {len(v2_flights)} flights, {len(v2_failed_routes)} routes need v4")
-
-    # ── Phase 2: v4 search for routes that v2 missed (parallel) ──
-    v4_flights = []
-    if v2_failed_routes:
-        print(f"\n--- Phase 2: v4 search API ({len(v2_failed_routes)} routes, parallel) ---")
-
-        for route_idx, (origin, dest) in enumerate(v2_failed_routes, 1):
-            label = f"{STATION_NAMES.get(origin, origin)} ({origin}) -> {STATION_NAMES.get(dest, dest)} ({dest})"
-            print(f"[{route_idx}/{len(v2_failed_routes)}] {label}", end=" ", flush=True)
-
+        try:
             flights = v4_scrape_route(origin, dest, START_DATE, END_DATE, max_workers=10)
-            v4_flights.extend(flights)
+            all_flights.extend(flights)
+            routes_scraped += 1
             print(f"-> {len(flights)}")
+        except Exception as e:
+            print(f"-> ERROR: {e}")
 
-    # ── Combine and deduplicate ──
-    all_flights = v2_flights + v4_flights
-
+    # ── Deduplicate ──
     seen = set()
     deduped = []
     for f in all_flights:
@@ -484,10 +358,12 @@ def main():
         writer.writeheader()
         writer.writerows(all_flights)
 
+    elapsed = time.time() - script_start
     print(f"Saved CSV  -> {csv_file}")
     print("=" * 60)
-    print(f"DONE! {len(all_flights)} flights ({len(v2_flights)} from v2 + {len(v4_flights)} from v4)")
-    print(f"Routes: {len(ROUTES)} total, {len(v2_failed_routes)} used v4 fallback")
+    print(f"DONE in {int(elapsed)}s! {len(all_flights)} flights from {routes_scraped} routes")
+    if routes_skipped:
+        print(f"  ({routes_skipped} routes skipped due to time budget)")
     print("=" * 60)
 
 

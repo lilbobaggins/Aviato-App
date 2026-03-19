@@ -41,11 +41,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull origin main || true
           git add aviato-app/app/data/flights.ts aviato-app/scrapers/slate_flights.json
           if ! git diff --cached --quiet; then
             git commit -m "Auto-update Slate flight data $(date -u +%Y-%m-%d)"
-            git push
+            git pull --rebase origin main || true
+            git push || echo "Push failed — will retry next run"
           else
             echo "No Slate flight data changes to commit"
           fi
