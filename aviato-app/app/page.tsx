@@ -5,16 +5,15 @@ import {
   Search, MapPin, Calendar, Users, ChevronRight, ChevronDown, ChevronLeft,
   Clock, Plane, Check, Share2, Star, ArrowRight, ArrowLeftRight,
   Wifi, Coffee, Wine, X, Home, Compass, ExternalLink,
-  TrendingDown, Globe, Building2, Timer, Briefcase, Sparkles, Heart, Shield, Mail
+  TrendingDown, Globe, Building2, Timer, Briefcase, Sparkles, Heart, Shield, PawPrint, Dog, Info, DollarSign, Weight, FileText, Hash
 } from 'lucide-react';
 
 import { C, AIRLINE_STYLE, AIRLINE_BOOKING, WING_RATINGS, BADGE_CONFIG, WING_COLORS } from './data/constants';
 import { LOCATIONS, expandCode, findLoc } from './data/locations';
 import { FLIGHTS, getMetroAreaFlights, getRouteDates } from './data/flights';
 import { EVENTS, shiftDate } from './data/events';
-import { getValidDestinations, getValidOrigins } from './data/helpers';
+import { getValidDestinations } from './data/helpers';
 import { generateDeepLink, getDeepLinkNote } from './data/deeplinks';
-import { buildTrackingUrl, getSessionId, trackBookingClick } from './lib/tracking';
 import type { Flight, Location } from './data/types';
 
 // Wing SVG icon
@@ -39,15 +38,14 @@ const BadgeIcon = ({ type, size = 12 }: { type: string; size?: number }) => {
   }
 };
 
-// Airport Input Component — opens fullscreen overlay on mobile
-const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filterByFrom, filterByTo }: {
+// Airport Input Component
+const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filterByFrom }: {
   label: string; value: string; onChange: (code: string) => void; placeholder: string;
-  excludeCode?: string; filterByFrom?: string; filterByTo?: string;
+  excludeCode?: string; filterByFrom?: string;
 }) => {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [displayValue, setDisplayValue] = useState('');
-  const overlayInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (value) {
@@ -56,15 +54,8 @@ const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filter
     } else { setDisplayValue(''); }
   }, [value]);
 
-  // Auto-focus the overlay input when opened
-  useEffect(() => {
-    if (isOpen && overlayInputRef.current) {
-      setTimeout(() => overlayInputRef.current?.focus(), 50);
-    }
-  }, [isOpen]);
-
   const getFilteredLocations = () => {
-    const pool = filterByFrom ? getValidDestinations(filterByFrom) : filterByTo ? getValidOrigins(filterByTo) : LOCATIONS;
+    const pool = filterByFrom ? getValidDestinations(filterByFrom) : LOCATIONS;
     return pool.filter(loc => {
       if (excludeCode) {
         if (loc.code === excludeCode) return false;
@@ -81,26 +72,6 @@ const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filter
         'LA': ['la', 'los angeles', 'hollywood', 'burbank', 'van nuys', 'santa monica'],
         'NYC': ['nyc', 'new york', 'manhattan', 'white plains', 'teterboro'],
         'SFL': ['south florida', 'miami', 'fort lauderdale', 'palm beach', 'west palm'],
-        'CABO': ['cabo', 'cabos', 'los cabos', 'cabo san lucas', 'mexico', 'sjd', 'csw'],
-        'DEN': ['denver', 'colorado', 'centennial', 'rocky mountain'],
-        'SJC': ['san francisco', 'sf', 'bay area', 'silicon valley', 'san jose'],
-        'LTN': ['london', 'uk', 'england', 'heathrow', 'gatwick', 'luton'],
-        'LBG': ['paris', 'france', 'le bourget', 'cdg'],
-        'NRT': ['tokyo', 'japan', 'ota city', 'narita'],
-        'SEA': ['seattle', 'washington', 'tacoma', 'pacific northwest'],
-        'DWC': ['dubai', 'uae', 'emirates', 'al maktoum'],
-        'NCE': ['nice', 'french riviera', 'cote d\'azur', 'côte d\'azur'],
-        'AGP': ['malaga', 'málaga', 'costa del sol', 'spain'],
-        'FRA': ['frankfurt', 'germany'],
-        'GVA': ['geneva', 'switzerland', 'swiss'],
-        'MXP': ['milan', 'milano', 'malpensa', 'italy'],
-        'YYZ': ['toronto', 'canada', 'pearson'],
-        'BHX': ['birmingham', 'uk', 'england', 'crufts'],
-        'DUB': ['dublin', 'ireland'],
-        'MAD': ['madrid', 'spain'],
-        'LIS': ['lisbon', 'portugal', 'lisboa'],
-        'HNL': ['honolulu', 'hawaii', 'oahu', 'waikiki'],
-        'FXE': ['fort lauderdale', 'florida', 'south florida'],
       };
       const matchAlias = aliases[loc.code]?.some(a => a.includes(q));
       return matchCity || matchCode || matchName || matchSub || matchAlias;
@@ -109,90 +80,52 @@ const AirportInput = ({ label, value, onChange, placeholder, excludeCode, filter
 
   const filtered = getFilteredLocations();
 
-  const selectLocation = (code: string) => {
-    onChange(code);
-    setIsOpen(false);
-    setQuery('');
-  };
-
   return (
-    <>
+    <div style={{ position: 'relative' }}>
+      <label style={{ color: C.g600, fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', display: 'block', marginBottom: '6px' }}>{label}</label>
       <div style={{ position: 'relative' }}>
-        <label style={{ color: C.g600, fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', display: 'block', marginBottom: '6px' }}>{label}</label>
-        <div style={{ position: 'relative' }}>
-          <MapPin style={{ position: 'absolute', left: '14px', top: '13px', width: '16px', height: '16px', color: C.g400 }} />
-          <input
-            type="text"
-            readOnly
-            placeholder={placeholder}
-            value={displayValue}
-            onFocus={(e) => { e.target.blur(); setIsOpen(true); setQuery(''); }}
-            style={{ width: '100%', paddingLeft: '42px', paddingRight: '16px', paddingTop: '13px', paddingBottom: '13px', border: `1.5px solid ${C.g200}`, borderRadius: '12px', fontSize: '15px', fontFamily: 'inherit', outline: 'none', backgroundColor: C.white, color: C.black, boxSizing: 'border-box', cursor: 'pointer' }}
-          />
-        </div>
+        <MapPin style={{ position: 'absolute', left: '14px', top: '13px', width: '16px', height: '16px', color: C.g400 }} />
+        <input
+          type="text"
+          placeholder={placeholder}
+          value={isOpen ? query : displayValue}
+          onFocus={() => { setIsOpen(true); setQuery(''); }}
+          onChange={(e) => setQuery(e.target.value)}
+          onBlur={() => setTimeout(() => setIsOpen(false), 200)}
+          style={{ width: '100%', paddingLeft: '42px', paddingRight: '16px', paddingTop: '13px', paddingBottom: '13px', border: `1.5px solid ${isOpen ? C.darkGreen : C.g200}`, borderRadius: '12px', fontSize: '15px', fontFamily: 'inherit', outline: 'none', backgroundColor: C.white, color: C.black, boxSizing: 'border-box' }}
+        />
       </div>
-
-      {/* Fullscreen overlay picker */}
       {isOpen && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: C.white, zIndex: 9999,
-          display: 'flex', flexDirection: 'column',
-        }}>
-          {/* Header */}
-          <div style={{ padding: '16px 16px 12px', borderBottom: `1px solid ${C.g200}`, flexShrink: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-              <button onClick={() => { setIsOpen(false); setQuery(''); }}
-                style={{ width: '36px', height: '36px', border: 'none', backgroundColor: C.g100, borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <X style={{ width: '18px', height: '18px', color: C.g600 }} />
-              </button>
-              <span style={{ fontSize: '16px', fontWeight: 700, color: C.black }}>{label === 'FROM' ? 'Where from?' : 'Where to?'}</span>
-            </div>
-            <div style={{ position: 'relative' }}>
-              <Search style={{ position: 'absolute', left: '14px', top: '12px', width: '16px', height: '16px', color: C.g400 }} />
-              <input
-                ref={overlayInputRef}
-                type="text"
-                placeholder="Search city or airport..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                style={{ width: '100%', paddingLeft: '42px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px', border: `1.5px solid ${C.g200}`, borderRadius: '12px', fontSize: '15px', fontFamily: 'inherit', outline: 'none', backgroundColor: C.g100, color: C.black, boxSizing: 'border-box' }}
-              />
-            </div>
-          </div>
-
-          {/* Results list */}
-          <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
-            {filtered.length === 0 ? (
-              <div style={{ padding: '24px 16px', textAlign: 'center', color: C.g400, fontSize: '14px' }}>No routes available</div>
-            ) : filtered.map(loc => (
-              <button key={loc.code} onClick={() => selectLocation(loc.code)}
-                style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', textAlign: 'left', fontSize: '14px', borderBottom: `1px solid ${C.g100}` }}>
-                {loc.type === 'metro' ? (
-                  <>
-                    <div style={{ width: '40px', height: '40px', background: `linear-gradient(135deg, ${C.darkGreen}, ${C.black})`, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <Globe style={{ width: '18px', height: '18px', color: C.cream }} />
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontWeight: 700, color: C.black }}>{loc.city}</div>
-                      <div style={{ fontSize: '11px', color: C.g400 }}>{loc.sub}</div>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div style={{ width: '40px', height: '40px', backgroundColor: C.cream, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '12px', color: C.darkGreen, flexShrink: 0 }}>{loc.code}</div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontWeight: 600, color: C.black }}>{loc.city}, {loc.state}</div>
-                      <div style={{ fontSize: '11px', color: C.g400 }}>{loc.name}{loc.metro ? ` · ${findLoc(loc.metro).city}` : ''}</div>
-                    </div>
-                  </>
-                )}
-              </button>
-            ))}
-          </div>
+        <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '4px', backgroundColor: C.white, border: `1px solid ${C.g200}`, borderRadius: '12px', boxShadow: '0 12px 40px rgba(0,0,0,0.15)', zIndex: 50, maxHeight: '340px', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          {filtered.length === 0 ? (
+            <div style={{ padding: '16px', textAlign: 'center', color: C.g400, fontSize: '14px' }}>No routes available</div>
+          ) : filtered.map(loc => (
+            <button key={loc.code} onMouseDown={(e) => { e.preventDefault(); onChange(loc.code); setIsOpen(false); setQuery(''); }}
+              style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 16px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', textAlign: 'left', fontSize: '14px', borderBottom: `1px solid ${C.g100}` }}>
+              {loc.type === 'metro' ? (
+                <>
+                  <div style={{ width: '40px', height: '40px', background: `linear-gradient(135deg, ${C.darkGreen}, ${C.black})`, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Globe style={{ width: '18px', height: '18px', color: C.cream }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 700, color: C.black }}>{loc.city}</div>
+                    <div style={{ fontSize: '11px', color: C.g400 }}>{loc.sub}</div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{ width: '40px', height: '40px', backgroundColor: C.cream, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '12px', color: C.darkGreen, flexShrink: 0 }}>{loc.code}</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600, color: C.black }}>{loc.city}, {loc.state}</div>
+                    <div style={{ fontSize: '11px', color: C.g400 }}>{loc.name}{loc.metro ? ` · ${findLoc(loc.metro).city}` : ''}</div>
+                  </div>
+                </>
+              )}
+            </button>
+          ))}
         </div>
       )}
-    </>
+    </div>
   );
 };
 
@@ -209,8 +142,8 @@ const CalendarPicker = ({ isOpen, onClose, tripType, departDate, returnDate, onS
   // Compute route-specific price range from actual flight data
   const routeFlights = (fromCode && toCode) ? getMetroAreaFlights(fromCode, toCode) : [];
   const routePrices = routeFlights.map(f => f.price);
-  const minRoutePrice = routePrices.length > 0 ? routePrices.reduce((a, b) => a < b ? a : b) : 0;
-  const maxRoutePrice = routePrices.length > 0 ? routePrices.reduce((a, b) => a > b ? a : b) : 0;
+  const minRoutePrice = routePrices.length > 0 ? Math.min(...routePrices) : 0;
+  const maxRoutePrice = routePrices.length > 0 ? Math.max(...routePrices) : 0;
   const priceRange = maxRoutePrice - minRoutePrice;
 
   // Check if this route only operates on specific dates (seasonal/event flights)
@@ -233,7 +166,7 @@ const CalendarPicker = ({ isOpen, onClose, tripType, departDate, returnDate, onS
     const dateFlights = getMetroAreaFlights(fromCode, toCode, dateStr);
     if (dateFlights.length === 0) return null;
     // Show the cheapest available flight for this date
-    return dateFlights.map(f => f.price).reduce((a, b) => a < b ? a : b);
+    return Math.min(...dateFlights.map(f => f.price));
   };
 
   const getPriceColor = (price: number | null) => {
@@ -402,13 +335,9 @@ export default function AviatoApp() {
   const [passengers, setPassengers] = useState(1);
   const [tripType, setTripType] = useState('roundtrip');
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
-  const [sessionId, setSessionId] = useState('');
-
-  useEffect(() => { setSessionId(getSessionId()); }, []);
   const [selectedReturn, setSelectedReturn] = useState<Flight | null>(null);
   const [bookingRef, setBookingRef] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
-  const [airlineFilter, setAirlineFilter] = useState<string | null>(null);
   const [viewingReturn, setViewingReturn] = useState(false);
   const [calOpen, setCalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
@@ -416,13 +345,11 @@ export default function AviatoApp() {
   const [redirectAirline, setRedirectAirline] = useState<string | null>(null);
   const [redirectFlight, setRedirectFlight] = useState<Flight | null>(null);
   const searchCardRef = useRef<HTMLDivElement>(null);
-  const [emailSigned, setEmailSigned] = useState(false);
   const phoneContentRef = useRef<HTMLDivElement>(null);
 
   const sortFlights = (flights: Flight[], f: string) => {
     if (f === 'cheapest') return [...flights].sort((a, b) => a.price - b.price);
     if (f === 'fastest') return [...flights].sort((a, b) => parseInt(a.dur) - parseInt(b.dur));
-    if (f === 'rated') return [...flights].sort((a, b) => (WING_RATINGS[b.airline]?.wings || 0) - (WING_RATINGS[a.airline]?.wings || 0));
     return flights;
   };
 
@@ -466,7 +393,7 @@ export default function AviatoApp() {
             ))}
           </div>
 
-          <AirportInput label="FROM" value={fromCode} onChange={setFromCode} placeholder="City or airport" excludeCode={toCode} filterByTo={toCode} />
+          <AirportInput label="FROM" value={fromCode} onChange={(c) => { setFromCode(c); setToCode(''); }} placeholder="City or airport" excludeCode={toCode} />
 
           <div style={{ display: 'flex', justifyContent: 'center', margin: '18px 0 2px' }}>
             <button onClick={() => { const t = fromCode; setFromCode(toCode); setToCode(t); }}
@@ -513,7 +440,7 @@ export default function AviatoApp() {
           </div>
 
           <button
-            onClick={() => { if (fromCode && toCode && departDate) { setSelectedFlight(null); setViewingReturn(false); setSelectedReturn(null); setRedirectFlight(null); setAirlineFilter(null); setFilter('all'); setScreen('results'); setActiveTab('home'); } }}
+            onClick={() => { if (fromCode && toCode && departDate) { setSelectedFlight(null); setViewingReturn(false); setSelectedReturn(null); setRedirectFlight(null); setScreen('results'); setActiveTab('home'); } }}
             disabled={!fromCode || !toCode || !departDate}
             style={{ width: '100%', marginTop: '18px', padding: '16px', border: 'none', borderRadius: '14px', fontSize: '16px', fontWeight: 700, cursor: !fromCode || !toCode || !departDate ? 'not-allowed' : 'pointer', color: C.cream, backgroundColor: C.black, opacity: !fromCode || !toCode || !departDate ? 0.4 : 1 }}>
             Search Flights
@@ -536,48 +463,15 @@ export default function AviatoApp() {
           ))}
         </div>
       </div>
-
-      {/* Email signup */}
-      <div style={{ padding: '32px 24px 0', textAlign: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '6px' }}>
-          <Mail style={{ width: '18px', height: '18px', color: C.darkGreen }} />
-          <h2 style={{ fontSize: '18px', fontWeight: 800, color: C.black, margin: 0 }}>Stay in the loop</h2>
-        </div>
-        <p style={{ fontSize: '13px', color: C.g400, margin: '0 0 16px', lineHeight: '1.4' }}>Get exclusive deals on semi-private flights</p>
-        {emailSigned ? (
-          <div style={{ padding: '20px', borderRadius: '14px', backgroundColor: C.darkGreen, color: C.cream }}>
-            <Check style={{ width: '20px', height: '20px', marginBottom: '4px' }} />
-            <div style={{ fontWeight: 700, fontSize: '14px' }}>You&apos;re on the list!</div>
-          </div>
-        ) : (
-          <form onSubmit={async (e) => { e.preventDefault(); const form = e.target as HTMLFormElement; const email = (form.elements.namedItem('email') as HTMLInputElement).value; if (!email) return; try { const fd = new FormData(); fd.append('email', email); fd.append('tag', 'homepage'); await fetch('https://buttondown.com/api/emails/embed-subscribe/aviatoair', { method: 'POST', body: fd, mode: 'no-cors' }); setEmailSigned(true); } catch { setEmailSigned(true); } }} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <input name="email" type="email" required placeholder="Your email address" style={{ width: '100%', padding: '14px 16px', border: `1.5px solid ${C.g200}`, borderRadius: '12px', fontSize: '14px', color: C.black, backgroundColor: C.white, outline: 'none', boxSizing: 'border-box' }} />
-            <button type="submit" style={{ width: '100%', padding: '14px 16px', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: 700, color: C.cream, backgroundColor: C.darkGreen, cursor: 'pointer' }}>Subscribe</button>
-          </form>
-        )}
-      </div>
-
-      {/* Footer links */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', padding: '24px 24px 32px' }}>
-        <a href="/desktop/terms" style={{ fontSize: '11px', color: C.g400, textDecoration: 'none', fontWeight: 500 }}>Terms</a>
-        <a href="/desktop/privacy" style={{ fontSize: '11px', color: C.g400, textDecoration: 'none', fontWeight: 500 }}>Privacy</a>
-        <a href="mailto:aviatoair@gmail.com" style={{ fontSize: '11px', color: C.g400, textDecoration: 'none', fontWeight: 500 }}>Contact</a>
-      </div>
     </div>
   );
 
   // RESULTS SCREEN
   const ResultsScreen = () => {
-    const rawOutFlights = getMetroAreaFlights(fromCode, toCode, departDate);
-    const rawRetFlights = getMetroAreaFlights(toCode, fromCode, returnDate);
-    const outFiltered = airlineFilter ? rawOutFlights.filter(f => f.airline === airlineFilter) : rawOutFlights;
-    const retFiltered = airlineFilter ? rawRetFlights.filter(f => f.airline === airlineFilter) : rawRetFlights;
-    const outFlights = sortFlights(outFiltered, filter);
-    const retFlights = sortFlights(retFiltered, filter);
+    const outFlights = sortFlights(getMetroAreaFlights(fromCode, toCode, departDate), filter);
+    const retFlights = sortFlights(getMetroAreaFlights(toCode, fromCode, returnDate), filter);
     const isRT = tripType === 'roundtrip' && !!returnDate;
     const flights = viewingReturn ? retFlights : outFlights;
-    const rawFlights = viewingReturn ? rawRetFlights : rawOutFlights;
-    const availableAirlines = [...new Set(rawFlights.map(f => f.airline))].sort();
 
     return (
       <div style={{ width: '100%', minHeight: '100%', backgroundColor: C.offWhite, paddingBottom: '80px' }}>
@@ -603,34 +497,12 @@ export default function AviatoApp() {
           </div>
         )}
 
-        <div style={{ backgroundColor: C.white, padding: '10px 24px', display: 'flex', gap: '6px', borderBottom: availableAirlines.length > 1 ? 'none' : `1px solid ${C.g200}`, overflowX: 'auto' }}>
-          {['all', 'cheapest', 'fastest', 'rated'].map(f => (
+        <div style={{ backgroundColor: C.white, padding: '10px 24px', display: 'flex', gap: '6px', borderBottom: `1px solid ${C.g200}`, overflowX: 'auto' }}>
+          {['all', 'cheapest', 'fastest'].map(f => (
             <button key={f} onClick={() => setFilter(f)} style={{ padding: '7px 16px', borderRadius: '100px', border: 'none', fontSize: '12px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', backgroundColor: filter === f ? C.black : C.g100, color: filter === f ? C.white : C.g600 }}>
-              {f === 'all' ? 'All' : f === 'cheapest' ? 'Cheapest' : f === 'fastest' ? 'Fastest' : 'Highest Rated'}
+              {f === 'all' ? 'All' : f === 'cheapest' ? 'Cheapest' : 'Fastest'}
             </button>
           ))}
-        </div>
-
-        {availableAirlines.length > 1 && (
-          <div style={{ backgroundColor: C.white, padding: '6px 24px 10px', display: 'flex', gap: '6px', borderBottom: `1px solid ${C.g200}`, overflowX: 'auto' }}>
-            <button onClick={() => setAirlineFilter(null)} style={{ padding: '6px 14px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', border: airlineFilter === null ? '2px solid ' + C.black : '1.5px solid ' + C.g300, backgroundColor: airlineFilter === null ? C.black : 'transparent', color: airlineFilter === null ? C.white : C.g600 }}>
-              All Airlines
-            </button>
-            {availableAirlines.map(a => {
-              const style = AIRLINE_STYLE[a];
-              const isActive = airlineFilter === a;
-              return (
-                <button key={a} onClick={() => setAirlineFilter(isActive ? null : a)} style={{ padding: '6px 14px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', border: isActive ? `2px solid ${style?.bg || C.black}` : `1.5px solid ${style?.bg || C.g300}`, backgroundColor: isActive ? (style?.bg || C.black) : 'transparent', color: isActive ? (style?.text || C.white) : (style?.bg || C.g600) }}>
-                  {a}
-                </button>
-              );
-            })}
-          </div>
-        )}
-
-        <div style={{ margin: '10px 24px 0', padding: '10px 14px', backgroundColor: '#FFF8E1', borderRadius: '10px', border: '1px solid #FFE082', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-          <span style={{ fontSize: '14px', lineHeight: '18px', flexShrink: 0 }}>*</span>
-          <span style={{ fontSize: '11px', color: '#6D5D00', lineHeight: 1.4 }}>Prices & schedules are estimates and may not reflect real-time availability. Always confirm details on the airline&apos;s website before booking.</span>
         </div>
 
         <div style={{ padding: '12px 24px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -652,59 +524,60 @@ export default function AviatoApp() {
               <button key={fl.id} onClick={() => {
                 if (viewingReturn) { setSelectedReturn(fl); setScreen('detail'); }
                 else { setSelectedFlight(fl); if (isRT && !selectedReturn) setViewingReturn(true); else setScreen('detail'); }
-              }} style={{ width: '100%', backgroundColor: C.white, borderRadius: '14px', padding: '14px 16px', border: `1px solid ${C.g200}`, cursor: 'pointer', textAlign: 'left' }}>
-                {/* Row 1: Airline badge + name + wings + craft | Price */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+              }} style={{ width: '100%', backgroundColor: C.white, borderRadius: '16px', padding: '18px', border: `1px solid ${C.g200}`, cursor: 'pointer', textAlign: 'left' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ width: '36px', height: '36px', borderRadius: '8px', backgroundColor: style.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: style.text, fontSize: '10px', fontWeight: 900, flexShrink: 0 }}>{style.label}</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                      <span style={{ fontWeight: 700, color: C.black, fontSize: '14px' }}>{fl.airline}</span>
+                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', backgroundColor: style.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: style.text, fontSize: '11px', fontWeight: 900 }}>{style.label}</div>
+                    <div>
+                      <div style={{ fontWeight: 700, color: C.black, fontSize: '14px' }}>{fl.airline}</div>
                       {rating && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
                           <div style={{ display: 'flex', gap: '1px' }}>
-                            {Array.from({ length: rating.wings }).map((_, i) => <WingIcon key={i} size={10} color={wingColor} />)}
+                            {Array.from({ length: rating.wings }).map((_, i) => <WingIcon key={i} size={12} color={wingColor} />)}
                           </div>
+                          <span style={{ fontSize: '9px', fontWeight: 700, color: wingColor, letterSpacing: '0.03em' }}>
+                            {rating.wings === 3 ? 'FLAGSHIP' : rating.wings === 2 ? 'PREMIUM' : 'ACCESSIBLE'}
+                          </span>
                         </div>
                       )}
-                      <span style={{ fontSize: '11px', color: C.g400, fontWeight: 500 }}>{fl.craft}</span>
-                    </div>
-                  </div>
-                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                    <div style={{ fontSize: '20px', fontWeight: 800, color: C.black }}>${Math.round(fl.price)}</div>
-                  </div>
-                </div>
-                {/* Row 2: Times */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                  <div>
-                    <div style={{ fontSize: '17px', fontWeight: 800, color: C.black }}>{fl.dep}</div>
-                    <div style={{ fontSize: '10px', color: C.g400 }}>{fl.dc}</div>
-                  </div>
-                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', padding: '0 12px' }}>
-                    <div style={{ fontSize: '9px', color: C.g600, fontWeight: 600 }}>{fl.dur}</div>
-                    <div style={{ width: '100%', height: '1px', backgroundColor: C.g200, position: 'relative' }}>
-                      <Plane style={{ width: '10px', height: '10px', color: C.darkGreen, position: 'absolute', top: '-5px', left: '50%', marginLeft: '-5px' }} />
                     </div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '17px', fontWeight: 800, color: C.black }}>{fl.arr}</div>
-                    <div style={{ fontSize: '10px', color: C.g400 }}>{fl.ac}</div>
+                    <div style={{ fontSize: '22px', fontWeight: 800, color: C.black }}>${fl.price}</div>
+                    <div style={{ fontSize: '10px', color: C.g400, fontWeight: 500 }}>per seat</div>
                   </div>
                 </div>
-                {/* Row 3: Badges + seats */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '12px', marginBottom: '10px', borderBottom: `1px solid ${C.g100}` }}>
+                  <div>
+                    <div style={{ fontSize: '18px', fontWeight: 800, color: C.black }}>{fl.dep}</div>
+                    <div style={{ fontSize: '11px', color: C.g400 }}>{fl.dc}</div>
+                  </div>
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', padding: '0 12px' }}>
+                    <div style={{ fontSize: '10px', color: C.g600, fontWeight: 600 }}>{fl.dur}</div>
+                    <div style={{ width: '100%', height: '1px', backgroundColor: C.g200, position: 'relative' }}>
+                      <Plane style={{ width: '12px', height: '12px', color: C.darkGreen, position: 'absolute', top: '-6px', left: '50%', marginLeft: '-6px' }} />
+                    </div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '18px', fontWeight: 800, color: C.black }}>{fl.arr}</div>
+                    <div style={{ fontSize: '11px', color: C.g400 }}>{fl.ac}</div>
+                  </div>
+                </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
-                    {rating && rating.badges.slice(0, 2).map(b => (
-                      <span key={b} style={{ fontSize: '9px', padding: '2px 7px', borderRadius: '100px', backgroundColor: C.cream, color: C.darkGreen, fontWeight: 600 }}>
+                    {rating && rating.badges.slice(0, 3).map(b => (
+                      <span key={b} style={{ fontSize: '10px', padding: '3px 8px', borderRadius: '100px', backgroundColor: C.cream, color: C.darkGreen, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '3px' }}>
+                        <BadgeIcon type={BADGE_CONFIG[b]?.icon || ''} size={10} />
                         {BADGE_CONFIG[b]?.label}
                       </span>
                     ))}
                     {rating?.pets && (
-                      <span style={{ fontSize: '9px', padding: '2px 7px', borderRadius: '100px', backgroundColor: '#FDE8EC', color: C.pink, fontWeight: 600 }}>
-                        Pet Friendly
+                      <span style={{ fontSize: '10px', padding: '3px 8px', borderRadius: '100px', backgroundColor: '#FDE8EC', color: C.pink, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '3px' }}>
+                        <Heart style={{ width: '10px', height: '10px' }} /> Pets OK
                       </span>
                     )}
                   </div>
-                  <div style={{ fontSize: '10px', color: fl.seats <= 3 ? C.pink : C.g600, fontWeight: 700 }}>{fl.seats} left</div>
+                  <div style={{ fontSize: '11px', color: fl.seats <= 3 ? C.pink : C.g600, fontWeight: 700 }}>{fl.seats} left</div>
                 </div>
               </button>
             );
@@ -719,11 +592,8 @@ export default function AviatoApp() {
     const fl = viewingReturn ? selectedReturn : selectedFlight;
     if (!fl) return null;
     const style = AIRLINE_STYLE[fl.airline] || { bg: '#333', text: '#fff', label: '?', accent: '#999' };
-    const basePrice = Math.round(fl.price);
-    // Aero prices already include taxes & fees
-    const taxRate = fl.airline === 'Aero' ? 0 : 0.075;
-    const taxes = Math.round(basePrice * taxRate);
-    const total = (basePrice + taxes) * passengers;
+    const taxes = Math.round(fl.price * 0.12);
+    const total = (fl.price + taxes) * passengers;
     const isRT = tripType === 'roundtrip' && !!returnDate;
     const rating = WING_RATINGS[fl.airline];
 
@@ -783,7 +653,7 @@ export default function AviatoApp() {
         {/* Price */}
         <div style={{ margin: '0 24px 14px', backgroundColor: C.white, borderRadius: '16px', padding: '20px', border: `1px solid ${C.g200}` }}>
           <h3 style={{ fontSize: '13px', fontWeight: 700, color: C.black, margin: '0 0 14px' }}>Price</h3>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '8px' }}><span style={{ color: C.g600 }}>Base fare × {passengers}</span><span style={{ fontWeight: 600 }}>${basePrice * passengers}</span></div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '8px' }}><span style={{ color: C.g600 }}>Base fare × {passengers}</span><span style={{ fontWeight: 600 }}>${fl.price * passengers}</span></div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '8px' }}><span style={{ color: C.g600 }}>Taxes & fees</span><span style={{ fontWeight: 600 }}>${taxes * passengers}</span></div>
           <div style={{ borderTop: `2px solid ${C.g100}`, paddingTop: '10px', display: 'flex', justifyContent: 'space-between' }}>
             <span style={{ fontWeight: 800 }}>Total</span><span style={{ fontWeight: 800, fontSize: '20px', color: C.darkGreen }}>${total}</span>
@@ -831,7 +701,7 @@ export default function AviatoApp() {
                   </div>
                   <div>
                     <div style={{ fontSize: '11px', fontWeight: 700, color: rating.pets ? C.black : C.g400 }}>Pet Friendly</div>
-                    <div style={{ fontSize: '9px', color: rating.pets ? C.pink : C.g400, fontWeight: 600 }}>{rating.pets ? `✓ ${rating.petNote || 'Pets welcome'}` : '✗ Not available'}</div>
+                    <div style={{ fontSize: '9px', color: rating.pets ? C.pink : C.g400, fontWeight: 600 }}>{rating.pets ? '✓ All pets welcome' : '✗ Not available'}</div>
                   </div>
                 </div>
               </div>
@@ -879,14 +749,14 @@ export default function AviatoApp() {
 
     // Generate dynamic deep link URL based on airline, route, and trip details
     const deepLinkUrl = fl
-      ? generateDeepLink(airline, fl.dc, fl.ac, departDate, returnDate, passengers, tripType, fl.link)
+      ? generateDeepLink(airline, fl.dc, fl.ac, departDate, returnDate, passengers, tripType)
       : '#';
     const deepLinkNote = fl
       ? getDeepLinkNote(airline, fl.dc, fl.ac, tripType)
       : `Complete your booking on ${airline}'s website.`;
 
     // Check if this airline supports full deep linking (pre-filled route)
-    const hasFullDeepLink = airline === 'Aero' || airline === 'JSX' || airline === 'Tradewind' || airline === 'BARK Air' || (airline === 'Slate' && fl && deepLinkUrl.includes('search/points/'));
+    const hasFullDeepLink = airline === 'Aero' || (airline === 'Slate' && fl && deepLinkUrl.includes('search/points/'));
 
     return (
       <div style={{ width: '100%', minHeight: '100%', background: `linear-gradient(180deg, ${style.bg || C.black} 0%, ${C.offWhite} 45%)`, paddingBottom: '40px' }}>
@@ -974,8 +844,7 @@ export default function AviatoApp() {
         </div>
 
         <div style={{ padding: '0 24px' }}>
-          <a href={fl ? buildTrackingUrl({ url: deepLinkUrl, airline, origin: fl.dc, destination: fl.ac, flightDate: departDate, price: fl.price, sessionId }) : deepLinkUrl} target="_blank"
-                onClick={() => fl && trackBookingClick({ airline, origin: fl.dc, destination: fl.ac, price: fl.price })} rel="noopener noreferrer"
+          <a href={deepLinkUrl} target="_blank" rel="noopener noreferrer"
             style={{ width: '100%', padding: '16px', border: 'none', borderRadius: '14px', fontSize: '15px', fontWeight: 700, cursor: 'pointer', color: C.cream, backgroundColor: C.black, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', textDecoration: 'none', boxSizing: 'border-box' }}>
             <ExternalLink style={{ width: '16px', height: '16px' }} /> {hasFullDeepLink ? `Book on ${airline}` : `Go to ${airline}`}
           </a>
@@ -1001,8 +870,8 @@ export default function AviatoApp() {
     return (
       <div style={{ width: '100%', minHeight: '100%', backgroundColor: C.offWhite, paddingBottom: '80px' }}>
         <div style={{ background: C.black, padding: '16px 24px 20px', color: C.white }}>
-          <h1 style={{ fontSize: '24px', fontWeight: 800, margin: '0 0 4px' }}>Events Worth Flying Semi-Private For</h1>
-          <p style={{ fontSize: '12px', color: C.pink, margin: 0, fontWeight: 600 }}>2026 Hottest Events</p>
+          <h1 style={{ fontSize: '24px', fontWeight: 800, margin: '0 0 4px' }}>Explore</h1>
+          <p style={{ fontSize: '13px', color: C.cream, opacity: 0.7, margin: 0 }}>Events worth flying semi-private for</p>
         </div>
 
         <div style={{ backgroundColor: C.white, padding: '10px 24px', display: 'flex', gap: '6px', borderBottom: `1px solid ${C.g200}`, overflowX: 'auto' }}>
@@ -1059,45 +928,291 @@ export default function AviatoApp() {
     );
   };
 
-  // BOTTOM NAV - Pill-shaped floating nav with sliding indicator
-  const tabs = [
-    { id: 'home', icon: Home, label: 'Home' },
-    { id: 'explore', icon: Compass, label: 'Trips' },
-  ];
-  const activeIndex = tabs.findIndex(t => t.id === activeTab);
+  // DOGS SCREEN
+  const DogsScreen = () => {
+    const [expandedAirline, setExpandedAirline] = useState<string | null>(null);
+    const [filterSize, setFilterSize] = useState<'all' | 'small' | 'large'>('all');
 
-  const BottomNav = () => (
-    <div style={{ position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)', zIndex: 100 }}>
-      <div style={{
-        display: 'flex', alignItems: 'center', backgroundColor: C.black, borderRadius: '40px',
-        padding: '6px', position: 'relative', boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
-        width: '220px',
-      }}>
-        {/* Sliding pill indicator */}
-        <div style={{
-          position: 'absolute', top: '6px', left: '6px', width: 'calc(50% - 6px)', height: 'calc(100% - 12px)',
-          backgroundColor: C.darkGreen, borderRadius: '34px',
-          transform: `translateX(${activeIndex * 100}%)`,
-          transition: 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
-        }} />
-        {tabs.map(item => {
-          const Icon = item.icon;
-          const isActive = activeTab === item.id;
-          return (
-            <button key={item.id} onClick={() => { setActiveTab(item.id); setScreen(item.id); setTimeout(() => { if (phoneContentRef.current) phoneContentRef.current.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }); }, 50); }}
-              style={{
-                flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-                background: 'none', border: 'none', cursor: 'pointer', padding: '10px 0',
-                position: 'relative', zIndex: 1,
-                color: isActive ? C.cream : C.g400,
-                transition: 'color 0.3s ease',
-              }}>
-              <Icon style={{ width: '18px', height: '18px' }} />
-              <span style={{ fontSize: '13px', fontWeight: 700 }}>{item.label}</span>
+    const petPolicies = [
+      {
+        airline: 'BARK Air',
+        tagline: 'The dog-first airline',
+        summary: 'Built entirely around dogs. No crates, no cargo. Your dog sits right next to you.',
+        weight: 'No weight limit — all sizes and breeds welcome',
+        cost: '$950–$8,000 per ticket (includes 1 dog + 1 human)',
+        cabin: 'Cabin only — dogs sit on the floor beside you',
+        maxPets: '1 dog per ticket (2 dogs if combined weight under 50 lbs)',
+        breeds: 'No breed restrictions',
+        docs: 'Current vaccinations and health records. Rabies proof for international.',
+        extras: ['Calming treats provided', 'Vet tech on board every flight', 'Crew contacts you about allergies & socialization', 'Gulfstream & Bombardier jets'],
+        sizeCategory: 'all' as const,
+        highlight: true,
+      },
+      {
+        airline: 'K9 Jets',
+        tagline: 'The original pet charter airline',
+        summary: 'The world\'s first pet-dedicated pay-per-seat private jet charter. No crates, no cargo, no size limits. Transatlantic and cross-country routes.',
+        weight: 'No weight limit — all sizes and breeds. 1 seat = up to 2 dogs under 50 lbs each, or 1 dog over 51 lbs',
+        cost: '$2,000–$8,000+ per seat (includes 1 human + dogs)',
+        cabin: 'Cabin only — dogs sit freely beside you, no crate required',
+        maxPets: '2 dogs per seat if combined weight under 100 lbs',
+        breeds: 'No breed restrictions of any kind',
+        docs: 'Current vaccinations, health certificate, rabies proof for international flights',
+        extras: ['Transatlantic routes (US↔UK, US↔Europe)', 'No security lines or customs queues', 'Private terminals', 'Over 95% on-time rate', 'Cats must stay in carriers, dogs roam free'],
+        sizeCategory: 'all' as const,
+        highlight: true,
+        externalOnly: true,
+        externalUrl: 'https://www.k9jets.com',
+      },
+      {
+        airline: 'Tradewind',
+        tagline: 'Most dog-friendly pricing',
+        summary: 'Pets of all sizes fly free under 100 lbs. The most generous pet policy in semi-private.',
+        weight: 'No max weight — under 100 lbs flies free, over 100 lbs needs an extra seat',
+        cost: 'FREE for dogs under 100 lbs',
+        cabin: 'Cabin only — large pets in last row with owner',
+        maxPets: '3 pets per flight (max 1 party with 2 large pets over 21 lbs)',
+        breeds: 'No breed restrictions',
+        docs: 'Standard health records',
+        extras: ['Free for most dogs', 'Caribbean & East Coast island routes', 'Carriers or muzzles may be required for some dogs'],
+        sizeCategory: 'all' as const,
+        highlight: false,
+      },
+      {
+        airline: 'JSX',
+        tagline: 'Best network for pet owners',
+        summary: '58+ routes across the US. Small dogs in carriers, larger dogs leashed with an extra seat.',
+        weight: 'Under 30 lbs in carrier (13"×11"×17") — up to 80 lbs leashed with purchased adjacent seat',
+        cost: '$100 one-way per pet',
+        cabin: 'Cabin only',
+        maxPets: '5 pets per flight',
+        breeds: 'No breed restrictions',
+        docs: 'JSX Pet Acceptance Liability Form. Health/rabies certificates for some destinations.',
+        extras: ['Largest route network', 'Pets must be 8+ weeks old', '$100 flat fee regardless of size', '58+ routes'],
+        sizeCategory: 'all' as const,
+        highlight: false,
+      },
+      {
+        airline: 'Aero',
+        tagline: 'Luxury with your pet',
+        summary: 'Premium experience. Small dogs in carriers, larger dogs tethered to a purchased seat.',
+        weight: 'Under 20 lbs in carrier (20"×12"×9") — over 20 lbs with purchased seat',
+        cost: 'Additional fee (service animals free)',
+        cabin: 'Cabin only — must be leashed at all times',
+        maxPets: '5 pets total (max 2 large dogs over 65 lbs)',
+        breeds: 'No breed restrictions',
+        docs: 'Standard health records',
+        extras: ['Ultra-premium experience', 'Pets must be 6+ months old', 'Van Nuys hub — Aspen, Vegas, Napa, Maui routes'],
+        sizeCategory: 'all' as const,
+        highlight: false,
+      },
+      {
+        airline: 'Slate',
+        tagline: 'NYC to Florida with your dog',
+        summary: 'One dog under 25 lbs flies free. Larger dogs need an extra seat. Onboard harnesses available.',
+        weight: 'Under 25 lbs free — over 25 lbs needs a purchased second seat',
+        cost: 'FREE for dogs under 25 lbs',
+        cabin: 'Cabin only — onboard harnesses available for takeoff/landing',
+        maxPets: '1 dog per passenger',
+        breeds: 'No breed restrictions',
+        docs: 'Dog name, breed, and weight required 48 hours before departure',
+        extras: ['Free for small dogs', 'NY–Florida corridor', 'Harness provided on board', 'Premium catering'],
+        sizeCategory: 'all' as const,
+        highlight: false,
+      },
+    ];
+
+    const filtered = filterSize === 'all' ? petPolicies :
+      filterSize === 'small' ? petPolicies.filter(p => ['BARK Air', 'Tradewind', 'JSX', 'Aero', 'Slate', 'Surf Air'].includes(p.airline)) :
+      petPolicies.filter(p => ['BARK Air', 'Tradewind', 'JSX', 'Aero'].includes(p.airline));
+
+    return (
+      <div style={{ width: '100%', minHeight: '100%', backgroundColor: C.offWhite, paddingBottom: '80px' }}>
+        {/* Header */}
+        <div style={{ background: `linear-gradient(135deg, #2C3E2D 0%, ${C.darkGreen} 100%)`, padding: '16px 24px 20px', color: C.white }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+            <PawPrint style={{ width: '22px', height: '22px' }} />
+            <h1 style={{ fontSize: '24px', fontWeight: 800, margin: 0 }}>Fly with Your Dog</h1>
+          </div>
+          <p style={{ fontSize: '13px', color: C.cream, opacity: 0.8, margin: 0 }}>Every semi-private airline allows dogs. Here are the rules.</p>
+        </div>
+
+        {/* Quick stats bar */}
+        <div style={{ backgroundColor: C.white, padding: '14px 24px', borderBottom: `1px solid ${C.g200}`, display: 'flex', justifyContent: 'space-around' }}>
+          {[
+            { num: '6', label: 'Airlines' },
+            { num: '100+', label: 'Routes' },
+            { num: '0', label: 'Cargo' },
+          ].map((s, i) => (
+            <div key={i} style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '20px', fontWeight: 800, color: C.darkGreen }}>{s.num}</div>
+              <div style={{ fontSize: '10px', fontWeight: 600, color: C.g400, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* All cabin callout */}
+        <div style={{ margin: '14px 24px 0', padding: '12px 16px', borderRadius: '12px', backgroundColor: '#FDE8EC', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <Heart style={{ width: '16px', height: '16px', color: C.pink, flexShrink: 0 }} />
+          <div style={{ fontSize: '12px', color: C.g800, fontWeight: 600, lineHeight: 1.4 }}>
+            Every airline on Aviato flies dogs in the cabin. No cargo. Ever. Your dog sits with you.
+          </div>
+        </div>
+
+        {/* Filter pills */}
+        <div style={{ padding: '14px 24px 0', display: 'flex', gap: '6px' }}>
+          {([
+            { id: 'all', label: 'All Airlines' },
+            { id: 'large', label: 'Large Dogs (50+ lbs)' },
+          ] as const).map(f => (
+            <button key={f.id} onClick={() => setFilterSize(f.id)} style={{ padding: '7px 14px', borderRadius: '100px', border: 'none', fontSize: '12px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', backgroundColor: filterSize === f.id ? C.black : C.g100, color: filterSize === f.id ? C.white : C.g600 }}>
+              {f.label}
             </button>
-          );
-        })}
+          ))}
+        </div>
+
+        {/* Airline cards */}
+        <div style={{ padding: '14px 24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {filtered.map(policy => {
+            const style = AIRLINE_STYLE[policy.airline];
+            const rating = WING_RATINGS[policy.airline];
+            const isExpanded = expandedAirline === policy.airline;
+
+            return (
+              <div key={policy.airline} style={{ backgroundColor: C.white, borderRadius: '16px', overflow: 'hidden', border: `1px solid ${C.g200}` }}>
+                {/* Airline header */}
+                <div
+                  onClick={() => setExpandedAirline(isExpanded ? null : policy.airline)}
+                  style={{ padding: '16px 18px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px', background: policy.highlight ? `linear-gradient(135deg, ${style?.bg || C.black} 0%, #4A5D4B 100%)` : C.white }}
+                >
+                  <div style={{ width: '40px', height: '40px', borderRadius: '10px', backgroundColor: style?.bg || C.black, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: policy.highlight ? '2px solid rgba(255,255,255,0.3)' : 'none' }}>
+                    <Dog style={{ width: '20px', height: '20px', color: style?.accent || C.white }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: '15px', fontWeight: 700, color: policy.highlight ? C.white : C.black }}>{policy.airline}</div>
+                    <div style={{ fontSize: '11px', color: policy.highlight ? 'rgba(255,255,255,0.7)' : C.g400, fontWeight: 600 }}>{policy.tagline}</div>
+                  </div>
+                  {rating && (
+                    <div style={{ display: 'flex', gap: '2px', marginRight: '4px' }}>
+                      {Array.from({ length: rating.wings }).map((_, i) => (
+                        <WingIcon key={i} size={12} color={policy.highlight ? '#FFD700' : WING_COLORS[rating.wings]} />
+                      ))}
+                    </div>
+                  )}
+                  <ChevronDown style={{ width: '16px', height: '16px', color: policy.highlight ? 'rgba(255,255,255,0.5)' : C.g300, transform: isExpanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+                </div>
+
+                {/* Summary always visible */}
+                <div style={{ padding: '0 18px 14px', fontSize: '12px', color: C.g600, lineHeight: 1.5 }}>
+                  {policy.summary}
+                </div>
+
+                {/* Quick info pills */}
+                <div style={{ padding: '0 18px 14px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  <span style={{ fontSize: '10px', padding: '4px 10px', borderRadius: '100px', backgroundColor: '#FDE8EC', color: C.pink, fontWeight: 600 }}>
+                    {policy.cost.includes('FREE') || policy.cost.includes('Free') ? policy.cost.split('—')[0].trim() : policy.cost.split('—')[0].split('(')[0].trim()}
+                  </span>
+                  <span style={{ fontSize: '10px', padding: '4px 10px', borderRadius: '100px', backgroundColor: C.g100, color: C.g600, fontWeight: 600 }}>
+                    Cabin Only
+                  </span>
+                </div>
+
+                {/* Expanded details */}
+                {isExpanded && (
+                  <div style={{ borderTop: `1px solid ${C.g200}`, padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {[
+                      { icon: Weight, label: 'Weight/Size', value: policy.weight },
+                      { icon: DollarSign, label: 'Cost', value: policy.cost },
+                      { icon: Hash, label: 'Max Pets per Flight', value: policy.maxPets },
+                      { icon: FileText, label: 'Required Docs', value: policy.docs },
+                      { icon: Info, label: 'Breed Restrictions', value: policy.breeds },
+                    ].map((item, i) => {
+                      const Icon = item.icon;
+                      return (
+                        <div key={i} style={{ display: 'flex', gap: '10px' }}>
+                          <div style={{ width: '28px', height: '28px', borderRadius: '8px', backgroundColor: C.g100, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <Icon style={{ width: '14px', height: '14px', color: C.g600 }} />
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '10px', fontWeight: 700, color: C.g400, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{item.label}</div>
+                            <div style={{ fontSize: '12px', color: C.g800, lineHeight: 1.4, marginTop: '2px' }}>{item.value}</div>
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                    {/* Extras */}
+                    <div style={{ marginTop: '4px' }}>
+                      <div style={{ fontSize: '10px', fontWeight: 700, color: C.g400, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>Good to Know</div>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                        {policy.extras.map((extra, j) => (
+                          <span key={j} style={{ fontSize: '11px', padding: '5px 10px', borderRadius: '8px', backgroundColor: C.g100, color: C.g600, fontWeight: 500 }}>
+                            {extra}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Search button */}
+                    {'externalOnly' in policy && (policy as any).externalOnly ? (
+                      <a
+                        href={(policy as any).externalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ marginTop: '4px', width: '100%', padding: '12px', border: 'none', borderRadius: '12px', backgroundColor: style?.bg || C.black, color: C.white, fontWeight: 700, fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', textDecoration: 'none', boxSizing: 'border-box' }}
+                      >
+                        <ExternalLink style={{ width: '14px', height: '14px' }} /> Visit {policy.airline}
+                      </a>
+                    ) : (
+                      <button
+                        onClick={() => { setActiveTab('home'); setScreen('home'); setTimeout(() => { if (phoneContentRef.current) phoneContentRef.current.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }); }, 50); }}
+                        style={{ marginTop: '4px', width: '100%', padding: '12px', border: 'none', borderRadius: '12px', backgroundColor: style?.bg || C.black, color: C.white, fontWeight: 700, fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                      >
+                        <Search style={{ width: '14px', height: '14px' }} /> Search {policy.airline} Flights
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom CTA */}
+        <div style={{ padding: '0 24px 20px' }}>
+          <div style={{ padding: '16px', borderRadius: '12px', backgroundColor: C.cream, textAlign: 'center' }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: C.darkGreen, marginBottom: '4px' }}>Skip TSA. Skip the cargo hold.</div>
+            <div style={{ fontSize: '11px', color: C.g600 }}>Search all pet-friendly semi-private flights in one place.</div>
+            <button
+              onClick={() => { setActiveTab('home'); setScreen('home'); setTimeout(() => { if (phoneContentRef.current) phoneContentRef.current.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }); }, 50); }}
+              style={{ marginTop: '12px', padding: '10px 24px', border: 'none', borderRadius: '10px', backgroundColor: C.darkGreen, color: C.cream, fontWeight: 700, fontSize: '13px', cursor: 'pointer' }}
+            >
+              Search Flights
+            </button>
+          </div>
+        </div>
       </div>
+    );
+  };
+
+  // BOTTOM NAV
+  const BottomNav = () => (
+    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: C.white, borderTop: `1px solid ${C.g200}`, display: 'flex', justifyContent: 'space-around', alignItems: 'center', height: '64px', paddingBottom: '6px', zIndex: 100 }}>
+      {[
+        { id: 'home', icon: Home, label: 'Search' },
+        { id: 'dogs', icon: PawPrint, label: 'Dogs' },
+        { id: 'explore', icon: Compass, label: 'Explore' },
+      ].map(item => {
+        const Icon = item.icon;
+        const isActive = activeTab === item.id;
+        return (
+          <button key={item.id} onClick={() => { setActiveTab(item.id); setScreen(item.id); setTimeout(() => { if (phoneContentRef.current) phoneContentRef.current.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior }); }, 50); }}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 32px', color: isActive ? C.darkGreen : C.g400 }}>
+            <Icon style={{ width: '22px', height: '22px' }} />
+            <span style={{ fontSize: '11px', fontWeight: 600 }}>{item.label}</span>
+          </button>
+        );
+      })}
     </div>
   );
 
@@ -1108,13 +1223,14 @@ export default function AviatoApp() {
       case 'detail': return <DetailScreen />;
       case 'redirect': return <RedirectScreen />;
       case 'explore': return <ExploreScreen />;
+      case 'dogs': return <DogsScreen />;
       default: return <HomeScreen />;
     }
   };
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#E5E5E0', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '20px 0', fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' }}>
-      <div className="phone-frame" style={{ width: '100%', maxWidth: '430px', borderRadius: '40px', overflow: 'hidden', boxShadow: '0 25px 80px rgba(0,0,0,0.25)', border: '8px solid #1a1a1a', backgroundColor: C.offWhite, position: 'relative' }}>
+      <div style={{ width: '100%', maxWidth: '430px', borderRadius: '40px', overflow: 'hidden', boxShadow: '0 25px 80px rgba(0,0,0,0.25)', border: '8px solid #1a1a1a', backgroundColor: C.offWhite, position: 'relative' }}>
         <div style={{ backgroundColor: (screen === 'redirect') ? (AIRLINE_STYLE[redirectAirline || '']?.bg || C.darkGreen) : C.black, height: '26px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', color: C.white, fontSize: '12px', fontWeight: 600 }}>
           <span>9:41</span>
           <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>

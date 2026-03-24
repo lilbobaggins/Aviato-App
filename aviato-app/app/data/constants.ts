@@ -22,8 +22,7 @@ export const AIRLINE_STYLE: Record<string, AirlineStyle> = {
   'Tradewind': { bg: '#1A472A', text: '#FFF', label: 'TW', accent: '#87CEAB' },
   'Surf Air': { bg: '#003049', text: '#FFF', label: 'SA', accent: '#00B4D8' },
   'BARK Air': { bg: '#2C3E2D', text: '#FFF', label: 'BA', accent: '#8DB580' },
-  'Boutique Air': { bg: '#1C3A50', text: '#FFF', label: 'BQ', accent: '#6BAED6' },
-  'K9 Jets': { bg: '#1B2838', text: '#FFF', label: 'K9', accent: '#D4A574' },
+  'K9 Jets': { bg: '#1B2A4A', text: '#FFF', label: 'K9', accent: '#E8C547' },
 };
 
 export const AIRLINE_BOOKING: Record<string, AirlineBooking> = {
@@ -31,21 +30,17 @@ export const AIRLINE_BOOKING: Record<string, AirlineBooking> = {
   'Aero': { url: 'https://aero.com', name: 'Aero', note: 'Book your Aero flight at aero.com' },
   'Slate': { url: 'https://flyslate.com', name: 'Slate', note: 'Book your Slate flight at flyslate.com' },
   'Tradewind': { url: 'https://www.flytradewind.com/scheduled/', name: 'Tradewind Aviation', note: 'Book scheduled flights at flytradewind.com' },
-  'Surf Air': { url: 'https://fly.surfair.com/explore/scheduled', name: 'Surf Air', note: 'Operated by Southern Airways Express. Book at fly.surfair.com' },
+  'Surf Air': { url: 'https://fly.surfair.com', name: 'Surf Air', note: 'Book your Surf Air flight' },
   'BARK Air': { url: 'https://air.bark.co/collections/bookings', name: 'BARK Air', note: 'Each ticket includes 1 dog + 1 human. Book at air.bark.co' },
-  'Boutique Air': { url: 'https://www.boutiqueair.com', name: 'Boutique Air', note: 'Fly private for the cost of commercial. Book at boutiqueair.com' },
-  'K9 Jets': { url: 'https://www.k9jets.com/routes/', name: 'K9 Jets', note: 'Pet-dedicated semi-private jets. Each seat includes 1 human + up to 2 pets. Book at k9jets.com' },
 };
 
 export const WING_RATINGS: Record<string, WingRating> = {
-  'Aero': { wings: 3, tier: 'Flagship Semi-Private', score: 6, badges: ['terminal','arrival','density','baggage','amenities','seating'], pets: true, petNote: 'Pets welcome onboard' },
-  'JSX': { wings: 2, tier: 'Premium Semi-Private', score: 4, badges: ['terminal','arrival','baggage','amenities'], pets: true, petNote: 'Pets welcome onboard' },
-  'Slate': { wings: 3, tier: 'Flagship Semi-Private', score: 5, badges: ['terminal','density','baggage','amenities','seating'], pets: true, petNote: 'Under 25 lbs free · Over 25 lbs requires extra seat' },
-  'Tradewind': { wings: 2, tier: 'Premium Semi-Private', score: 5, badges: ['terminal','arrival','density','baggage','amenities'], pets: true, petNote: 'Pets welcome onboard' },
-  'Surf Air': { wings: 1, tier: 'Accessible Semi-Private', score: 3, badges: ['terminal','arrival','density'], pets: false },
-  'BARK Air': { wings: 3, tier: 'Flagship Semi-Private', score: 6, badges: ['terminal','arrival','density','baggage','amenities','seating'], pets: true, petNote: '1 dog + 1 human per ticket' },
-  'Boutique Air': { wings: 1, tier: 'Accessible Semi-Private', score: 3, badges: ['density','baggage','seating'], pets: true, petNote: 'Pets allowed in cabin' },
-  'K9 Jets': { wings: 3, tier: 'Flagship Semi-Private', score: 7, badges: ['terminal','arrival','density','baggage','amenities','seating'], pets: true, petNote: 'The most feature-rich flight experience we list. Pet-dedicated Gulfstream G-IV with gourmet catering, champagne, vet tech on board, and up to 2 pets per seat -- no crate required' },
+  'Aero': { wings: 3, tier: 'Flagship Semi-Private', score: 6, badges: ['terminal','arrival','density','baggage','amenities','seating'], pets: true },
+  'JSX': { wings: 2, tier: 'Premium Semi-Private', score: 4, badges: ['terminal','arrival','baggage','amenities'], pets: true },
+  'Slate': { wings: 2, tier: 'Premium Semi-Private', score: 5, badges: ['terminal','density','baggage','amenities','seating'], pets: true },
+  'Tradewind': { wings: 2, tier: 'Premium Semi-Private', score: 5, badges: ['terminal','arrival','density','baggage','amenities'], pets: true },
+  'Surf Air': { wings: 1, tier: 'Accessible Semi-Private', score: 2, badges: ['arrival','density'], pets: true },
+  'BARK Air': { wings: 3, tier: 'Flagship Semi-Private', score: 6, badges: ['terminal','arrival','density','baggage','amenities','seating'], pets: true },
 };
 
 export const BADGE_CONFIG: Record<string, BadgeConfig> = {
