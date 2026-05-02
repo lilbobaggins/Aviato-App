@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-05-01T08:32:53.040137Z",
+  "scraped_at": "2026-05-02T08:04:47.726918Z",
   "total_flights": 450,
   "source": "k9jets.com (WooCommerce Store API)",
   "routes": [
@@ -69,7 +69,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-25-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.027951Z"
+      "scraped_at": "2026-05-02T08:04:47.714533Z"
     },
     {
       "route": "Geneva, Switzerland - Teterboro, NJ",
@@ -85,7 +85,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-25-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.028020Z"
+      "scraped_at": "2026-05-02T08:04:47.714598Z"
     },
     {
       "route": "Los Angeles, US - London, UK",
@@ -101,7 +101,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-23-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.028058Z"
+      "scraped_at": "2026-05-02T08:04:47.714636Z"
     },
     {
       "route": "Van Nuys, California - Lisbon, Portugal",
@@ -117,7 +117,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-27-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.028091Z"
+      "scraped_at": "2026-05-02T08:04:47.714671Z"
     },
     {
       "route": "Toronto, Canada - Dubai, UAE",
@@ -133,7 +133,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-3-2027-2/",
-      "scraped_at": "2026-05-01T08:32:53.028123Z"
+      "scraped_at": "2026-05-02T08:04:47.714702Z"
     },
     {
       "route": "Toronto, Canada - Dubai, UAE",
@@ -149,7 +149,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-3-2027-2/",
-      "scraped_at": "2026-05-01T08:32:53.028159Z"
+      "scraped_at": "2026-05-02T08:04:47.714738Z"
     },
     {
       "route": "Toronto, Canada - Dubai, UAE",
@@ -165,7 +165,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-6-2027-2/",
-      "scraped_at": "2026-05-01T08:32:53.028191Z"
+      "scraped_at": "2026-05-02T08:04:47.714767Z"
     },
     {
       "route": "London, UK - Vancouver, Canada",
@@ -181,7 +181,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-26-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028228Z"
+      "scraped_at": "2026-05-02T08:04:47.714806Z"
     },
     {
       "route": "Vancouver, Canada - London, UK",
@@ -197,7 +197,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-24-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028262Z"
+      "scraped_at": "2026-05-02T08:04:47.714839Z"
     },
     {
       "route": "Milan, Italy - New Jersey, US",
@@ -213,7 +213,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-19-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028292Z"
+      "scraped_at": "2026-05-02T08:04:47.714869Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -229,7 +229,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-17-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028320Z"
+      "scraped_at": "2026-05-02T08:04:47.714897Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -245,7 +245,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-12-2027-3/",
-      "scraped_at": "2026-05-01T08:32:53.028347Z"
+      "scraped_at": "2026-05-02T08:04:47.714924Z"
     },
     {
       "route": "London, UK - Miami, US",
@@ -261,7 +261,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-12-2027-2/",
-      "scraped_at": "2026-05-01T08:32:53.028374Z"
+      "scraped_at": "2026-05-02T08:04:47.714951Z"
     },
     {
       "route": "Paris, France - Toronto, Canada",
@@ -277,7 +277,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-12-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028406Z"
+      "scraped_at": "2026-05-02T08:04:47.714976Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -293,7 +293,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-10-2027-3/",
-      "scraped_at": "2026-05-01T08:32:53.028433Z"
+      "scraped_at": "2026-05-02T08:04:47.715002Z"
     },
     {
       "route": "Toronto, Canada - Paris, France",
@@ -309,7 +309,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-10-2027-2/",
-      "scraped_at": "2026-05-01T08:32:53.028458Z"
+      "scraped_at": "2026-05-02T08:04:47.715052Z"
     },
     {
       "route": "Miami, US - London, UK",
@@ -325,7 +325,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-10-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028483Z"
+      "scraped_at": "2026-05-02T08:04:47.715086Z"
     },
     {
       "route": "London, UK - Dubai, UAE",
@@ -341,7 +341,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-5-2027-2/",
-      "scraped_at": "2026-05-01T08:32:53.028509Z"
+      "scraped_at": "2026-05-02T08:04:47.715115Z"
     },
     {
       "route": "London, UK - Toronto, Canada",
@@ -357,7 +357,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-5-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028539Z"
+      "scraped_at": "2026-05-02T08:04:47.715149Z"
     },
     {
       "route": "Toronto, Canada - London, UK",
@@ -373,7 +373,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/march-3-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028565Z"
+      "scraped_at": "2026-05-02T08:04:47.715176Z"
     },
     {
       "route": "London, UK - Vancouver, Canada",
@@ -389,7 +389,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-26-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028591Z"
+      "scraped_at": "2026-05-02T08:04:47.715210Z"
     },
     {
       "route": "Vancouver, Canada - London, UK",
@@ -405,7 +405,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-24-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028618Z"
+      "scraped_at": "2026-05-02T08:04:47.715237Z"
     },
     {
       "route": "Milan, Italy - New Jersey, US",
@@ -421,7 +421,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-19-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028643Z"
+      "scraped_at": "2026-05-02T08:04:47.715264Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -437,7 +437,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-17-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028667Z"
+      "scraped_at": "2026-05-02T08:04:47.715290Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -453,7 +453,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-12-2027-3/",
-      "scraped_at": "2026-05-01T08:32:53.028693Z"
+      "scraped_at": "2026-05-02T08:04:47.715315Z"
     },
     {
       "route": "London, UK - Miami, US",
@@ -469,7 +469,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-12-2027-2/",
-      "scraped_at": "2026-05-01T08:32:53.028719Z"
+      "scraped_at": "2026-05-02T08:04:47.715340Z"
     },
     {
       "route": "Paris, France - Toronto, Canada",
@@ -485,7 +485,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-12-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028743Z"
+      "scraped_at": "2026-05-02T08:04:47.715366Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -501,7 +501,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-10-2027-3/",
-      "scraped_at": "2026-05-01T08:32:53.028768Z"
+      "scraped_at": "2026-05-02T08:04:47.715392Z"
     },
     {
       "route": "Toronto, Canada - Paris, France",
@@ -517,7 +517,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-10-2027-2/",
-      "scraped_at": "2026-05-01T08:32:53.028794Z"
+      "scraped_at": "2026-05-02T08:04:47.715419Z"
     },
     {
       "route": "Miami, US - London, UK",
@@ -533,7 +533,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-10-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028817Z"
+      "scraped_at": "2026-05-02T08:04:47.715446Z"
     },
     {
       "route": "Dubai, UAE - London, UK",
@@ -549,7 +549,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-6-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028841Z"
+      "scraped_at": "2026-05-02T08:04:47.715471Z"
     },
     {
       "route": "London, UK - Dubai, UAE",
@@ -565,7 +565,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-5-2027-2/",
-      "scraped_at": "2026-05-01T08:32:53.028867Z"
+      "scraped_at": "2026-05-02T08:04:47.715495Z"
     },
     {
       "route": "London, UK - Toronto, Canada",
@@ -581,7 +581,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-5-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028917Z"
+      "scraped_at": "2026-05-02T08:04:47.715520Z"
     },
     {
       "route": "Toronto, Canada - London, UK",
@@ -597,7 +597,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/february-3-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028945Z"
+      "scraped_at": "2026-05-02T08:04:47.715547Z"
     },
     {
       "route": "London, UK - Vancouver, Canada",
@@ -613,7 +613,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-29-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028972Z"
+      "scraped_at": "2026-05-02T08:04:47.715574Z"
     },
     {
       "route": "Vancouver, Canada - London, UK",
@@ -629,7 +629,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-27-2027/",
-      "scraped_at": "2026-05-01T08:32:53.028997Z"
+      "scraped_at": "2026-05-02T08:04:47.715600Z"
     },
     {
       "route": "Milan, Italy - New Jersey, US",
@@ -645,7 +645,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-22-2027/",
-      "scraped_at": "2026-05-01T08:32:53.029023Z"
+      "scraped_at": "2026-05-02T08:04:47.715632Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -661,7 +661,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-20-2027/",
-      "scraped_at": "2026-05-01T08:32:53.029051Z"
+      "scraped_at": "2026-05-02T08:04:47.715657Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -677,7 +677,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-15-2027-3/",
-      "scraped_at": "2026-05-01T08:32:53.029076Z"
+      "scraped_at": "2026-05-02T08:04:47.715682Z"
     },
     {
       "route": "London, UK - Miami, US",
@@ -693,7 +693,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-7-2027-2/",
-      "scraped_at": "2026-05-01T08:32:53.029102Z"
+      "scraped_at": "2026-05-02T08:04:47.715708Z"
     },
     {
       "route": "Paris, France - Toronto, Canada",
@@ -709,7 +709,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-15-2027/",
-      "scraped_at": "2026-05-01T08:32:53.029126Z"
+      "scraped_at": "2026-05-02T08:04:47.715733Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -725,7 +725,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-13-2027-3/",
-      "scraped_at": "2026-05-01T08:32:53.029150Z"
+      "scraped_at": "2026-05-02T08:04:47.715758Z"
     },
     {
       "route": "Toronto, Canada - Paris, France",
@@ -741,7 +741,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-13-2027-2/",
-      "scraped_at": "2026-05-01T08:32:53.029176Z"
+      "scraped_at": "2026-05-02T08:04:47.715784Z"
     },
     {
       "route": "Miami, US - London, UK",
@@ -757,7 +757,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-5-2027/",
-      "scraped_at": "2026-05-01T08:32:53.029201Z"
+      "scraped_at": "2026-05-02T08:04:47.715809Z"
     },
     {
       "route": "Dubai, UAE - London, UK",
@@ -773,7 +773,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-9-2027-4/",
-      "scraped_at": "2026-05-01T08:32:53.029225Z"
+      "scraped_at": "2026-05-02T08:04:47.715832Z"
     },
     {
       "route": "London, UK - Dubai, UAE",
@@ -789,7 +789,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-8-2027-3/",
-      "scraped_at": "2026-05-01T08:32:53.029251Z"
+      "scraped_at": "2026-05-02T08:04:47.715856Z"
     },
     {
       "route": "London, UK - Toronto, Canada",
@@ -805,7 +805,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-8-2027-2/",
-      "scraped_at": "2026-05-01T08:32:53.029276Z"
+      "scraped_at": "2026-05-02T08:04:47.715881Z"
     },
     {
       "route": "Toronto, Canada - London, UK",
@@ -821,7 +821,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/january-6-2027/",
-      "scraped_at": "2026-05-01T08:32:53.029303Z"
+      "scraped_at": "2026-05-02T08:04:47.715908Z"
     },
     {
       "route": "London, UK - Van Nuys, California",
@@ -837,7 +837,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-18-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.029330Z"
+      "scraped_at": "2026-05-02T08:04:47.715937Z"
     },
     {
       "route": "Milan, Italy - Van Nuys, California",
@@ -853,7 +853,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-18-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.029357Z"
+      "scraped_at": "2026-05-02T08:04:47.715963Z"
     },
     {
       "route": "Frankfurt, Germany - Van Nuys, California",
@@ -869,7 +869,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-18-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.029383Z"
+      "scraped_at": "2026-05-02T08:04:47.715988Z"
     },
     {
       "route": "Le Bourget Paris, France - Van Nuys, California",
@@ -885,7 +885,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-18-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.029409Z"
+      "scraped_at": "2026-05-02T08:04:47.716013Z"
     },
     {
       "route": "New Jersey, US - Los Angeles, US",
@@ -901,7 +901,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-18-2026/",
-      "scraped_at": "2026-05-01T08:32:53.029434Z"
+      "scraped_at": "2026-05-02T08:04:47.716065Z"
     },
     {
       "route": "Paris, France - New Jersey, US",
@@ -917,7 +917,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-18-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.029464Z"
+      "scraped_at": "2026-05-02T08:04:47.716094Z"
     },
     {
       "route": "Milan, Italy - New Jersey, US",
@@ -933,7 +933,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-18-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.029491Z"
+      "scraped_at": "2026-05-02T08:04:47.716121Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -949,7 +949,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-18-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.029516Z"
+      "scraped_at": "2026-05-02T08:04:47.716145Z"
     },
     {
       "route": "Frankfurt, Germany - Teterboro, NJ",
@@ -965,7 +965,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-18-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.029540Z"
+      "scraped_at": "2026-05-02T08:04:47.716171Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -981,7 +981,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-16-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.029566Z"
+      "scraped_at": "2026-05-02T08:04:47.716196Z"
     },
     {
       "route": "Van Nuys, California - Milan, Italy",
@@ -997,7 +997,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-16-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.029591Z"
+      "scraped_at": "2026-05-02T08:04:47.716223Z"
     },
     {
       "route": "Van Nuys, California - Frankfurt, Germany",
@@ -1013,7 +1013,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-16-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.029615Z"
+      "scraped_at": "2026-05-02T08:04:47.716249Z"
     },
     {
       "route": "Van Nuys, California - Le Bourget Paris, France",
@@ -1029,7 +1029,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-16-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.029641Z"
+      "scraped_at": "2026-05-02T08:04:47.716274Z"
     },
     {
       "route": "New Jersey, US - Frankfurt, Germany",
@@ -1045,7 +1045,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-16-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.029665Z"
+      "scraped_at": "2026-05-02T08:04:47.716299Z"
     },
     {
       "route": "New Jersey, US - London, UK",
@@ -1061,7 +1061,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-16-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.029690Z"
+      "scraped_at": "2026-05-02T08:04:47.716323Z"
     },
     {
       "route": "Los Angeles, US - New Jersey, US",
@@ -1077,7 +1077,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-16-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.029715Z"
+      "scraped_at": "2026-05-02T08:04:47.716348Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -1093,7 +1093,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-16-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.029744Z"
+      "scraped_at": "2026-05-02T08:04:47.716373Z"
     },
     {
       "route": "New Jersey, US - Paris, France",
@@ -1109,7 +1109,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-16-2026/",
-      "scraped_at": "2026-05-01T08:32:53.029769Z"
+      "scraped_at": "2026-05-02T08:04:47.716398Z"
     },
     {
       "route": "Miami, US - London, UK",
@@ -1125,7 +1125,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-16-2026-10/",
-      "scraped_at": "2026-05-01T08:32:53.029794Z"
+      "scraped_at": "2026-05-02T08:04:47.716423Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -1141,7 +1141,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-11-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.029819Z"
+      "scraped_at": "2026-05-02T08:04:47.716452Z"
     },
     {
       "route": "London, UK - Miami, US",
@@ -1157,7 +1157,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-18-2026-3-2/",
-      "scraped_at": "2026-05-01T08:32:53.029844Z"
+      "scraped_at": "2026-05-02T08:04:47.716479Z"
     },
     {
       "route": "Dublin, Ireland - New Jersey, US",
@@ -1173,7 +1173,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-11-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.029887Z"
+      "scraped_at": "2026-05-02T08:04:47.716502Z"
     },
     {
       "route": "Paris, France - Toronto, Canada",
@@ -1189,7 +1189,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-11-2026/",
-      "scraped_at": "2026-05-01T08:32:53.029917Z"
+      "scraped_at": "2026-05-02T08:04:47.716527Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -1205,7 +1205,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-9-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.029943Z"
+      "scraped_at": "2026-05-02T08:04:47.716554Z"
     },
     {
       "route": "Toronto, Canada - Paris, France",
@@ -1221,7 +1221,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-9-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.029967Z"
+      "scraped_at": "2026-05-02T08:04:47.716579Z"
     },
     {
       "route": "New Jersey, US - Dublin, Ireland",
@@ -1237,7 +1237,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-9-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.029991Z"
+      "scraped_at": "2026-05-02T08:04:47.716603Z"
     },
     {
       "route": "Dubai, UAE - London, UK",
@@ -1253,7 +1253,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-5-2026/",
-      "scraped_at": "2026-05-01T08:32:53.030015Z"
+      "scraped_at": "2026-05-02T08:04:47.716627Z"
     },
     {
       "route": "London, UK - Dubai, UAE",
@@ -1269,7 +1269,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-4-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.030043Z"
+      "scraped_at": "2026-05-02T08:04:47.716655Z"
     },
     {
       "route": "London, UK - Toronto, Canada",
@@ -1285,7 +1285,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-4-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.030069Z"
+      "scraped_at": "2026-05-02T08:04:47.716682Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -1301,7 +1301,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-4-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.030093Z"
+      "scraped_at": "2026-05-02T08:04:47.716707Z"
     },
     {
       "route": "Toronto, Canada - Dubai, UAE",
@@ -1317,7 +1317,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-2-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.030118Z"
+      "scraped_at": "2026-05-02T08:04:47.716732Z"
     },
     {
       "route": "Teterboro, NJ - Dubai, UAE",
@@ -1333,7 +1333,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-2-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.030144Z"
+      "scraped_at": "2026-05-02T08:04:47.716757Z"
     },
     {
       "route": "New Jersey, US - London, UK",
@@ -1349,7 +1349,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-2-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.030169Z"
+      "scraped_at": "2026-05-02T08:04:47.716782Z"
     },
     {
       "route": "Toronto, Canada - London, UK",
@@ -1365,7 +1365,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/december-2-2026/",
-      "scraped_at": "2026-05-01T08:32:53.030198Z"
+      "scraped_at": "2026-05-02T08:04:47.716808Z"
     },
     {
       "route": "Madrid, Spain - Van Nuys, California",
@@ -1381,7 +1381,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-27-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.030250Z"
+      "scraped_at": "2026-05-02T08:04:47.716861Z"
     },
     {
       "route": "Lisbon, Portugal - Van Nuys, California",
@@ -1397,7 +1397,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-27-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.030275Z"
+      "scraped_at": "2026-05-02T08:04:47.716886Z"
     },
     {
       "route": "New Jersey, US - Los Angeles, US",
@@ -1413,7 +1413,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-27-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.030304Z"
+      "scraped_at": "2026-05-02T08:04:47.716911Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -1429,7 +1429,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-27-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.030330Z"
+      "scraped_at": "2026-05-02T08:04:47.716935Z"
     },
     {
       "route": "Geneva, Switzerland - Teterboro, NJ",
@@ -1445,7 +1445,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-27-2026/",
-      "scraped_at": "2026-05-01T08:32:53.030354Z"
+      "scraped_at": "2026-05-02T08:04:47.716960Z"
     },
     {
       "route": "Lisbon, Portugal - Teterboro, NJ",
@@ -1461,7 +1461,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-27-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.030378Z"
+      "scraped_at": "2026-05-02T08:04:47.716985Z"
     },
     {
       "route": "London, UK - Van Nuys, CA",
@@ -1477,7 +1477,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-27-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.030402Z"
+      "scraped_at": "2026-05-02T08:04:47.717009Z"
     },
     {
       "route": "London, UK - Vancouver, Canada",
@@ -1493,7 +1493,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-27-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.030426Z"
+      "scraped_at": "2026-05-02T08:04:47.717053Z"
     },
     {
       "route": "Van Nuys, California - Lisbon, Portugal",
@@ -1509,7 +1509,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-25-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.030450Z"
+      "scraped_at": "2026-05-02T08:04:47.717078Z"
     },
     {
       "route": "Van Nuys, California - Geneva, Switzerland",
@@ -1525,7 +1525,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-25-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.030474Z"
+      "scraped_at": "2026-05-02T08:04:47.717103Z"
     },
     {
       "route": "New Jersey, US - Lisbon, Portugal",
@@ -1541,7 +1541,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-25-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.030498Z"
+      "scraped_at": "2026-05-02T08:04:47.717129Z"
     },
     {
       "route": "Los Angeles, US - London, UK",
@@ -1557,7 +1557,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-25-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.030521Z"
+      "scraped_at": "2026-05-02T08:04:47.717153Z"
     },
     {
       "route": "New Jersey, US - London, UK",
@@ -1573,7 +1573,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-25-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.030544Z"
+      "scraped_at": "2026-05-02T08:04:47.717179Z"
     },
     {
       "route": "Los Angeles, US - New Jersey, US",
@@ -1589,7 +1589,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-25-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.030568Z"
+      "scraped_at": "2026-05-02T08:04:47.717204Z"
     },
     {
       "route": "New Jersey, US - Geneva, Switzerland",
@@ -1605,7 +1605,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-25-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.030591Z"
+      "scraped_at": "2026-05-02T08:04:47.717230Z"
     },
     {
       "route": "Vancouver, Canada - London, UK",
@@ -1621,7 +1621,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-25-2026/",
-      "scraped_at": "2026-05-01T08:32:53.030615Z"
+      "scraped_at": "2026-05-02T08:04:47.717254Z"
     },
     {
       "route": "London, UK - Van Nuys, California",
@@ -1637,7 +1637,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-20-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.030640Z"
+      "scraped_at": "2026-05-02T08:04:47.717282Z"
     },
     {
       "route": "Milan, Italy - Van Nuys, California",
@@ -1653,7 +1653,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-20-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.030670Z"
+      "scraped_at": "2026-05-02T08:04:47.717315Z"
     },
     {
       "route": "Frankfurt, Germany - Van Nuys, California",
@@ -1669,7 +1669,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-20-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.030702Z"
+      "scraped_at": "2026-05-02T08:04:47.717343Z"
     },
     {
       "route": "Le Bourget Paris, France - Van Nuys, California",
@@ -1685,7 +1685,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-20-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.030727Z"
+      "scraped_at": "2026-05-02T08:04:47.717368Z"
     },
     {
       "route": "New Jersey, US - Los Angeles, US",
@@ -1701,7 +1701,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-20-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.030755Z"
+      "scraped_at": "2026-05-02T08:04:47.717395Z"
     },
     {
       "route": "Milan, Italy - New Jersey, US",
@@ -1717,7 +1717,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-20-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.030780Z"
+      "scraped_at": "2026-05-02T08:04:47.717420Z"
     },
     {
       "route": "Paris, France - New Jersey, US",
@@ -1733,7 +1733,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-20-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.030804Z"
+      "scraped_at": "2026-05-02T08:04:47.717445Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -1749,7 +1749,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-20-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.030829Z"
+      "scraped_at": "2026-05-02T08:04:47.717469Z"
     },
     {
       "route": "Frankfurt, Germany - Teterboro, NJ",
@@ -1765,7 +1765,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-20-2026/",
-      "scraped_at": "2026-05-01T08:32:53.030853Z"
+      "scraped_at": "2026-05-02T08:04:47.717494Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -1781,7 +1781,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-18-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.030895Z"
+      "scraped_at": "2026-05-02T08:04:47.717519Z"
     },
     {
       "route": "Van Nuys, California - Milan, Italy",
@@ -1797,7 +1797,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-18-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.030925Z"
+      "scraped_at": "2026-05-02T08:04:47.717545Z"
     },
     {
       "route": "Van Nuys, California - Frankfurt, Germany",
@@ -1813,7 +1813,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-18-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.030952Z"
+      "scraped_at": "2026-05-02T08:04:47.717571Z"
     },
     {
       "route": "Van Nuys, California - Le Bourget Paris, France",
@@ -1829,7 +1829,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-18-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.030977Z"
+      "scraped_at": "2026-05-02T08:04:47.717596Z"
     },
     {
       "route": "New Jersey, US - Frankfurt, Germany",
@@ -1845,7 +1845,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-18-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.031002Z"
+      "scraped_at": "2026-05-02T08:04:47.717621Z"
     },
     {
       "route": "New Jersey, US - London, UK",
@@ -1861,7 +1861,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-18-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.031026Z"
+      "scraped_at": "2026-05-02T08:04:47.717646Z"
     },
     {
       "route": "Los Angeles, US - New Jersey, US",
@@ -1877,7 +1877,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-18-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.031049Z"
+      "scraped_at": "2026-05-02T08:04:47.717670Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -1893,7 +1893,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-18-2026/",
-      "scraped_at": "2026-05-01T08:32:53.031074Z"
+      "scraped_at": "2026-05-02T08:04:47.717697Z"
     },
     {
       "route": "New Jersey, US - Paris, France",
@@ -1909,7 +1909,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-18-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.031104Z"
+      "scraped_at": "2026-05-02T08:04:47.717725Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -1925,7 +1925,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-13-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.031136Z"
+      "scraped_at": "2026-05-02T08:04:47.717750Z"
     },
     {
       "route": "London, UK - Miami, US",
@@ -1941,7 +1941,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-13-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.031164Z"
+      "scraped_at": "2026-05-02T08:04:47.717775Z"
     },
     {
       "route": "Dublin, Ireland - New Jersey, US",
@@ -1957,7 +1957,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-13-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.031189Z"
+      "scraped_at": "2026-05-02T08:04:47.717799Z"
     },
     {
       "route": "Paris, France - Toronto, Canada",
@@ -1973,7 +1973,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-13-2026/",
-      "scraped_at": "2026-05-01T08:32:53.031215Z"
+      "scraped_at": "2026-05-02T08:04:47.717824Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -1989,7 +1989,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-11-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.031242Z"
+      "scraped_at": "2026-05-02T08:04:47.717848Z"
     },
     {
       "route": "Toronto, Canada - Paris, France",
@@ -2005,7 +2005,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-11-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.031266Z"
+      "scraped_at": "2026-05-02T08:04:47.717873Z"
     },
     {
       "route": "Miami, US - London, UK",
@@ -2021,7 +2021,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-11-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.031290Z"
+      "scraped_at": "2026-05-02T08:04:47.717901Z"
     },
     {
       "route": "New Jersey, US - Dublin, Ireland",
@@ -2037,7 +2037,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-11-2026/",
-      "scraped_at": "2026-05-01T08:32:53.031313Z"
+      "scraped_at": "2026-05-02T08:04:47.717926Z"
     },
     {
       "route": "Dubai, UAE - London, UK",
@@ -2053,7 +2053,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-7-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.031337Z"
+      "scraped_at": "2026-05-02T08:04:47.717951Z"
     },
     {
       "route": "London, UK - Dubai, UAE",
@@ -2069,7 +2069,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-6-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.031360Z"
+      "scraped_at": "2026-05-02T08:04:47.717976Z"
     },
     {
       "route": "London, UK - Toronto, Canada",
@@ -2085,7 +2085,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-6-2026/",
-      "scraped_at": "2026-05-01T08:32:53.031385Z"
+      "scraped_at": "2026-05-02T08:04:47.718002Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -2101,7 +2101,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-6-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.031409Z"
+      "scraped_at": "2026-05-02T08:04:47.718060Z"
     },
     {
       "route": "Toronto, Canada - Dubai, UAE",
@@ -2117,7 +2117,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-4-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.031434Z"
+      "scraped_at": "2026-05-02T08:04:47.718091Z"
     },
     {
       "route": "Teterboro, NJ - Dubai, UAE",
@@ -2133,7 +2133,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-4-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.031458Z"
+      "scraped_at": "2026-05-02T08:04:47.718117Z"
     },
     {
       "route": "New Jersey, US - London, UK",
@@ -2149,7 +2149,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-4-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.031485Z"
+      "scraped_at": "2026-05-02T08:04:47.718158Z"
     },
     {
       "route": "Toronto, Canada - London, UK",
@@ -2165,7 +2165,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/november-4-2026/",
-      "scraped_at": "2026-05-01T08:32:53.031515Z"
+      "scraped_at": "2026-05-02T08:04:47.718185Z"
     },
     {
       "route": "Madrid, Spain - Van Nuys, California",
@@ -2181,7 +2181,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-30-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.031566Z"
+      "scraped_at": "2026-05-02T08:04:47.718237Z"
     },
     {
       "route": "Madrid, Spain - Van Nuys, California",
@@ -2197,7 +2197,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-30-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.031591Z"
+      "scraped_at": "2026-05-02T08:04:47.718264Z"
     },
     {
       "route": "New Jersey, US - Los Angeles, US",
@@ -2213,7 +2213,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-30-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.031616Z"
+      "scraped_at": "2026-05-02T08:04:47.718289Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -2229,7 +2229,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-30-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.031640Z"
+      "scraped_at": "2026-05-02T08:04:47.718313Z"
     },
     {
       "route": "Geneva, Switzerland - Teterboro, NJ",
@@ -2245,7 +2245,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-30-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.031665Z"
+      "scraped_at": "2026-05-02T08:04:47.718338Z"
     },
     {
       "route": "Madrid, Spain - New Jersey, US",
@@ -2261,7 +2261,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-30-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.031688Z"
+      "scraped_at": "2026-05-02T08:04:47.718363Z"
     },
     {
       "route": "London, UK - Van Nuys, CA",
@@ -2277,7 +2277,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-30-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.031712Z"
+      "scraped_at": "2026-05-02T08:04:47.718389Z"
     },
     {
       "route": "London, UK - Vancouver, Canada",
@@ -2293,7 +2293,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-30-2026/",
-      "scraped_at": "2026-05-01T08:32:53.031735Z"
+      "scraped_at": "2026-05-02T08:04:47.718414Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -2309,7 +2309,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-28-2026-teb-lin/",
-      "scraped_at": "2026-05-01T08:32:53.031758Z"
+      "scraped_at": "2026-05-02T08:04:47.718439Z"
     },
     {
       "route": "Van Nuys, California - Madrid, Spain",
@@ -2325,7 +2325,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-28-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.031782Z"
+      "scraped_at": "2026-05-02T08:04:47.718464Z"
     },
     {
       "route": "Van Nuys, California - Geneva, Switzerland",
@@ -2341,7 +2341,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-28-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.031807Z"
+      "scraped_at": "2026-05-02T08:04:47.718489Z"
     },
     {
       "route": "Los Angeles, US - London, UK",
@@ -2357,7 +2357,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-28-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.031832Z"
+      "scraped_at": "2026-05-02T08:04:47.718514Z"
     },
     {
       "route": "New Jersey, US - London, UK",
@@ -2373,7 +2373,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-28-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.031856Z"
+      "scraped_at": "2026-05-02T08:04:47.718538Z"
     },
     {
       "route": "Los Angeles, US - New Jersey, US",
@@ -2389,7 +2389,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-28-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.031907Z"
+      "scraped_at": "2026-05-02T08:04:47.718566Z"
     },
     {
       "route": "New Jersey,US - Madrid, Spain",
@@ -2405,7 +2405,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-28-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.031940Z"
+      "scraped_at": "2026-05-02T08:04:47.718591Z"
     },
     {
       "route": "New Jersey, US - Geneva, Switzerland",
@@ -2421,7 +2421,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-28-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.031967Z"
+      "scraped_at": "2026-05-02T08:04:47.718617Z"
     },
     {
       "route": "Vancouver, Canada - London, UK",
@@ -2437,7 +2437,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-28-2026/",
-      "scraped_at": "2026-05-01T08:32:53.032000Z"
+      "scraped_at": "2026-05-02T08:04:47.718642Z"
     },
     {
       "route": "Milan, Italy - Van Nuys, California",
@@ -2453,7 +2453,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-23-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.032026Z"
+      "scraped_at": "2026-05-02T08:04:47.718669Z"
     },
     {
       "route": "Frankfurt, Germany - Van Nuys, California",
@@ -2469,7 +2469,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-23-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.032052Z"
+      "scraped_at": "2026-05-02T08:04:47.718694Z"
     },
     {
       "route": "Le Bourget Paris, France - Van Nuys, California",
@@ -2485,7 +2485,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-23-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.032079Z"
+      "scraped_at": "2026-05-02T08:04:47.718720Z"
     },
     {
       "route": "New Jersey, US - Los Angeles, US",
@@ -2501,7 +2501,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-23-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.032104Z"
+      "scraped_at": "2026-05-02T08:04:47.718745Z"
     },
     {
       "route": "Milan, Italy - New Jersey, US",
@@ -2517,7 +2517,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-23-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.032129Z"
+      "scraped_at": "2026-05-02T08:04:47.718770Z"
     },
     {
       "route": "Paris, France - New Jersey, US",
@@ -2533,7 +2533,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-23-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.032152Z"
+      "scraped_at": "2026-05-02T08:04:47.718793Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -2549,7 +2549,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-23-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.032175Z"
+      "scraped_at": "2026-05-02T08:04:47.718817Z"
     },
     {
       "route": "Frankfurt, Germany - Teterboro, NJ",
@@ -2565,7 +2565,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-23-2026/",
-      "scraped_at": "2026-05-01T08:32:53.032199Z"
+      "scraped_at": "2026-05-02T08:04:47.718842Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -2581,7 +2581,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-21-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.032223Z"
+      "scraped_at": "2026-05-02T08:04:47.718866Z"
     },
     {
       "route": "Van Nuys, California - Milan, Italy",
@@ -2597,7 +2597,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/october-21-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.032251Z"
+      "scraped_at": "2026-05-02T08:04:47.718895Z"
     },
     {
       "route": "Van Nuys, California - Frankfurt, Germany",
@@ -2613,7 +2613,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-21-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.032277Z"
+      "scraped_at": "2026-05-02T08:04:47.718922Z"
     },
     {
       "route": "Van Nuys, California - Le Bourget Paris, France",
@@ -2629,7 +2629,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-21-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.032302Z"
+      "scraped_at": "2026-05-02T08:04:47.718947Z"
     },
     {
       "route": "New Jersey, US - Frankfurt, Germany",
@@ -2645,7 +2645,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-21-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.032326Z"
+      "scraped_at": "2026-05-02T08:04:47.718975Z"
     },
     {
       "route": "New Jersey, US - London, UK",
@@ -2661,7 +2661,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-21-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.032353Z"
+      "scraped_at": "2026-05-02T08:04:47.719000Z"
     },
     {
       "route": "Los Angeles, US - New Jersey, US",
@@ -2677,7 +2677,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-21-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.032379Z"
+      "scraped_at": "2026-05-02T08:04:47.719041Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -2693,7 +2693,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/october-21-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.032407Z"
+      "scraped_at": "2026-05-02T08:04:47.719070Z"
     },
     {
       "route": "New Jersey, US - Paris, France",
@@ -2709,7 +2709,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-21-2026/",
-      "scraped_at": "2026-05-01T08:32:53.032430Z"
+      "scraped_at": "2026-05-02T08:04:47.719095Z"
     },
     {
       "route": "London, UK - Miami, US",
@@ -2725,7 +2725,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-16-2026-ltn-opf/",
-      "scraped_at": "2026-05-01T08:32:53.032455Z"
+      "scraped_at": "2026-05-02T08:04:47.719121Z"
     },
     {
       "route": "London, UK - Van Nuys, California",
@@ -2741,7 +2741,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-16-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.032481Z"
+      "scraped_at": "2026-05-02T08:04:47.719147Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -2757,7 +2757,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-16-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.032504Z"
+      "scraped_at": "2026-05-02T08:04:47.719172Z"
     },
     {
       "route": "Dublin, Ireland - New Jersey, US",
@@ -2773,7 +2773,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-16-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.032529Z"
+      "scraped_at": "2026-05-02T08:04:47.719198Z"
     },
     {
       "route": "Paris, France - Toronto, Canada",
@@ -2789,7 +2789,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-16-2026/",
-      "scraped_at": "2026-05-01T08:32:53.032552Z"
+      "scraped_at": "2026-05-02T08:04:47.719223Z"
     },
     {
       "route": "Miami, US - London, UK",
@@ -2805,7 +2805,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-14-2026-opf-ltn/",
-      "scraped_at": "2026-05-01T08:32:53.032575Z"
+      "scraped_at": "2026-05-02T08:04:47.719251Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -2821,7 +2821,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-14-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.032600Z"
+      "scraped_at": "2026-05-02T08:04:47.719275Z"
     },
     {
       "route": "Toronto, Canada - Paris, France",
@@ -2837,7 +2837,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-14-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.032623Z"
+      "scraped_at": "2026-05-02T08:04:47.719300Z"
     },
     {
       "route": "New Jersey, US - Dublin, Ireland",
@@ -2853,7 +2853,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-14-2026/",
-      "scraped_at": "2026-05-01T08:32:53.032647Z"
+      "scraped_at": "2026-05-02T08:04:47.719325Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -2869,7 +2869,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-9-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.032670Z"
+      "scraped_at": "2026-05-02T08:04:47.719350Z"
     },
     {
       "route": "Dubai, UAE - London, UK",
@@ -2885,7 +2885,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-10-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.032694Z"
+      "scraped_at": "2026-05-02T08:04:47.719374Z"
     },
     {
       "route": "London, UK - Dubai, UAE",
@@ -2901,7 +2901,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-9-2026/",
-      "scraped_at": "2026-05-01T08:32:53.032717Z"
+      "scraped_at": "2026-05-02T08:04:47.719402Z"
     },
     {
       "route": "London, UK - Toronto, Canada",
@@ -2917,7 +2917,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-9-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.032744Z"
+      "scraped_at": "2026-05-02T08:04:47.719430Z"
     },
     {
       "route": "Toronto, Canada - Dubai, UAE",
@@ -2933,7 +2933,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-7-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.032772Z"
+      "scraped_at": "2026-05-02T08:04:47.719456Z"
     },
     {
       "route": "Teterboro, NJ - Dubai, UAE",
@@ -2949,7 +2949,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-7-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.032796Z"
+      "scraped_at": "2026-05-02T08:04:47.719481Z"
     },
     {
       "route": "New Jersey, US - London, UK",
@@ -2965,7 +2965,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-7-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.032819Z"
+      "scraped_at": "2026-05-02T08:04:47.719506Z"
     },
     {
       "route": "Toronto, Canada - London, UK",
@@ -2981,7 +2981,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/october-7-2026/",
-      "scraped_at": "2026-05-01T08:32:53.032843Z"
+      "scraped_at": "2026-05-02T08:04:47.719531Z"
     },
     {
       "route": "Madrid, Spain - Van Nuys, California",
@@ -2997,7 +2997,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-25-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.032913Z"
+      "scraped_at": "2026-05-02T08:04:47.719579Z"
     },
     {
       "route": "Lisbon, Portugal - Van Nuys, California",
@@ -3013,7 +3013,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-25-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.032940Z"
+      "scraped_at": "2026-05-02T08:04:47.719605Z"
     },
     {
       "route": "Geneva, Switzerland - Teterboro, NJ",
@@ -3029,7 +3029,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-25-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.032968Z"
+      "scraped_at": "2026-05-02T08:04:47.719633Z"
     },
     {
       "route": "New Jersey, US - Los Angeles, US",
@@ -3045,7 +3045,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-25-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.032992Z"
+      "scraped_at": "2026-05-02T08:04:47.719658Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -3061,7 +3061,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-25-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.033016Z"
+      "scraped_at": "2026-05-02T08:04:47.719681Z"
     },
     {
       "route": "Lisbon, Portugal - Teterboro, NJ",
@@ -3077,7 +3077,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-25-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.033039Z"
+      "scraped_at": "2026-05-02T08:04:47.719706Z"
     },
     {
       "route": "London, UK - Van Nuys, CA",
@@ -3093,7 +3093,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-25-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.033063Z"
+      "scraped_at": "2026-05-02T08:04:47.719731Z"
     },
     {
       "route": "London, UK - Vancouver, Canada",
@@ -3109,7 +3109,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-25-2026/",
-      "scraped_at": "2026-05-01T08:32:53.033088Z"
+      "scraped_at": "2026-05-02T08:04:47.719757Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -3125,7 +3125,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-23-2026-teb-lin/",
-      "scraped_at": "2026-05-01T08:32:53.033112Z"
+      "scraped_at": "2026-05-02T08:04:47.719781Z"
     },
     {
       "route": "Van Nuys, California - Lisbon, Portugal",
@@ -3141,7 +3141,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-23-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.033137Z"
+      "scraped_at": "2026-05-02T08:04:47.719808Z"
     },
     {
       "route": "Van Nuys, California - Geneva, Switzerland",
@@ -3157,7 +3157,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-23-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.033165Z"
+      "scraped_at": "2026-05-02T08:04:47.719834Z"
     },
     {
       "route": "Los Angeles, US - London, UK",
@@ -3173,7 +3173,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-23-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.033190Z"
+      "scraped_at": "2026-05-02T08:04:47.719858Z"
     },
     {
       "route": "New Jersey, US - London, UK",
@@ -3189,7 +3189,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-23-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.033213Z"
+      "scraped_at": "2026-05-02T08:04:47.719883Z"
     },
     {
       "route": "Los Angeles, US - New Jersey, US",
@@ -3205,7 +3205,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-23-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.033237Z"
+      "scraped_at": "2026-05-02T08:04:47.719907Z"
     },
     {
       "route": "New Jersey, US - Lisbon, Portugal",
@@ -3221,7 +3221,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-23-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.033265Z"
+      "scraped_at": "2026-05-02T08:04:47.719935Z"
     },
     {
       "route": "New Jersey, US - Geneva, Switzerland",
@@ -3237,7 +3237,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-23-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.033292Z"
+      "scraped_at": "2026-05-02T08:04:47.719963Z"
     },
     {
       "route": "Vancouver, Canada - London, UK",
@@ -3253,7 +3253,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-23-2026/",
-      "scraped_at": "2026-05-01T08:32:53.033320Z"
+      "scraped_at": "2026-05-02T08:04:47.719992Z"
     },
     {
       "route": "London, UK - Van Nuys, California",
@@ -3269,7 +3269,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-18-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.033346Z"
+      "scraped_at": "2026-05-02T08:04:47.720016Z"
     },
     {
       "route": "Milan, Italy - Van Nuys, California",
@@ -3285,7 +3285,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-18-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.033373Z"
+      "scraped_at": "2026-05-02T08:04:47.720060Z"
     },
     {
       "route": "Frankfurt, Germany - Van Nuys, California",
@@ -3301,7 +3301,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/september-18-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.033398Z"
+      "scraped_at": "2026-05-02T08:04:47.720086Z"
     },
     {
       "route": "Le Bourget Paris, France - Van Nuys, California",
@@ -3317,7 +3317,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-18-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.033423Z"
+      "scraped_at": "2026-05-02T08:04:47.720111Z"
     },
     {
       "route": "New Jersey, US - Los Angeles, US",
@@ -3333,7 +3333,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-18-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.033451Z"
+      "scraped_at": "2026-05-02T08:04:47.720137Z"
     },
     {
       "route": "Milan, Italy - New Jersey, US",
@@ -3349,7 +3349,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-18-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.033477Z"
+      "scraped_at": "2026-05-02T08:04:47.720161Z"
     },
     {
       "route": "Paris, France - New Jersey, US",
@@ -3365,7 +3365,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-18-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.033501Z"
+      "scraped_at": "2026-05-02T08:04:47.720185Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -3381,7 +3381,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-18-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.033525Z"
+      "scraped_at": "2026-05-02T08:04:47.720209Z"
     },
     {
       "route": "Frankfurt, Germany - Teterboro, NJ",
@@ -3397,7 +3397,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/september-18-2026/",
-      "scraped_at": "2026-05-01T08:32:53.033549Z"
+      "scraped_at": "2026-05-02T08:04:47.720237Z"
     },
     {
       "route": "New Jersey, US - Paris, France",
@@ -3413,7 +3413,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-16-2026-teb-lbg/",
-      "scraped_at": "2026-05-01T08:32:53.033576Z"
+      "scraped_at": "2026-05-02T08:04:47.720261Z"
     },
     {
       "route": "Frankfurt, Germany - Teterboro, NJ",
@@ -3429,7 +3429,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-16-2026-fra-teb/",
-      "scraped_at": "2026-05-01T08:32:53.033601Z"
+      "scraped_at": "2026-05-02T08:04:47.720285Z"
     },
     {
       "route": "New Jersey, US - Frankfurt, Germany",
@@ -3445,7 +3445,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-16-2026-teb-fra/",
-      "scraped_at": "2026-05-01T08:32:53.033625Z"
+      "scraped_at": "2026-05-02T08:04:47.720309Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -3461,7 +3461,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-16-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.033650Z"
+      "scraped_at": "2026-05-02T08:04:47.720333Z"
     },
     {
       "route": "Van Nuys, California - Milan, Italy",
@@ -3477,7 +3477,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/september-16-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.033678Z"
+      "scraped_at": "2026-05-02T08:04:47.720362Z"
     },
     {
       "route": "Van Nuys, California - Frankfurt, Germany",
@@ -3493,7 +3493,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-16-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.033706Z"
+      "scraped_at": "2026-05-02T08:04:47.720388Z"
     },
     {
       "route": "Van Nuys, California - Le Bourget Paris, France",
@@ -3509,7 +3509,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/september-16-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.033730Z"
+      "scraped_at": "2026-05-02T08:04:47.720412Z"
     },
     {
       "route": "New Jersey, US - London, UK",
@@ -3525,7 +3525,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-16-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.033779Z"
+      "scraped_at": "2026-05-02T08:04:47.720461Z"
     },
     {
       "route": "Los Angeles, US - New Jersey, US",
@@ -3541,7 +3541,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-16-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.033803Z"
+      "scraped_at": "2026-05-02T08:04:47.720483Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -3557,7 +3557,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/september-16-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.033827Z"
+      "scraped_at": "2026-05-02T08:04:47.720507Z"
     },
     {
       "route": "New Jersey, US - Paris, France",
@@ -3573,7 +3573,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/september-16-2026/",
-      "scraped_at": "2026-05-01T08:32:53.033850Z"
+      "scraped_at": "2026-05-02T08:04:47.720531Z"
     },
     {
       "route": "London, UK - Miami, US",
@@ -3589,7 +3589,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-11-2026-ltn-opf/",
-      "scraped_at": "2026-05-01T08:32:53.033889Z"
+      "scraped_at": "2026-05-02T08:04:47.720558Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -3605,7 +3605,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-11-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.033918Z"
+      "scraped_at": "2026-05-02T08:04:47.720582Z"
     },
     {
       "route": "Dublin, Ireland - New Jersey, US",
@@ -3621,7 +3621,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-11-2026/",
-      "scraped_at": "2026-05-01T08:32:53.033945Z"
+      "scraped_at": "2026-05-02T08:04:47.720607Z"
     },
     {
       "route": "Miami, US - London, UK",
@@ -3637,7 +3637,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-9-2026-opf-ltn/",
-      "scraped_at": "2026-05-01T08:32:53.033971Z"
+      "scraped_at": "2026-05-02T08:04:47.720634Z"
     },
     {
       "route": "New Jersey, US - Dublin, Ireland",
@@ -3653,7 +3653,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-9-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.033998Z"
+      "scraped_at": "2026-05-02T08:04:47.720658Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -3669,7 +3669,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-9-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.034024Z"
+      "scraped_at": "2026-05-02T08:04:47.720682Z"
     },
     {
       "route": "Toronto, Canada - Paris, France",
@@ -3685,7 +3685,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-9-2026/",
-      "scraped_at": "2026-05-01T08:32:53.034048Z"
+      "scraped_at": "2026-05-02T08:04:47.720706Z"
     },
     {
       "route": "London, UK - New Jersey, US",
@@ -3701,7 +3701,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-4-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.034072Z"
+      "scraped_at": "2026-05-02T08:04:47.720730Z"
     },
     {
       "route": "Dubai, UAE - London, UK",
@@ -3717,7 +3717,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-5-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.034098Z"
+      "scraped_at": "2026-05-02T08:04:47.720755Z"
     },
     {
       "route": "London, UK - Dubai, UAE",
@@ -3733,7 +3733,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-4-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.034123Z"
+      "scraped_at": "2026-05-02T08:04:47.720779Z"
     },
     {
       "route": "London, UK - Toronto, Canada",
@@ -3749,7 +3749,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-4-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.034147Z"
+      "scraped_at": "2026-05-02T08:04:47.720804Z"
     },
     {
       "route": "Toronto, Canada - Dubai, UAE",
@@ -3765,7 +3765,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-2-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.034173Z"
+      "scraped_at": "2026-05-02T08:04:47.720829Z"
     },
     {
       "route": "Teterboro, NJ - Dubai, UAE",
@@ -3781,7 +3781,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/september-2-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.034197Z"
+      "scraped_at": "2026-05-02T08:04:47.720854Z"
     },
     {
       "route": "New Jersey, US - London, UK",
@@ -3797,7 +3797,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/september-2-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.034222Z"
+      "scraped_at": "2026-05-02T08:04:47.720879Z"
     },
     {
       "route": "Toronto, Canada - London, UK",
@@ -3813,7 +3813,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/september-2-2026/",
-      "scraped_at": "2026-05-01T08:32:53.034248Z"
+      "scraped_at": "2026-05-02T08:04:47.720903Z"
     },
     {
       "route": "Nice, France - London, UK",
@@ -3829,7 +3829,7 @@
       "aircraft": "Embraer Legacy 600",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-28-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.034272Z"
+      "scraped_at": "2026-05-02T08:04:47.720927Z"
     },
     {
       "route": "Madrid, Spain - Van Nuys, California",
@@ -3845,7 +3845,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-28-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.034299Z"
+      "scraped_at": "2026-05-02T08:04:47.720952Z"
     },
     {
       "route": "Van Nuys, California - Madrid, Spain",
@@ -3861,7 +3861,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/august-26-2026-2-3/",
-      "scraped_at": "2026-05-01T08:32:53.034350Z"
+      "scraped_at": "2026-05-02T08:04:47.721002Z"
     },
     {
       "route": "Van Nuys, California - Geneva, Switzerland",
@@ -3877,7 +3877,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-26-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.034374Z"
+      "scraped_at": "2026-05-02T08:04:47.721047Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -3893,7 +3893,7 @@
       "aircraft": "Gulfstream G-550",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-26-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.034403Z"
+      "scraped_at": "2026-05-02T08:04:47.721079Z"
     },
     {
       "route": "London, UK - Van Nuys, California",
@@ -3909,7 +3909,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-21-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.034430Z"
+      "scraped_at": "2026-05-02T08:04:47.721104Z"
     },
     {
       "route": "Milan, Italy - Van Nuys, California",
@@ -3925,7 +3925,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-21-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.034456Z"
+      "scraped_at": "2026-05-02T08:04:47.721129Z"
     },
     {
       "route": "Frankfurt, Germany - Van Nuys, California",
@@ -3941,7 +3941,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-21-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.034480Z"
+      "scraped_at": "2026-05-02T08:04:47.721155Z"
     },
     {
       "route": "Le Bourget Paris, France - Van Nuys, California",
@@ -3957,7 +3957,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-21-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.034506Z"
+      "scraped_at": "2026-05-02T08:04:47.721181Z"
     },
     {
       "route": "Malaga, Spain - London, UK",
@@ -3973,7 +3973,7 @@
       "aircraft": "Embraer Legacy 600",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-20-2026/",
-      "scraped_at": "2026-05-01T08:32:53.034531Z"
+      "scraped_at": "2026-05-02T08:04:47.721207Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -3989,7 +3989,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-19-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.034557Z"
+      "scraped_at": "2026-05-02T08:04:47.721232Z"
     },
     {
       "route": "Van Nuys, California - Milan, Italy",
@@ -4005,7 +4005,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/august-19-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.034581Z"
+      "scraped_at": "2026-05-02T08:04:47.721257Z"
     },
     {
       "route": "Van Nuys, California - Frankfurt, Germany",
@@ -4017,11 +4017,11 @@
       "departure_time": "12:00 PM",
       "arrival_time": "10:30 AM",
       "price": 15900,
-      "available": true,
+      "available": false,
       "aircraft": "Gulfstream G-IVSP",
-      "seats": 9,
+      "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/august-19-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.034606Z"
+      "scraped_at": "2026-05-02T08:04:47.721281Z"
     },
     {
       "route": "Van Nuys, California - Le Bourget Paris, France",
@@ -4037,7 +4037,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/august-19-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.034631Z"
+      "scraped_at": "2026-05-02T08:04:47.721306Z"
     },
     {
       "route": "Teterboro, NJ - Le Bourget Paris, France",
@@ -4053,7 +4053,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-19-2026-teb-lbg/",
-      "scraped_at": "2026-05-01T08:32:53.034656Z"
+      "scraped_at": "2026-05-02T08:04:47.721331Z"
     },
     {
       "route": "London, UK - Miami, US",
@@ -4069,7 +4069,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-14-2026-ltn-opf/",
-      "scraped_at": "2026-05-01T08:32:53.034680Z"
+      "scraped_at": "2026-05-02T08:04:47.721356Z"
     },
     {
       "route": "Miami, US - London, UK",
@@ -4085,7 +4085,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-12-2026-opf-ltn/",
-      "scraped_at": "2026-05-01T08:32:53.034703Z"
+      "scraped_at": "2026-05-02T08:04:47.721380Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -4101,7 +4101,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-12-2026/",
-      "scraped_at": "2026-05-01T08:32:53.034727Z"
+      "scraped_at": "2026-05-02T08:04:47.721405Z"
     },
     {
       "route": "London, UK - Vancouver, Canada",
@@ -4117,7 +4117,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-28-2026/",
-      "scraped_at": "2026-05-01T08:32:53.034753Z"
+      "scraped_at": "2026-05-02T08:04:47.721430Z"
     },
     {
       "route": "Vancouver, Canada - London, UK",
@@ -4133,7 +4133,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-26-2026/",
-      "scraped_at": "2026-05-01T08:32:53.034778Z"
+      "scraped_at": "2026-05-02T08:04:47.721458Z"
     },
     {
       "route": "Geneva, Switzerland - Teterboro, NJ",
@@ -4149,7 +4149,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-28-2026-2-2/",
-      "scraped_at": "2026-05-01T08:32:53.034805Z"
+      "scraped_at": "2026-05-02T08:04:47.721483Z"
     },
     {
       "route": "Teterboro, NJ - Van Nuys, California",
@@ -4165,7 +4165,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-28-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.034830Z"
+      "scraped_at": "2026-05-02T08:04:47.721507Z"
     },
     {
       "route": "London, UK - Van Nuys, California",
@@ -4181,7 +4181,7 @@
       "aircraft": "Gulfstream G-550",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-28-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.034854Z"
+      "scraped_at": "2026-05-02T08:04:47.721530Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -4197,7 +4197,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-28-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.034895Z"
+      "scraped_at": "2026-05-02T08:04:47.721554Z"
     },
     {
       "route": "Teterboro, NJ - Geneva, Switzerland",
@@ -4213,7 +4213,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-26-2026-2-2/",
-      "scraped_at": "2026-05-01T08:32:53.034923Z"
+      "scraped_at": "2026-05-02T08:04:47.721577Z"
     },
     {
       "route": "Van Nuys, California - Teterboro, NJ",
@@ -4229,7 +4229,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-26-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.034948Z"
+      "scraped_at": "2026-05-02T08:04:47.721601Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -4245,7 +4245,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-26-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.034973Z"
+      "scraped_at": "2026-05-02T08:04:47.721624Z"
     },
     {
       "route": "Milan, Italy - Teterboro, NJ",
@@ -4261,7 +4261,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-21-2026/",
-      "scraped_at": "2026-05-01T08:32:53.034998Z"
+      "scraped_at": "2026-05-02T08:04:47.721648Z"
     },
     {
       "route": "Madrid, Spain - Teterboro, NJ",
@@ -4277,7 +4277,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-28-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.035026Z"
+      "scraped_at": "2026-05-02T08:04:47.721673Z"
     },
     {
       "route": "Frankfurt, Germany - Teterboro, NJ",
@@ -4293,7 +4293,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-21-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.035051Z"
+      "scraped_at": "2026-05-02T08:04:47.721698Z"
     },
     {
       "route": "Le Bourget Paris, France - Teterboro, NJ",
@@ -4309,7 +4309,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-21-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.035077Z"
+      "scraped_at": "2026-05-02T08:04:47.721723Z"
     },
     {
       "route": "Teterboro, NJ - Van Nuys, California",
@@ -4325,7 +4325,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-21-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.035101Z"
+      "scraped_at": "2026-05-02T08:04:47.721748Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -4341,7 +4341,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-21-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.035125Z"
+      "scraped_at": "2026-05-02T08:04:47.721773Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -4357,7 +4357,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/august-19-2026/",
-      "scraped_at": "2026-05-01T08:32:53.035154Z"
+      "scraped_at": "2026-05-02T08:04:47.721799Z"
     },
     {
       "route": "Teterboro, NJ - Madrid, Spain",
@@ -4373,7 +4373,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/august-26-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.035183Z"
+      "scraped_at": "2026-05-02T08:04:47.721825Z"
     },
     {
       "route": "Teterboro, NJ - Frankfurt, Germany",
@@ -4385,11 +4385,11 @@
       "departure_time": "9:00 PM",
       "arrival_time": "10:30 AM",
       "price": 10250,
-      "available": true,
+      "available": false,
       "aircraft": "Gulfstream G-IVSP",
-      "seats": 9,
+      "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/august-19-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.035207Z"
+      "scraped_at": "2026-05-02T08:04:47.721853Z"
     },
     {
       "route": "Teterboro, NJ - Le Bourget Paris, France",
@@ -4405,7 +4405,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/august-19-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.035235Z"
+      "scraped_at": "2026-05-02T08:04:47.721879Z"
     },
     {
       "route": "Van Nuys, California - Teterboro, NJ",
@@ -4421,7 +4421,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-19-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.035259Z"
+      "scraped_at": "2026-05-02T08:04:47.721904Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -4437,7 +4437,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-19-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.035283Z"
+      "scraped_at": "2026-05-02T08:04:47.721928Z"
     },
     {
       "route": "Dublin, Ireland - Teterboro, NJ",
@@ -4453,7 +4453,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-14-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.035307Z"
+      "scraped_at": "2026-05-02T08:04:47.721952Z"
     },
     {
       "route": "Paris, France - Toronto, Canada",
@@ -4469,7 +4469,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-14-2026/",
-      "scraped_at": "2026-05-01T08:32:53.035331Z"
+      "scraped_at": "2026-05-02T08:04:47.721976Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -4485,7 +4485,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-14-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.035355Z"
+      "scraped_at": "2026-05-02T08:04:47.722000Z"
     },
     {
       "route": "Teterboro, NJ - Dublin, Ireland",
@@ -4501,7 +4501,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/august-12-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.035379Z"
+      "scraped_at": "2026-05-02T08:04:47.722045Z"
     },
     {
       "route": "Toronto, Canada - Paris, France",
@@ -4517,7 +4517,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-12-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.035403Z"
+      "scraped_at": "2026-05-02T08:04:47.722076Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -4533,7 +4533,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-9-2026/",
-      "scraped_at": "2026-05-01T08:32:53.035427Z"
+      "scraped_at": "2026-05-02T08:04:47.722100Z"
     },
     {
       "route": "Dubai, UAE - London, UK",
@@ -4549,7 +4549,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-8-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.035450Z"
+      "scraped_at": "2026-05-02T08:04:47.722127Z"
     },
     {
       "route": "London, UK - Dubai, UAE",
@@ -4565,7 +4565,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-7-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.035474Z"
+      "scraped_at": "2026-05-02T08:04:47.722154Z"
     },
     {
       "route": "London, UK - Toronto, Canada",
@@ -4581,7 +4581,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-7-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.035497Z"
+      "scraped_at": "2026-05-02T08:04:47.722179Z"
     },
     {
       "route": "Toronto, Canada - Dubai, UAE",
@@ -4597,7 +4597,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-5-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.035521Z"
+      "scraped_at": "2026-05-02T08:04:47.722204Z"
     },
     {
       "route": "Teterboro, NJ - Dubai, UAE",
@@ -4613,7 +4613,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-5-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.035544Z"
+      "scraped_at": "2026-05-02T08:04:47.722229Z"
     },
     {
       "route": "Toronto, Canada - London, UK",
@@ -4629,7 +4629,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-5-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.035570Z"
+      "scraped_at": "2026-05-02T08:04:47.722254Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -4645,7 +4645,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/august-5-2026/",
-      "scraped_at": "2026-05-01T08:32:53.035596Z"
+      "scraped_at": "2026-05-02T08:04:47.722282Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -4661,7 +4661,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-31-2026/",
-      "scraped_at": "2026-05-01T08:32:53.035623Z"
+      "scraped_at": "2026-05-02T08:04:47.722307Z"
     },
     {
       "route": "London, UK - Nice, France",
@@ -4677,7 +4677,7 @@
       "aircraft": "Embraer Legacy 600",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-30-2026/",
-      "scraped_at": "2026-05-01T08:32:53.035648Z"
+      "scraped_at": "2026-05-02T08:04:47.722333Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -4693,7 +4693,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-29-2026/",
-      "scraped_at": "2026-05-01T08:32:53.035672Z"
+      "scraped_at": "2026-05-02T08:04:47.722357Z"
     },
     {
       "route": "Lisbon, Portugal - Van Nuys, California",
@@ -4709,7 +4709,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-24-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.035696Z"
+      "scraped_at": "2026-05-02T08:04:47.722380Z"
     },
     {
       "route": "Geneva, Switzerland - Van Nuys, California",
@@ -4725,7 +4725,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-24-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.035721Z"
+      "scraped_at": "2026-05-02T08:04:47.722405Z"
     },
     {
       "route": "Teterboro, NJ - Van Nuys, California",
@@ -4741,7 +4741,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-24-2026-teb-vny/",
-      "scraped_at": "2026-05-01T08:32:53.035744Z"
+      "scraped_at": "2026-05-02T08:04:47.722429Z"
     },
     {
       "route": "Lisbon, Portugal - Teterboro, NJ",
@@ -4757,7 +4757,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-24-20236/",
-      "scraped_at": "2026-05-01T08:32:53.035768Z"
+      "scraped_at": "2026-05-02T08:04:47.722459Z"
     },
     {
       "route": "Geneva, Switzerland - Teterboro, NJ",
@@ -4773,7 +4773,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-24-20236-2/",
-      "scraped_at": "2026-05-01T08:32:53.035792Z"
+      "scraped_at": "2026-05-02T08:04:47.722487Z"
     },
     {
       "route": "London, UK - Vancouver, Canada",
@@ -4789,7 +4789,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-24-2026/",
-      "scraped_at": "2026-05-01T08:32:53.035818Z"
+      "scraped_at": "2026-05-02T08:04:47.722515Z"
     },
     {
       "route": "Teterboro, NJ - Van Nuys, California",
@@ -4805,7 +4805,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-24-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.035844Z"
+      "scraped_at": "2026-05-02T08:04:47.722544Z"
     },
     {
       "route": "London, UK - Van Nuys, California",
@@ -4821,7 +4821,7 @@
       "aircraft": "Gulfstream G-550",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-24-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.035868Z"
+      "scraped_at": "2026-05-02T08:04:47.722569Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -4837,7 +4837,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-24-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.035919Z"
+      "scraped_at": "2026-05-02T08:04:47.722593Z"
     },
     {
       "route": "London, UK - Malaga, Spain",
@@ -4853,7 +4853,7 @@
       "aircraft": "Embraer Legacy 600",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-23-2026/",
-      "scraped_at": "2026-05-01T08:32:53.035946Z"
+      "scraped_at": "2026-05-02T08:04:47.722620Z"
     },
     {
       "route": "Van Nuys, California - Lisbon, Portugal",
@@ -4869,7 +4869,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-22-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.035973Z"
+      "scraped_at": "2026-05-02T08:04:47.722647Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -4885,7 +4885,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-22-2026-teb-lin/",
-      "scraped_at": "2026-05-01T08:32:53.036003Z"
+      "scraped_at": "2026-05-02T08:04:47.722671Z"
     },
     {
       "route": "Van Nuys, California - Geneva, Switzerland",
@@ -4901,7 +4901,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-22-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.036029Z"
+      "scraped_at": "2026-05-02T08:04:47.722701Z"
     },
     {
       "route": "Vancouver, Canada - London, UK",
@@ -4917,7 +4917,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-22-2026/",
-      "scraped_at": "2026-05-01T08:32:53.036059Z"
+      "scraped_at": "2026-05-02T08:04:47.722726Z"
     },
     {
       "route": "Teterboro, NJ - Lisbon, Portugal",
@@ -4933,7 +4933,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-22-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.036085Z"
+      "scraped_at": "2026-05-02T08:04:47.722752Z"
     },
     {
       "route": "Teterboro, NJ - Geneva, Switzerland",
@@ -4949,7 +4949,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-22-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.036110Z"
+      "scraped_at": "2026-05-02T08:04:47.722776Z"
     },
     {
       "route": "Van Nuys, California - Teterboro, NJ",
@@ -4965,7 +4965,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-22-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.036134Z"
+      "scraped_at": "2026-05-02T08:04:47.722801Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -4981,7 +4981,7 @@
       "aircraft": "Gulfstream G-550",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-22-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.036158Z"
+      "scraped_at": "2026-05-02T08:04:47.722825Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -4997,7 +4997,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-22-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.036180Z"
+      "scraped_at": "2026-05-02T08:04:47.722850Z"
     },
     {
       "route": "London, UK - Van Nuys, California",
@@ -5013,7 +5013,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-17-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.036204Z"
+      "scraped_at": "2026-05-02T08:04:47.722874Z"
     },
     {
       "route": "Milan, Italy - Van Nuys, California",
@@ -5029,7 +5029,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-17-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.036229Z"
+      "scraped_at": "2026-05-02T08:04:47.722898Z"
     },
     {
       "route": "Frankfurt, Germany - Van Nuys, California",
@@ -5045,7 +5045,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-17-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.036252Z"
+      "scraped_at": "2026-05-02T08:04:47.722922Z"
     },
     {
       "route": "Le Bourget Paris, France - Van Nuys, California",
@@ -5061,7 +5061,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-17-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.036276Z"
+      "scraped_at": "2026-05-02T08:04:47.722947Z"
     },
     {
       "route": "London, UK - Miami, US",
@@ -5077,7 +5077,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-17-2026-ltn-opf/",
-      "scraped_at": "2026-05-01T08:32:53.036300Z"
+      "scraped_at": "2026-05-02T08:04:47.722971Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -5093,7 +5093,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-17-2026-teb-ltn/",
-      "scraped_at": "2026-05-01T08:32:53.036322Z"
+      "scraped_at": "2026-05-02T08:04:47.722995Z"
     },
     {
       "route": "Frankfurt, Germany - Teterboro, NJ",
@@ -5109,7 +5109,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-17-2026-fra-teb/",
-      "scraped_at": "2026-05-01T08:32:53.036350Z"
+      "scraped_at": "2026-05-02T08:04:47.723019Z"
     },
     {
       "route": "Milan, Italy - Teterboro, NJ",
@@ -5125,7 +5125,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-17-2026/",
-      "scraped_at": "2026-05-01T08:32:53.036375Z"
+      "scraped_at": "2026-05-02T08:04:47.723068Z"
     },
     {
       "route": "Le Bourget Paris, France - Teterboro, NJ",
@@ -5141,7 +5141,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-17-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.036507Z"
+      "scraped_at": "2026-05-02T08:04:47.723216Z"
     },
     {
       "route": "Teterboro, NJ - Van Nuys, California",
@@ -5157,7 +5157,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-17-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.036535Z"
+      "scraped_at": "2026-05-02T08:04:47.723243Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -5173,7 +5173,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-17-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.036560Z"
+      "scraped_at": "2026-05-02T08:04:47.723267Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -5189,7 +5189,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-15-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.036585Z"
+      "scraped_at": "2026-05-02T08:04:47.723293Z"
     },
     {
       "route": "Van Nuys, California - Milan, Italy",
@@ -5205,7 +5205,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-15-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.036609Z"
+      "scraped_at": "2026-05-02T08:04:47.723322Z"
     },
     {
       "route": "Van Nuys, California - Frankfurt, Germany",
@@ -5221,7 +5221,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-15-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.036634Z"
+      "scraped_at": "2026-05-02T08:04:47.723349Z"
     },
     {
       "route": "Van Nuys, California - Le Bourget Paris, France",
@@ -5237,7 +5237,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-15-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.036661Z"
+      "scraped_at": "2026-05-02T08:04:47.723376Z"
     },
     {
       "route": "Miami, US - London, UK",
@@ -5253,7 +5253,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-15-2026-opf-ltn/",
-      "scraped_at": "2026-05-01T08:32:53.036685Z"
+      "scraped_at": "2026-05-02T08:04:47.723404Z"
     },
     {
       "route": "Teterboro, NJ - Frankfurt, Germany",
@@ -5269,7 +5269,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-15-2026-teb-fra/",
-      "scraped_at": "2026-05-01T08:32:53.036709Z"
+      "scraped_at": "2026-05-02T08:04:47.723428Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -5285,7 +5285,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-15-2026/",
-      "scraped_at": "2026-05-01T08:32:53.036732Z"
+      "scraped_at": "2026-05-02T08:04:47.723452Z"
     },
     {
       "route": "Teterboro, NJ - Le Bourget Paris, France",
@@ -5301,7 +5301,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-15-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.036786Z"
+      "scraped_at": "2026-05-02T08:04:47.723501Z"
     },
     {
       "route": "Van Nuys, California - Teterboro, NJ",
@@ -5317,7 +5317,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-15-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.036813Z"
+      "scraped_at": "2026-05-02T08:04:47.723526Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -5333,7 +5333,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-15-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.036837Z"
+      "scraped_at": "2026-05-02T08:04:47.723550Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -5349,7 +5349,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-10-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.036862Z"
+      "scraped_at": "2026-05-02T08:04:47.723574Z"
     },
     {
       "route": "Dublin, Ireland - Teterboro, NJ",
@@ -5365,7 +5365,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-10-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.036910Z"
+      "scraped_at": "2026-05-02T08:04:47.723600Z"
     },
     {
       "route": "Paris, France - Toronto, Canada",
@@ -5381,7 +5381,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-10-2026/",
-      "scraped_at": "2026-05-01T08:32:53.036937Z"
+      "scraped_at": "2026-05-02T08:04:47.723624Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -5397,7 +5397,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-8-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.036965Z"
+      "scraped_at": "2026-05-02T08:04:47.723648Z"
     },
     {
       "route": "Teterboro, NJ - Dublin, Ireland",
@@ -5413,7 +5413,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-8-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.036988Z"
+      "scraped_at": "2026-05-02T08:04:47.723672Z"
     },
     {
       "route": "Toronto, Canada - Paris, France",
@@ -5429,7 +5429,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-8-2026/",
-      "scraped_at": "2026-05-01T08:32:53.037012Z"
+      "scraped_at": "2026-05-02T08:04:47.723695Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -5445,7 +5445,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-5-2026/",
-      "scraped_at": "2026-05-01T08:32:53.037037Z"
+      "scraped_at": "2026-05-02T08:04:47.723720Z"
     },
     {
       "route": "Dubai, UAE - London, UK",
@@ -5461,7 +5461,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-4-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.037052Z"
+      "scraped_at": "2026-05-02T08:04:47.723737Z"
     },
     {
       "route": "Dubai, UAE - London, UK",
@@ -5477,7 +5477,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-4-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.037075Z"
+      "scraped_at": "2026-05-02T08:04:47.723762Z"
     },
     {
       "route": "London, UK - Dubai, UAE",
@@ -5493,7 +5493,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-3-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.037100Z"
+      "scraped_at": "2026-05-02T08:04:47.723788Z"
     },
     {
       "route": "London, UK - Toronto, Canada",
@@ -5509,7 +5509,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-3-2026/",
-      "scraped_at": "2026-05-01T08:32:53.037123Z"
+      "scraped_at": "2026-05-02T08:04:47.723812Z"
     },
     {
       "route": "Teterboro, NJ - Dubai, UAE",
@@ -5525,7 +5525,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-1-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.037147Z"
+      "scraped_at": "2026-05-02T08:04:47.723838Z"
     },
     {
       "route": "Toronto, Canada - Dubai, UAE",
@@ -5541,7 +5541,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-1-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.037172Z"
+      "scraped_at": "2026-05-02T08:04:47.723863Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -5557,7 +5557,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-1-2026-teb-ltn/",
-      "scraped_at": "2026-05-01T08:32:53.037195Z"
+      "scraped_at": "2026-05-02T08:04:47.723887Z"
     },
     {
       "route": "Toronto, Canada - London, UK",
@@ -5573,7 +5573,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/july-1-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.037218Z"
+      "scraped_at": "2026-05-02T08:04:47.723911Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -5589,7 +5589,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/july-1-2026/",
-      "scraped_at": "2026-05-01T08:32:53.037242Z"
+      "scraped_at": "2026-05-02T08:04:47.723935Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -5605,7 +5605,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-27-2026-vny-ltn/",
-      "scraped_at": "2026-05-01T08:32:53.037266Z"
+      "scraped_at": "2026-05-02T08:04:47.723960Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -5621,7 +5621,7 @@
       "aircraft": "Gulfstream G-550",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-27-2026/",
-      "scraped_at": "2026-05-01T08:32:53.037291Z"
+      "scraped_at": "2026-05-02T08:04:47.723985Z"
     },
     {
       "route": "Madrid, Spain - Van Nuys, California",
@@ -5637,7 +5637,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-26-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.037315Z"
+      "scraped_at": "2026-05-02T08:04:47.724013Z"
     },
     {
       "route": "Geneva, Switzerland - Van Nuys, California",
@@ -5653,7 +5653,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-26-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.037342Z"
+      "scraped_at": "2026-05-02T08:04:47.724059Z"
     },
     {
       "route": "Geneva, Switzerland - Teterboro, NJ",
@@ -5669,7 +5669,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-26-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.037370Z"
+      "scraped_at": "2026-05-02T08:04:47.724088Z"
     },
     {
       "route": "Teterboro, NJ - Van Nuys, California",
@@ -5685,7 +5685,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-26-2026/",
-      "scraped_at": "2026-05-01T08:32:53.037396Z"
+      "scraped_at": "2026-05-02T08:04:47.724114Z"
     },
     {
       "route": "London, UK - Van Nuys, California",
@@ -5701,7 +5701,7 @@
       "aircraft": "Gulfstream G-550",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-29-2026-3-2/",
-      "scraped_at": "2026-05-01T08:32:53.037420Z"
+      "scraped_at": "2026-05-02T08:04:47.724140Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -5717,7 +5717,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-26-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.037445Z"
+      "scraped_at": "2026-05-02T08:04:47.724165Z"
     },
     {
       "route": "Van Nuys, California - Madrid, Spain",
@@ -5733,7 +5733,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-24-2026-2-3/",
-      "scraped_at": "2026-05-01T08:32:53.037470Z"
+      "scraped_at": "2026-05-02T08:04:47.724190Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -5749,7 +5749,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-24-2026-teb-ltn/",
-      "scraped_at": "2026-05-01T08:32:53.037493Z"
+      "scraped_at": "2026-05-02T08:04:47.724215Z"
     },
     {
       "route": "Teterboro, NJ - Frankfurt, Germany",
@@ -5765,7 +5765,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-24-2026-teb-fra/",
-      "scraped_at": "2026-05-01T08:32:53.037517Z"
+      "scraped_at": "2026-05-02T08:04:47.724241Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -5781,7 +5781,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-24-2026-teb-lin/",
-      "scraped_at": "2026-05-01T08:32:53.037541Z"
+      "scraped_at": "2026-05-02T08:04:47.724265Z"
     },
     {
       "route": "Van Nuys, California - Teterboro, NJ",
@@ -5797,7 +5797,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-24-2026-vny-teb/",
-      "scraped_at": "2026-05-01T08:32:53.037565Z"
+      "scraped_at": "2026-05-02T08:04:47.724289Z"
     },
     {
       "route": "Van Nuys, California - Geneva, Switzerland",
@@ -5813,7 +5813,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-24-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.037591Z"
+      "scraped_at": "2026-05-02T08:04:47.724315Z"
     },
     {
       "route": "Teterboro, NJ - Geneva, Switzerland",
@@ -5829,7 +5829,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-24-2026/",
-      "scraped_at": "2026-05-01T08:32:53.037616Z"
+      "scraped_at": "2026-05-02T08:04:47.724339Z"
     },
     {
       "route": "Van Nuys, California - Teterboro, NJ",
@@ -5845,7 +5845,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-24-2026-2-2/",
-      "scraped_at": "2026-05-01T08:32:53.037641Z"
+      "scraped_at": "2026-05-02T08:04:47.724363Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -5861,7 +5861,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-24-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.037665Z"
+      "scraped_at": "2026-05-02T08:04:47.724387Z"
     },
     {
       "route": "London, UK - Van Nuys, California",
@@ -5877,7 +5877,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-19-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.037692Z"
+      "scraped_at": "2026-05-02T08:04:47.724413Z"
     },
     {
       "route": "Milan, Italy - Van Nuys, California",
@@ -5893,7 +5893,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-19-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.037717Z"
+      "scraped_at": "2026-05-02T08:04:47.724442Z"
     },
     {
       "route": "Frankfurt, Germany - Van Nuys, California",
@@ -5909,7 +5909,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-19-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.037745Z"
+      "scraped_at": "2026-05-02T08:04:47.724469Z"
     },
     {
       "route": "Le Bourget Paris, France - Van Nuys, California",
@@ -5925,7 +5925,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-19-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.037770Z"
+      "scraped_at": "2026-05-02T08:04:47.724494Z"
     },
     {
       "route": "Milan, Italy - Teterboro, NJ",
@@ -5941,7 +5941,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-19-2026/",
-      "scraped_at": "2026-05-01T08:32:53.037794Z"
+      "scraped_at": "2026-05-02T08:04:47.724518Z"
     },
     {
       "route": "Madrid, Spain - Teterboro, NJ",
@@ -5957,7 +5957,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-26-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.037819Z"
+      "scraped_at": "2026-05-02T08:04:47.724543Z"
     },
     {
       "route": "Frankfurt, Germany - Teterboro, NJ",
@@ -5973,7 +5973,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-19-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.037843Z"
+      "scraped_at": "2026-05-02T08:04:47.724569Z"
     },
     {
       "route": "Le Bourget Paris, France - Teterboro, NJ",
@@ -5989,7 +5989,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-19-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.037868Z"
+      "scraped_at": "2026-05-02T08:04:47.724597Z"
     },
     {
       "route": "Teterboro, NJ - Van Nuys, California",
@@ -6005,7 +6005,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-19-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.037910Z"
+      "scraped_at": "2026-05-02T08:04:47.724622Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -6021,7 +6021,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-19-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.037936Z"
+      "scraped_at": "2026-05-02T08:04:47.724647Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -6037,7 +6037,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.037961Z"
+      "scraped_at": "2026-05-02T08:04:47.724672Z"
     },
     {
       "route": "Van Nuys, California - Milan, Italy",
@@ -6053,7 +6053,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.037986Z"
+      "scraped_at": "2026-05-02T08:04:47.724697Z"
     },
     {
       "route": "Van Nuys, California - Frankfurt, Germany",
@@ -6069,7 +6069,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.038011Z"
+      "scraped_at": "2026-05-02T08:04:47.724722Z"
     },
     {
       "route": "Van Nuys, California - Le Bourget Paris, France",
@@ -6085,7 +6085,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.038034Z"
+      "scraped_at": "2026-05-02T08:04:47.724746Z"
     },
     {
       "route": "New Jersey, US - Paris, France",
@@ -6101,7 +6101,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-teb-lbg/",
-      "scraped_at": "2026-05-01T08:32:53.038058Z"
+      "scraped_at": "2026-05-02T08:04:47.724770Z"
     },
     {
       "route": "Van Nuys, California - Teterboro, NJ",
@@ -6117,7 +6117,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-vny-teb/",
-      "scraped_at": "2026-05-01T08:32:53.038082Z"
+      "scraped_at": "2026-05-02T08:04:47.724794Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -6133,7 +6133,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-12/",
-      "scraped_at": "2026-05-01T08:32:53.038114Z"
+      "scraped_at": "2026-05-02T08:04:47.724826Z"
     },
     {
       "route": "Van Nuys, California - Milan, Italy",
@@ -6149,7 +6149,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-11/",
-      "scraped_at": "2026-05-01T08:32:53.038139Z"
+      "scraped_at": "2026-05-02T08:04:47.724851Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -6165,7 +6165,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-14/",
-      "scraped_at": "2026-05-01T08:32:53.038167Z"
+      "scraped_at": "2026-05-02T08:04:47.724877Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -6181,7 +6181,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-10/",
-      "scraped_at": "2026-05-01T08:32:53.038192Z"
+      "scraped_at": "2026-05-02T08:04:47.724902Z"
     },
     {
       "route": "New Jersey, US - Paris, France",
@@ -6197,7 +6197,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-13/",
-      "scraped_at": "2026-05-01T08:32:53.038217Z"
+      "scraped_at": "2026-05-02T08:04:47.724926Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -6213,7 +6213,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026/",
-      "scraped_at": "2026-05-01T08:32:53.038243Z"
+      "scraped_at": "2026-05-02T08:04:47.724950Z"
     },
     {
       "route": "Teterboro, NJ - Madrid, Spain",
@@ -6229,7 +6229,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-24-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.038268Z"
+      "scraped_at": "2026-05-02T08:04:47.724974Z"
     },
     {
       "route": "Teterboro, NJ - Frankfurt, Germany",
@@ -6245,7 +6245,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.038293Z"
+      "scraped_at": "2026-05-02T08:04:47.724998Z"
     },
     {
       "route": "Teterboro, NJ - Le Bourget Paris, France",
@@ -6261,7 +6261,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.038317Z"
+      "scraped_at": "2026-05-02T08:04:47.725035Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -6277,7 +6277,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-17-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.038362Z"
+      "scraped_at": "2026-05-02T08:04:47.725088Z"
     },
     {
       "route": "London, UK - Miami, US",
@@ -6293,7 +6293,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-12-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.038385Z"
+      "scraped_at": "2026-05-02T08:04:47.725112Z"
     },
     {
       "route": "Paris, France - Toronto, Canada",
@@ -6309,7 +6309,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-12-2026/",
-      "scraped_at": "2026-05-01T08:32:53.038408Z"
+      "scraped_at": "2026-05-02T08:04:47.725137Z"
     },
     {
       "route": "Teterboro, NJ - Dublin, Ireland",
@@ -6325,7 +6325,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-10-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.038430Z"
+      "scraped_at": "2026-05-02T08:04:47.725161Z"
     },
     {
       "route": "Miami, US - London, UK",
@@ -6341,7 +6341,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-10-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.038452Z"
+      "scraped_at": "2026-05-02T08:04:47.725184Z"
     },
     {
       "route": "Toronto, Canada - Paris, France",
@@ -6357,7 +6357,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-10-2026/",
-      "scraped_at": "2026-05-01T08:32:53.038475Z"
+      "scraped_at": "2026-05-02T08:04:47.725208Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -6373,7 +6373,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-7-2026/",
-      "scraped_at": "2026-05-01T08:32:53.038498Z"
+      "scraped_at": "2026-05-02T08:04:47.725235Z"
     },
     {
       "route": "Dubai, UAE - London, UK",
@@ -6389,7 +6389,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-6-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.038521Z"
+      "scraped_at": "2026-05-02T08:04:47.725260Z"
     },
     {
       "route": "Dubai, UAE - London, UK",
@@ -6405,7 +6405,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-6-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.038546Z"
+      "scraped_at": "2026-05-02T08:04:47.725284Z"
     },
     {
       "route": "Teterboro, NJ - Dubai, UAE",
@@ -6421,23 +6421,23 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-5-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.038569Z"
+      "scraped_at": "2026-05-02T08:04:47.725307Z"
     },
     {
       "route": "London, UK - Dubai, UAE",
       "origin": "London",
       "destination": "Dubai",
-      "origin_code": "LTN",
+      "origin_code": "STN",
       "destination_code": "DWC",
       "date": "2026-06-05",
       "departure_time": "9:00 AM",
       "arrival_time": "7:30 PM",
       "price": 12975,
       "available": true,
-      "aircraft": "Gulfstream G-IVSP",
+      "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/june-5-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.038591Z"
+      "scraped_at": "2026-05-02T08:04:47.725331Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -6453,7 +6453,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/june-3-2026/",
-      "scraped_at": "2026-05-01T08:32:53.038613Z"
+      "scraped_at": "2026-05-02T08:04:47.725355Z"
     },
     {
       "route": "Geneva, Switzerland - Van Nuys, California",
@@ -6469,7 +6469,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-29-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.038637Z"
+      "scraped_at": "2026-05-02T08:04:47.725380Z"
     },
     {
       "route": "Lisbon, Portugal - Van Nuys, California",
@@ -6485,7 +6485,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-29-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.038660Z"
+      "scraped_at": "2026-05-02T08:04:47.725405Z"
     },
     {
       "route": "Geneva, Switzerland - Teterboro, NJ",
@@ -6501,7 +6501,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-29-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.038684Z"
+      "scraped_at": "2026-05-02T08:04:47.725429Z"
     },
     {
       "route": "Teterboro, NJ - Van Nuys, California",
@@ -6517,7 +6517,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-29-2026-3-2/",
-      "scraped_at": "2026-05-01T08:32:53.038707Z"
+      "scraped_at": "2026-05-02T08:04:47.725452Z"
     },
     {
       "route": "London, UK - Van Nuys, California",
@@ -6533,7 +6533,7 @@
       "aircraft": "Gulfstream G-550",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-29-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.038729Z"
+      "scraped_at": "2026-05-02T08:04:47.725476Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -6549,7 +6549,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-29-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.038752Z"
+      "scraped_at": "2026-05-02T08:04:47.725500Z"
     },
     {
       "route": "New Jersey, US - Lisbon, Portugal",
@@ -6565,7 +6565,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-27-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.038801Z"
+      "scraped_at": "2026-05-02T08:04:47.725550Z"
     },
     {
       "route": "Los Angeles, US - London, UK",
@@ -6581,7 +6581,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-27-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.038823Z"
+      "scraped_at": "2026-05-02T08:04:47.725572Z"
     },
     {
       "route": "Van Nuys, California - Geneva, Switzerland",
@@ -6597,7 +6597,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-27-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.038846Z"
+      "scraped_at": "2026-05-02T08:04:47.725595Z"
     },
     {
       "route": "Teterboro, NJ - Geneva, Switzerland",
@@ -6613,7 +6613,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-27-2026-2-2/",
-      "scraped_at": "2026-05-01T08:32:53.038868Z"
+      "scraped_at": "2026-05-02T08:04:47.725621Z"
     },
     {
       "route": "Van Nuys, California - Teterboro, NJ",
@@ -6629,7 +6629,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-27-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.038909Z"
+      "scraped_at": "2026-05-02T08:04:47.725645Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -6645,7 +6645,7 @@
       "aircraft": "Gulfstream G-550",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-27-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.038937Z"
+      "scraped_at": "2026-05-02T08:04:47.725668Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -6661,7 +6661,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-27-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.038963Z"
+      "scraped_at": "2026-05-02T08:04:47.725690Z"
     },
     {
       "route": "London, UK - Van Nuys, California",
@@ -6677,7 +6677,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-22-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.038987Z"
+      "scraped_at": "2026-05-02T08:04:47.725713Z"
     },
     {
       "route": "Frankfurt, Germany - Van Nuys, California",
@@ -6693,7 +6693,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-22-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.039011Z"
+      "scraped_at": "2026-05-02T08:04:47.725737Z"
     },
     {
       "route": "Lisbon, Portugal - Teterboro, NJ",
@@ -6709,7 +6709,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-29-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.039034Z"
+      "scraped_at": "2026-05-02T08:04:47.725760Z"
     },
     {
       "route": "Frankfurt, Germany - Teterboro, NJ",
@@ -6725,7 +6725,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-22-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.039056Z"
+      "scraped_at": "2026-05-02T08:04:47.725784Z"
     },
     {
       "route": "Teterboro, NJ - Van Nuys, California",
@@ -6741,7 +6741,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-22-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.039078Z"
+      "scraped_at": "2026-05-02T08:04:47.725806Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -6757,7 +6757,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-22-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.039100Z"
+      "scraped_at": "2026-05-02T08:04:47.725829Z"
     },
     {
       "route": "Van Nuys, California - London, UK",
@@ -6773,7 +6773,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-9/",
-      "scraped_at": "2026-05-01T08:32:53.039122Z"
+      "scraped_at": "2026-05-02T08:04:47.725856Z"
     },
     {
       "route": "Van Nuys, California - Milan, Italy",
@@ -6789,7 +6789,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-8/",
-      "scraped_at": "2026-05-01T08:32:53.039145Z"
+      "scraped_at": "2026-05-02T08:04:47.725881Z"
     },
     {
       "route": "Van Nuys, California - Frankfurt, Germany",
@@ -6805,7 +6805,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-7/",
-      "scraped_at": "2026-05-01T08:32:53.039167Z"
+      "scraped_at": "2026-05-02T08:04:47.725906Z"
     },
     {
       "route": "Van Nuys, California - Le Bourget Paris, France",
@@ -6821,7 +6821,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.039189Z"
+      "scraped_at": "2026-05-02T08:04:47.725930Z"
     },
     {
       "route": "Van Nuys, California - Lisbon, Portugal",
@@ -6837,7 +6837,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-17/",
-      "scraped_at": "2026-05-01T08:32:53.039211Z"
+      "scraped_at": "2026-05-02T08:04:47.725955Z"
     },
     {
       "route": "Van Nuys, California - Milan, Italy",
@@ -6853,7 +6853,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-11/",
-      "scraped_at": "2026-05-01T08:32:53.039233Z"
+      "scraped_at": "2026-05-02T08:04:47.725978Z"
     },
     {
       "route": "Los Angeles, US - New Jersey, US",
@@ -6869,7 +6869,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-12/",
-      "scraped_at": "2026-05-01T08:32:53.039278Z"
+      "scraped_at": "2026-05-02T08:04:47.726049Z"
     },
     {
       "route": "Teterboro, NJ - Milan, Italy",
@@ -6885,7 +6885,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-10/",
-      "scraped_at": "2026-05-01T08:32:53.039306Z"
+      "scraped_at": "2026-05-02T08:04:47.726075Z"
     },
     {
       "route": "New Jersey, US - Paris, France",
@@ -6901,7 +6901,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-13/",
-      "scraped_at": "2026-05-01T08:32:53.039330Z"
+      "scraped_at": "2026-05-02T08:04:47.726101Z"
     },
     {
       "route": "New Jersey, US - Frankfurt, Germany",
@@ -6917,7 +6917,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-14/",
-      "scraped_at": "2026-05-01T08:32:53.039352Z"
+      "scraped_at": "2026-05-02T08:04:47.726125Z"
     },
     {
       "route": "Van Nuys, California - Geneva, Switzerland",
@@ -6933,7 +6933,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-15/",
-      "scraped_at": "2026-05-01T08:32:53.039375Z"
+      "scraped_at": "2026-05-02T08:04:47.726150Z"
     },
     {
       "route": "Teterboro, NJ - Frankfurt, Germany",
@@ -6949,7 +6949,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.039444Z"
+      "scraped_at": "2026-05-02T08:04:47.726225Z"
     },
     {
       "route": "Teterboro, NJ - Le Bourget Paris, France",
@@ -6965,7 +6965,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.039467Z"
+      "scraped_at": "2026-05-02T08:04:47.726249Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -6981,7 +6981,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-20-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.039512Z"
+      "scraped_at": "2026-05-02T08:04:47.726297Z"
     },
     {
       "route": "Dublin, Ireland - Teterboro, NJ",
@@ -6997,7 +6997,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-15-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.039534Z"
+      "scraped_at": "2026-05-02T08:04:47.726320Z"
     },
     {
       "route": "London, UK - Miami, US",
@@ -7013,7 +7013,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-15-2026/",
-      "scraped_at": "2026-05-01T08:32:53.039556Z"
+      "scraped_at": "2026-05-02T08:04:47.726343Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -7029,7 +7029,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-15-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.039579Z"
+      "scraped_at": "2026-05-02T08:04:47.726365Z"
     },
     {
       "route": "Teterboro, NJ - Dublin, Ireland",
@@ -7045,7 +7045,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-13-2026/",
-      "scraped_at": "2026-05-01T08:32:53.039602Z"
+      "scraped_at": "2026-05-02T08:04:47.726387Z"
     },
     {
       "route": "Miami, US - London, UK",
@@ -7061,7 +7061,7 @@
       "aircraft": "Gulfstream GV",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-13-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.039624Z"
+      "scraped_at": "2026-05-02T08:04:47.726411Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -7077,7 +7077,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-13-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.039648Z"
+      "scraped_at": "2026-05-02T08:04:47.726435Z"
     },
     {
       "route": "London, UK - Teterboro, NJ",
@@ -7093,7 +7093,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-10-2026/",
-      "scraped_at": "2026-05-01T08:32:53.039671Z"
+      "scraped_at": "2026-05-02T08:04:47.726457Z"
     },
     {
       "route": "Dubai, UAE - London, UK",
@@ -7109,7 +7109,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-9-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.039693Z"
+      "scraped_at": "2026-05-02T08:04:47.726480Z"
     },
     {
       "route": "Dubai, UAE - London, UK",
@@ -7125,7 +7125,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-9-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.039715Z"
+      "scraped_at": "2026-05-02T08:04:47.726503Z"
     },
     {
       "route": "London, UK - Dubai, UAE",
@@ -7141,7 +7141,7 @@
       "aircraft": "Embraer Lineage 1000",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-8-2026-6/",
-      "scraped_at": "2026-05-01T08:32:53.039737Z"
+      "scraped_at": "2026-05-02T08:04:47.726525Z"
     },
     {
       "route": "London, UK - Dubai, UAE",
@@ -7157,7 +7157,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-8-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.039760Z"
+      "scraped_at": "2026-05-02T08:04:47.726548Z"
     },
     {
       "route": "London, UK - Toronto, Canada",
@@ -7173,7 +7173,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-8-2026/",
-      "scraped_at": "2026-05-01T08:32:53.039782Z"
+      "scraped_at": "2026-05-02T08:04:47.726572Z"
     },
     {
       "route": "Toronto, Canada - Dubai, UAE",
@@ -7189,7 +7189,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-6-2026-4/",
-      "scraped_at": "2026-05-01T08:32:53.039805Z"
+      "scraped_at": "2026-05-02T08:04:47.726599Z"
     },
     {
       "route": "Teterboro, NJ - Dubai, UAE",
@@ -7205,7 +7205,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-6-2026-3/",
-      "scraped_at": "2026-05-01T08:32:53.039827Z"
+      "scraped_at": "2026-05-02T08:04:47.726622Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -7221,7 +7221,7 @@
       "aircraft": "Gulfstream GIV-SP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-6-2026-5/",
-      "scraped_at": "2026-05-01T08:32:53.039849Z"
+      "scraped_at": "2026-05-02T08:04:47.726644Z"
     },
     {
       "route": "Toronto, Canada - London, UK",
@@ -7237,7 +7237,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 9,
       "booking_url": "https://www.k9jets.com/flight/may-6-2026-2/",
-      "scraped_at": "2026-05-01T08:32:53.039887Z"
+      "scraped_at": "2026-05-02T08:04:47.726666Z"
     },
     {
       "route": "Teterboro, NJ - London, UK",
@@ -7253,7 +7253,7 @@
       "aircraft": "Gulfstream G-IVSP",
       "seats": 0,
       "booking_url": "https://www.k9jets.com/flight/may-6-2026/",
-      "scraped_at": "2026-05-01T08:32:53.039912Z"
+      "scraped_at": "2026-05-02T08:04:47.726688Z"
     }
   ]
 }
